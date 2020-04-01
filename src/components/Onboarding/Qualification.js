@@ -72,6 +72,13 @@ class Qualification extends Component {
     this.setState({ institution: {} });
   }
 
+  removeMore = () => {
+    this.setState({
+      noInstitution: this.state.noInstitution - 1,
+    });
+    this.showQualificationCard()
+  }
+
   showQualificationCard = () => {
     return Array.from(Array(this.state.noInstitution), (e, i) => {
       return (
@@ -128,8 +135,11 @@ class Qualification extends Component {
           </div>
           <div className="form-group row">
             <label for="inputName" className="col-md-5 col-form-label"></label>
-            <div className="col-md-7">
+            <div className="col-md-4">
               <a className="add-more" onClick={this.addMore}>+Add More</a>
+            </div>
+            <div className="col-md-3 text-right">
+              <a className="add-more text-danger" onClick={this.removeMore}>close</a>
             </div>
           </div>
 
@@ -145,6 +155,13 @@ class Qualification extends Component {
     });
     this.showPreviousCard();
     this.setState({ previousEmployment: {} });
+  }
+
+  removeMorePrevious = () => {
+    this.setState({
+      noPrevious: this.state.noPrevious - 1,
+    });
+    this.showPreviousCard()
   }
 
   showPreviousCard = () => {
@@ -203,8 +220,11 @@ class Qualification extends Component {
           </div>
           <div className="form-group row">
             <label for="inputName" className="col-md-5 col-form-label"></label>
-            <div className="col-md-7">
+            <div className="col-md-4">
               <a className="add-more" onClick={this.addMorePrevious}>+Add More</a>
+            </div>
+            <div className="col-md-3 text-right">
+              <a className="add-more text-danger" onClick={this.removeMorePrevious}>close</a>
             </div>
           </div>
 
@@ -397,11 +417,15 @@ class Qualification extends Component {
                         <div className="form-group row">
                           <label for="inputName" className="col-md-5 col-form-label">Reason for leaving your last employment</label>
                           <div className="col-md-7">
-                            <input type="text" 
-                              className="form-control"
-                              name="reasonForLeaving"
-                              onChange={this.handleMoreInfo}
-                            />
+    											<select className="form-control w-100" 
+														name="reasonForLeaving"
+														onChange={this.handleMoreInfo}
+													>
+														<option value="">select</option>
+														<option value="select">select</option>
+														<option value="select">select</option>
+														<option value="select">select</option>
+													</select>
                           </div>
                         </div>
                         <div className="form-group row">
