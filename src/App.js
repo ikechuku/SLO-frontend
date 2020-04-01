@@ -1,25 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
+import PersonalInfo from './components/Onboarding/PersonalInfo';
+import Qualification from './components/Onboarding/Qualification';
+import Employment from './components/Onboarding/Employment';
+import Guarantor from './components/Onboarding/Guarantor';
+import Upload from './components/Onboarding/Upload';
+import PendingApplication from './components/Onboarding/Pending';
+import StaffList from './components/Onboarding/StaffList';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <Router>
+        {/* <ToastContainer /> */}
+        <Switch>
+          {/* <Route exact path="/" component={Homepage}/> */}
+          {/* <Route exact path="/login" component={Login} /> */}
+          {/* <Route path="/create_staff/one" component={PersonalInfo} /> */}
+          <Route path="/" component={PersonalInfo} />
+          <Route path="/create_staff/two/:id" component={Qualification} />
+          <Route path="/create_staff/three/:id" component={Employment} />
+          <Route path="/create_staff/four/:id" component={Guarantor} />
+          <Route path="/create_staff/five/:id" component={Upload} />
+          <Route path="/create_staff/six" component={PendingApplication} />
+          <Route path="/staff_list" component={StaffList} />
+        </Switch>
+      </Router>
   );
 }
 
