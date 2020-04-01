@@ -1,0 +1,24 @@
+.add-more {
+  cursor: pointer;
+  color: blue !important;
+  text-decoration: underline !important;
+}
+
+.header-card {
+  border-bottom-color: #ececff;
+    line-height: 30px;
+    -ms-flex-item-align: center;
+    -ms-grid-row-align: center;
+    align-self: center;
+    background-color: transparent;
+    width: 100%;
+    padding: 15px 30px;
+    border-bottom: 1px solid rgba(0,0,0,.125)
+}
+/* @media (min-width: 768px) {
+.col-md-3 {
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    max-width: 28%;
+  }
+} */
