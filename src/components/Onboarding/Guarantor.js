@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Moment from 'react-moment';
 import Layout from '../layout/index';
 import { httpPost } from '../../actions/data.action';
+import { hideLoader, showLoader } from '../../helpers/loader';
 
 class Guarantor extends Component {
 	constructor(props){
@@ -13,8 +14,19 @@ class Guarantor extends Component {
 
 	handleChange = (e) => {
 		const { postData } = this.state;
-    postData[e.target.name] = e.target.value;
-    this.setState({ postData });
+		if(e.target.name === 'criminalHistory'){
+			let value;
+			if(e.target.value === "true"){
+				value = true;
+			} else {
+				value = false;
+			}
+			postData[e.target.name] = value;
+			this.setState({ postData });
+		} else {
+			postData[e.target.name] = e.target.value;
+			this.setState({ postData });
+		}
 	}
 
 	handleSubmit = async (e) => {
@@ -26,11 +38,46 @@ class Guarantor extends Component {
       const res = await httpPost(`auth/onboarding_four/${id}`, this.state.postData);
       if(res.code === 201){
         // setState({ userId: res.data.id });
-        return this.props.history.push(`/create_staff/five/${res.data.id}`)
+				// return this.props.history.push(`/create_staff/five/${res.data.id}`)
+				return this.props.history.push({
+          pathname: `/create_staff/five/${res.data.id}`,
+          backurl: `/create_staff/two/${res.data.id}`,
+          savedState: this.state
+        });
       }
       console.log(res)
     } catch (error){
       console.log(error)
+    }
+	}
+
+	handleSave = async (e) => {
+		e.preventDefault()
+		showLoader();
+    try{
+			const { id } = this.props.match.params;
+
+      const res = await httpPost(`auth/onboarding_four/${id}`, this.state.postData);
+      if(res.code === 201){
+        hideLoader();
+      }
+      console.log(res)
+    } catch (error){
+			hideLoader();
+      console.log(error)
+    }
+	}
+
+	handleBackButton = () => {
+    return this.props.history.push({
+      pathname: `${this.props.location.backurl}`,
+      savedState: this.props.location.savedState
+    })
+	}
+	
+	componentDidMount(){
+    if(this.props.location.savedState){
+      this.setState({...this.props.location.savedState});
     }
 	}
 
@@ -49,7 +96,12 @@ class Guarantor extends Component {
 							<div className="col-12">
 								<div className="card">
 									<div className="card-header">
-										<h4>Guarantor Information</h4>
+									<div className="row">
+                    <h4 className="col col-md-6">Guarantor Information</h4>
+                    <div className="col col-md-6 text-right">
+                      <h4 className="cursor-pointer" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</h4>
+                    </div>
+                    </div>
 									</div>
 									<div className="card-body">
 
@@ -61,6 +113,7 @@ class Guarantor extends Component {
 														className="form-control"
 														name="firstName"
 														onChange={this.handleChange}
+														value={this.state.postData.firstName}
 													/>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Last Name</label>
@@ -69,6 +122,7 @@ class Guarantor extends Component {
 														className="form-control"
 														name="lastName"
 														onChange={this.handleChange}
+														value={this.state.postData.lastName}
 													/>
 												</div>
 											</div>
@@ -79,6 +133,7 @@ class Guarantor extends Component {
 														className="form-control"
 														name="middleName"
 														onChange={this.handleChange}
+														value={this.state.postData.middleName}
 													/>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Mobile Phone</label>
@@ -87,6 +142,7 @@ class Guarantor extends Component {
 														className="form-control"
 														name="mobilePhone"
 														onChange={this.handleChange}
+														value={this.state.postData.mobilePhone}
 													/>
 												</div>
                       </div> 
@@ -97,6 +153,7 @@ class Guarantor extends Component {
 															name="homePhone" 
 															className="form-control"
 															onChange={this.handleChange}
+															value={this.state.postData.homePhone}
 														/>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Business Phone</label>
@@ -105,6 +162,7 @@ class Guarantor extends Component {
 														className="form-control"
 														name="businessPhone"
 														onChange={this.handleChange}
+														value={this.state.postData.businessPhone}
 													/>
 												</div>
                       </div>
@@ -115,25 +173,31 @@ class Guarantor extends Component {
 														className="form-control w-100"
 														name="relationship"
 														onChange={this.handleChange}
+														value={this.state.postData.relationship}
 													>
-														<option value="Father">Father</option>
-														<option value="Mother">Mother</option>
-														<option value="Brother">Brother</option>
-														<option value="Sister">Sister</option>
-														<option value="Cousin">Cousin</option>
-														<option value="Niece">Niece</option>
-														<option value="Nephew">Nephew</option>
-														<option value="Friends">Friends</option>
-														<option value="Other">Other</option>
+														<option value="select">Select</option>
+														<option value="Family Friend">Family Friend</option>
+														<option value="Pastor">Pastor</option>
+														<option value="Spiritual Head">Spiritual Head</option>
+														<option value="Relative">Relative</option>
+														<option value="Friend">Friend</option>
+														<option value="Other">other [please specify]</option>
 													</select>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Occupation</label>
                         <div className="col-md-3">
-													<input type="text" 
+													<select
 														className="form-control"
 														name="occupation"
 														onChange={this.handleChange}
-													/>
+														value={this.state.postData.occupation}
+													>
+														<option value="">select</option>
+														<option value="Civil Servant">Civil Servant</option>
+														<option value="Clergy">Clergy</option>
+														<option value="Business person">Business person</option>
+														<option value="Other">other [please specify]</option>
+													</select>
 												</div>
 											</div>
                       <div className="form-group row">
@@ -143,6 +207,7 @@ class Guarantor extends Component {
 														className="form-control"
 														name="residentialAddress"
 														onChange={this.handleChange}
+														value={this.state.postData.residentialAddress}
 													/>
 												</div>
                       </div>
@@ -153,6 +218,7 @@ class Guarantor extends Component {
 														className="form-control"
 														name="landedPropertyAddress"
 														onChange={this.handleChange}
+														value={this.state.postData.landedPropertyAddress}
 													/>
 												</div>
                       </div>
@@ -163,6 +229,7 @@ class Guarantor extends Component {
 														className="form-control"
 														name="businessAddress"
 														onChange={this.handleChange}
+														value={this.state.postData.businessAddress}
 													/>
 												</div>
                       </div>
@@ -172,9 +239,14 @@ class Guarantor extends Component {
 													<select
 														className="form-control w-100"
 														name="maritalStatus" 
-														onChange={this.handleChange}>
+														onChange={this.handleChange}
+														value={this.state.postData.maritalStatus}
+													>
+														<option value="">Select</option>	
 														<option value="Single">Single</option>
 														<option value="Married">Married</option>
+														<option value="Divorced">Divorced</option>
+                            <option value="Widowed">Widowed</option>
 													</select>
 												</div>
                       </div>
@@ -185,6 +257,7 @@ class Guarantor extends Component {
 														className="form-control"
 														name="employeeKnownDate"
 														onChange={this.handleChange}
+														value={this.state.postData.employeeKnownDate}
 													/>
 												</div>
 												<div className="col-md-3 p-2" style={!this.state.postData.employeeKnownDate ? { display: 'none'} : {}}>
@@ -199,6 +272,7 @@ class Guarantor extends Component {
 															name="criminalHistory" 
 															className="minimal"
 															onChange={this.handleChange}
+															value={`${true}`}
 														/>
                             Yes
 													</label>
@@ -207,18 +281,20 @@ class Guarantor extends Component {
 															name="criminalHistory" 
 															className="minimal"
 															onChange={this.handleChange}
+															value={`${false}`}
 														/>
 														No
 													</label>
 												</div>
                       </div>
-                      <div className="form-group row">
+                      <div className="form-group row" style={!this.state.postData.criminalHistory ? {display: 'none'} : {display: 'flex'}}>
 												<label for="inputName" className="col-md-2 col-form-label">Give details</label>
 												<div className="col-md-8">
 													<input type="text" 
 														className="form-control"
 														name="details"
 														onChange={this.handleChange}
+														value={this.state.postData.details}
 													/>
 												</div>
                       </div>
@@ -232,7 +308,7 @@ class Guarantor extends Component {
 														// onClick={() => this.props.history.push('/create_staff/five')}
 														onClick={this.handleSubmit}
                           >NEXT</button>
-													<button type="submit" class="btn btn-primary">SAVE</button>
+													<button type="submit" class="btn btn-primary" onClick={this.handleSave}>SAVE</button>
 												</div>
 											</div>
 										</form>

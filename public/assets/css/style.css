@@ -1719,7 +1719,8 @@ a.dropdown-item.has-icon, a.dropdown-item.has-icon i{
 	line-height: 23px;
 	padding: 5px 23px;
 	letter-spacing: .4px;
-	box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+	/* box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08); */
+	cursor: pointer;
 }
 .btn:active, .btn:focus, .btn:hover {
 	border-color: transparent !important;
@@ -1915,9 +1916,10 @@ a.dropdown-item.has-icon, a.dropdown-item.has-icon i{
 	background-color: #ede911 !important;
 }
 .btn-primary.disabled, .btn-primary:disabled {
-	color: #fff;
-	background-color: #4c51b1;
-	border-color: #4c51b1;
+	color: #003766;
+	background-color: #fff;
+	/* border-color: #4c51b1; */
+	border: 1px solid #ececff
 }
 .btn-outline-primary {
 	color: #003766;
@@ -2132,7 +2134,7 @@ a.dropdown-item.has-icon, a.dropdown-item.has-icon i{
 	border-right: 0;
 }
 .form-control {
-	border: 1px solid #ececff;
+	/* border: 1px solid #ececff; */
 	color: #777ab2;
 }
 .form-control:focus {
@@ -2140,12 +2142,14 @@ a.dropdown-item.has-icon, a.dropdown-item.has-icon i{
 }
 .input-group-text, select.form-control:not([size]):not([multiple]), .form-control:not(.form-control-sm):not(.form-control-lg) {
 	font-size: 14px;
-	padding: 10px 15px;
+	/* padding: 10px 15px; */
 	line-height: 13px;
 }
 .custom-select, .form-control[type="color"], select.form-control:not([size]):not([multiple]) {
-	height: calc(2.25rem + 10px);
+	/* height: calc(2.25rem + 10px); */
+	height: calc(2.25rem + -4px);
 }
+
 .dataTables_wrapper .dataTables_length select {
 	height: calc(1.8125rem + 2px) !important;
 	padding: .25rem .9rem !important;

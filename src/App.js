@@ -1,5 +1,6 @@
 import React from 'react';
 import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
+import { NotificationContainer } from 'react-notifications';
 import PersonalInfo from './components/Onboarding/PersonalInfo';
 import Qualification from './components/Onboarding/Qualification';
 import Employment from './components/Onboarding/Employment';
@@ -8,9 +9,14 @@ import Upload from './components/Onboarding/Upload';
 import PendingApplication from './components/Onboarding/Pending';
 import StaffList from './components/Onboarding/StaffList';
 
+import 'react-notifications/lib/notifications.css';
+
+// import "bootstrap/dist/css/bootstrap.css";
+
 function App() {
   return (
       <Router>
+          <NotificationContainer />
         {/* <ToastContainer /> */}
         <Switch>
           {/* <Route exact path="/" component={Homepage}/> */}

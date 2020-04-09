@@ -42,7 +42,7 @@ export const states = [
 ];
 
 export const countries = [
-  <option value="choose country">Select Your Country</option>,
+  <option value=''>Select Your Country</option>,
   <option value="Afghanistan">Afghanistan</option>,
   <option value="Åland Islands">Åland Islands</option>,
   <option value="Albania">Albania</option>,
@@ -287,4 +287,40 @@ export const countries = [
   <option value="Yemen">Yemen</option>,
   <option value="Zambia">Zambia</option>,
   <option value="Zimbabwe">Zimbabwe</option>
+]
+
+export const branchList = [
+  <option value="">Select</option>,
+  <option value="Awi">Awi</option>,
+  <option value="8miles">8Miles</option>,
+  <option value="Target">Target</option>,
+  <option value="Ikang">Ikang</option>,
+  <option value="Calabar Road">Calabar Road</option>,
+  <option value="Ugep">Ugep</option>,
+  <option value="Abakaliki_1">Abakaliki_1</option>,
+  <option value="Abakaliki_2">Abakaliki_2</option>,
+  <option value="Ikom">Ikom</option>,
+  <option value="Obubra">Obubra</option>,
+  <option value="Obudu">Obudu</option>,
+  <option value="Uwaniba">Uwaniba</option>,
+  <option value="Aka Road">Aka Road</option>,
+  <option value="Eket">Eket</option>,
+  <option value="Umuahia_1">Umuahia_1</option>,
+  <option value="Umuahia_1">Umuahia _2</option>,
+  <option value="Orieagu">Orieagu</option>,
+  <option value="Upper Sakponba">Upper Sakponba</option>,
+  <option value="Asaba">Asaba</option>,
+  <option value="Oliha">Oliha</option>,
+  <option value="Ugbowo">Ugbowo</option>,
+  <option value="Ikoba Hill">Ikpoba Hill</option>,
+  <option value="2nd East">2nd East</option>,
+  <option value="Ibiwe">Ibiwe</option>,
+  <option value="Orlu">Orlu</option>,
+  <option value="Ondo_1">Ondo_1</option>,
+  <option value="Ondo_2">Ondo_2</option>,
+  <option value="Ore">Ore</option>,
+  <option value="Akure_1">Akure_1</option>,
+  <option value="Akure_2">Akure_2</option>,
+  <option value="Owo">Owo</option>,
+  <option value="Ekwulobia">Ekwulobia</option>,
 ]
