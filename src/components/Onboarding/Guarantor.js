@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Moment from 'react-moment';
 import Layout from '../layout/index';
 import { httpPost } from '../../actions/data.action';
 
@@ -179,12 +180,15 @@ class Guarantor extends Component {
                       </div>
                       <div className="form-group row">
 												<label for="inputName" className="col-md-4 col-form-label">How long have you known the employee</label>
-												<div className="col-md-6">
+												<div className="col-md-3">
 													<input type="date" 
 														className="form-control"
 														name="employeeKnownDate"
 														onChange={this.handleChange}
 													/>
+												</div>
+												<div className="col-md-3 p-2" style={!this.state.postData.employeeKnownDate ? { display: 'none'} : {}}>
+													<Moment fromNow ago>{this.state.postData.employeeKnownDate}</Moment>
 												</div>
                       </div>
                       <div className="form-group row">

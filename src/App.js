@@ -16,7 +16,7 @@ function App() {
           {/* <Route exact path="/" component={Homepage}/> */}
           {/* <Route exact path="/login" component={Login} /> */}
           {/* <Route path="/create_staff/one" component={PersonalInfo} /> */}
-          <Route path="/" component={PersonalInfo} />
+          <Route exact path="/" component={PersonalInfo} />
           <Route path="/create_staff/two/:id" component={Qualification} />
           <Route path="/create_staff/three/:id" component={Employment} />
           <Route path="/create_staff/four/:id" component={Guarantor} />

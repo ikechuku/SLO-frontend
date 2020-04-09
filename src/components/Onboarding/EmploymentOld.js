@@ -56,41 +56,29 @@ class Employment extends Component {
 											<div className="form-group row">
 												<label for="inputName" className="col-md-2 col-form-label">Rank at employment</label>
 												<div className="col-md-3">
-													<select className="form-control w-100" 
+													<input type="text" 
+														className="form-control"
 														name="rankAtEmployment"
 														onChange={this.handleChange}
-													>
-														<option value="">select</option>
-														<option value="select">select</option>
-														<option value="select">select</option>
-														<option value="select">select</option>
-													</select>
+													/>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Unit at employment</label>
                         <div className="col-md-3">
-													<select className="form-control w-100" 
+													<input type="text" 
+														className="form-control"
 														name="unitOfEmployment"
 														onChange={this.handleChange}
-													>
-														<option value="">select</option>
-														<option value="select">select</option>
-														<option value="select">select</option>
-														<option value="select">select</option>
-													</select>
+													/>
 												</div>
 											</div>
                       <div className="form-group row">
 												<label for="inputName" className="col-md-2 col-form-label">Date of resumption</label>
 												<div className="col-md-3">
-													<select className="form-control w-100" 
+													<input type="date" 
+														className="form-control"
 														name="dateOfResumption"
 														onChange={this.handleChange}
-													>
-														<option value="">select</option>
-														<option value="select">select</option>
-														<option value="select">select</option>
-														<option value="select">select</option>
-													</select>
+													/>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Salary amount</label>
                         <div className="col-md-3">
@@ -125,27 +113,19 @@ class Employment extends Component {
                       <div className="form-group row">
 												<label for="inputName" className="col-md-2 col-form-label">Job Title</label>
 												<div className="col-md-3">
-													<select className="form-control w-100" 
+													<input type="text" 
+														className="form-control"
 														name="jobTitle"
 														onChange={this.handleChange}
-													>
-														<option value="">select</option>
-														<option value="select">select</option>
-														<option value="select">select</option>
-														<option value="select">select</option>
-													</select>
+													/>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Skills</label>
                         <div className="col-md-3">
-													<select className="form-control w-100" 
+													<input type="text" 
+														className="form-control"
 														name="skills"
 														onChange={this.handleChange}
-													>
-														<option value="">select</option>
-														<option value="select">select</option>
-														<option value="select">select</option>
-														<option value="select">select</option>
-													</select>
+													/>
 												</div>
 											</div>
 

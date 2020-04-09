@@ -2,20 +2,24 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../layout/index';
 import { httpPost } from '../../actions/data.action';
+import { states, countries } from './Info';
 
 class PersonalInfo extends Component {
   constructor(props){
     super(props)
     this.state = {
       data: {},
-      userId: null
+      userId: null,
+      country: null,
     }
   }
 
   handleChange = (e) => {
     const { data } = this.state;
     data[e.target.name] = e.target.value;
+    console.log(e.target.value)
     this.setState({ data });
+    if(e.target.name === 'nationality') this.setState({ country: e.target.value })
   }
 
   handleSubmit = async (e) => {
@@ -34,6 +38,7 @@ class PersonalInfo extends Component {
   }
 
   render() {
+    console.log(!this.state.country ? 'undefined' : this.state.country)
     return (
       <Layout>
         <div className="app-content">
@@ -139,39 +144,40 @@ class PersonalInfo extends Component {
 												</div>
 											</div>
                       <div className="form-group row">
+                        <label for="inputName" className="col-md-2 col-form-label">Nationality</label>
+                        <div className="col-md-3">
+                          {/* <input type="text" 
+                            className="form-control"
+                            name="nationality"
+                            onChange={this.handleChange}
+                          /> */}
+                          <select className="form-control w-100" name="nationality" onChange={this.handleChange} required>
+                            {
+                              countries.length ? 
+                                countries.map(data => (
+                                  data
+                                )) :
+                                <option value="select your state">Select Your Country</option>
+                            }
+													</select>
+												</div>
                         <label for="inputName" className="col-md-2 col-form-label">State of Origin</label>
 												<div className="col-md-3">
                           <input type="text" 
                             className="form-control"
                             name="stateOfOrigin"
                             onChange={this.handleChange}
+                            style={ (this.state.country === 'Nigeria') || !this.state.country ? { display: 'none' } : { display: 'block' }}
                           />
-													{/* <select className="form-control select2 w-100" >
-														<option selected="selected">Alabama</option>
-														<option>Alaska</option>
-														<option>California</option>
-														<option>Delaware</option>
-														<option>Tennessee</option>
-														<option>Texas</option>
-														<option>Washington</option>
-													</select> */}
-												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Nationality</label>
-                        <div className="col-md-3">
-                          <input type="text" 
-                            className="form-control"
-                            name="nationality"
-                            onChange={this.handleChange}
-                          />
-                        {/* <select className="form-control select2 w-100" >
-														<option selected="selected">Alabama</option>
-														<option>Alaska</option>
-														<option>California</option>
-														<option>Delaware</option>
-														<option>Tennessee</option>
-														<option>Texas</option>
-														<option>Washington</option>
-													</select> */}
+													<select className="form-control w-100" style={(this.state.country !== null) && (this.state.country !== 'Nigeria') ? { display: 'none'} : {} }>
+														{
+                              states.length ? 
+                                states.map(data => (
+                                  data
+                                )) :
+                                <option value="select your state">Select your state</option>
+                            }
+													</select>
 												</div>
                       </div>
                       <div className="form-group row">
@@ -222,15 +228,15 @@ class PersonalInfo extends Component {
 												</div>
                       </div>
 
-                      <div class="form-group mb-0 mt-2 row justify-content-end">
-												<div class="col-md-9">
+                      <div className="form-group mb-0 mt-2 row justify-content-end">
+												<div className="col-md-9">
                           <button 
                             type="submit"
-                            class="btn btn-info mr-5"
+                            className="btn btn-info mr-5"
                             // onClick={() => this.props.history.push('/create_staff/two')}
                             onClick={this.handleSubmit}
                           >NEXT</button>
-													<button type="submit" class="btn btn-primary">SAVE</button>
+													<button type="submit" className="btn btn-primary">SAVE</button>
 												</div>
 											</div>
 										</form>

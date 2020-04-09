@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../layout/index';
-import { httpPostFormData, httpDelete } from '../../actions/data.action';
+import { httpPostFormData } from '../../actions/data.action';
 import validateImage from '../../helpers/validateImage';
 
 class Upload extends Component {
@@ -9,8 +9,12 @@ class Upload extends Component {
     super(props)
     this.state = {
       fileName: '',
-      postBody: {},
-      documents: []
+      postBody: {
+        passportPhoto: [],
+        guarantorSignedDocument: [],
+        identityForm: [],
+        certificates: []
+      }
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -26,60 +30,49 @@ class Upload extends Component {
     const validFormat = validateImage(imageData);
     if (validFormat.valid) {
       //NotificationManager.success(validFormat.message,'Yippe!',3000);
-      // postBody[fileName] = [...postBody[fileName], e.target.files[0]];
-      postBody[fileName] = e.target.files[0];
+      postBody[fileName] = [...postBody[fileName], e.target.files[0]];
       this.setState({ postBody });
-      await this.saveDoc()
+
     } else {
       //NotificationManager.error(validFormat.message,'Yippe!',3000);
       e.target.value = '';
     }
   };
 
-  saveDoc = async () => {
-    try{
-      const { id } = this.props.match.params;
-      const { fileName, postBody } = this.state;
-
-      let formData = new FormData();
-      if(fileName === 'passportPhoto') formData.append('passportPhoto', postBody.passportPhoto);
-      if(fileName === 'guarantorSignedDocument') formData.append('guarantorSignedDocument', postBody.guarantorSignedDocument);
-      if(fileName === 'identityForm') formData.append('identityForm', postBody.identityForm);
-      if(fileName === 'certificates') formData.append('certificates', postBody.certificates);
-
-      const res = await httpPostFormData(`auth/onboarding_five/${id}`, formData);
-      if(res.code === 201){
-        this.setState({ 
-          documents: [...this.state.documents, res.data.upload ]
-      });
-      }
-    }catch(error){
-      console.log(error)
-    }
-  }
-
-  deleteDoc = async (id) => {
-    try{
-
-      console.log(id)
-      const res = await httpDelete(`auth/document/${id}`);
-
-      if(res.code === 200){
-        this.setState({ documents: [...this.state.documents.filter(item => item.id !== id )]});
-      }
-    }catch(error){
-      console.log(error)
-    }
-
-  }
-
   handleSubmit = async (e) => {
     e.preventDefault();
     console.log(this.state.postBody);
     try{
       const { id } = this.props.match.params;
+      const { postBody } = this.state;
 
-      const res = await httpPostFormData(`auth/complete_onboarding_five/${id}`);
+      let formData = new FormData();
+
+      if(postBody.passportPhoto.length){
+        for(var i = 0; i < postBody.passportPhoto.length; i++) {
+          formData.append('passportPhoto', postBody.passportPhoto[i]);
+        }
+      }
+
+      if(postBody.guarantorSignedDocument.length){
+        for(var i = 0; i < postBody.guarantorSignedDocument.length; i++) {
+          formData.append('guarantorSignedDocument', postBody.guarantorSignedDocument[i]);
+        }
+      }
+
+      if(postBody.identityForm.length){
+        for(var i = 0; i < postBody.identityForm.length; i++) {
+          formData.append('identityForm', postBody.identityForm[i]);
+        }
+      }
+
+      if(postBody.certificates.length){
+        for(var i = 0; i < postBody.certificates.length;i++) {
+          formData.append('certificates', postBody.certificates[i]);
+        }
+      }
+
+      const res = await httpPostFormData(`auth/onboarding_five/${id}`, formData);
       if(res.code === 201){
         // setState({ userId: res.data.id });
         return this.props.history.push('/staff_list');
@@ -150,20 +143,20 @@ class Upload extends Component {
                           <Link className="ml-3 text-danger"></Link>
                         </div>
 											</div>
-											
-                      {
-                        this.state.documents.length ?
-                          this.state.documents.map(data => (
-                            <div className="form-group row justify-content-center">
-                              <div className="col-md-2">{data.fileName}</div>
-                              <div className="col-md-5 ml-0 pl-0">
-                                <a href={`${data.path}`} target="_blank">View document</a>
-                                <a className="ml-3 text-danger" onClick={() => this.deleteDoc(data.id)} style={{ cursor: 'pointer' }}>Delete</a>
-                              </div>
-                            </div>
-                          )) : ' '
-                      }
-                      
+											<div className="form-group row justify-content-center">
+                        <div className="col-md-2">Passport photo</div>
+                        <div className="col-md-5 ml-0 pl-0">
+                          <Link>View document</Link>
+                          <Link className="ml-3 text-danger">Delete</Link>
+                        </div>
+											</div>
+                      <div className="form-group row justify-content-center">
+                        <div className="col-md-2">Identity form</div>
+                        <div className="col-md-5 ml-0 pl-0">
+                          <Link>View document</Link>
+                          <Link className="ml-3 text-danger">Delete</Link>
+                        </div>
+											</div>
                     </div>
 
 
