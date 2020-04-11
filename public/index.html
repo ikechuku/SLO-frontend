@@ -12,7 +12,9 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.jpeg" />
 
     		<!--Bootstrap.min css-->
-		<link rel="stylesheet" href="%PUBLIC_URL%/assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="%PUBLIC_URL%/assets/plugins/bootstrap/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css">
 
 		<!--Icons css-->
 		<link rel="stylesheet" href="%PUBLIC_URL%/assets/css/icons.css">
@@ -55,8 +57,8 @@
     <script src="/assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js"></script>
 
     <!--DataTables js-->
-    <script src="assets/plugins/Datatable/js/jquery.dataTables.js"></script>
-		<script src="assets/plugins/Datatable/js/dataTables.bootstrap4.js"></script>
+    <script src="/assets/plugins/Datatable/js/jquery.dataTables.js"></script>
+		<script src="/assets/plugins/Datatable/js/dataTables.bootstrap4.js"></script>
 
 		<!--Scripts js-->
     <script src="/assets/js/scripts.js"></script>
@@ -68,9 +70,17 @@
 		<script src="/assets/js/forms.js"></script>
     
     <script>
-			$(function(e) {
-				$('#example').DataTable();
-			} );
+			// $(function(e) {
+			// 	$('#example').DataTable();
+      // } );
+
+      $(document).ready(function(e) {
+			$('#example').DataTable();
+		} );
+      
+      $(document).ready(function() {
+        $('#tableSample').DataTable();
+      } );
     </script>
     
   </body>

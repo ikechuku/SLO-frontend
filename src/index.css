@@ -11,3 +11,27 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.impt {
+  color: red
+}
+
+.dropdown-div {
+  background: #fff;
+  border: 1px solid rgb(131, 138, 182);
+}
+
+.dropdown-btn {
+  padding: 10px;
+  margin: 0;
+}
+
+.dropdown-btn:hover {
+  background: #838ab6;
+  color: white !important;
+}

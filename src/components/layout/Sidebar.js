@@ -29,10 +29,9 @@ export default function Sidebar() {
                 <li><Link to="/create_staff/three" class="slide-item">Employment Information</Link></li>
                 <li><Link to="/create_staff/four" class="slide-item">Guarantor Information</Link></li>
                 <li><Link to="/create_staff/five" class="slide-item">Upload</Link></li>
-                <li><Link to="/create_staff/six" class="slide-item">Pending Application</Link></li>
 							</ul>
 						</li>
-            <li><a class="slide-item" href="index2.html"><span>Staff Listing</span></a></li>
+            <li><Link class="slide-item" to="/staff_list"><span>Staff Listing</span></Link></li>
             <li><a class="slide-item" href="index3.html"><span>Staff History</span></a></li>
           </ul>
         </li>

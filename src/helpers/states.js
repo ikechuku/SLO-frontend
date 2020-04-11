@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Slga = [
+export const slga = [
   {
     "state": {
       "name":"Abia State","id":1,

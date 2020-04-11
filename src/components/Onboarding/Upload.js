@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Layout from '../layout/index';
 import { httpPostFormData, httpDelete } from '../../actions/data.action';
 import validateImage from '../../helpers/validateImage';
+import { hideLoader, showLoader } from '../../helpers/loader';
 
 class Upload extends Component {
   constructor(props){
@@ -42,10 +43,13 @@ class Upload extends Component {
       const { fileName, postBody } = this.state;
 
       let formData = new FormData();
-      if(fileName === 'passportPhoto') formData.append('passportPhoto', postBody.passportPhoto);
-      if(fileName === 'guarantorSignedDocument') formData.append('guarantorSignedDocument', postBody.guarantorSignedDocument);
-      if(fileName === 'identityForm') formData.append('identityForm', postBody.identityForm);
-      if(fileName === 'certificates') formData.append('certificates', postBody.certificates);
+      if(fileName === 'nationalId') formData.append('nationalId', postBody.nationalId);
+      if(fileName === 'votersCard') formData.append('votersCard', postBody.votersCard);
+      if(fileName === 'internationalPassport') formData.append('internationalPassport', postBody.internationalPassport);
+      if(fileName === 'driversLicense') formData.append('driversLicense', postBody.driversLicense);
+      if(fileName === 'ecowasPassport') formData.append('ecowasPassport', postBody.ecowasPassport);
+      if(fileName === 'registeredId') formData.append('registeredId', postBody.registeredId);
+      if(fileName === 'businessCertificate') formData.append('businessCertificate', postBody.businessCertificate);
 
       const res = await httpPostFormData(`auth/onboarding_five/${id}`, formData);
       if(res.code === 201){
@@ -90,6 +94,30 @@ class Upload extends Component {
     }
   }
 
+  handleSave = async (e) => {
+    e.preventDefault();
+    showLoader();
+    try{
+      const { id } = this.props.match.params;
+
+      const res = await httpPostFormData(`auth/complete_onboarding_five/${id}`);
+      if(res.code === 201){
+        hideLoader();
+      }
+      console.log(res)
+    } catch (error){
+      hideLoader();
+      console.log(error)
+    }
+  }
+
+  handleBackButton = () => {
+    return this.props.history.push({
+      pathname: `${this.props.location.backurl}`,
+      savedState: this.props.location.savedState
+    })
+  }
+
 
   render() {
     return (
@@ -106,7 +134,12 @@ class Upload extends Component {
 							<div className="col-12">
 								<div className="card">
 									<div className="card-header">
-										<h4>Upload</h4>
+                  <div className="row">
+                    <h4 className="col col-md-6">Upload</h4>
+                    <div className="col col-md-6 text-right">
+                      <h4 className="cursor-pointer" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</h4>
+                    </div>
+                    </div>
 									</div>
 									<div className="card-body">
 
@@ -120,10 +153,13 @@ class Upload extends Component {
                             onChange={this.handleChange}
                           >
                             <option value="">Select File</option>
-														<option value="passportPhoto">Passport photo</option>
-														<option value="guarantorSignedDocument">Guarantor's signed document</option>
-														<option value="identityForm">Identity form</option>
-                            <option value="certificates">Certificates</option>
+														<option value="nationalId">National ID</option>
+														<option value="votersCard">Voters Card</option>
+														<option value="driversLicense">Driver's Licence</option>
+                            <option value="internationalPassport">International Passport</option>
+                            <option value="ecowasPassport">ECOWAS Passport</option>
+                            <option value="registeredId">Registered/Valid Work ID</option>
+                            <option value="businessCertificate">Business Certificate</option>
 													</select>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Upload Document</label>
@@ -175,7 +211,7 @@ class Upload extends Component {
                             // onClick={() => this.props.history.push('/create_staff/two')}
                             onClick={this.handleSubmit}
                           >NEXT</button>
-													<button type="submit" class="btn btn-primary">SAVE</button>
+													<button type="submit" class="btn btn-primary" onClick={this.handleSave}>SAVE</button>
 												</div>
 											</div>
 

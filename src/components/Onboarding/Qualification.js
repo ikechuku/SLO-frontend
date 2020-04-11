@@ -3,47 +3,170 @@ import { Link, useParams } from 'react-router-dom';
 import Layout from '../layout/index'
 import { httpPost } from '../../actions/data.action';
 import './style.css';
+import InstitutionForm from './InstitutionForm';
+import EmploymentForm from './EmploymentForm';
+import MoreInfoForm from './MoreInfoForm';
+import { NotificationManager } from 'react-notifications';
+import { hideLoader, showLoader } from '../../helpers/loader';
 
 class Qualification extends Component {
   constructor(props){
     super(props);
     this.state = {
-      noInstitution: 0,
-      noPrevious: 0,
       institution: {},
+      qualification: {},
+      certification: {},
       moreInstitution: [],
       previousEmployment: {},
       morePrevious: [],
       objectReference: '',
       reasonForLeaving: '',
-      moreInfo: ''
+      moreInfo: '',
+      showDropDown: false,
     }
   }
 
-  handleChange = (e) => {
-    const { institution } = this.state;
-    institution[e.target.name] = e.target.value;
-    this.setState({ institution });
+  handleQualificationChange = (e) => {
+    const { qualification } = this.state;
+    //console.log(`${[e.target.name]}: ${e.target.value}`);
+    qualification[e.target.name] = e.target.value;
+    qualification['type'] = 'qualification';
+    this.setState({ qualification });
   }
 
-  handleMoreInfo = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+  handleCertificationChange = (e) => {
+    const { certification } = this.state;
+    //console.log(`${[e.target.name]}: ${e.target.value}`);
+    if(e.target.name === 'certification'){
+      certification[e.target.name] = e.target.value;
+      certification['type'] = 'certification';
+      this.setState({ certification, showDropDown: !this.state.showDropDown });
+    } else {
+      certification[e.target.name] = e.target.value;
+      this.setState({ certification, showDropDown: false });
+    }
+
+  }
+
+  handleDropDown = (value) => {
+    // console.log(value)
+    const { certification } = this.state;
+    certification['certification'] = value;
+    certification['type'] = 'certification';
+    this.setState({ certification, showDropDown: !this.state.showDropDown});
+  }
+
+  handleShowDropDown = () => {
+    this.setState({ showDropDown: !this.state.showDropDown})
+  }
+
+  addMore = (type) => {
+    if(type === 'qualification'){
+      if(this.state.qualification.name === undefined || this.state.qualification.qualification === undefined || this.state.qualification.course === undefined || this.state.qualification.startDate === undefined || this.state.qualification.endDate === undefined ){
+        return NotificationManager.warning('All fields must be filled');
+      }
+
+      this.setState({ 
+        moreInstitution: [...this.state.moreInstitution, this.state.qualification], 
+      });
+      this.setState({ 
+        qualification: {
+          name: '',
+          qualification: '',
+          course: '',
+          startDate: '',
+          endDate: ''
+        } 
+      });
+    } else {
+      if(this.state.certification.name === undefined || this.state.certification.certification === undefined || this.state.certification.startDate === undefined || this.state.certification.endDate === undefined ){
+        return NotificationManager.warning('All fields must be filled');
+      }
+
+      this.setState({ 
+        moreInstitution: [...this.state.moreInstitution, this.state.certification], 
+      });
+      this.setState({ 
+        certification: {
+          name: '',
+          certification: '',
+          startDate: '',
+          endDate: ''
+        } 
+      });
+    }
+    
+    // this.showQualificationCard()
+  }
+
+  removeMore = (value) => {
+    this.setState({
+      moreInstitution: this.state.moreInstitution.filter((interest,index) => index !== parseInt(value))
+    });
+    
   }
 
   handlePrevious = (e) => {
     const { previousEmployment } = this.state;
+    //console.log(`${[e.target.name]}: ${e.target.value}`);
     previousEmployment[e.target.name] = e.target.value;
     this.setState({ previousEmployment });
   }
 
+  addMorePrevious = () => {
+    if(this.state.previousEmployment.employerName === undefined || this.state.previousEmployment.address === undefined || this.state.previousEmployment.role === undefined || this.state.previousEmployment.startDate === undefined || this.state.previousEmployment.endDate === undefined ){
+      return NotificationManager.warning('All fields must be filled');
+    }
+
+    this.setState({ 
+      morePrevious: [...this.state.morePrevious, this.state.previousEmployment], 
+    });
+    this.setState({ previousEmployment: {
+      employerName: '',
+      address: '',
+      role: '',
+      startDate: '',
+      endDate: ''
+    } });
+  }
+
+  removeMorePrevious = (value) => {
+    this.setState({
+      morePrevious: this.state.morePrevious.filter((interest,index) => index !== parseInt(value))
+    });
+  }
+
+  handleMoreInfo = (e) => {
+    //console.log(`${[e.target.name]}: ${e.target.value}`);
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  handleBackButton = () => {
+    // console.log(this.props.location.savedState)
+    // return this.props.history.push(this.props.history.goBack())
+    // return this.props.history.push(this.props.location.backurl)
+    return this.props.history.push({
+      pathname: `${this.props.location.backurl}`,
+      savedState: this.props.location.savedState
+    })
+  }
+
+  componentDidMount(){
+    if(this.props.location.savedState){
+      this.setState({...this.props.location.savedState});
+    }
+	}
+
   handleSubmit = async (e) => {
     e.preventDefault();
+    showLoader();
     // (!this.state.moreInstitution.length) ? console.log(this.state.institution) : console.log([...this.state.moreInstitution, this.state.institution]);
     try{
       const { id } = this.props.match.params;
       const data = {
-        institution: (!this.state.moreInstitution.length) ? this.state.institution : [...this.state.moreInstitution, this.state.institution],
-        previousEmployment: (!this.state.morePrevious.length) ? this.state.previousEmployment : [...this.state.morePrevious, this.state.previousEmployment],
+        // institution: (!this.state.moreInstitution.length) ? this.state.institution : [...this.state.moreInstitution, this.state.institution],
+        institution: this.state.moreInstitution,
+        previousEmployment: (!this.state.morePrevious.length) ? this.state.previousEmployment : [...this.state.morePrevious],
         objectReference: this.state.objectReference,
         reasonForLeaving: this.state.reasonForLeaving,
         moreInfo: this.state.moreInfo
@@ -53,185 +176,57 @@ class Qualification extends Component {
 
       const res = await httpPost(`auth/onboarding_two/${id}`, data);
       if(res.code === 201){
+        hideLoader();
         // setState({ userId: res.data.id });
-        return this.props.history.push(`/create_staff/three/${res.data.id}`)
+        //return this.props.history.push(`/create_staff/three/${res.data.id}`)
+        this.setState({ 
+          institution: res.data.savedInstitution, 
+          previousEmployment: res.data.savedEmployment
+        });
+
+        return this.props.history.push({
+          pathname: `/create_staff/three/${res.data.id}`,
+          backurl: `/create_staff/two/${res.data.id}`,
+          savedState: this.state
+        });
       }
       console.log(res)
     } catch (error){
+      hideLoader();
       console.log(error)
     }
     
   }
 
-  addMore = () => {
-    this.setState({ 
-      noInstitution: this.state.noInstitution + 1,
-      moreInstitution: [...this.state.moreInstitution, this.state.institution], 
-    });
-    this.showQualificationCard()
-    this.setState({ institution: {} });
+  handleSave = async (e) => {
+    e.preventDefault();
+    showLoader();
+    // (!this.state.moreInstitution.length) ? console.log(this.state.institution) : console.log([...this.state.moreInstitution, this.state.institution]);
+    try{
+      const { id } = this.props.match.params;
+      const data = {
+        institution: this.state.moreInstitution,
+        previousEmployment: (!this.state.morePrevious.length) ? this.state.previousEmployment : [...this.state.morePrevious],
+        objectReference: this.state.objectReference,
+        reasonForLeaving: this.state.reasonForLeaving,
+        moreInfo: this.state.moreInfo
+      };
+
+      console.log(data);
+
+      const res = await httpPost(`auth/onboarding_two/${id}`, data);
+      if(res.code === 201){
+        hideLoader();
+      }
+      console.log(res)
+    } catch (error){
+      hideLoader()
+      console.log(error)
+    }
+    
   }
 
-  removeMore = () => {
-    this.setState({
-      noInstitution: this.state.noInstitution - 1,
-    });
-    this.showQualificationCard()
-  }
 
-  showQualificationCard = () => {
-    return Array.from(Array(this.state.noInstitution), (e, i) => {
-      return (
-        <div className="col col-md-6" key={i}>
-          <div className="form-group row">
-            <label for="inputName" className="col-md-5 col-form-label">Institution Name</label>
-            <div className="col-md-7">
-              <input type="text" 
-                className="form-control"
-                name="name"
-                onChange={this.handleChange} 
-              />
-            </div>
-          </div>
-          <div className="form-group row">
-            <label for="inputName" className="col-md-5 col-form-label">Qualification/Certification</label>
-            <div className="col-md-7">
-              <input type="text" 
-                className="form-control"
-                name="qualification"
-                onChange={this.handleChange}  
-              />
-            </div>
-          </div>
-          <div className="form-group row">
-            <label for="inputName" className="col-md-5 col-form-label">Course Studied</label>
-            <div className="col-md-7">
-              <input type="text" 
-                className="form-control"
-                name="course"
-                onChange={this.handleChange} 
-              />
-            </div>
-          </div>
-          <div className="form-group row">
-            <label for="inputName" className="col-md-5 col-form-label">Start Date</label>
-            <div className="col-md-7">
-              <input type="date" 
-                className="form-control"
-                name="startDate"
-                onChange={this.handleChange} 
-              />
-            </div>
-          </div>
-          <div className="form-group row">
-            <label for="inputName" className="col-md-5 col-form-label">End Date</label>
-            <div className="col-md-7">
-              <input type="date" 
-                className="form-control"
-                name="endDate"
-                onChange={this.handleChange} 
-              />
-            </div>
-          </div>
-          <div className="form-group row">
-            <label for="inputName" className="col-md-5 col-form-label"></label>
-            <div className="col-md-4">
-              <a className="add-more" onClick={this.addMore}>+Add More</a>
-            </div>
-            <div className="col-md-3 text-right">
-              <a className="add-more text-danger" onClick={this.removeMore}>close</a>
-            </div>
-          </div>
-
-        </div>
-      )
-    })
-  }
-
-  addMorePrevious = () => {
-    this.setState({ 
-      noPrevious: this.state.noPrevious + 1,
-      morePrevious: [...this.state.morePrevious, this.state.previousEmployment], 
-    });
-    this.showPreviousCard();
-    this.setState({ previousEmployment: {} });
-  }
-
-  removeMorePrevious = () => {
-    this.setState({
-      noPrevious: this.state.noPrevious - 1,
-    });
-    this.showPreviousCard()
-  }
-
-  showPreviousCard = () => {
-    return Array.from(Array(this.state.noPrevious), (e, i) => {
-      return (
-        <div className="col col-md-6" key={i}>
-          <div className="form-group row">
-            <label for="inputName" className="col-md-5 col-form-label">Employer Name</label>
-            <div className="col-md-7">
-              <input type="text" 
-                className="form-control"
-                name="employerName"
-                onChange={this.handlePrevious}
-              />
-            </div>
-          </div>
-          <div className="form-group row">
-            <label for="inputName" className="col-md-5 col-form-label">Employer Address</label>
-            <div className="col-md-7">
-              <input type="text" 
-                className="form-control"
-                name="address"
-                onChange={this.handlePrevious} 
-              />
-            </div>
-          </div>
-          <div className="form-group row">
-            <label for="inputName" className="col-md-5 col-form-label">Role</label>
-            <div className="col-md-7">
-              <input type="text" 
-                className="form-control"
-                name="role"
-                onChange={this.handlePrevious}
-              />
-            </div>
-          </div>
-          <div className="form-group row">
-            <label for="inputName" className="col-md-5 col-form-label">Start Date</label>
-            <div className="col-md-7">
-              <input type="date" 
-                className="form-control"
-                name="startDate"
-                onChange={this.handlePrevious}
-              />
-            </div>
-          </div>
-          <div className="form-group row">
-            <label for="inputName" className="col-md-5 col-form-label">End Date</label>
-            <div className="col-md-7">
-              <input type="date"
-                className="form-control"
-                name="endDate"
-                onChange={this.handlePrevious}
-              />
-            </div>
-          </div>
-          <div className="form-group row">
-            <label for="inputName" className="col-md-5 col-form-label"></label>
-            <div className="col-md-4">
-              <a className="add-more" onClick={this.addMorePrevious}>+Add More</a>
-            </div>
-            <div className="col-md-3 text-right">
-              <a className="add-more text-danger" onClick={this.removeMorePrevious}>close</a>
-            </div>
-          </div>
-
-        </div>
-      )
-    })
-  }
 
   render() {
     return (
@@ -248,199 +243,104 @@ class Qualification extends Component {
 							<div className="col-12">
 								<div className="card">
 									<div className="card-header">
-										<h4>Qualification and Experience</h4>
+                    <div className="row">
+                    <h4 className="col col-md-6">Qualification and Experience</h4>
+                    <div className="col col-md-6 text-right">
+                      <h4 className="cursor-pointer" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</h4>
+                    </div>
+                    </div>
 									</div>
 									<div className="card-body">
 
                     <form className="form-horizontal" >
                       <h6 className="mb-4">Institution attended with date</h6>
-                      <div className="row">
-                      <div className="col col-md-6">
-                        <div className="form-group row">
-                          <label for="inputName" className="col-md-5 col-form-label">Institution Name</label>
-                          <div className="col-md-7">
-                            <input type="text" 
-                              className="form-control"
-                              name="name"
-                              onChange={this.handleChange} 
-                            />
+                        <div className="row">
+                        <InstitutionForm 
+                          handleQualification={this.handleQualificationChange}
+                          handleCertification={this.handleCertificationChange}
+                          handleDropDown={this.handleDropDown}
+                          addMore={this.addMore}
+                          qualification={this.state.qualification}
+                          certification={this.state.certification}
+                          handleShowDropDown={this.handleShowDropDown}
+                          showDropDown={this.state.showDropDown}
+                        />
+                        <div class="table-responsive" style={!this.state.moreInstitution.length ? { display: "none"} : {}}>
+                          <table id="example1" class="col col-md-8 offset-md-2 table table-striped table-bordered border-t0 text-nowrap w-100" >
+                            <thead>
+                              <tr>
+                                {/* <th className="wd-15p">S/N</th> */}
+                                <th class="wd-15p">Name</th>
+                                <th class="wd-15p">Qualification/Certification</th>
+                                <th class="wd-25p"></th>
+                              </tr>
+                            </thead>
+                            <tbody>                                {
+                                this.state.moreInstitution.length ? this.state.moreInstitution.map((data, index) => (
+                                  <tr key={index}>
+                                    {/* <td>{index + 1}</td> */}
+                                    <td>{data.name}</td>
+                                    <td>{data.qualification || data.certification}</td>
+                                    <td>
+                                      <span className="add-more" onClick={() => this.removeMore(index)}>X</span>
+                                    </td>
+                                  </tr>
+                                )) : ''
+                                // : !this.state.moreInstitution.length && this.state.institution.name !== undefined ?
+                                //   <tr>
+                                //     <td>{this.state.institution.name}</td>
+                                //     <td>{this.state.institution.qualification || this.state.institution.certification}</td>
+                                //     <td>
+                                //       <span className="add-more">X</span>
+                                //     </td>
+                                //   </tr> : ''
+                              }
+                              </tbody>
+                            </table>
                           </div>
                         </div>
-                        <div className="form-group row">
-                          <label for="inputName" className="col-md-5 col-form-label">Qualification/Certification</label>
-                          <div className="col-md-7">
-                            <input type="text" 
-                              className="form-control"
-                              name="qualification"
-                              onChange={this.handleChange}  
-                            />
-                          </div>
-                        </div>
-                        <div className="form-group row">
-                          <label for="inputName" className="col-md-5 col-form-label">Course Studied</label>
-                          <div className="col-md-7">
-                            <input type="text" 
-                              className="form-control"
-                              name="course"
-                              onChange={this.handleChange} 
-                            />
-                          </div>
-                        </div>
-                        <div className="form-group row">
-                          <label for="inputName" className="col-md-5 col-form-label">Start Date</label>
-                          <div className="col-md-7">
-                            <input type="date" 
-                              className="form-control"
-                              name="startDate"
-                              onChange={this.handleChange} 
-                            />
-                          </div>
-                        </div>
-                        <div className="form-group row">
-                          <label for="inputName" className="col-md-5 col-form-label">End Date</label>
-                          <div className="col-md-7">
-                            <input type="date" 
-                              className="form-control"
-                              name="endDate"
-                              onChange={this.handleChange} 
-                            />
-                          </div>
-                        </div>
-                        <div className="form-group row">
-                          <label for="inputName" className="col-md-5 col-form-label"></label>
-                          <div className="col-md-7">
-                            <a className="add-more" onClick={this.addMore}>+Add More</a>
-                          </div>
-                        </div>
-
-                      </div>
-                        
-                        {
-                          this.showQualificationCard()
-                        }
-
-                      </div>
 
                       <h6 className="mb-4">Place of previous employment with date</h6>
                       <div className="row">
-                      <div className="col col-md-6">
-                        <div className="form-group row">
-                          <label for="inputName" className="col-md-5 col-form-label">Employer Name</label>
-                          <div className="col-md-7">
-                            <input type="text" 
-                              className="form-control"
-                              name="employerName"
-                              onChange={this.handlePrevious}
-                            />
-                          </div>
+                        <EmploymentForm 
+                          handlePrevious={this.handlePrevious}
+                          addMorePrevious={this.addMorePrevious}
+                          previousEmployment={this.state.previousEmployment} 
+                        />
+                        <div className="col-md-6" style={!this.state.morePrevious.length ? { display: "none"} : {}}>
+                        <table id="example1" class="table table-striped table-bordered border-t0 text-nowrap w-100" >
+                            <thead>
+                              <tr>
+                                {/* <th className="wd-15p">S/N</th> */}
+                                <th class="wd-15p">Employer name</th>
+                                <th class="wd-15p">Role</th>
+                                <th class="wd-25p"></th>
+                              </tr>
+                            </thead>
+                            <tbody>                                {
+                                this.state.morePrevious.length ? this.state.morePrevious.map((data, index) => (
+                                  <tr key={index}>
+                                    {/* <td>{index + 1}</td> */}
+                                    <td>{data.employerName}</td>
+                                    <td>{data.role}</td>
+                                    <td>
+                                      <span className="add-more" onClick={() => this.removeMorePrevious(index)}>X</span>
+                                    </td>
+                                  </tr>
+                                )) : ''
+                              }
+                              </tbody>
+                            </table>
                         </div>
-                        <div className="form-group row">
-                          <label for="inputName" className="col-md-5 col-form-label">Employer Address</label>
-                          <div className="col-md-7">
-                            <input type="text" 
-                              className="form-control"
-                              name="address"
-                              onChange={this.handlePrevious} 
-                            />
-                          </div>
-                        </div>
-                        <div className="form-group row">
-                          <label for="inputName" className="col-md-5 col-form-label">Role</label>
-                          <div className="col-md-7">
-                            <input type="text" 
-                              className="form-control"
-                              name="role"
-                              onChange={this.handlePrevious}
-                            />
-                          </div>
-                        </div>
-                        <div className="form-group row">
-                          <label for="inputName" className="col-md-5 col-form-label">Start Date</label>
-                          <div className="col-md-7">
-                            <input type="date" 
-                              className="form-control"
-                              name="startDate"
-                              onChange={this.handlePrevious}
-                            />
-                          </div>
-                        </div>
-                        <div className="form-group row">
-                          <label for="inputName" className="col-md-5 col-form-label">End Date</label>
-                          <div className="col-md-7">
-                            <input type="date"
-                              className="form-control"
-                              name="endDate"
-                              onChange={this.handlePrevious}
-                            />
-                          </div>
-                        </div>
-                        <div className="form-group row">
-                          <label for="inputName" className="col-md-5 col-form-label"></label>
-                          <div className="col-md-7">
-                            <a className="add-more" onClick={this.addMorePrevious}>+Add More</a>
-                          </div>
-                        </div>
-
-                      </div>
-                        
-                        {
-                          this.showPreviousCard()
-                        }
-
                       </div>
 
                       <div className="row">
-                      <div className="col col-md-10">
-                      <div className="form-group row">
-                        <label for="inputName" className="col-md-7 pr-0 col-form-label">Do you object to us seeking any reference from any of your past employer</label>
-												<div className="col-md-4 pt-2">
-                          <label>
-                            <input type="radio" 
-                              name="objectReference"
-                              className="minimal"
-                              onChange={this.handleMoreInfo}
-                              value="Yes" 
-                            />
-                            Yes
-													</label>
-													<label style={{ paddingLeft: '25px'}}>
-                            <input type="radio" 
-                              name="objectReference"
-                              className="minimal"
-                              onChange={this.handleMoreInfo}
-                              value='No' 
-                            />
-														No
-													</label>
-												</div>
-                      </div>
-                        <div className="form-group row">
-                          <label for="inputName" className="col-md-5 col-form-label">Reason for leaving your last employment</label>
-                          <div className="col-md-7">
-    											<select className="form-control w-100" 
-														name="reasonForLeaving"
-														onChange={this.handleMoreInfo}
-													>
-														<option value="">select</option>
-														<option value="select">select</option>
-														<option value="select">select</option>
-														<option value="select">select</option>
-													</select>
-                          </div>
-                        </div>
-                        <div className="form-group row">
-                          <label for="inputName" className="col-md-5 col-form-label">More information on the above reason</label>
-                          <div className="col-md-7">
-                            <input type="text" 
-                              className="form-control"
-                              name="moreInfo"
-                              onChange={this.handleMoreInfo} 
-                            />
-                          </div>
-                        </div>
-
-                      </div>
-
+                        <MoreInfoForm 
+                          handleMoreInfo={this.handleMoreInfo}
+                          objectReference={this.state.objectReference}
+                          reasonForLeaving={this.state.reasonForLeaving}
+                          moreInfo={this.state.moreInfo} 
+                        />
                       </div>
 
                       <div class="form-group mb-0 mt-2 row justify-content-end">
@@ -451,7 +351,7 @@ class Qualification extends Component {
                             // onClick={() => this.props.history.push('/create_staff/two')}
                             onClick={this.handleSubmit}
                           >NEXT</button>
-													<button type="submit" class="btn btn-primary">SAVE</button>
+													<button type="submit" class="btn btn-primary" onClick={this.handleSave}>SAVE</button>
 												</div>
 											</div>
 										</form>
