@@ -1,9 +1,9 @@
 import React from 'react';
 
-export const slga = [
+const slga = [
   {
     "state": {
-      "name":"Abia State","id":1,
+      "name":"Abia","id":1,
       "locals": [
         {"name":"Aba South","id":1},
         {"name":"Arochukwu","id":2},
@@ -26,7 +26,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Adamawa State","id":2,
+      "name":"Adamawa","id":2,
       "locals": [
         {"name":"Fufure","id":1},
         {"name":"Ganye","id":2},
@@ -53,7 +53,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Akwa Ibom State","id":3,
+      "name":"Akwa Ibom","id":3,
       "locals": [
         {"name":"Eastern Obolo","id":1},
         {"name":"Eket","id":2},
@@ -90,7 +90,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Anambra State","id":4,
+      "name":"Anambra","id":4,
       "locals": [
         {"name":"Anambra East","id":1},
         {"name":"Anambra West","id":2},
@@ -117,7 +117,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Bauchi State","id":5,
+      "name":"Bauchi","id":5,
       "locals": [
         {"name":"Bauchi","id":1},
         {"name":"Bogoro","id":2},
@@ -143,7 +143,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Bayelsa State","id":6,
+      "name":"Bayelsa","id":6,
       "locals": [
         {"name":"Ekeremor","id":1},
         {"name":"Kolokuma\/Opokuma","id":2},
@@ -157,7 +157,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Benue State","id":7,
+      "name":"Benue","id":7,
       "locals": [
         {"name":"Apa","id":1},
         {"name":"Ado","id":2},
@@ -186,7 +186,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Borno State","id":8,
+      "name":"Borno","id":8,
       "locals": [
         {"name":"Askira\/Uba","id":1},
         {"name":"Bama","id":2},
@@ -219,7 +219,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Cross River State","id":9,
+      "name":"Cross River","id":9,
       "locals": [
         {"name":"Akamkpa","id":1},
         {"name":"Akpabuyo","id":2},
@@ -243,7 +243,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Delta State","id":10,
+      "name":"Delta","id":10,
       "locals": [
         {"name":"Aniocha South","id":1},
         {"name":"Bomadi","id":2},
@@ -274,7 +274,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Ebonyi State","id":11,
+      "name":"Ebonyi","id":11,
       "locals": [
         {"name":"Afikpo North","id":1},
         {"name":"Afikpo South","id":2},
@@ -293,7 +293,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Edo State","id":12,
+      "name":"Edo","id":12,
       "locals": [
         {"name":"Egor","id":1},
         {"name":"Esan Central","id":2},
@@ -317,7 +317,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Ekiti State","id":13,
+      "name":"Ekiti","id":13,
       "locals": [
         {"name":"Efon","id":1},
         {"name":"Ekiti East","id":2},
@@ -339,7 +339,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Enugu State","id":14,
+      "name":"Enugu","id":14,
       "locals": [
         {"name":"Awgu","id":1},
         {"name":"Enugu East","id":2},
@@ -374,7 +374,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Gombe State","id":16,
+      "name":"Gombe","id":16,
       "locals": [
         {"name":"Balanga","id":1},
         {"name":"Billiri","id":2},
@@ -391,7 +391,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Imo State","id":17,
+      "name":"Imo","id":17,
       "locals": [
         {"name":"Ahiazu Mbaise","id":1},
         {"name":"Ehime Mbano","id":2},
@@ -424,7 +424,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Jigawa State","id":18,
+      "name":"Jigawa","id":18,
       "locals": [
         {"name":"Babura","id":1},
         {"name":"Biriniwa","id":2},
@@ -457,7 +457,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Kaduna State","id":19,
+      "name":"Kaduna","id":19,
       "locals": [
         {"name":"Chikun","id":1},
         {"name":"Giwa","id":2},
@@ -486,7 +486,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Kano State","id":20,
+      "name":"Kano","id":20,
       "locals": [
         {"name":"Albasu","id":1},
         {"name":"Bagwai","id":2},
@@ -536,7 +536,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Katsina State","id":21,
+      "name":"Katsina","id":21,
       "locals": [
         {"name":"Batagarawa","id":1},
         {"name":"Batsari","id":2},
@@ -576,7 +576,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Kebbi State","id":22,
+      "name":"Kebbi","id":22,
       "locals": [
         {"name":"Arewa Dandi","id":1},
         {"name":"Argungu","id":2},
@@ -603,7 +603,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Kogi State","id":23,
+      "name":"Kogi","id":23,
       "locals": [
         {"name":"Ajaokuta","id":1},
         {"name":"Ankpa","id":2},
@@ -630,7 +630,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Kwara State","id":24,
+      "name":"Kwara","id":24,
       "locals": [
         {"name":"Baruten","id":1},
         {"name":"Edu","id":2},
@@ -652,7 +652,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Lagos State","id":25,
+      "name":"Lagos","id":25,
       "locals": [
         {"name":"Ajeromi-Ifelodun","id":1},
         {"name":"Alimosho","id":2},
@@ -678,7 +678,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Nasarawa State","id":26,
+      "name":"Nasarawa","id":26,
       "locals": [
         {"name":"Awe","id":1},
         {"name":"Doma","id":2},
@@ -697,7 +697,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Niger State","id":27,
+      "name":"Niger","id":27,
       "locals": [
         {"name":"Agwara","id":1},
         {"name":"Bida","id":2},
@@ -728,7 +728,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Ogun State","id":28,
+      "name":"Ogun","id":28,
       "locals": [
         {"name":"Abeokuta South","id":1},
         {"name":"Ado-Odo\/Ota","id":2},
@@ -754,7 +754,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Ondo State","id":29,
+      "name":"Ondo","id":29,
       "locals": [
         {"name":"Akoko North-West","id":1},
         {"name":"Akoko South-West","id":2},
@@ -778,7 +778,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Osun State","id":30,
+      "name":"Osun","id":30,
       "locals": [
         {"name":"Atakunmosa West","id":1},
         {"name":"Aiyedaade","id":2},
@@ -814,7 +814,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Oyo State","id":31,
+      "name":"Oyo","id":31,
       "locals": [
         {"name":"Akinyele","id":1},
         {"name":"Atiba","id":2},
@@ -853,7 +853,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Plateau State","id":32,
+      "name":"Plateau","id":32,
       "locals": [
         {"name":"Barkin Ladi","id":1},
         {"name":"Bassa","id":2},
@@ -876,7 +876,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Rivers State","id":33,
+      "name":"Rivers","id":33,
       "locals": [
         {"name":"Ahoada East","id":1},
         {"name":"Ahoada West","id":2},
@@ -905,7 +905,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Sokoto State","id":34,
+      "name":"Sokoto","id":34,
       "locals": [
         {"name":"Bodinga","id":1},
         {"name":"Dange Shuni","id":2},
@@ -934,7 +934,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Taraba State","id":35,
+      "name":"Taraba","id":35,
       "locals": [
         {"name":"Bali","id":1},
         {"name":"Donga","id":2},
@@ -956,7 +956,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Yobe State","id":36,
+      "name":"Yobe","id":36,
       "locals": [
         {"name":"Bursari","id":1},
         {"name":"Damaturu","id":2},
@@ -979,7 +979,7 @@ export const slga = [
   },
   {
     "state": {
-      "name":"Zamfara State","id":37,
+      "name":"Zamfara","id":37,
       "locals": [
         {"name":"Bakura","id":1},
         {"name":"Birnin Magaji\/Kiyaw","id":2},
@@ -998,3 +998,15 @@ export const slga = [
     }
   }
 ]
+
+
+
+export const getLga = (stateName) => {
+  let lga;
+  slga.map(data => {
+    if(data.state.name === stateName){
+      lga = data.state.locals;
+    }
+  });
+  return lga;
+}

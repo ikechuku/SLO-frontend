@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import Layout from '../layout';
 import { httpGet } from '../../actions/data.action';
@@ -39,7 +40,7 @@ class StaffList extends Component {
         "position": `${data.jobTitle}`,
         "startdate": `${data.createdAt.slice(0,10)}`,
         "status": `${data.applicationStatus}`,
-        "action": <a><span className="add-more">View Details</span>
+        "action": <a><Link to={`/view_details/${data.id}`} className="add-more">View Details</Link>
         <span className="ml-3 cursor-pointer">Edit</span></a>
       }
     ));

@@ -43,12 +43,12 @@ export const httpDelete = async (url, postBody) => {
 export const httpGet = async (url) => {
   try{
     showLoader()
-    console.log('show loader')
     const { data } = await axios.get(`${baseUrl}${url}`, {
       headers: { Authorization: localStorage.token }
     });
     return data;
   } catch (error){
+    hideLoader()
     return error;
   }
 };

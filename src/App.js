@@ -8,6 +8,7 @@ import Guarantor from './components/Onboarding/Guarantor';
 import Upload from './components/Onboarding/Upload';
 import PendingApplication from './components/Onboarding/Pending';
 import StaffList from './components/Onboarding/StaffList';
+import ViewDetails from './components/Onboarding/ViewDetails';
 
 import 'react-notifications/lib/notifications.css';
 
@@ -29,6 +30,7 @@ function App() {
           <Route path="/create_staff/five/:id" component={Upload} />
           <Route path="/create_staff/six" component={PendingApplication} />
           <Route path="/staff_list" component={StaffList} />
+          <Route path="/view_details/:id" component={ViewDetails} />
         </Switch>
       </Router>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 
-export const states = [
-  <option value="select state">Select Your State</option>,
+export const states = (text) => [
+  <option value="select state">{text}</option>,
   <option value="Abia">Abia</option>,
   <option value="Adamawa">Adamawa</option>,
   <option value="Akwa">Akwa Ibom</option>,
@@ -37,12 +37,11 @@ export const states = [
   <option value="Rivers">Rivers</option>,
   <option value="Sokoto">Sokoto</option>,
   <option value="Taraba">Taraba</option>,
-  <option value="Yobe">Yobe</option>,
-  <option value="Other">Other</option>
+  <option value="Yobe">Yobe</option>
 ];
 
-export const countries = [
-  <option value=''>Select Your Country</option>,
+export const countries = (text) => [
+  <option value=''>{text}</option>,
   <option value="Afghanistan">Afghanistan</option>,
   <option value="Åland Islands">Åland Islands</option>,
   <option value="Albania">Albania</option>,
