@@ -1,22 +1,5 @@
 import { NotificationManager } from 'react-notifications';
 import { hideLoader } from './loader';
-// const validatePersonalInfo = (body) => {
-//   let {
-//     firstName,
-//     lastName,
-//     middleName,
-//     email,
-//     mobilePhone,
-//     homePhone,
-//   } = body;
-
-//   if()
-
-//   if (!(/^[\d+-]{3,15}$/.test(mobilePhone))) {
-//     return 'error'
-//   }
-// }
-
 
 var validation = {
   isEmailAddress:function(str) {
@@ -41,11 +24,177 @@ var validation = {
   isLetterOnly: (str) => {
     const pattern = /^[a-z]{2,40}$/i;
     return pattern.test(str);
+  },
+  isNameOnly: (str) => {
+    const pattern = /^(?=.{1,50}$)[a-z]+(?:['-_.\s][a-z]+)*$/i;
+    return pattern.test(str);
   }
 };
 
 
+const validateQualification = (name, value, otherValue) => {
+  let error = false;
+  if(name === 'endDate'){
+    if (new Date(value) < new Date(otherValue)) {
+      return {
+        error,
+        errorMessage: 'Invalid date, you can not select a day before start date'
+      }
+      
+    }
+  }
+
+  return {
+    error: true
+  }
+}
+
+
+const validateD = (name, value) => {
+  let error = false;
+  if(name === 'firstName'){
+    if (value === '' || value === null || value === undefined || value.length < 3){
+      return {
+        error,
+        errorMessage: 'First name cannot be less than 3 characters'
+      }
+    }
+
+    // console.log(validation.isNameOnly(value))
+    if(!(validation.isNameOnly(value))){
+      return {
+        error,
+        errorMessage: 'First name should only contain alphabets'
+      };
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'lastName'){
+    if (value === '' || value === null || value === undefined || value.length < 3){
+      return {
+        error,
+        errorMessage: 'Last name cannot be less than 3 characters'
+      }
+    }
+  
+    if(!(validation.isNameOnly(value))){
+      return {
+        error,
+        errorMessage: 'Last name should only contain alphabets'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name  === 'middleName'){
+    if (value === '' || value === null || value === undefined || value.length < 3){
+      return {
+        error,
+        errorMessage: 'Middle name cannot be less than 3 characters'
+      }
+    }
+  
+    if(!(validation.isNameOnly(value))){
+      return {
+        error,
+        errorMessage: 'Middle name should only contain alphabets'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'email'){
+    if(!(validation.isEmailAddress(value))){
+      return {
+        error,
+        errorMessage: 'Please enter a valid email address'
+      }
+    }
+    
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'mobilePhone'){
+    if(!(validation.isPhoneNumber(value))){
+      return {
+        error,
+        errorMessage: 'Mobile phone must be valid: 3 - 15 characters with +, - and only numbers'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'homePhone'){
+    if(!(validation.isPhoneNumber(value))){
+      return {
+        error,
+        errorMessage: 'Home phone must be valid: 3 - 15 characters with +, - and only numbers'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'nationality'){
+    if (value === '' || value === null || value === undefined ){
+      return {
+        error,
+        errorMessage: 'Nationality is required'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'gender'){
+    if (value === '' || value === null || value === undefined ){
+      return {
+        error,
+        errorMessage: 'Gender is required'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'dob'){
+    if (value === '' || value === null || value === undefined ){
+      return {
+        error,
+        errorMessage: 'Date of birth is required'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+}
+
+
 const validateData = (postData) => {
+  let error = false;
   const {
         firstName,
         lastName,
@@ -53,60 +202,387 @@ const validateData = (postData) => {
         email,
         mobilePhone,
         homePhone,
-        nationality
+        nationality,
+        dob,
+        gender
       } = postData;
 
+    if (firstName === '' || firstName === null || firstName === undefined || firstName.length < 3){
+      return {
+        error,
+        type: 'firstName',
+        errorMessage: 'First name is required'
+      }
+    }
+
+    if (lastName === '' || lastName === null || lastName === undefined || lastName.length < 3){
+      return {
+        error,
+        type: 'lastName',
+        errorMessage: 'Last name is required'
+      }
+    }
+
+    if (middleName === '' || middleName === null || middleName === undefined || middleName.length < 3){
+      return {
+        error,
+        type: 'middleName',
+        errorMessage: 'Middle name is required'
+      }
+    }
+
+    if (email === '' || email === null || email === undefined || email.length < 3){
+      return {
+        error,
+        type: 'email',
+        errorMessage: 'Email is required'
+      }
+    }
+
+    if (gender === '' || gender === null || gender === undefined ){
+      return {
+        error,
+        type: 'gender',
+        errorMessage: 'Gender is required'
+      }
+    }
+
+    if (dob === '' || dob === null || dob === undefined ){
+      return {
+        error,
+        type: 'dob',
+        errorMessage: 'Date of birth is required'
+      }
+    }
+
+    if (mobilePhone === '' || mobilePhone === null || mobilePhone === undefined || mobilePhone.length < 3){
+      return {
+        error,
+        type: 'mobilePhone',
+        errorMessage: 'Mobile phone is required'
+      }
+    }
+
+    if (homePhone === '' || homePhone === null || homePhone === undefined || homePhone.length < 3){
+      return {
+        error,
+        type: 'homePhone',
+        errorMessage: 'Home phone is required'
+      }
+    }
+
+    if (nationality === '' || nationality === null || nationality === undefined || nationality.length < 3){
+      return {
+        error,
+        type: 'nationality',
+        errorMessage: 'Nationality is required'
+      }
+    }
+
+    return {
+      error: true
+    }
+}
 
 
-  if (firstName === '' || firstName === null || firstName === undefined || firstName.length < 3){
-    NotificationManager.warning('First name cannot be less than 3 characters')
-    return 'error';
+
+const validateEmploymentInfoForm = (postData) => {
+  let error = false;
+  const {
+    rankAtEmployment,
+    dateOfResumption,
+    branchAtEmployment,
+    jobTitle,
+    unitAtEmployment,
+    salaryAmount,
+    employeeNumber,
+    skills
+  } = postData;
+
+  if (rankAtEmployment === '' || rankAtEmployment === null || rankAtEmployment === undefined){
+    return {
+      error,
+      type: 'rankAtEmployment',
+      errorMessage: 'Rank at employment field is required'
+    }
   }
 
-  if(!(validation.isLetterOnly(firstName))){
-    NotificationManager.warning('First name should only contain alphabets')
-    return 'error';
+  if (unitAtEmployment === '' || unitAtEmployment === null || unitAtEmployment === undefined){
+    return {
+      error,
+      type: 'unitAtEmployment',
+      errorMessage: 'Unit at employment is required'
+    }
   }
 
-  if (lastName === '' || lastName === null || lastName === undefined || lastName.length < 3){
-    NotificationManager.warning('Last name cannot be less than 3 characters')
-    return 'error';
+  if (dateOfResumption === '' || dateOfResumption === null || dateOfResumption === undefined){
+    return {
+      error,
+      type: 'dateOfResumption',
+      errorMessage: 'Date of resumption is required'
+    }
   }
 
-  if(!(validation.isLetterOnly(lastName))){
-    NotificationManager.warning('Last name should only contain alphabets')
-    return 'error';
+  if (salaryAmount === '' || salaryAmount === null || salaryAmount === undefined){
+    return {
+      error,
+      type: 'salaryAmount',
+      errorMessage: 'Salary amount is required'
+    }
   }
 
-  if (middleName === '' || middleName === null || middleName === undefined || middleName.length < 3){
-    NotificationManager.warning('Middle name cannot be less than 3 characters')
-    return 'error';
+  if (branchAtEmployment === '' || branchAtEmployment === null || branchAtEmployment === undefined){
+    return {
+      error,
+      type: 'branchAtEmployment',
+      errorMessage: 'Branch at employment is required'
+    }
   }
 
-  if(!(validation.isLetterOnly(middleName))){
-    NotificationManager.warning('Middle name should only contain alphabets')
-    return 'error';
+  if (employeeNumber === '' || employeeNumber === null || employeeNumber === undefined || employeeNumber.length < 2){
+    return {
+      error,
+      type: 'employeeNumber',
+      errorMessage: 'Employee number is required'
+    }
   }
 
-  if(!(validation.isEmailAddress(email))){
-    NotificationManager.warning('Please enter a valid email address')
-    return 'error';
+  if (jobTitle === '' || jobTitle === null || jobTitle === undefined){
+    return {
+      error,
+      type: 'jobTitle',
+      errorMessage: 'Job title is required'
+    }
   }
 
-  if(!(validation.isPhoneNumber(mobilePhone))){
-    NotificationManager.warning('Mobile phone must be valid: 3 - 15 characters with +, - and only numbers')
-    return 'error';
+  if (skills === '' || skills === null || skills === undefined){
+    return {
+      error,
+      type: 'skills',
+      errorMessage: 'Skills is required'
+    }
   }
 
-  if(!(validation.isPhoneNumber(homePhone))){
-    NotificationManager.warning('Home phone must be valid: 3 - 15 characters with +, - and only numbers')
-    return 'error';
-  }
-
-  if (nationality === '' || nationality === null || nationality === undefined ){
-    NotificationManager.warning('Nationality is required')
-    return 'error';
+  return {
+    error: true
   }
 }
 
-export default validateData;
+const validateEmpoymentFields = (name, value) => {
+  let error = false;
+  if(name === 'rankAtEmployment'){
+    if (value === '' || value === null || value === undefined){
+      return {
+        error,
+        errorMessage: 'Rank at employment is required'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'dateOfResumption'){
+    if (value === '' || value === null || value === undefined){
+      return {
+        error,
+        errorMessage: 'Date of resumption is required'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'branchAtEmployment'){
+    if (value === '' || value === null || value === undefined){
+      return {
+        error,
+        errorMessage: 'Branch at employment is required'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'jobTitle'){
+    if (value === '' || value === null || value === undefined){
+      return {
+        error,
+        errorMessage: 'Job title is required'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'unitAtEmployment'){
+    if (value === '' || value === null || value === undefined){
+      return {
+        error,
+        errorMessage: 'Unit at employment is required'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'salaryAmount'){
+    if (value === '' || value === null || value === undefined){
+      return {
+        error,
+        errorMessage: 'Salary amount is required'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'employeeNumber'){
+    if (value === '' || value === null || value === undefined){
+      return {
+        error,
+        errorMessage: 'Employment number is required'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'skills'){
+    if (value === '' || value === null || value === undefined){
+      return {
+        error,
+        errorMessage: 'Skills is required'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+}
+
+
+const validateGuarantorFields = (name, value) => {
+  let error = false;
+  if(name === 'firstName'){
+    if (value === '' || value === null || value === undefined || value.length < 3){
+      return {
+        error,
+        errorMessage: 'First name cannot be less than 3 characters'
+      }
+    }
+
+    if(!(validation.isNameOnly(value))){
+      return {
+        error,
+        errorMessage: 'First name should only contain alphabets'
+      };
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'lastName'){
+    if (value === '' || value === null || value === undefined || value.length < 3){
+      return {
+        error,
+        errorMessage: 'Last name cannot be less than 3 characters'
+      }
+    }
+  
+    if(!(validation.isNameOnly(value))){
+      return {
+        error,
+        errorMessage: 'Last name should only contain alphabets'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name  === 'middleName'){
+    if (value === '' || value === null || value === undefined || value.length < 3){
+      return {
+        error,
+        errorMessage: 'Middle name cannot be less than 3 characters'
+      }
+    }
+  
+    if(!(validation.isNameOnly(value))){
+      return {
+        error,
+        errorMessage: 'Middle name should only contain alphabets'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'mobilePhone'){
+    if(!(validation.isPhoneNumber(value))){
+      return {
+        error,
+        errorMessage: 'Mobile phone must be valid: 3 - 15 characters with +, - and only numbers'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'homePhone'){
+    if(!(validation.isPhoneNumber(value))){
+      return {
+        error,
+        errorMessage: 'Home phone must be valid: 3 - 15 characters with +, - and only numbers'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'businessPhone'){
+    if(!(validation.isPhoneNumber(value))){
+      return {
+        error,
+        errorMessage: 'Business phone must be valid: 3 - 15 characters with +, - and only numbers'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+}
+
+export {
+  validateData,
+  validateD,
+  validateQualification,
+  validateEmploymentInfoForm,
+  validateEmpoymentFields,
+  validateGuarantorFields
+}

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Layout from '../layout/index'
-import { httpPost } from '../../actions/data.action';
+import { httpPost, httpPatch } from '../../actions/data.action';
 import './style.css';
 import InstitutionForm from './InstitutionForm';
 import EmploymentForm from './EmploymentForm';
 import MoreInfoForm from './MoreInfoForm';
 import { NotificationManager } from 'react-notifications';
 import { hideLoader, showLoader } from '../../helpers/loader';
+import { validateQualification } from '../../helpers/validations';
 
 class Qualification extends Component {
   constructor(props){
@@ -19,17 +20,35 @@ class Qualification extends Component {
       moreInstitution: [],
       previousEmployment: {},
       morePrevious: [],
-      objectReference: '',
+      objectReference: false,
       reasonForLeaving: '',
       moreInfo: '',
       showDropDown: false,
+      endDateErrorMssg: null,
+      pageMode: 'create',
     }
   }
 
-  handleQualificationChange = (e) => {
+  handleQualificationChange = async (e) => {
     const { qualification } = this.state;
+    let details = e.target;
     //console.log(`${[e.target.name]}: ${e.target.value}`);
-    qualification[e.target.name] = e.target.value;
+    if(e.target.name === 'endDate'){
+      const isValidate = await validateQualification(e.target.name, e.target.value, this.state.qualification.startDate);
+      if(!isValidate.error){
+        this.setState({ 
+          endDateErrorMssg: isValidate.errorMessage, 
+        })
+        // console.log(isValidate.errorMessage)
+        return;
+      }
+      qualification[details.name] = details.value;
+      this.setState({ 
+        qualification,
+        endDateErrorMssg: null 
+      })
+    }
+    qualification[details.name] = details.value;
     qualification['type'] = 'qualification';
     this.setState({ qualification });
   }
@@ -147,13 +166,14 @@ class Qualification extends Component {
     // return this.props.history.push(this.props.location.backurl)
     return this.props.history.push({
       pathname: `${this.props.location.backurl}`,
-      savedState: this.props.location.savedState
+      savedState: this.props.location.savedState,
+      direction: 'backward'
     })
   }
 
   componentDidMount(){
-    if(this.props.location.savedState){
-      this.setState({...this.props.location.savedState});
+    if(this.props.location.direction === 'backward'){
+      this.setState({...this.props.location.savedState, pageMode: 'edit'});
     }
 	}
 
@@ -172,25 +192,47 @@ class Qualification extends Component {
         moreInfo: this.state.moreInfo
       };
 
-      console.log(data);
-
-      const res = await httpPost(`auth/onboarding_two/${id}`, data);
-      if(res.code === 201){
+      if(!data.institution.length){
         hideLoader();
-        // setState({ userId: res.data.id });
-        //return this.props.history.push(`/create_staff/three/${res.data.id}`)
-        this.setState({ 
-          institution: res.data.savedInstitution, 
-          previousEmployment: res.data.savedEmployment
-        });
-
-        return this.props.history.push({
-          pathname: `/create_staff/three/${res.data.id}`,
-          backurl: `/create_staff/two/${res.data.id}`,
-          savedState: this.state
-        });
+        NotificationManager.warning("Fill in at least one institution")
+        return;
       }
-      console.log(res)
+
+      if(this.state.pageMode === 'edit'){
+        const res = await httpPatch(`auth/edit_onboarding_two/${id}`, data);
+        if(res.code === 200){
+          hideLoader();
+          this.setState({ 
+            institution: res.data.savedInstitution, 
+            previousEmployment: res.data.savedEmployment
+          });
+  
+          return this.props.history.push({
+            pathname: `/create_staff/three/${res.data.id}`,
+            backurl: `/create_staff/two/${res.data.id}`,
+            savedState: this.state,
+            direction: 'forward'
+          });
+        }
+      } else {
+        const res = await httpPost(`auth/onboarding_two/${id}`, data);
+        if(res.code === 201){
+          hideLoader();
+          // setState({ userId: res.data.id });
+          //return this.props.history.push(`/create_staff/three/${res.data.id}`)
+          this.setState({ 
+            institution: res.data.savedInstitution, 
+            previousEmployment: res.data.savedEmployment
+          });
+  
+          return this.props.history.push({
+            pathname: `/create_staff/three/${res.data.id}`,
+            backurl: `/create_staff/two/${res.data.id}`,
+            savedState: this.state,
+            direction: 'forward'
+          });
+        }
+      }
     } catch (error){
       hideLoader();
       console.log(error)
@@ -212,7 +254,11 @@ class Qualification extends Component {
         moreInfo: this.state.moreInfo
       };
 
-      console.log(data);
+      if(!data.institution.length){
+        hideLoader();
+        NotificationManager.warning("Fill in at least one institution")
+        return;
+      }
 
       const res = await httpPost(`auth/onboarding_two/${id}`, data);
       if(res.code === 201){
@@ -264,6 +310,7 @@ class Qualification extends Component {
                           certification={this.state.certification}
                           handleShowDropDown={this.handleShowDropDown}
                           showDropDown={this.state.showDropDown}
+                          endDateErrorMssg={this.state.endDateErrorMssg}
                         />
                         <div class="table-responsive" style={!this.state.moreInstitution.length ? { display: "none"} : {}}>
                           <table id="example1" class="col col-md-8 offset-md-2 table table-striped table-bordered border-t0 text-nowrap w-100" >

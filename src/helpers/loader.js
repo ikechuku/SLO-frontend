@@ -2,7 +2,7 @@ import HoldOn from 'react-hold-on'
 
 var options = {
   theme:"sk-dot",
-  message:'Cooper',
+  message:'SLO',
   backgroundColor:"#1847B1",
   textColor:"white"
 };

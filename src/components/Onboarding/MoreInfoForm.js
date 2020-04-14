@@ -36,10 +36,13 @@ export default function MoreInfoForm(props) {
           onChange={props.handleMoreInfo}
           value={props.reasonForLeaving}
         >
-          <option value="">select</option>
-          <option value="select">select</option>
-          <option value="select">select</option>
-          <option value="select">select</option>
+          <option value="">select reason</option>
+          <option value="Relocation">Relocation</option>
+          <option value="Sacked">Sacked</option>
+          <option value="Change in carrer path">Change in carrer path</option>
+          <option value="Redundancy">Redundancy</option>
+          <option value="Company downsizing">Company downsizing</option>
+          <option value="Company shutdown">Company shutdown</option>
         </select>
         </div>
       </div>

@@ -24,6 +24,32 @@ code {
 .dropdown-div {
   background: #fff;
   border: 1px solid rgb(131, 138, 182);
+  position: absolute;
+  z-index: 999;
+  width: 90%;
+}
+
+.select2-container {
+  width: 100% !important;
+}
+
+.select2-container--default .select2-selection--single{
+  height: calc(2.25rem + 2px) !important;
+  color: #777ab2 !important;
+  border: 1px solid #ced4da !important;
+}
+
+.select2-container--default .select2-selection--single:focus{
+  border-color: #5458b3 !important;
+}
+
+.select2-container--default .select2-selection__rendered{
+  height: calc(2.25rem + 2px) !important;
+  padding-top: 4px;
+}
+
+.select2-container:focus {
+  border-color: #5458b3 !important;
 }
 
 .dropdown-btn {

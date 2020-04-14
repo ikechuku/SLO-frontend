@@ -66,8 +66,9 @@ export default function InstitutionForm(props) {
             className="form-control"
             name="endDate"
             onChange={props.handleQualification}
-            value={props.qualification.endDate} 
+            defaultValue={props.qualification.endDate} 
           />
+          <span className="text-danger">{props.endDateErrorMssg !== null ? props.endDateErrorMssg : ''}</span>
         </div>
       </div>
       <div className="form-group row">
