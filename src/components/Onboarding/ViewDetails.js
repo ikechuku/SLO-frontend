@@ -85,7 +85,7 @@ export default class ViewDetails extends Component {
               <div className="col-12">
                 <div className="card">
                   <div className="card-header">
-                    <div className="row">
+                    <div className="row col-12">
                       <h4 className="col col-md-6"></h4>
                       <div className="col col-md-6 text-right">
                         <h4 className="">APPLICATION STATUS: <span className="text-warning">{user.applicationStatus === 'pending' ? 'Pending' : user.applicationStatus === 'approved' ? 'Approved' : 'Rejected'}</span></h4>
@@ -203,7 +203,7 @@ export default class ViewDetails extends Component {
                           <p>Religion: {user.religion}</p>
                         </div>
                         <div className="col-md-6">
-                          <p>Date of resumption: {<Moment format='MMM D YYYY' />}</p>
+                          <p>Date of resumption: {<Moment format='MMM D YYYY' value={user.dateOfResumption} />}</p>
                           <p>Branch at employment: {user.branchAtEmployment}</p>
                           <p>Job title: {user.jobTitle}</p>
                           <p>Skills: {user.skills}</p>
@@ -284,10 +284,10 @@ export default class ViewDetails extends Component {
 
                       <div class="row mt-3">
                           <div className="col-md-6 mr-5 text-right cursor-pointer" onClick={e => this.handleStatus(e, 'approved')}>
-                            <span className="fa-check-square-o"></span>APPROVE
+                            <span className="fa fa-check-square-o"></span>APPROVE
                           </div>
                           <div className="cursor-pointer" onClick={e => this.handleStatus(e, 'rejected')}>
-                            <span></span>
+                            <span className="fa fa-ban text-danger"></span>
                             DECLINE
                           </div>
 													

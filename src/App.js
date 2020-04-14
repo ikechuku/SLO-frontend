@@ -9,6 +9,11 @@ import Upload from './components/Onboarding/Upload';
 import PendingApplication from './components/Onboarding/Pending';
 import StaffList from './components/Onboarding/StaffList';
 import ViewDetails from './components/Onboarding/ViewDetails';
+import Branch from './components/andyBranch/branch/branch'
+import Department from './components/andyBranch/department/department'
+import Unit from './components/andyBranch/unit/unit'
+import JobType from './components/andyBranch/jobType/jobType'
+
 
 import 'react-notifications/lib/notifications.css';
 
@@ -31,6 +36,15 @@ function App() {
           <Route path="/create_staff/six" component={PendingApplication} />
           <Route path="/staff_list" component={StaffList} />
           <Route path="/view_details/:id" component={ViewDetails} />
+          <Route path="/branches" component={Branch} />
+          <Route path="/departments" component={Department} />
+          <Route path="/units" component={Unit} />
+          <Route path="/roles" component={JobType} />
+        
+
+          
+        
+          
         </Switch>
       </Router>
   );

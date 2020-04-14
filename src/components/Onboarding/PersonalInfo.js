@@ -16,6 +16,8 @@ class PersonalInfo extends Component {
       data: {},
       userId: null,
       country: null,
+      currentCountry: null,
+      permanentCountry: null,
       errorMessage1: null,
       errorMessage2: null,
       errorMessage3: null,
@@ -168,6 +170,18 @@ class PersonalInfo extends Component {
       this.setState({ 
         data,
         errorMessage9: null 
+      });
+    } else if(details.name === 'currentCountry'){
+      data[details.name] = details.value;
+      this.setState({ 
+        data,
+        currentCountry: details.value,
+      });
+    } else if(details.name === 'permanentCountry'){
+      data[details.name] = details.value;
+      this.setState({ 
+        data,
+        permanentCountry: details.value,
       });
     } else {
       data[details.name] = details.value;
@@ -333,7 +347,7 @@ class PersonalInfo extends Component {
     // console.log(!this.state.country ? 'undefined' : this.state.country)
     // console.log(this.state)
     return (
-      <Layout>
+      <Layout page="staff">
         <div className="app-content">
           <section className="section">
             <ol className="breadcrumb">
@@ -421,7 +435,7 @@ class PersonalInfo extends Component {
                           <br/>
                           <span className="text-danger">{this.state.errorMessage9 !== null ? this.state.errorMessage9 : ''}</span>
 												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Date of Birth</label>
+                        <label for="inputName" className="col-md-2 col-form-label">Date of Birth <span className="impt">*</span></label>
                         <div className="col-md-3">
                           <input type="date" 
                             className="form-control"
@@ -433,7 +447,7 @@ class PersonalInfo extends Component {
 												</div>
                       </div>
                       <div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">Mobile Phone</label>
+												<label for="inputName" className="col-md-2 col-form-label">Mobile Phone <span className="impt">*</span></label>
 												<div className="col-md-3">
                           <input type="text" 
                             className="form-control"
@@ -443,7 +457,7 @@ class PersonalInfo extends Component {
                           />
                           <span className="text-danger">{this.state.errorMessage5 !== null ? this.state.errorMessage5 : ''}</span>
 												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Home Phone</label>
+                        <label for="inputName" className="col-md-2 col-form-label">Home Phone <span className="impt">*</span></label>
                         <div className="col-md-3">
                           <input type="text" 
                             className="form-control"
@@ -472,7 +486,7 @@ class PersonalInfo extends Component {
                         <label for="inputName" className="col-md-2 col-form-label">State of Origin</label>
 												<div className="col-md-3">
                           <input type="text" 
-                            className="form-control"
+                            className="form-control custom-input-h"
                             name="stateOfOrigin"
                             value={this.state.data.stateOfOrigin}
                             onChange={this.handleChange}
@@ -535,7 +549,7 @@ class PersonalInfo extends Component {
 												<label for="inputName" className="col-md-2 col-form-label">Current Address</label>
 												<div className="col-md-3">
                           <input type="text" 
-                            className="form-control"
+                            className="form-control custom-input-h"
                             name="currentAddress"
                             onChange={this.handleChange}
                             value={this.state.data.currentAddress}
@@ -553,7 +567,24 @@ class PersonalInfo extends Component {
                                 countries('Country')
                               }
                             </select>
+                            <input type="text" 
+                              className="form-control col-md-3 mr-1 custom-input-h"
+                              name="currentState"
+                              value={this.state.data.currentState}
+                              onChange={this.handleChange}
+                              style={ (this.state.currentCountry === 'Nigeria') || !this.state.currentCountry ? { display: 'none' } : { display: 'block' }}
+                            />
                             <select 
+                              className="form-control w-100 col-md-3 mr-1"
+                              name="currentState"
+                              value={this.state.data.currentState}
+                              onChange={this.handleChange}
+                              style={(this.state.currentCountry !== '') && (this.state.currentCountry !== null) && (this.state.currentCountry !== 'Nigeria') ? { display: 'none'} : {} }>
+                              {
+                                states('States')
+                              }
+                            </select>
+                            {/* <select 
                               name="currentState" 
                               className="form-control w-100 col-md-3 mr-1"
                               onChange={this.handleChange}
@@ -562,19 +593,34 @@ class PersonalInfo extends Component {
                               {
                                 states('States')
                               }
-                            </select>
+                            </select> */}
+                            <input type="text" 
+                              className="form-control col-md-3 mr-1 custom-input-h"
+                              name="currentLga" 
+                              value={this.state.data.currentLGA}
+                              onChange={this.handleChange}
+                              style={ (this.state.currentCountry === 'Nigeria') || !this.state.currentCountry ? { display: 'none' } : { display: 'block' }}
+                            />
                             <select 
                               name="currentLga" 
                               className="form-control w-100 col-md-3 mr-1"
                               onChange={this.handleChange} 
                               value={this.state.data.currentLGA}
+                              style={(this.state.currentCountry !== '') && (this.state.currentCountry !== null) && (this.state.currentCountry !== 'Nigeria') ? { display: 'none'} : {} }>
                             >
                               <option value="">LGA</option>
                               {
                                 this.getLGA(this.state.data.currentState)
                               }
                             </select>
-                            <select 
+                            <input
+                              type="text" 
+                              name="currentCity" 
+                              className="form-control w-100 col-md-2 custom-input-h"
+                              onChange={this.handleChange}
+                              value={this.state.data.currentCity} 
+                            />
+                            {/* <select 
                               name="currentCity" 
                               className="form-control w-100 col-md-2"
                               onChange={this.handleChange}
@@ -583,7 +629,7 @@ class PersonalInfo extends Component {
                               <option value="">City</option>
                               <option value="">Nigeria</option>
                               <option value="">Ghana</option>
-                            </select>
+                            </select> */}
                           </div>
                         </div>
                       </div>
@@ -591,7 +637,7 @@ class PersonalInfo extends Component {
 												<label for="inputName" className="col-md-2 col-form-label">Permanent Address</label>
 												<div className="col-md-3">
                           <input type="text" 
-                            className="form-control"
+                            className="form-control custom-input-h"
                             name="permanentAddress"
                             onChange={this.handleChange}
                             value={this.state.data.permanentAddress}
@@ -609,7 +655,24 @@ class PersonalInfo extends Component {
                                 countries('Country')
                               }
                             </select>
+                            <input type="text" 
+                              className="form-control col-md-3 mr-1 custom-input-h"
+                              name="permanentState"
+                              value={this.state.data.permanentState}
+                              onChange={this.handleChange}
+                              style={ (this.state.permanentCountry === 'Nigeria') || !this.state.permanentCountry ? { display: 'none' } : { display: 'block' }}
+                            />
                             <select 
+                              className="form-control w-100 col-md-3 mr-1"
+                              name="permanentState"
+                              value={this.state.data.permanentState}
+                              onChange={this.handleChange}
+                              style={(this.state.permanentCountry !== '') && (this.state.permanentCountry !== null) && (this.state.permanentCountry !== 'Nigeria') ? { display: 'none'} : {} }>
+                              {
+                                states('States')
+                              }
+                            </select>
+                            {/* <select 
                               name="permanentState" 
                               className="form-control w-100 col-md-3 mr-1"
                               onChange={this.handleChange}
@@ -618,19 +681,34 @@ class PersonalInfo extends Component {
                               {
                                 states('States')
                               }
-                            </select>
+                            </select> */}
+                            <input type="text" 
+                              name="permanentLGA" 
+                              className="form-control col-md-3 mr-1 custom-input-h"
+                              onChange={this.handleChange} 
+                              value={this.state.data.permanentLGA}
+                              style={ (this.state.permanentCountry === 'Nigeria') || !this.state.permanentCountry ? { display: 'none' } : { display: 'block' }}
+                            />
                             <select 
                               name="permanentLGA" 
                               className="form-control w-100 col-md-3 mr-1"
                               onChange={this.handleChange} 
                               value={this.state.data.permanentLGA}
+                              style={(this.state.permanentCountry !== '') && (this.state.permanentCountry !== null) && (this.state.permanentCountry !== 'Nigeria') ? { display: 'none'} : {} }
                             >
                               <option value="">LGA</option>
                               {
                                 this.getLGA(this.state.data.permanentState)
                               }
                             </select>
-                            <select 
+                            <input 
+                              type="text"
+                              name="permanentCity" 
+                              className="form-control col-md-2 custom-input-h"
+                              onChange={this.handleChange}
+                              value={this.state.data.permanentCity} 
+                            />
+                            {/* <select 
                               name="permanentCity" 
                               className="form-control w-100 col-md-2"
                               onChange={this.handleChange}
@@ -639,7 +717,7 @@ class PersonalInfo extends Component {
                               <option value="">City</option>
                               <option value="">Nigeria</option>
                               <option value="">Ghana</option>
-                            </select>
+                            </select> */}
                           </div>
                         </div>
                       </div>

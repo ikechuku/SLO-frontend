@@ -1,0 +1,27 @@
+/* .department-table{
+    width: 300px !important;
+}
+
+.department-table-card{
+    width: 300px !important;
+} */
+
+
+@media (min-width:927px){
+
+    .department-table{
+        width: 600px !important;
+    }
+    
+    .department-table-card{
+        width: 600px !important;
+    }
+
+   }
+
+   
+
+.custom-header {
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+}

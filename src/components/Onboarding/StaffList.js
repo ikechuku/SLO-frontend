@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import Moment from 'react-moment';
 import Layout from '../layout';
 import { httpGet } from '../../actions/data.action';
 import { hideLoader } from '../../helpers/loader';
@@ -38,7 +39,7 @@ class StaffList extends Component {
         "sn": `${index + 1}`,
         "fullname": <span>{data.lastName} {data.firstName}</span>,
         "position": `${data.jobTitle}`,
-        "startdate": `${data.createdAt.slice(0,10)}`,
+        "startdate": <Moment format='MMM DD YYYY'>{data.createdAt}</Moment>,
         "status": `${data.applicationStatus}`,
         "action": <a><Link to={`/view_details/${data.id}`} className="add-more">View Details</Link>
         <span className="ml-3 cursor-pointer">Edit</span></a>
@@ -93,7 +94,7 @@ class StaffList extends Component {
                     </div>
 									</div>
 									<div class="card-body">
-										<div class="">
+										<div class="table-responsive">
                        <Table 
                         body={this.bodyRow}
                         head={this.header}

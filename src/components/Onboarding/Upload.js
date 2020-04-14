@@ -41,6 +41,7 @@ class Upload extends Component {
     try{
       const { id } = this.props.match.params;
       const { fileName, postBody } = this.state;
+      showLoader();
 
       let formData = new FormData();
       if(fileName === 'nationalId') formData.append('nationalId', postBody.nationalId);
@@ -53,11 +54,13 @@ class Upload extends Component {
 
       const res = await httpPostFormData(`auth/onboarding_five/${id}`, formData);
       if(res.code === 201){
+        hideLoader();
         this.setState({ 
           documents: [...this.state.documents, res.data.upload ]
       });
       }
     }catch(error){
+      hideLoader();
       console.log(error)
     }
   }
@@ -83,13 +86,16 @@ class Upload extends Component {
     try{
       const { id } = this.props.match.params;
 
+      showLoader();
       const res = await httpPostFormData(`auth/complete_onboarding_five/${id}`);
       if(res.code === 201){
+        hideLoader();
         // setState({ userId: res.data.id });
         return this.props.history.push('/staff_list');
       }
       console.log(res)
     } catch (error){
+      hideLoader();
       console.log(error)
     }
   }
@@ -133,11 +139,11 @@ class Upload extends Component {
             <div className="row">
 							<div className="col-12">
 								<div className="card">
-									<div className="card-header">
-                  <div className="row">
+									<div className="card-header custom-header">
+                  <div className="row col-12">
                     <h4 className="col col-md-6">Upload</h4>
                     <div className="col col-md-6 text-right">
-                      <h4 className="cursor-pointer" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</h4>
+                      <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</button>
                     </div>
                     </div>
 									</div>

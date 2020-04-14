@@ -25,6 +25,7 @@ class Qualification extends Component {
       moreInfo: '',
       showDropDown: false,
       endDateErrorMssg: null,
+      endDateErrorMssg2: null,
       pageMode: 'create',
     }
   }
@@ -53,15 +54,30 @@ class Qualification extends Component {
     this.setState({ qualification });
   }
 
-  handleCertificationChange = (e) => {
+  handleCertificationChange = async (e) => {
     const { certification } = this.state;
+    let details = e.target;
     //console.log(`${[e.target.name]}: ${e.target.value}`);
     if(e.target.name === 'certification'){
       certification[e.target.name] = e.target.value;
       certification['type'] = 'certification';
       this.setState({ certification, showDropDown: !this.state.showDropDown });
+    } else if(details.name === 'endDate'){
+      const isValidate = await validateQualification(e.target.name, e.target.value, this.state.certification.startDate);
+      if(!isValidate.error){
+        this.setState({ 
+          endDateErrorMssg2: isValidate.errorMessage, 
+        })
+        // console.log(isValidate.errorMessage)
+        return;
+      }
+      certification[details.name] = details.value;
+      this.setState({ 
+        certification,
+        endDateErrorMssg2: null 
+      })
     } else {
-      certification[e.target.name] = e.target.value;
+      certification[details.name] =details.value;
       this.setState({ certification, showDropDown: false });
     }
 
@@ -288,11 +304,11 @@ class Qualification extends Component {
             <div className="row">
 							<div className="col-12">
 								<div className="card">
-									<div className="card-header">
-                    <div className="row">
+									<div className="card-header custom-header">
+                    <div className="row col-12">
                     <h4 className="col col-md-6">Qualification and Experience</h4>
                     <div className="col col-md-6 text-right">
-                      <h4 className="cursor-pointer" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</h4>
+                      <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</button>
                     </div>
                     </div>
 									</div>
@@ -311,6 +327,7 @@ class Qualification extends Component {
                           handleShowDropDown={this.handleShowDropDown}
                           showDropDown={this.state.showDropDown}
                           endDateErrorMssg={this.state.endDateErrorMssg}
+                          endDateErrorMssg2={this.state.endDateErrorMssg2}
                         />
                         <div class="table-responsive" style={!this.state.moreInstitution.length ? { display: "none"} : {}}>
                           <table id="example1" class="col col-md-8 offset-md-2 table table-striped table-bordered border-t0 text-nowrap w-100" >
@@ -387,6 +404,7 @@ class Qualification extends Component {
                           objectReference={this.state.objectReference}
                           reasonForLeaving={this.state.reasonForLeaving}
                           moreInfo={this.state.moreInfo} 
+                          erro
                         />
                       </div>
 

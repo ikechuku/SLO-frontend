@@ -1,4 +1,5 @@
 import React from 'react'
+import CustomSelect from '../../helpers/Select2';
 
 export default function InstitutionForm(props) {
   console.log(props)
@@ -95,7 +96,19 @@ export default function InstitutionForm(props) {
     <div className="form-group row">
       <label for="inputName" className="col-md-5 col-form-label">Certification</label>
       <div className="col-md-7">
-        <input type="text" 
+        <CustomSelect 
+          optionList={[
+            { value: 'Google Certification', text: 'Google Certification', id: 1 },
+            { value: 'HND', text: 'HND', id: 2 },
+            { value: 'OND', text: 'OND' , id: 3 },
+          ]}
+          handleChange={props.handleCertification}
+          name={'certification'}
+          value={props.certification.certification}
+          placeHolder='Select'
+        />
+
+        {/* <input type="text" 
           className="form-control"
           name="certification"
           onChange={props.handleCertification}
@@ -108,7 +121,7 @@ export default function InstitutionForm(props) {
           <p className="dropdown-btn" onClick={() => props.handleDropDown('HND')}>HND</p>
           <p className="dropdown-btn" onClick={() => props.handleDropDown('OND')}>OND</p>
           <p className="dropdown-btn" onClick={() => props.handleDropDown('CCNA Cert')}>CCNA Cert</p>
-        </div>
+        </div> */}
       </div>
     </div>
     <div className="form-group row">
@@ -129,8 +142,9 @@ export default function InstitutionForm(props) {
           className="form-control"
           name="endDate"
           onChange={props.handleCertification}
-          value={props.certification.endDate} 
+          value={props.certification.endDate}
         />
+        <span className="text-danger">{props.endDateErrorMssg2 !== null ? props.endDateErrorMssg2 : ''}</span>
       </div>
     </div>
     <div className="form-group row">

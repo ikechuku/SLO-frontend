@@ -33,6 +33,10 @@ class Guarantor extends Component {
 				landedPropertyLga: '',
 				landedPropertyCity: '',
 				businessAddress: '',
+				businessCountry: '',
+				businessState: '',
+				businessLga: '',
+				businessCity: '',
 				maritalStatus: '',
 				employeeKnownDate: '',
 				criminalHistory: ''
@@ -51,7 +55,8 @@ class Guarantor extends Component {
 	handleChange = async (e) => {
 		const { postData } = this.state;
 		let details = e.target;
-		console.log(details.name, details.value)
+		console.log(postData)
+		console.log(e.target.name, e.target.value)
 		if(details.name === 'criminalHistory'){
 			let value;
 			if(details.value === "true"){
@@ -62,83 +67,89 @@ class Guarantor extends Component {
 			postData[e.target.name] = value;
 			this.setState({ postData });
 		} else if(details.name === 'firstName'){
-      const isValidate = await validateGuarantorFields(e.target.name, e.target.value);
+			postData[details.name] = details.value;
+      this.setState({ 
+        postData
+      })
+			const isValidate = await validateGuarantorFields(details.name, this.state.postData.firstName);
       if(!isValidate.error){
         this.setState({ 
           errorMessage1: isValidate.errorMessage, 
         })
         return;
-      }
-      postData[details.name] = details.value;
-      this.setState({ 
-        postData,
-        errorMessage1: null 
-      })
+      } else {
+				this.setState({ errorMessage1: null  })
+			}
     } else if(details.name === 'lastName'){
-      const isValidate = await validateGuarantorFields(e.target.name, e.target.value);
+			postData[details.name] = details.value;
+      this.setState({ 
+        postData 
+      })
+      const isValidate = await validateGuarantorFields(e.target.name, this.state.postData.lastName);
       if(!isValidate.error){
         this.setState({ 
           errorMessage2: isValidate.errorMessage, 
         })
         return;
-      }
-      postData[details.name] = details.value;
-      this.setState({ 
-        postData,
-        errorMessage2: null 
-      })
+      } else {
+				this.setState({errorMessage2: null});
+			}
     } else if(details.name === 'middleName'){
-      const isValidate = await validateGuarantorFields(e.target.name, e.target.value);
+			postData[details.name] = details.value;
+      this.setState({ 
+        postData 
+      })
+      const isValidate = await validateGuarantorFields(e.target.name, this.state.postData.middleName);
       if(!isValidate.error){
         this.setState({ 
-          errorMessage3: isValidate.errorMessage, 
+					errorMessage3: isValidate.errorMessage,
         })
         return;
-      }
-      postData[details.name] = details.value;
-      this.setState({ 
-        postData,
-        errorMessage3: null 
-      })
+      } else {
+				this.setState({errorMessage3: null })
+			}
     } else if(details.name === 'mobilePhone'){
-      const isValidate = await validateGuarantorFields(e.target.name, e.target.value);
+			postData[details.name] = details.value;
+      this.setState({ 
+        postData 
+      })
+      const isValidate = await validateGuarantorFields(e.target.name, this.state.postData.mobilePhone);
       if(!isValidate.error){
         this.setState({ 
-          errorMessage4: isValidate.errorMessage, 
+					errorMessage4: isValidate.errorMessage,
         })
         return;
-      }
-      postData[details.name] = details.value;
-      this.setState({ 
-        postData,
-        errorMessage4: null 
-      })
+      } else {
+				this.setState({errorMessage4: null})
+			}
     } else if(details.name === 'homePhone'){
+			postData[details.name] = details.value;
+      this.setState({ 
+        postData
+      })
       const isValidate = await validateGuarantorFields(e.target.name, e.target.value);
       if(!isValidate.error){
         this.setState({ 
           errorMessage5: isValidate.errorMessage, 
         })
         return;
-      }
-      postData[details.name] = details.value;
-      this.setState({ 
-        postData,
-        errorMessage5: null 
-      })
+      } else {
+				this.setState({errorMessage5: null })
+			}
     } else if(details.name === 'businessPhone'){
+			postData[details.name] = details.value;
+      this.setState({ 
+        postData
+      })
       const isValidate = await validateGuarantorFields(e.target.name, e.target.value);
       if(!isValidate.error){
         this.setState({ 
           errorMessage6: isValidate.errorMessage, 
         })
         return;
-      }
-      postData[details.name] = details.value;
-      this.setState({ 
-        postData,
-        errorMessage6: null 
-      })
+      } else {
+				this.setState({errorMessage6: null})
+			}
     } else {
 			postData[details.name] = details.value;
 			this.setState({ postData });
@@ -165,7 +176,7 @@ class Guarantor extends Component {
 
 		console.log(this.state.postData)
 
-		if(firstName === '' || lastName === '' || middleName === '' || mobilePhone === '' || businessPhone === '' || relationship === '' || homePhone === '' || occupation === '' || residentialAddress === '' || landedPropertyAddress === '' || businessAddress === '' || maritalStatus === '' || employeeKnownDate === '' || criminalHistory === ''){
+		if(firstName === '' || firstName === undefined || lastName === '' || lastName === undefined || middleName === '' || middleName === undefined || mobilePhone === '' || mobilePhone === undefined || businessPhone === '' || businessPhone === undefined || relationship === '' || relationship === undefined || homePhone === '' || homePhone === undefined || occupation === '' || occupation === undefined || residentialAddress === '' || residentialAddress === undefined || landedPropertyAddress === '' || landedPropertyAddress === undefined || businessAddress === '' || businessAddress === undefined || maritalStatus === '' || maritalStatus === undefined || employeeKnownDate === '' ||  employeeKnownDate === undefined || criminalHistory === '' ||criminalHistory === undefined){
 			return NotificationManager.warning('All fields are required');
 		}
 
@@ -193,6 +204,10 @@ class Guarantor extends Component {
 				landedPropertyLga: '',
 				landedPropertyCity: '',
 				businessAddress: '',
+				businessCountry: '',
+				businessState: '',
+				businessLga: '',
+				businessCity: '',
 				maritalStatus: '',
 				employeeKnownDate: '',
 				criminalHistory: ''
@@ -234,8 +249,10 @@ class Guarantor extends Component {
 			}
 
 			if(this.state.pageMode === 'edit'){
+				showLoader();
 				const res = await httpPatch(`auth/edit_onboarding_four/${id}`, this.state.moreData);
 				if(res.code === 201){
+					hideLoader();
 					this.setState({ moreData: res.data.guarantor });
 
 					return this.props.history.push({
@@ -246,8 +263,10 @@ class Guarantor extends Component {
 					});
 				}
 			} else {
+				showLoader();
 				const res = await httpPost(`auth/onboarding_four/${id}`, this.state.moreData);
 				if(res.code === 201){
+					hideLoader();
 					this.setState({ moreData: res.data.guarantor });
 					// return this.props.history.push(`/create_staff/five/${res.data.id}`)
 					return this.props.history.push({
@@ -257,20 +276,19 @@ class Guarantor extends Component {
 						direction: 'forward'
 					});
 				}
-				console.log(res)
 			}
       
     } catch (error){
+			hideLoader()
       console.log(error)
     }
 	}
 
 	handleSave = async (e) => {
 		e.preventDefault()
-		showLoader();
     try{
 			const { id } = this.props.match.params;
-
+			showLoader();
       const res = await httpPost(`auth/onboarding_four/${id}`, this.state.postData);
       if(res.code === 201){
         hideLoader();
@@ -318,11 +336,11 @@ class Guarantor extends Component {
             <div className="row">
 							<div className="col-12">
 								<div className="card">
-									<div className="card-header">
-									<div className="row">
+									<div className="card-header custom-header">
+									<div className="row col-12">
                     <h4 className="col col-md-6">Guarantor Information</h4>
                     <div className="col col-md-6 text-right">
-                      <h4 className="cursor-pointer" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</h4>
+                      <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</button>
                     </div>
                     </div>
 									</div>
@@ -364,7 +382,7 @@ class Guarantor extends Component {
 														className="form-control"
 														name="firstName"
 														onChange={this.handleChange}
-														defaultValue={this.state.postData.firstName}
+														value={this.state.postData.firstName}
 													/>
 													<span className="text-danger">{this.state.errorMessage1 !== null ? this.state.errorMessage1 : ''}</span>
 												</div>
@@ -374,7 +392,7 @@ class Guarantor extends Component {
 														className="form-control"
 														name="lastName"
 														onChange={this.handleChange}
-														defaultValue={this.state.postData.lastName}
+														value={this.state.postData.lastName}
 													/>
 													<span className="text-danger">{this.state.errorMessage2 !== null ? this.state.errorMessage2 : ''}</span>
 												</div>
@@ -386,7 +404,7 @@ class Guarantor extends Component {
 														className="form-control"
 														name="middleName"
 														onChange={this.handleChange}
-														defaultValue={this.state.postData.middleName}
+														value={this.state.postData.middleName}
 													/>
 													<span className="text-danger">{this.state.errorMessage3 !== null ? this.state.errorMessage3 : ''}</span>
 												</div>
@@ -396,7 +414,7 @@ class Guarantor extends Component {
 														className="form-control"
 														name="mobilePhone"
 														onChange={this.handleChange}
-														defaultValue={this.state.postData.mobilePhone}
+														value={this.state.postData.mobilePhone}
 													/>
 													<span className="text-danger">{this.state.errorMessage4 !== null ? this.state.errorMessage4 : ''}</span>
 												</div>
@@ -408,7 +426,7 @@ class Guarantor extends Component {
 														name="homePhone" 
 														className="form-control"
 														onChange={this.handleChange}
-														defaultValue={this.state.postData.homePhone}
+														value={this.state.postData.homePhone}
 													/>
 													<span className="text-danger">{this.state.errorMessage5 !== null ? this.state.errorMessage5 : ''}</span>
 												</div>
@@ -418,7 +436,7 @@ class Guarantor extends Component {
 														className="form-control"
 														name="businessPhone"
 														onChange={this.handleChange}
-														defaultValue={this.state.postData.businessPhone}
+														value={this.state.postData.businessPhone}
 													/>
 													<span className="text-danger">{this.state.errorMessage6 !== null ? this.state.errorMessage6 : ''}</span>
 												</div>
@@ -507,28 +525,51 @@ class Guarantor extends Component {
                                 countries('Country')
                               }
                             </select>
+														<input type="text" 
+                              name="residentialState" 
+                              className="form-control col-md-3 mr-1 custom-input-h"
+                              onChange={this.handleChange} 
+                              value={this.state.postData.residentialState}
+                              style={ (this.state.postData.residentialCountry === 'Nigeria') || !this.state.postData.residentialCountry ? { display: 'none' } : { display: 'block' }}
+                            />
                             <select 
                               name="residentialState" 
                               className="form-control w-100 col-md-3 mr-1"
                               onChange={this.handleChange}
-                              value={this.state.postData.residentialState}
+															value={this.state.postData.residentialState}
+															style={(this.state.postData.residentialCountry !== '') && (this.state.postData.residentialCountry !== null) && (this.state.postData.residentialCountry !== 'Nigeria') ? { display: 'none'} : {} }
                             >
                               {
                                 states('States')
                               }
                             </select>
+														<input type="text" 
+                              name="residentialLga" 
+                              className="form-control col-md-3 mr-1 custom-input-h"
+                              onChange={this.handleChange} 
+                              value={this.state.postData.residentialLga}
+                              style={ (this.state.postData.residentialCountry === 'Nigeria') || !this.state.postData.residentialCountry ? { display: 'none' } : { display: 'block' }}
+                            />
                             <select 
                               name="residentialLga" 
                               className="form-control w-100 col-md-3 mr-1"
                               onChange={this.handleChange} 
-                              value={this.state.postData.residentialLGA}
+															value={this.state.postData.residentialLGA}
+															style={(this.state.postData.residentialCountry !== '') && (this.state.postData.residentialCountry !== null) && (this.state.postData.residentialCountry !== 'Nigeria') ? { display: 'none'} : {} }
                             >
                               <option value="">LGA</option>
                               {
                                 this.getLGA(this.state.postData.residentialState)
                               }
                             </select>
-                            <select 
+														<input
+															type="text" 
+                              name="residentialCity" 
+                              className="form-control w-100 col-md-2 custom-input-h"
+                              onChange={this.handleChange}
+                              value={this.state.postData.residentialCity} 
+                            />
+                            {/* <select 
                               name="residentialCity" 
                               className="form-control w-100 col-md-2"
                               onChange={this.handleChange}
@@ -537,7 +578,7 @@ class Guarantor extends Component {
                               <option value="">City</option>
                               <option value="">Nigeria</option>
                               <option value="">Ghana</option>
-                            </select>
+                            </select> */}
                           </div>
                         </div>
                       </div>
@@ -563,28 +604,51 @@ class Guarantor extends Component {
                                 countries('Country')
                               }
                             </select>
+														<input type="text" 
+                              name="landedPropertyState" 
+                              className="form-control col-md-3 mr-1 custom-input-h"
+                              onChange={this.handleChange} 
+                              value={this.state.postData.landedPropertyState}
+                              style={ (this.state.postData.landedPropertyCountry === 'Nigeria') || !this.state.postData.landedPropertyCountry ? { display: 'none' } : { display: 'block' }}
+                            />
                             <select 
                               name="landedPropertyState" 
                               className="form-control w-100 col-md-3 mr-1"
                               onChange={this.handleChange}
-                              value={this.state.postData.landedPropertyState}
+															value={this.state.postData.landedPropertyState}
+															style={(this.state.postData.landedPropertyCountry !== '') && (this.state.postData.landedPropertyCountry !== null) && (this.state.postData.landedPropertyCountry !== 'Nigeria') ? { display: 'none'} : {} }
                             >
                               {
                                 states('States')
                               }
                             </select>
+														<input type="text" 
+                              name="landedPropertyLga" 
+                              className="form-control col-md-3 mr-1 custom-input-h"
+                              onChange={this.handleChange} 
+                              value={this.state.postData.landedPropertyLga}
+                              style={ (this.state.postData.landedPropertyCountry === 'Nigeria') || !this.state.postData.landedPropertyCountry ? { display: 'none' } : { display: 'block' }}
+                            />
                             <select 
                               name="landedPropertyLga" 
                               className="form-control w-100 col-md-3 mr-1"
                               onChange={this.handleChange} 
-                              value={this.state.postData.landedPropertyLGA}
+															value={this.state.postData.landedPropertyLga}
+															style={(this.state.postData.landedPropertyCountry !== '') && (this.state.postData.landedPropertyCountry !== null) && (this.state.postData.landedPropertyCountry !== 'Nigeria') ? { display: 'none'} : {} }
                             >
                               <option value="">LGA</option>
                               {
                                 this.getLGA(this.state.postData.landedPropertyState)
                               }
                             </select>
-                            <select 
+														<input 
+															type="text"
+                              name="landedPropertyCity" 
+                              className="form-control w-100 col-md-2 custom-input-h"
+                              onChange={this.handleChange}
+                              value={this.state.postData.landedPropertyCity} 
+                            />
+                            {/* <select 
                               name="landedPropertyCity" 
                               className="form-control w-100 col-md-2"
                               onChange={this.handleChange}
@@ -593,7 +657,7 @@ class Guarantor extends Component {
                               <option value="">City</option>
                               <option value="">Nigeria</option>
                               <option value="">Ghana</option>
-                            </select>
+                            </select> */}
                           </div>
                         </div>
                       </div>
@@ -619,28 +683,51 @@ class Guarantor extends Component {
                                 countries('Country')
                               }
                             </select>
+														<input type="text" 
+                              name="businessState" 
+                              className="form-control col-md-3 mr-1 custom-input-h"
+                              onChange={this.handleChange} 
+                              value={this.state.postData.businessState}
+                              style={ (this.state.postData.businessCountry === 'Nigeria') || !this.state.postData.businessCountry ? { display: 'none' } : { display: 'block' }}
+                            />
                             <select 
                               name="businessState" 
                               className="form-control w-100 col-md-3 mr-1"
                               onChange={this.handleChange}
-                              value={this.state.postData.businessState}
+															value={this.state.postData.businessState}
+															style={(this.state.postData.businessCountry !== '') && (this.state.postData.businessCountry !== null) && (this.state.postData.businessCountry !== 'Nigeria') ? { display: 'none'} : {} }
                             >
                               {
                                 states('States')
                               }
                             </select>
+														<input type="text" 
+                              name="businessLga" 
+                              className="form-control col-md-3 mr-1 custom-input-h"
+                              onChange={this.handleChange} 
+                              value={this.state.postData.businessLga}
+                              style={ (this.state.postData.businessCountry === 'Nigeria') || !this.state.postData.businessCountry ? { display: 'none' } : { display: 'block' }}
+                            />
                             <select 
                               name="businessLga" 
                               className="form-control w-100 col-md-3 mr-1"
                               onChange={this.handleChange} 
-                              value={this.state.postData.businessLGA}
+															value={this.state.postData.businessLga}
+															style={(this.state.postData.businessCountry !== '') && (this.state.postData.businessCountry !== null) && (this.state.postData.businessCountry !== 'Nigeria') ? { display: 'none'} : {} }
                             >
                               <option value="">LGA</option>
                               {
                                 this.getLGA(this.state.postData.businessState)
                               }
                             </select>
-                            <select 
+														<input
+															type="text" 
+                              name="businessCity" 
+                              className="form-control w-100 col-md-2 custom-input-h"
+                              onChange={this.handleChange}
+                              value={this.state.postData.businessCity} 
+                            />
+                            {/* <select 
                               name="businessCity" 
                               className="form-control w-100 col-md-2"
                               onChange={this.handleChange}
@@ -649,7 +736,7 @@ class Guarantor extends Component {
                               <option value="">City</option>
                               <option value="">Nigeria</option>
                               <option value="">Ghana</option>
-                            </select>
+                            </select> */}
                           </div>
                         </div>
                       </div>

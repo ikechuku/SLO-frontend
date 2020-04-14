@@ -310,11 +310,11 @@ class Employment extends Component {
             <div className="row">
 							<div className="col-12">
 								<div className="card">
-									<div className="card-header">
-									<div className="row">
+									<div className="card-header custom-header">
+									<div className="row col-12">
                     <h4 className="col col-md-6">Employment Information</h4>
                     <div className="col col-md-6 text-right">
-                      <h4 className="cursor-pointer" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</h4>
+                      <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</button>
                     </div>
                     </div>
 									</div>
