@@ -169,12 +169,14 @@ branchAddress(e) {
 
                                 	<label for="recipient-name" class="form-control-label">Region</label>
                                     <select value={this.state.region}  onChange={this.region}    class="form-control sel" id="exampleFormControlSelect1">
-                                        
-      <option value="nonex">Select Region</option>
-      <option value="RegionA">Region A</option>
-      <option value="RegionB">Region B</option>
-      <option value="RegionC">Region C</option>
-      <option value="RegionD">Region D</option>
+                                    
+      <option value="">Select Region</option>
+      <option value="North Central">North Central</option>
+      <option value="North East">North East</option>
+      <option value="North West">North West</option>
+      <option value="South East">South East</option>
+      <option value="South West">South West</option>
+      <option value="South South">South South</option>
     </select>
  
 								</form>

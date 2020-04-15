@@ -283,8 +283,12 @@ class Employment extends Component {
     if(this.props.location.direction === 'backward'){
       this.getFieldDetails();
       this.setState({...this.props.location.savedState});
+    }else if(this.props.location.direction === 'completeOnboarding'){
+      this.setState({ pageMode: 'completeOnboarding'});
+      this.getFieldDetails()
+    } else {
+      this.getFieldDetails()
     }
-    this.getFieldDetails()
 	}
 	
 	handleBackButton = () => {
@@ -313,7 +317,7 @@ class Employment extends Component {
 									<div className="card-header custom-header">
 									<div className="row col-12">
                     <h4 className="col col-md-6">Employment Information</h4>
-                    <div className="col col-md-6 text-right">
+                    <div className="col col-md-6 text-right" style={ this.state.pageMode === 'completeOnboarding' ? {display: 'none'} : {}}>
                       <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</button>
                     </div>
                     </div>

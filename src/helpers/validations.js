@@ -178,11 +178,33 @@ const validateD = (name, value) => {
     }
   }
 
+  if(name === 'noOfDependant'){
+    if(!(validation.isNumber(value))){
+      return {
+        error,
+        errorMessage: 'Number of dependants can only be positive integers'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
   if(name === 'dob'){
     if (value === '' || value === null || value === undefined ){
       return {
         error,
         errorMessage: 'Date of birth is required'
+      }
+    }
+
+    let today = new Date();
+    let newDob = new Date(value);
+    if(((today.getFullYear() - newDob.getFullYear()) < 16) || ((today.getFullYear() - newDob.getFullYear()) > 70)){
+      return {
+        error,
+        errorMessage: 'Date of birth cannot be less than 16 years and greater than 70 years'
       }
     }
 

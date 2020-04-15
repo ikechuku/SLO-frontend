@@ -33,6 +33,41 @@ class StaffList extends Component {
     }
   }
 
+  navigateToEdit = (e, id, onBoarding) => {
+    console.log(id, onBoarding)
+    if(parseInt(onBoarding) === 4){
+      return this.props.history.push({
+        pathname: `/create_staff/five/${id}`,
+        direction: 'completeOnboarding'
+      })
+    } else if(parseInt(onBoarding) === 3){
+      return this.props.history.push({
+        pathname: `/create_staff/four/${id}`,
+        direction: 'completeOnboarding'
+      })
+    }else if(parseInt(onBoarding) === 2){
+      return this.props.history.push({
+        pathname: `/create_staff/three/${id}`,
+        direction: 'completeOnboarding'
+      })
+    }else if(parseInt(onBoarding) === 1){
+      return this.props.history.push({
+        pathname: `/create_staff/two/${id}`,
+        direction: 'completeOnboarding'
+      })
+    } else {
+      return this.props.history.push({
+        pathname: '/',
+        direction: 'editUserOnboarding'
+      })
+    }
+    // return this.props.history.push({
+    //   pathname: `${this.props.location.backurl}`,
+    //   savedState: this.props.location.savedState,
+    //   direction: 'backward'
+    // })
+  }
+
   bodyRow = () => {
     const body = this.state.users.map((data, index) => (
       {
@@ -42,7 +77,7 @@ class StaffList extends Component {
         "startdate": <Moment format='MMM DD YYYY'>{data.createdAt}</Moment>,
         "status": `${data.applicationStatus}`,
         "action": <a><Link to={`/view_details/${data.id}`} className="add-more">View Details</Link>
-        <span className="ml-3 cursor-pointer">Edit</span></a>
+        <span className="ml-3 cursor-pointer" onClick={e => this.navigateToEdit(e, data.id, data.onBoarding)}>Edit</span></a>
       }
     ));
     return body;

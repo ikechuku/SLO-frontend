@@ -56,6 +56,7 @@ export default function EmploymentForm(props) {
             onChange={props.handlePrevious}
             value={props.previousEmployment.endDate}
           />
+          <span className="text-danger">{props.endDateErrorMssg3 !== null ? props.endDateErrorMssg3 : ''}</span>
         </div>
       </div>
       <div className="form-group row">

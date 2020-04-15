@@ -310,8 +310,9 @@ class Guarantor extends Component {
 	
 	componentDidMount(){
     if(this.props.location.direction === 'backward'){
-			console.log(this.props.location.savedState)
       this.setState({ moreData: this.props.location.savedState, pageMode: 'edit'});
+    } else if(this.props.location.direction === 'completeOnboarding'){
+      this.setState({ pageMode: 'completeOnboarding'});
     }
 	}
 
@@ -339,7 +340,7 @@ class Guarantor extends Component {
 									<div className="card-header custom-header">
 									<div className="row col-12">
                     <h4 className="col col-md-6">Guarantor Information</h4>
-                    <div className="col col-md-6 text-right">
+                    <div className="col col-md-6 text-right" style={ this.state.pageMode === 'completeOnboarding' ? {display: 'none'} : {}}>
                       <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</button>
                     </div>
                     </div>
@@ -567,7 +568,8 @@ class Guarantor extends Component {
                               name="residentialCity" 
                               className="form-control w-100 col-md-2 custom-input-h"
                               onChange={this.handleChange}
-                              value={this.state.postData.residentialCity} 
+															value={this.state.postData.residentialCity} 
+															placeholder="City"
                             />
                             {/* <select 
                               name="residentialCity" 
@@ -646,7 +648,8 @@ class Guarantor extends Component {
                               name="landedPropertyCity" 
                               className="form-control w-100 col-md-2 custom-input-h"
                               onChange={this.handleChange}
-                              value={this.state.postData.landedPropertyCity} 
+															value={this.state.postData.landedPropertyCity} 
+															placeholder="City"
                             />
                             {/* <select 
                               name="landedPropertyCity" 
@@ -725,7 +728,8 @@ class Guarantor extends Component {
                               name="businessCity" 
                               className="form-control w-100 col-md-2 custom-input-h"
                               onChange={this.handleChange}
-                              value={this.state.postData.businessCity} 
+															value={this.state.postData.businessCity}
+															placeholder="City" 
                             />
                             {/* <select 
                               name="businessCity" 

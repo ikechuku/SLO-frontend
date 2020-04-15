@@ -27,6 +27,7 @@ class PersonalInfo extends Component {
       errorMessage7: null,
       errorMessage8: null,
       errorMesage9: null,
+      errorMessage10: null
     }
   }
 
@@ -34,9 +35,16 @@ class PersonalInfo extends Component {
     const { data } = this.state;
     let details = e.target;
     console.log(details.value)
-    if(details.name === 'noOfDependent'){
-      data[e.target.name] = parseInt(e.target.value);
-      this.setState({ data });
+    if(details.name === 'noOfDependant'){
+      const isValidate = await validateD(e.target.name, e.target.value);
+      if(!isValidate.error){
+        this.setState({ 
+          errorMessage10: isValidate.errorMessage, 
+        })
+        return;
+      }
+      data[details.name] = parseInt(details.value);
+      this.setState({ data, errorMessage10: null });
 
     } else if(details.name === 'nationality'){
       const isValidate = await validateD(e.target.name, e.target.value);
@@ -254,19 +262,21 @@ class PersonalInfo extends Component {
       errorMessage6, 
       errorMessage7, 
       errorMessage8, 
-      errorMessage9
+      errorMessage9,
+      errorMessage10
     } = this.state;
 
-    console.log(errorMessage1)
-    if(errorMessage1 !== null || errorMessage2 !== null || errorMessage3 !== null || errorMessage4 !== null || errorMessage5 !== null || errorMessage6 !== null || errorMessage7 !== null || errorMessage8 !== null || errorMessage9 !== null ){
+    // console.log(errorMessage1)
+    if(errorMessage1 !== null || errorMessage2 !== null || errorMessage3 !== null || errorMessage4 !== null || errorMessage5 !== null || errorMessage6 !== null || errorMessage7 !== null || errorMessage8 !== null || errorMessage9 !== null || errorMessage10 !== null ){
       hideLoader()
       return NotificationManager.warning('Complete all required fields')
     }
 
 
-    try{
+
       // showLoader();
-      if(this.props.location.savedState){
+    if(this.state.pageMode === 'edit'){
+      try {
         const { userId } = this.state;
         const res = await httpPatch(`auth/edit_staff/${userId}`, this.state.data);
         if(res.code === 200){
@@ -279,7 +289,12 @@ class PersonalInfo extends Component {
             savedState: this.state
           });
         }
-      } else {
+      } catch(error){
+        hideLoader();
+        console.log(error)
+      }
+    } else {
+      try{
         const res = await httpPost('auth/create_staff', this.state.data);
         if(res.code === 201){
           hideLoader();
@@ -292,11 +307,10 @@ class PersonalInfo extends Component {
             direction: 'forward'
           });
         }
+      } catch (error){
+        hideLoader();
+        console.log(error)
       }
-      
-    } catch (error){
-      hideLoader();
-      console.log(error)
     }
   }
 
@@ -308,7 +322,7 @@ class PersonalInfo extends Component {
       return hideLoader();
     }
     try{
-      if(this.props.location.savedState){
+      if(this.state.pageMode === 'edit'){
         const { userId } = this.state;
         const res = await httpPatch(`auth/edit_staff/${userId}`, this.state.data);
         if(res.code === 201){
@@ -330,11 +344,17 @@ class PersonalInfo extends Component {
     }
   }
 
+  // componentDidMount(){
+  //   if(this.props.location.savedState){
+  //     this.setState({...this.props.location.savedState});
+  //   }
+  // }
+
   componentDidMount(){
-    if(this.props.location.savedState){
-      this.setState({...this.props.location.savedState});
+    if(this.props.location.direction === 'backward'){
+      this.setState({...this.props.location.savedState, pageMode: 'edit'});
     }
-  }
+	}
 
   getLGA = (state) => {
     const lga = getLga(state) || [];
@@ -415,7 +435,7 @@ class PersonalInfo extends Component {
                           <label>
                             <input type="radio"
                               name="gender" 
-                              className="minimal"
+                              className="minimal mr-2"
                               value="Male"
                               onChange={this.handleChange}
                               checked={this.state.data.gender === 'Male' ? true : ''}
@@ -425,7 +445,7 @@ class PersonalInfo extends Component {
 													<label style={{ paddingLeft: '10px'}}>
                             <input type="radio"
                               name="gender" 
-                              className="minimal"
+                              className="minimal mr-2"
                               value="Female"
                               onChange={this.handleChange}
                               checked={this.state.data.gender === 'Female' ? true : ''}
@@ -539,10 +559,11 @@ class PersonalInfo extends Component {
                           <input type="number" 
                             className="form-control"
                             name="noOfDependant"
-                            defaultValue={0}
-                            value={this.state.data.noOfDependant}
+                            defaultValue={this.state.data.noOfDependant === null ? this.state.data.noOfDependant : 0}
+                            // value={this.state.data.noOfDependant}
                             onChange={this.handleChange}
                           />
+                          <span className="text-danger">{this.state.errorMessage10 !== null ? this.state.errorMessage10 : ''}</span>
 												</div>
                       </div>
                       <div className="form-group row">
@@ -619,6 +640,7 @@ class PersonalInfo extends Component {
                               className="form-control w-100 col-md-2 custom-input-h"
                               onChange={this.handleChange}
                               value={this.state.data.currentCity} 
+                              placeholder="City"
                             />
                             {/* <select 
                               name="currentCity" 
@@ -707,6 +729,7 @@ class PersonalInfo extends Component {
                               className="form-control col-md-2 custom-input-h"
                               onChange={this.handleChange}
                               value={this.state.data.permanentCity} 
+                              placeholder="City"
                             />
                             {/* <select 
                               name="permanentCity" 

@@ -26,6 +26,7 @@ class Qualification extends Component {
       showDropDown: false,
       endDateErrorMssg: null,
       endDateErrorMssg2: null,
+      endDateErrorMssg3: null,
       pageMode: 'create',
     }
   }
@@ -35,19 +36,20 @@ class Qualification extends Component {
     let details = e.target;
     //console.log(`${[e.target.name]}: ${e.target.value}`);
     if(e.target.name === 'endDate'){
-      const isValidate = await validateQualification(e.target.name, e.target.value, this.state.qualification.startDate);
+      qualification[details.name] = details.value;
+      this.setState({ 
+        qualification
+      })
+      const isValidate = await validateQualification(e.target.name, this.state.qualification.endDate, this.state.qualification.startDate);
       if(!isValidate.error){
         this.setState({ 
           endDateErrorMssg: isValidate.errorMessage, 
         })
         // console.log(isValidate.errorMessage)
         return;
+      } else {
+        this.setState({ endDateErrorMssg: null })
       }
-      qualification[details.name] = details.value;
-      this.setState({ 
-        qualification,
-        endDateErrorMssg: null 
-      })
     }
     qualification[details.name] = details.value;
     qualification['type'] = 'qualification';
@@ -63,19 +65,20 @@ class Qualification extends Component {
       certification['type'] = 'certification';
       this.setState({ certification, showDropDown: !this.state.showDropDown });
     } else if(details.name === 'endDate'){
-      const isValidate = await validateQualification(e.target.name, e.target.value, this.state.certification.startDate);
+      certification[details.name] = details.value;
+      this.setState({ 
+        certification
+      })
+      const isValidate = await validateQualification(e.target.name, this.state.certification.endDate, this.state.certification.startDate);
       if(!isValidate.error){
         this.setState({ 
           endDateErrorMssg2: isValidate.errorMessage, 
         })
         // console.log(isValidate.errorMessage)
         return;
+      } else {
+        this.setState({ endDateErrorMssg2: null })
       }
-      certification[details.name] = details.value;
-      this.setState({ 
-        certification,
-        endDateErrorMssg2: null 
-      })
     } else {
       certification[details.name] =details.value;
       this.setState({ certification, showDropDown: false });
@@ -141,10 +144,27 @@ class Qualification extends Component {
     
   }
 
-  handlePrevious = (e) => {
+  handlePrevious = async (e) => {
     const { previousEmployment } = this.state;
+    let details = e.target;
+    if(details.name === 'endDate'){
+      previousEmployment[details.name] = details.value;
+      this.setState({ 
+        previousEmployment
+      })
+      const isValidate = await validateQualification(e.target.name, this.state.previousEmployment.endDate, this.state.previousEmployment.startDate);
+      if(!isValidate.error){
+        this.setState({ 
+          endDateErrorMssg3: isValidate.errorMessage, 
+        })
+        // console.log(isValidate.errorMessage)
+        return;
+      } else {
+        this.setState({ endDateErrorMssg3: null })
+      }
+    }
     //console.log(`${[e.target.name]}: ${e.target.value}`);
-    previousEmployment[e.target.name] = e.target.value;
+    previousEmployment[details.name] = details.value;
     this.setState({ previousEmployment });
   }
 
@@ -190,6 +210,8 @@ class Qualification extends Component {
   componentDidMount(){
     if(this.props.location.direction === 'backward'){
       this.setState({...this.props.location.savedState, pageMode: 'edit'});
+    } else if(this.props.location.direction === 'completeOnboarding'){
+      this.setState({ pageMode: 'completeOnboarding'});
     }
 	}
 
@@ -307,8 +329,9 @@ class Qualification extends Component {
 									<div className="card-header custom-header">
                     <div className="row col-12">
                     <h4 className="col col-md-6">Qualification and Experience</h4>
-                    <div className="col col-md-6 text-right">
-                      <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</button>
+                    <div className="col col-md-6 text-right" style={ this.state.pageMode === 'completeOnboarding' ? {display: 'none'} : {}}>
+                      <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}>
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i>Back</button>
                     </div>
                     </div>
 									</div>
@@ -369,7 +392,8 @@ class Qualification extends Component {
                         <EmploymentForm 
                           handlePrevious={this.handlePrevious}
                           addMorePrevious={this.addMorePrevious}
-                          previousEmployment={this.state.previousEmployment} 
+                          previousEmployment={this.state.previousEmployment}
+                          endDateErrorMssg3={this.state.endDateErrorMssg3}
                         />
                         <div className="col-md-6" style={!this.state.morePrevious.length ? { display: "none"} : {}}>
                         <table id="example1" class="table table-striped table-bordered border-t0 text-nowrap w-100" >

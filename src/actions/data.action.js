@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { NotificationManager } from 'react-notifications';
 import { showLoader, hideLoader } from '../helpers/loader';
 
 let baseUrl = 'https://slo-server.herokuapp.com/api/'
@@ -14,7 +15,9 @@ export const httpPost = async (url, postBody) => {
     });
     return data;
   } catch (error){
-    return error
+    hideLoader()
+    // return error
+    NotificationManager.error((error.response.data.message) || ('Something went wrong. Please retry.'),'Opps!',3000)
   }
 };
 
@@ -25,7 +28,9 @@ export const httpPatch = async (url, postBody) => {
     });
     return data;
   } catch (error){
-    return error
+    hideLoader()
+    // return error
+    NotificationManager.error((error.response.data.message) || ('Something went wrong. Please retry.'),'Opps!',3000)
   }
 };
 
@@ -36,7 +41,9 @@ export const httpDelete = async (url, postBody) => {
     });
     return data;
   } catch (error){
-    return error
+    hideLoader()
+    // return error
+    NotificationManager.error((error.response.data.message) || ('Something went wrong. Please retry.'),'Opps!',3000)
   }
 };
 
@@ -49,7 +56,8 @@ export const httpGet = async (url) => {
     return data;
   } catch (error){
     hideLoader()
-    return error;
+    // return error;
+    NotificationManager.error((error.response.data.message) || ('Something went wrong. Please retry.'),'Opps!',3000)
   }
 };
 
@@ -60,6 +68,8 @@ export const httpPostFormData = async (url, postBody) => {
     });
     return data;
   } catch (error){
-    return error
+    hideLoader()
+    // return error
+    NotificationManager.error((error.response.data.message) || ('Something went wrong. Please retry.'),'Opps!',3000)
   }
 };
