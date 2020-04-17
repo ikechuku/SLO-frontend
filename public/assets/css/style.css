@@ -2147,7 +2147,7 @@ a.dropdown-item.has-icon, a.dropdown-item.has-icon i{
 }
 .custom-select, .form-control[type="color"], select.form-control:not([size]):not([multiple]) {
 	/* height: calc(2.25rem + 10px); */
-	height: calc(2.25rem + -4px);
+	height: calc(2.25rem + 2px);
 }
 
 .dataTables_wrapper .dataTables_length select {

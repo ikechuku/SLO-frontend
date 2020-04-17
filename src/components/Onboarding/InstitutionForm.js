@@ -9,7 +9,8 @@ export default function InstitutionForm(props) {
       <div className="form-group row">
         <label for="inputName" className="col-md-5 col-form-label">Institution Name</label>
         <div className="col-md-7">
-          <input type="text" 
+          <input type="text"
+            placeholder="University of Ibadan" 
             className="form-control"
             name="name"
             onChange={props.handleQualification}
@@ -41,7 +42,8 @@ export default function InstitutionForm(props) {
       <div className="form-group row">
         <label for="inputName" className="col-md-5 col-form-label">Course Studied</label>
         <div className="col-md-7">
-          <input type="text" 
+          <input type="text"
+            placeholder="Computer Enginering" 
             className="form-control"
             name="course"
             onChange={props.handleQualification}
@@ -58,6 +60,7 @@ export default function InstitutionForm(props) {
             onChange={props.handleQualification}
             value={props.qualification.startDate} 
           />
+          <span className="text-danger">{props.endDateErrorMssg5 !== null ? props.endDateErrorMssg5 : ''}</span>
         </div>
       </div>
       <div className="form-group row">
@@ -85,7 +88,8 @@ export default function InstitutionForm(props) {
     <div className="form-group row">
       <label for="inputName" className="col-md-5 col-form-label">Institution Name</label>
       <div className="col-md-7">
-        <input type="text" 
+        <input type="text"
+          placeholder="World Certification Institution" 
           className="form-control"
           name="name"
           onChange={props.handleCertification}
@@ -94,7 +98,19 @@ export default function InstitutionForm(props) {
       </div>
     </div>
     <div className="form-group row">
-      <label for="inputName" className="col-md-5 col-form-label">Certification</label>
+      <label for="inputName" className="col-md-5 col-form-label">Certification Name</label>
+      <div className="col-md-7">
+        <input type="text"
+          placeholder="CCNA" 
+          className="form-control"
+          name="certification"
+          onChange={props.handleCertification}
+          value={props.certification.certification} 
+        />
+      </div>
+    </div>
+    <div className="form-group row">
+      <label for="inputName" className="col-md-5 col-form-label">Category of certification</label>
       <div className="col-md-7">
         <CustomSelect 
           optionList={[
@@ -103,8 +119,8 @@ export default function InstitutionForm(props) {
             { value: 'OND', text: 'OND' , id: 3 },
           ]}
           handleChange={props.handleCertification}
-          name={'certification'}
-          value={props.certification.certification}
+          name={'categoryOfCertification'}
+          value={props.certification.categoryOfCertification}
           placeHolder='Select'
         />
 
@@ -133,6 +149,7 @@ export default function InstitutionForm(props) {
           onChange={props.handleCertification}
           value={props.certification.startDate} 
         />
+        <span className="text-danger">{props.endDateErrorMssg6 !== null ? props.endDateErrorMssg6 : ''}</span>
       </div>
     </div>
     <div className="form-group row">

@@ -23,3 +23,26 @@ export default function CustomSelect(props) {
     />
   )
 }
+
+
+export function CustomSelect2(props) {
+  return (
+    <Select2
+      name={props.name}
+      className="form-control"
+      multiple={false}
+      data={props.optionList}
+      // onOpen={() => console.log('onOpen')}
+      // onClose={() => console.log('onClose')}
+      // onSelect={() => console.log('onSelect')}
+      onChange={props.handleChange}
+      defaultValue={props.defaultValue}
+      value={props.value}
+      // onUnselect={() => console.log('onUnselect')}
+      options={{
+        placeholder: `${props.placeHolder}`,
+      }}
+      ref={props.inputRef}
+    />
+  )
+}

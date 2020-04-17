@@ -1,78 +1,120 @@
-import React, { Component } from 'react'
-import Layout from '../../layout/index'
-import DepartmentTable from './departmentTable'
-import  './departmentTable.css'
+import React, { Component } from 'react';
+import $ from 'jquery';
+import Layout from '../../layout/index';
+import DepartmentTable from './departmentTable';
+import  './departmentTable.css';
+import { DepartmentModal, EditDepartmentModal } from '../../Modals/Department';
+import { httpGet, httpPatch } from '../../../actions/data.action';
+import { showLoader, hideLoader } from '../../../helpers/loader';
 
 export default class department extends Component {
-    render() {
-        return (
-            <div>
+	constructor(){
+		super()
+		this.state = {
+			departments: [],
+			department: {
+				name: ''
+			},
+			currentEditId: null
+		}
+	}
 
-                <Layout page="departments">
+	getDepartments = async () => {
+		try{
+			showLoader()
+			const res = await httpGet('departments');
+			if(res.code === 200){
+				hideLoader();
+				this.setState({ departments: res.data.departments });
+			}
+		} catch(error){
+			console.log(error)
+		}
+	}
 
-                <div class="app-content">
-          <section class="section">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="#" class="text-muted">Home</a></li>
-              <li class="breadcrumb-item"><a href="#" class="text-muted">Performance</a></li>
-              <li class="breadcrumb-item active text-" aria-current="page">Branch</li>
-            </ol>
-                <div class="section-body">
-                <div class="row">
-                  
+	getSingleDepartment = async (id) => {
+		const res = await httpGet(`department/${id}`);
+		if(res.code === 200){
+			this.setState({ department: res.data.department, currentEditId: id });
+		}
+	}
+
+	handleEdit = (e) => {
+		console.log(e.target.value)
+		const { department } = this.state;
+		department[e.target.name] = e.target.value;
+		this.setState({ department });
+	}
+
+	handleUpdate = async() => {
+		console.log('updated')
+		showLoader();
+		const res = await httpPatch(`department/update/${this.state.currentEditId}`, this.state.department);
+		if(res.code === 200){
+			$('.modal').modal('hide');
+			$(document.body).removeClass('modal-open');
+			$('.modal-backdrop').remove();
+			this.getDepartments();
+			hideLoader();
+		}
+	}
+
+	componentDidMount(){
+		this.getDepartments();
+	}
+
+	render() {
+		console.log(this.state.department)
+		return (
+			<Layout page="departments">
+
+				<div class="app-content">
+					<section class="section">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="#" class="text-muted">Home</a></li>
+							<li class="breadcrumb-item"><a href="#" class="text-muted">Performance</a></li>
+							<li class="breadcrumb-item active text-" aria-current="page">Branch</li>
+						</ol>
+						<div class="section-body">
+							<div class="row">
+
 								<div class="col-lg-12">
-                                    
+														
 									<div class="card department-table-card">
 
-										<div class="card-body department-table">
-                                        <div class="card-header custom-header">
-                                        <button type="button" class="btn " data-toggle="modal" data-target="#exampleModal3">CREATE NEW</button>
-                                        {/* <div class="inputf">
-                                               <input placeholder="Input a Branch Name"/><button className="search-bt">Search</button>
-                                           </div> */}
+									<div class="card-body department-table">
+										<div class="card-header custom-header">
+										<button type="button" class="btn " data-toggle="modal" data-target="#createDepartment">CREATE NEW</button>
+										{/* <div class="inputf">
+														<input placeholder="Input a Branch Name"/><button className="search-bt">Search</button>
+												</div> */}
 										</div>
-											
-											<DepartmentTable/>
 
-										</div>
-									</div>
-								</div>
-                                </div>
-                                </div>
+										<DepartmentTable
+											departments={this.state.departments}
+											getSingleDepartment={this.getSingleDepartment}
+										/>
 
-                       
-                
-                    </section>
-                    </div>
-                    <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog"  aria-hidden="true">
-					<div class="modal-dialog" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="example-Modal3">CREATE NEW DEPARTMENT</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<form>
-									<div class="form-group">
-										<label for="recipient-name" class="form-control-label">DEPARTMENT NAME</label>
-										<input type="text" class="form-control" id="recipient-name"/>
 									</div>
-								
- 
-								</form>
 							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary">Create Now</button>
 							</div>
 						</div>
 					</div>
+
+						
+		
+				</section>
 				</div>
-                </Layout>
-                
-            </div>
-        )
-    }
+				
+				<DepartmentModal 
+				/>
+
+				<EditDepartmentModal
+					department={this.state.department}
+					handleEdit={this.handleEdit}
+					handleUpdate={this.handleUpdate} 
+				/>								
+			</Layout>
+		)
+	}
 }

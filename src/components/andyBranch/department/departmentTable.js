@@ -1,38 +1,38 @@
 import React, { Component } from 'react'
 
-export default class departmentTable extends Component {
-    render() {
-        return (
-            <div>
-                <div class="table-responsive">
-												<table class="table table-bordered table-hover mb-0 text-nowrap">
-													<tr>
-														<th>Department Nam</th>
-														<th>Actions</th>
-														
-													</tr>
-													<tr>
-													
-														<td>Finance</td>
-														
-														<td>
-                                                            <span class='edit'>Edit</span>
-                                                            <span class='del'>Delete</span>
-                                                        </td>
-													</tr>
-													<tr>
-													
-														<td>Human Resource</td>
-														
-														<td>
-                                                             <span class='edit'>Edit</span>
-                                                            <span class='del'>Delete</span>
-                                                        </td>
-													</tr>
-												
-												</table>
-											</div>
-            </div>
-        )
-    }
+const DepartmentTable = (props) => {
+
+	return (
+		<div>
+			<div class="table-responsive">
+				<table class="table table-bordered table-hover mb-0 text-nowrap">
+					<thead>
+						<tr>
+							<th>Department Nam</th>
+							<th>Actions</th>
+							
+						</tr>
+					</thead>
+					
+					<tbody>
+						{
+							props.departments.length ? props.departments.map(data => (
+								<tr>
+									<td>{data.name}</td>
+									<td>
+										<span class='edit' data-toggle="modal" data-target="#editDepartment" onClick={() => props.getSingleDepartment(data.id)}>Edit</span>
+										<span class='del'>Delete</span>
+									</td>
+								</tr>
+							)) : ''
+						}
+					</tbody>
+
+				</table>
+			</div>
+		</div>
+	)
 }
+
+export default DepartmentTable;
+

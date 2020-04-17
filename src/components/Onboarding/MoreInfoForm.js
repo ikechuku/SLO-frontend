@@ -4,8 +4,8 @@ export default function MoreInfoForm(props) {
   return (
     <div className="col col-md-10">
       <div className="form-group row">
-        <label for="inputName" className="col-md-7 pr-0 col-form-label">Do you object to us seeking any reference from any of your past employer</label>
-        <div className="col-md-4 pt-2">
+        <label for="inputName" className="col-md-5 pr-0 col-form-label">Do you object to us seeking any reference from any of your past employer</label>
+        <div className="col-md-7 pt-2">
           <label>
             <input type="radio" 
               name="objectReference"

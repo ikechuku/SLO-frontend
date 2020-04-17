@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import Layout from '../layout/index'
-import { httpPost, httpPatch } from '../../actions/data.action';
-import './style.css';
-import InstitutionForm from './InstitutionForm';
-import EmploymentForm from './EmploymentForm';
-import MoreInfoForm from './MoreInfoForm';
+import $ from 'jquery';
 import { NotificationManager } from 'react-notifications';
+import { httpPost, httpPatch } from '../../actions/data.action';
 import { hideLoader, showLoader } from '../../helpers/loader';
+import Layout from '../layout'
+import InstitutionTable from './InstitutionTable';
+import PreviousEmploymentTable from './PreviousEmploymentTable';
+import {QualificationModal, CertificationModal} from '../Modals/Institution';
 import { validateQualification, validateD } from '../../helpers/validations';
+import { PreviousEmploymentModal } from '../Modals/pEmploymentModal';
+import MoreInfoForm from './MoreInfoForm';
+
 
 class Qualification extends Component {
   constructor(props){
-    super(props);
+    super(props)
     this.state = {
       institution: {},
       qualification: {},
@@ -32,19 +34,23 @@ class Qualification extends Component {
       endDateErrorMssg6: null,
       endDateErrorMssg7: null,
       pageMode: 'create',
+      date1: new Date(),
+      date2: new Date(),
+      date3: new Date(),
+      date4: new Date(),
     }
   }
 
-  handleQualificationChange = async (e) => {
+  handleQualificationChange = (e, nameValue) => {
     const { qualification } = this.state;
-    let details = e.target;
+    let details = e !== null ? e.target : '';
     //console.log(`${[e.target.name]}: ${e.target.value}`);
-    if(e.target.name === 'endDate'){
-      qualification[details.name] = details.value;
+    if(nameValue === 'endDate'){
+      qualification[nameValue] = e;
       this.setState({ 
         qualification
       })
-      const isValidate = await validateQualification(e.target.name, this.state.qualification.endDate, this.state.qualification.startDate);
+      const isValidate = validateQualification(nameValue, this.state.qualification.endDate, this.state.qualification.startDate);
       if(!isValidate.error){
         this.setState({ 
           endDateErrorMssg: isValidate.errorMessage, 
@@ -54,12 +60,12 @@ class Qualification extends Component {
       } else {
         this.setState({ endDateErrorMssg: null })
       }
-    } else if(e.target.name === 'startDate'){
-      qualification[details.name] = details.value;
+    } else if(nameValue === 'startDate'){
+      qualification[nameValue] = e;
       this.setState({ 
         qualification
       })
-      const isValidate = await validateQualification(e.target.name, this.state.qualification.startDate );
+      const isValidate = validateQualification(nameValue, this.state.qualification.startDate );
       if(!isValidate.error){
         this.setState({ 
           endDateErrorMssg5: isValidate.errorMessage, 
@@ -69,26 +75,24 @@ class Qualification extends Component {
       } else {
         this.setState({ endDateErrorMssg5: null })
       }
+    } else {
+      qualification[details.name] = details.value;
+      qualification['type'] = 'qualification';
+      this.setState({ qualification });
     }
-    qualification[details.name] = details.value;
-    qualification['type'] = 'qualification';
-    this.setState({ qualification });
   }
 
-  handleCertificationChange = async (e) => {
+  handleCertificationChange = async (e, nameValue) => {
     const { certification } = this.state;
-    let details = e.target;
-    console.log(`${[e.target.name]}: ${e.target.value}`);
-    if(e.target.name === 'certification'){
-      certification[e.target.name] = e.target.value;
-      certification['type'] = 'certification';
-      this.setState({ certification, showDropDown: !this.state.showDropDown });
-    } else if(details.name === 'endDate'){
-      certification[details.name] = details.value;
+    let details = e !== null ? e.target : '';
+    // console.log(`${[e.target.name]}: ${e.target.value}`);
+    // const value = e !== null ? e : null;
+    if(nameValue === 'endDate'){
+      certification[nameValue] = e;
       this.setState({ 
         certification
       })
-      const isValidate = await validateQualification(e.target.name, this.state.certification.endDate, this.state.certification.startDate);
+      const isValidate = await validateQualification(nameValue, this.state.certification.endDate, this.state.certification.startDate);
       if(!isValidate.error){
         this.setState({ 
           endDateErrorMssg2: isValidate.errorMessage, 
@@ -98,12 +102,14 @@ class Qualification extends Component {
       } else {
         this.setState({ endDateErrorMssg2: null })
       }
-    } else if(e.target.name === 'startDate'){
-      certification[details.name] = details.value;
+      
+    } else if(nameValue === 'startDate'){
+      console.log(e)
+      certification[nameValue] = e;
       this.setState({ 
         certification
       })
-      const isValidate = await validateQualification(e.target.name, this.state.certification.startDate );
+      const isValidate = await validateQualification(nameValue, this.state.certification.startDate );
       if(!isValidate.error){
         this.setState({ 
           endDateErrorMssg6: isValidate.errorMessage, 
@@ -113,28 +119,32 @@ class Qualification extends Component {
       } else {
         this.setState({ endDateErrorMssg6: null })
       }
+
+    } else if(e.target.name === 'certification'){
+      certification[e.target.name] = e.target.value;
+      certification['type'] = 'certification';
+      this.setState({ certification, showDropDown: !this.state.showDropDown });
+
     } else {
-      certification[details.name] =details.value;
+      certification[details.name] = details.value;
       this.setState({ certification, showDropDown: false });
     }
 
   }
 
-  handleDropDown = (value) => {
-    // console.log(value)
-    const { certification } = this.state;
-    certification['certification'] = value;
-    certification['type'] = 'certification';
-    this.setState({ certification, showDropDown: !this.state.showDropDown});
-  }
-
-  handleShowDropDown = () => {
-    this.setState({ showDropDown: !this.state.showDropDown})
+  handleCustomSelect = (result, name) => {
+		const { certification } = this.state;
+		const value = result !== null ? result.value : '';
+  
+		certification[name] = value;
+		this.setState({ 
+			certification
+		});
   }
 
   addMore = (type) => {
     if(type === 'qualification'){
-      if(this.state.qualification.name === undefined || this.state.qualification.qualification === undefined || this.state.qualification.course === undefined || this.state.qualification.startDate === undefined || this.state.qualification.endDate === undefined ){
+      if(this.state.qualification.name === undefined  || this.state.qualification.name === ''  || this.state.qualification.qualification === undefined || this.state.qualification.qualification === '' || this.state.qualification.course === undefined || this.state.qualification.course === '' || this.state.qualification.startDate === undefined || this.state.qualification.startDate === '' || this.state.qualification.endDate === undefined || this.state.qualification.endDate === '' ){
         return NotificationManager.warning('All fields must be filled');
       }
 
@@ -150,6 +160,11 @@ class Qualification extends Component {
       this.setState({ 
         moreInstitution: [...this.state.moreInstitution, this.state.qualification], 
       });
+
+      $('.modal').modal('hide');
+      $(document.body).removeClass('modal-open');
+      $('.modal-backdrop').remove();
+
       this.setState({ 
         qualification: {
           name: '',
@@ -177,6 +192,11 @@ class Qualification extends Component {
       this.setState({ 
         moreInstitution: [...this.state.moreInstitution, this.state.certification], 
       });
+
+      $('.modal').modal('hide');
+      $(document.body).removeClass('modal-open');
+      $('.modal-backdrop').remove();
+
       this.setState({ 
         certification: {
           name: '',
@@ -186,8 +206,7 @@ class Qualification extends Component {
           endDate: ''
         } 
       });
-    }
-    
+    } 
     // this.showQualificationCard()
   }
 
@@ -195,18 +214,17 @@ class Qualification extends Component {
     this.setState({
       moreInstitution: this.state.moreInstitution.filter((interest,index) => index !== parseInt(value))
     });
-    
   }
 
-  handlePrevious = async (e) => {
+  handlePrevious = async (e, nameValue) => {
     const { previousEmployment } = this.state;
-    let details = e.target;
-    if(details.name === 'endDate'){
-      previousEmployment[details.name] = details.value;
+    let details = e !== null ? e.target : '';
+    if(nameValue === 'endDate'){
+      previousEmployment[nameValue] = e;
       this.setState({ 
         previousEmployment
       })
-      const isValidate = await validateQualification(e.target.name, this.state.previousEmployment.endDate, this.state.previousEmployment.startDate);
+      const isValidate = await validateQualification(nameValue, this.state.previousEmployment.endDate, this.state.previousEmployment.startDate);
       if(!isValidate.error){
         this.setState({ 
           endDateErrorMssg3: isValidate.errorMessage, 
@@ -216,12 +234,12 @@ class Qualification extends Component {
       } else {
         this.setState({ endDateErrorMssg3: null })
       }
-    } else if(e.target.name === 'startDate'){
-      previousEmployment[details.name] = details.value;
+    } else if(nameValue === 'startDate'){
+      previousEmployment[nameValue] = e;
       this.setState({ 
         previousEmployment
       })
-      const isValidate = await validateQualification(e.target.name, this.state.previousEmployment.startDate );
+      const isValidate = await validateQualification(nameValue, this.state.previousEmployment.startDate );
       if(!isValidate.error){
         this.setState({ 
           endDateErrorMssg7: isValidate.errorMessage, 
@@ -246,10 +264,11 @@ class Qualification extends Component {
       } else {
         this.setState({ endDateErrorMssg4: null })
       }
+    } else {
+      previousEmployment[details.name] = details.value;
+      this.setState({ previousEmployment });
     }
     //console.log(`${[e.target.name]}: ${e.target.value}`);
-    previousEmployment[details.name] = details.value;
-    this.setState({ previousEmployment });
   }
 
   addMorePrevious = () => {
@@ -269,6 +288,11 @@ class Qualification extends Component {
     this.setState({ 
       morePrevious: [...this.state.morePrevious, this.state.previousEmployment], 
     });
+
+    $('.modal').modal('hide');
+    $(document.body).removeClass('modal-open');
+    $('.modal-backdrop').remove();
+    
     this.setState({ previousEmployment: {
       employerName: '',
       address: '',
@@ -285,14 +309,10 @@ class Qualification extends Component {
   }
 
   handleMoreInfo = (e) => {
-    //console.log(`${[e.target.name]}: ${e.target.value}`);
     this.setState({ [e.target.name]: e.target.value });
   }
 
   handleBackButton = () => {
-    // console.log(this.props.location.savedState)
-    // return this.props.history.push(this.props.history.goBack())
-    // return this.props.history.push(this.props.location.backurl)
     return this.props.history.push({
       pathname: `${this.props.location.backurl}`,
       savedState: this.props.location.savedState,
@@ -403,8 +423,6 @@ class Qualification extends Component {
     
   }
 
-
-
   render() {
     return (
       <Layout>
@@ -415,6 +433,8 @@ class Qualification extends Component {
               <li class="breadcrumb-item"><a href="#" class="text-muted">Staff</a></li>
               <li class="breadcrumb-item active text-" aria-current="page">New Staff</li>
             </ol>
+
+
 
             <div className="row">
 							<div className="col-12">
@@ -429,126 +449,98 @@ class Qualification extends Component {
                     </div>
 									</div>
 									<div className="card-body">
+                    <h6 className="mb-4">Institution attended with date</h6>
+                    <InstitutionTable
+                      moreInstitution={this.state.moreInstitution}
+                      removeMore={this.removeMore}
+                    />
 
-                    <form className="form-horizontal" >
-                      <h6 className="mb-4">Institution attended with date</h6>
-                        <div className="row">
-                        <InstitutionForm 
-                          handleQualification={this.handleQualificationChange}
-                          handleCertification={this.handleCertificationChange}
-                          handleDropDown={this.handleDropDown}
-                          addMore={this.addMore}
-                          qualification={this.state.qualification}
-                          certification={this.state.certification}
-                          handleShowDropDown={this.handleShowDropDown}
-                          showDropDown={this.state.showDropDown}
-                          endDateErrorMssg={this.state.endDateErrorMssg}
-                          endDateErrorMssg2={this.state.endDateErrorMssg2}
-                          endDateErrorMssg5={this.state.endDateErrorMssg5}
-                          endDateErrorMssg6={this.state.endDateErrorMssg6}
-                        />
-                        <div class="table-responsive" style={!this.state.moreInstitution.length ? { display: "none"} : {}}>
-                          <table id="example1" class="col col-md-8 offset-md-2 table table-striped table-bordered border-t0 text-nowrap w-100" >
-                            <thead>
-                              <tr>
-                                {/* <th className="wd-15p">S/N</th> */}
-                                <th class="wd-15p">Name</th>
-                                <th class="wd-15p">Qualification/Certification</th>
-                                <th class="wd-25p"></th>
-                              </tr>
-                            </thead>
-                            <tbody>                                {
-                                this.state.moreInstitution.length ? this.state.moreInstitution.map((data, index) => (
-                                  <tr key={index}>
-                                    {/* <td>{index + 1}</td> */}
-                                    <td>{data.name}</td>
-                                    <td>{data.qualification || data.certification}</td>
-                                    <td>
-                                      <span className="add-more" onClick={() => this.removeMore(index)}>X</span>
-                                    </td>
-                                  </tr>
-                                )) : ''
-                                // : !this.state.moreInstitution.length && this.state.institution.name !== undefined ?
-                                //   <tr>
-                                //     <td>{this.state.institution.name}</td>
-                                //     <td>{this.state.institution.qualification || this.state.institution.certification}</td>
-                                //     <td>
-                                //       <span className="add-more">X</span>
-                                //     </td>
-                                //   </tr> : ''
-                              }
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
+                    <div class="card-header custom-header">
+                      <a class="add-link mr-3" data-toggle="modal" data-target="#qualificationModal">Add Qualification</a>
+                      <a  class="add-link" data-toggle="modal" data-target="#certificationModal">Add Certification</a>
+										</div>
 
-                      <h6 className="mb-4">Place of previous employment with date</h6>
-                      <div className="row">
-                        <EmploymentForm 
-                          handlePrevious={this.handlePrevious}
-                          addMorePrevious={this.addMorePrevious}
-                          previousEmployment={this.state.previousEmployment}
-                          endDateErrorMssg3={this.state.endDateErrorMssg3}
-                          endDateErrorMssg4={this.state.endDateErrorMssg4}
-                          endDateErrorMssg7={this.state.endDateErrorMssg7}
-                        />
-                        <div className="col-md-6" style={!this.state.morePrevious.length ? { display: "none"} : {}}>
-                        <table id="example1" class="table table-striped table-bordered border-t0 text-nowrap w-100" >
-                            <thead>
-                              <tr>
-                                {/* <th className="wd-15p">S/N</th> */}
-                                <th class="wd-15p">Employer name</th>
-                                <th class="wd-15p">Role</th>
-                                <th class="wd-25p"></th>
-                              </tr>
-                            </thead>
-                            <tbody>                                {
-                                this.state.morePrevious.length ? this.state.morePrevious.map((data, index) => (
-                                  <tr key={index}>
-                                    {/* <td>{index + 1}</td> */}
-                                    <td>{data.employerName}</td>
-                                    <td>{data.role}</td>
-                                    <td>
-                                      <span className="add-more" onClick={() => this.removeMorePrevious(index)}>X</span>
-                                    </td>
-                                  </tr>
-                                )) : ''
-                              }
-                              </tbody>
-                            </table>
-                        </div>
+
+                    <h6 className="mt-5 mb-3">Place of previous employment with date</h6>
+
+                    <PreviousEmploymentTable
+                      morePrevious={this.state.morePrevious}
+                      removeMorePrevious={this.removeMorePrevious}
+                    />
+
+                    <div class="card-header custom-header">
+                      <a class="add-link" data-toggle="modal" data-target="#employmentModal">Add</a>
+										</div>
+
+
+                    <h6 className="mt-5">Additional Information</h6>
+                    <div className="row">
+                      <MoreInfoForm 
+                        handleMoreInfo={this.handleMoreInfo}
+                        objectReference={this.state.objectReference}
+                        reasonForLeaving={this.state.reasonForLeaving}
+                        moreInfo={this.state.moreInfo} 
+                        erro
+                      />
+                    </div>
+
+                    <div class="form-group mb-0 mt-2 row justify-content-end">
+                      <div class="col-md-9">
+                        <button 
+                          type="submit"
+                          class="btn btn-info mr-5"
+                          // onClick={() => this.props.history.push('/create_staff/two')}
+                          onClick={this.handleSubmit}
+                        >NEXT</button>
+                        <button type="submit" class="btn btn-primary" onClick={this.handleSave}>SAVE</button>
                       </div>
+                    </div>
 
-                      <div className="row">
-                        <MoreInfoForm 
-                          handleMoreInfo={this.handleMoreInfo}
-                          objectReference={this.state.objectReference}
-                          reasonForLeaving={this.state.reasonForLeaving}
-                          moreInfo={this.state.moreInfo} 
-                          erro
-                        />
-                      </div>
-
-                      <div class="form-group mb-0 mt-2 row justify-content-end">
-												<div class="col-md-9">
-                          <button 
-                            type="submit"
-                            class="btn btn-info mr-5"
-                            // onClick={() => this.props.history.push('/create_staff/two')}
-                            onClick={this.handleSubmit}
-                          >NEXT</button>
-													<button type="submit" class="btn btn-primary" onClick={this.handleSave}>SAVE</button>
-												</div>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-
-
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+          
           </section>
         </div>
+
+        <QualificationModal
+          handleQualification={this.handleQualificationChange}
+          handleDropDown={this.handleDropDown}
+          addMore={this.addMore}
+          qualification={this.state.qualification}
+          handleShowDropDown={this.handleShowDropDown}
+          showDropDown={this.state.showDropDown}
+          endDateErrorMssg={this.state.endDateErrorMssg}
+          endDateErrorMssg2={this.state.endDateErrorMssg2}
+          endDateErrorMssg5={this.state.endDateErrorMssg5}
+          endDateErrorMssg6={this.state.endDateErrorMssg6}
+        />
+
+        <CertificationModal
+          handleCertification={this.handleCertificationChange}
+          handleCustomSelect={this.handleCustomSelect}
+          handleDropDown={this.handleDropDown}
+          addMore={this.addMore}
+          certification={this.state.certification}
+          handleShowDropDown={this.handleShowDropDown}
+          showDropDown={this.state.showDropDown}
+          endDateErrorMssg={this.state.endDateErrorMssg}
+          endDateErrorMssg2={this.state.endDateErrorMssg2}
+          endDateErrorMssg5={this.state.endDateErrorMssg5}
+          endDateErrorMssg6={this.state.endDateErrorMssg6}
+        />
+
+        <PreviousEmploymentModal 
+          handlePrevious={this.handlePrevious}
+          addMorePrevious={this.addMorePrevious}
+          previousEmployment={this.state.previousEmployment}
+          endDateErrorMssg3={this.state.endDateErrorMssg3}
+          endDateErrorMssg4={this.state.endDateErrorMssg4}
+          endDateErrorMssg7={this.state.endDateErrorMssg7}
+        />
       </Layout>
     )
   }

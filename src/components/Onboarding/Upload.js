@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { NotificationManager } from 'react-notifications';
 import { Link } from 'react-router-dom';
 import Layout from '../layout/index';
 import { httpPostFormData, httpDelete } from '../../actions/data.action';
@@ -91,6 +92,7 @@ class Upload extends Component {
       if(res.code === 201){
         hideLoader();
         // setState({ userId: res.data.id });
+        NotificationManager.success('Completed Successfully', 'Onboarding Status')
         return this.props.history.push('/staff_list');
       }
       console.log(res)

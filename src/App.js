@@ -2,7 +2,7 @@ import React from 'react';
 import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
 import { NotificationContainer } from 'react-notifications';
 import PersonalInfo from './components/Onboarding/PersonalInfo';
-import Qualification from './components/Onboarding/Qualification';
+import Qualification from './components/Onboarding/Qualification2';
 import Employment from './components/Onboarding/Employment';
 import Guarantor from './components/Onboarding/Guarantor';
 import Upload from './components/Onboarding/Upload';
@@ -13,9 +13,10 @@ import Branch from './components/andyBranch/branch/branch'
 import Department from './components/andyBranch/department/department'
 import Unit from './components/andyBranch/unit/unit'
 import JobType from './components/andyBranch/jobType/jobType'
-
+// import Testing from './components/testing';
 
 import 'react-notifications/lib/notifications.css';
+import "react-datepicker/dist/react-datepicker.css";
 
 // import "bootstrap/dist/css/bootstrap.css";
 
@@ -40,6 +41,7 @@ function App() {
           <Route path="/departments" component={Department} />
           <Route path="/units" component={Unit} />
           <Route path="/roles" component={JobType} />
+          {/* <Route path="/testing" component={Testing} /> */}
         
 
           

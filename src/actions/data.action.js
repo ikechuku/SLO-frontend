@@ -49,7 +49,6 @@ export const httpDelete = async (url, postBody) => {
 
 export const httpGet = async (url) => {
   try{
-    showLoader()
     const { data } = await axios.get(`${baseUrl}${url}`, {
       headers: { Authorization: localStorage.token }
     });
