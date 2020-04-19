@@ -13,7 +13,7 @@ export default class institutionTable extends Component {
 
 	render() {
 		return (
-      <div>
+      <div className="col col-md-12 ml-0 pl-0">
         <div class="table-responsive">
           <table class="table table-bordered table-hover mb-0 text-nowrap">
             <thead>
@@ -42,9 +42,9 @@ export default class institutionTable extends Component {
                   <tr key={index}>
                     <td>{data.name}</td>
                     <td>{data.type === 'qualification' ? (data.qualification + ' ' + `(${data.course})`) : (data.certification + ' ' + `(${data.categoryOfCertification})`)}</td>
-                <td>{<Moment format='MMM DD YYYY'>{data.startDate}</Moment>} {' to '} {<Moment format='MMM DD YYYY'>{data.endDate}</Moment>}</td>
+                <td>{<Moment format='MMM DD, YYYY'>{data.startDate}</Moment>} {' to '} {<Moment format='MMM DD, YYYY'>{data.endDate}</Moment>}</td>
                     <td>
-                      <span className="add-more" onClick={() => this.props.removeMore(index)}>X</span>
+                      <span className="add-more fa fa-close" onClick={() => this.props.removeMore(index)}></span>
                     </td>
                   </tr>
                 )) : ''

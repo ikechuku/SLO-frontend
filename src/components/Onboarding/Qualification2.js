@@ -437,14 +437,14 @@ class Qualification extends Component {
 
 
             <div className="row">
-							<div className="col-12">
+							<div className="col-10">
 								<div className="card">
 									<div className="card-header custom-header">
                     <div className="row col-12">
                     <h4 className="col col-md-6">Qualification and Experience</h4>
                     <div className="col col-md-6 text-right" style={ this.state.pageMode === 'completeOnboarding' ? {display: 'none'} : {}}>
                       <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}>
-                        <i class="fa fa-arrow-left" aria-hidden="true"></i>Back</button>
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button>
                     </div>
                     </div>
 									</div>
@@ -456,8 +456,8 @@ class Qualification extends Component {
                     />
 
                     <div class="card-header custom-header">
-                      <a class="add-link mr-3" data-toggle="modal" data-target="#qualificationModal">Add Qualification</a>
-                      <a  class="add-link" data-toggle="modal" data-target="#certificationModal">Add Certification</a>
+                      <a class="add-link mr-3" data-toggle="modal" data-target="#qualificationModal"><span className="fa fa-plus"></span> Add Qualification</a>
+                      <a  class="add-link" data-toggle="modal" data-target="#certificationModal"><span className="fa fa-plus"></span> Add Certification</a>
 										</div>
 
 
@@ -469,7 +469,7 @@ class Qualification extends Component {
                     />
 
                     <div class="card-header custom-header">
-                      <a class="add-link" data-toggle="modal" data-target="#employmentModal">Add</a>
+                      <a class="add-link" data-toggle="modal" data-target="#employmentModal"><span className="fa fa-plus"></span> Add Experience</a>
 										</div>
 
 
@@ -484,8 +484,8 @@ class Qualification extends Component {
                       />
                     </div>
 
-                    <div class="form-group mb-0 mt-2 row justify-content-end">
-                      <div class="col-md-9">
+                    <div class="form-group mb-0 mt-2 text-right">
+                      <div class="col-md-12">
                         <button 
                           type="submit"
                           class="btn btn-info mr-5"

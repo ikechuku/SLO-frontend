@@ -574,7 +574,7 @@ class PersonalInfo extends Component {
             </ol>
 
 						<div className="row">
-							<div className="col-12">
+							<div className="col-10">
 								<div className="card">
 									<div className="card-header">
 										<h4>Personal Information</h4>
@@ -584,7 +584,7 @@ class PersonalInfo extends Component {
                     <form className="form-horizontal" onSubmit={this.handleSubmit}>
 											<div className="form-group row">
 												<label for="inputName" className="col-md-2 col-form-label">First Name <span className="impt">*</span></label>
-												<div className="col-md-3">
+												<div className="col-md-4">
                           <input type="text" 
                             className="form-control"
                             name="firstName"
@@ -594,7 +594,7 @@ class PersonalInfo extends Component {
                           <span className="text-danger">{this.state.errorMessage1 !== null ? this.state.errorMessage1 : ''}</span>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Surname <span className="impt">*</span></label>
-                        <div className="col-md-3">
+                        <div className="col-md-4">
                           <input type="text" 
                             className="form-control"
                             name="lastName"
@@ -606,7 +606,7 @@ class PersonalInfo extends Component {
 											</div>
                       <div className="form-group row">
                         <label for="inputName" className="col-md-2 col-form-label">Middle Name</label>
-												<div className="col-md-3">
+												<div className="col-md-4">
                           <input type="text" 
                             className="form-control"
                             name="middleName"
@@ -616,7 +616,7 @@ class PersonalInfo extends Component {
                           <span className="text-danger">{this.state.errorMessage3 !== null ? this.state.errorMessage3 : ''}</span>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Email Address <span className="impt">*</span></label>
-                        <div className="col-md-3">
+                        <div className="col-md-4">
                           <input type="email" 
                             className="form-control"
                             name="email"
@@ -628,7 +628,7 @@ class PersonalInfo extends Component {
                       </div> 
 											<div className="form-group row">
                         <label for="inputName" className="col-md-2 col-form-label">Gender <span className="impt">*</span></label>
-												<div className="col-md-3">
+												<div className="col-md-4">
                           <label>
                             <input type="radio"
                               name="gender" 
@@ -653,7 +653,7 @@ class PersonalInfo extends Component {
                           <span className="text-danger">{this.state.errorMessage9 !== null ? this.state.errorMessage9 : ''}</span>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Date of Birth <span className="impt">*</span></label>
-                        <div className="col-md-3">
+                        <div className="col-md-4 c-date-picker">
                           {/* <input type="date" 
                             className="form-control"
                             name="dob"
@@ -673,7 +673,7 @@ class PersonalInfo extends Component {
                       </div>
                       <div className="form-group row">
                         <label for="inputName" className="col-md-2 col-form-label">Nationality <span className="impt">*</span></label>
-                        <div className="col-md-3">
+                        <div className="col-md-4">
                           {/* <select className="form-control select2 w-100" name="nationality" onChange={this.handleChange} defaultValue={this.state.data.nationality} required>
                             {
                               countries('Select Your Country')
@@ -689,7 +689,7 @@ class PersonalInfo extends Component {
                           <span className="text-danger">{this.state.errorMessage7 !== null ? this.state.errorMessage7 : ''}</span>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">State of Origin</label>
-												<div className="col-md-3">
+												<div className="col-md-4">
                           { this.getStateOption() }
                           {/* <select 
                             className="form-control w-100"
@@ -705,7 +705,7 @@ class PersonalInfo extends Component {
                       </div>
                       <div className="form-group row">
 												<label for="inputName" className="col-md-2 col-form-label">Mobile Phone <span className="impt">*</span></label>
-												<div className="col-md-3">
+												<div className="col-md-4">
                         <div class="input-group mb-3">
                           <div class="input-group-prepend select2-padding">
                             <select 
@@ -744,7 +744,7 @@ class PersonalInfo extends Component {
                           <span className="text-danger">{this.state.errorMessage5 !== null ? this.state.errorMessage5 : ''}</span>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Home Phone</label>
-                        <div className="col-md-3">
+                        <div className="col-md-4">
                         <div class="input-group mb-3">
                           <div class="input-group-prepend">
                             <select 
@@ -769,7 +769,7 @@ class PersonalInfo extends Component {
 											</div>
                       <div className="form-group row">
                         <label for="inputName" className="col-md-2 col-form-label">Marital Status</label>
-												<div className="col-md-3">
+												<div className="col-md-4">
                           <select className="form-control w-100"
                             name="maritalStatus" 
                             onChange={this.handleChange} 
@@ -783,7 +783,7 @@ class PersonalInfo extends Component {
 													</select>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Religion</label>
-                        <div className="col-md-3">
+                        <div className="col-md-4">
                         <CustomSelect
                           optionList={['Islam', 'Christianity']}
                           handleChange={this.handleChange}
@@ -805,7 +805,7 @@ class PersonalInfo extends Component {
                       </div>
                       <div className="form-group row">
 												<label for="inputName" className="col-md-2 col-form-label">No of dependants</label>
-												<div className="col-md-3">
+												<div className="col-md-4">
                           <input type="text" 
                             className="form-control"
                             name="noOfDependant"
@@ -817,8 +817,8 @@ class PersonalInfo extends Component {
 												</div>
                       </div>
                       <div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">Current Address <span className="impt">*</span></label>
-												<div className="col-md-3">
+												<label for="inputName" className="col-md-2 pr-0 col-form-label">Current Address <span className="impt">*</span></label>
+												<div className="col-md-4">
                           <input type="text" 
                             className="form-control"
                             name="currentAddress"
@@ -827,7 +827,7 @@ class PersonalInfo extends Component {
                           />
                           <span className="text-danger">{this.state.errorMessage11 !== null ? this.state.errorMessage11 : ''}</span>
 												</div>
-                        <div className="col-md-5">
+                        <div className="col-md-6 pr-0">
                           <div className="row">
 
                             <Select
@@ -885,7 +885,7 @@ class PersonalInfo extends Component {
                       </div>
                       <div className="form-group row">
 												<label for="inputName" className="col-md-2 col-form-label">Permanent Address</label>
-												<div className="col-md-3">
+												<div className="col-md-4">
                           <input type="text" 
                             className="form-control"
                             name="permanentAddress"
@@ -893,7 +893,7 @@ class PersonalInfo extends Component {
                             value={this.state.data.permanentAddress}
                           />
 												</div>
-                        <div className="col-md-5">
+                        <div className="col-md-6 pr-0">
                           <div className="row">
                             {/* <select 
                               name="permanentCountry" 
@@ -979,8 +979,8 @@ class PersonalInfo extends Component {
 												</div>
                       </div> */}
 
-                      <div className="form-group mb-0 mt-2 row justify-content-end">
-												<div className="col-md-9">
+                      <div className="form-group row mb-0 mt-2 text-right">
+												<div className="col-md-12">
                           <button 
                             type="submit"
                             className="btn btn-info mr-5"

@@ -3,9 +3,9 @@ import Moment from 'react-moment';
 
 export default function PreviousEmploymentTable(props) {
   return (
-    <div>
+    <div className="col col-md-12 ml-0 pl-0">
     <div className="table-responsive" >
-    <table id="example1" class="table table-striped table-bordered border-t0 text-nowrap w-100" >
+    <table id="example1" class="table table-hover table-bordered border-t0 text-nowrap w-100" >
         <thead>
           <tr>
             {/* <th className="wd-15p">S/N</th> */}
@@ -21,9 +21,9 @@ export default function PreviousEmploymentTable(props) {
                 {/* <td>{index + 1}</td> */}
                 <td>{data.employerName}</td>
                 <td>{data.role}</td>
-                <td>{<Moment format='MMM DD YYYY'>{data.startDate}</Moment>} {' to '} {<Moment format='MMM DD YYYY'>{data.endDate}</Moment>}</td>
+                <td>{<Moment format='MMM DD, YYYY'>{data.startDate}</Moment>} {' to '} {<Moment format='MMM DD, YYYY'>{data.endDate}</Moment>}</td>
                 <td>
-                  <span className="add-more" onClick={() => props.removeMorePrevious(index)}>X</span>
+                  <span className="add-more fa fa-close" onClick={() => props.removeMorePrevious(index)}></span>
                 </td>
               </tr>
             )) : ''

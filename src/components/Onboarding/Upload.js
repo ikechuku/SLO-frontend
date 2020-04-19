@@ -139,12 +139,12 @@ class Upload extends Component {
             </ol>
 
             <div className="row">
-							<div className="col-12">
+							<div className="col-10">
 								<div className="card">
 									<div className="card-header custom-header">
                   <div className="row col-12">
                     <h4 className="col col-md-6">Upload</h4>
-                    <div className="col col-md-6 text-right">
+                    <div className="col col-md-6 text-right pr-0">
                       <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</button>
                     </div>
                     </div>
@@ -170,8 +170,8 @@ class Upload extends Component {
                             <option value="businessCertificate">Business Certificate</option>
 													</select>
 												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Upload Document</label>
-                        <div className="col-md-3">
+                        <label for="inputName" className="col-md-3 col-form-label">Upload Document</label>
+                        <div className="col-md-4">
                           <input type="file" 
                             className="form-control" 
                             name="path"
@@ -187,7 +187,7 @@ class Upload extends Component {
 
 
                     <div>
-                    <div className="form-group row justify-content-center">
+                    <div className="form-group row ">
                         <div className="col-md-2">File Name* </div>
                         <div className="col-md-5 ml-0 pl-0">
                           <Link></Link>
@@ -198,7 +198,7 @@ class Upload extends Component {
                       {
                         this.state.documents.length ?
                           this.state.documents.map(data => (
-                            <div className="form-group row justify-content-center">
+                            <div className="form-group row">
                               <div className="col-md-2">{data.fileName}</div>
                               <div className="col-md-5 ml-0 pl-0">
                                 <a href={`${data.path}`} target="_blank">View document</a>
@@ -211,8 +211,8 @@ class Upload extends Component {
                     </div>
 
 
-                    <div class="form-group mb-0 mt-2 row justify-content-end">
-												<div class="col-md-9">
+                    <div class="form-group mb-0 mt-2 row text-right">
+												<div class="col-md-12">
                           <button 
                             type="submit"
                             class="btn btn-info mr-5"

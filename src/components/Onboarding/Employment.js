@@ -167,7 +167,8 @@ class Employment extends Component {
     }
 		postData[name] = value;
 		this.setState({ 
-			postData
+      postData,
+      errorMessage8: null 
 		});
   }
 
@@ -376,13 +377,13 @@ class Employment extends Component {
             </ol>
 
             <div className="row">
-							<div className="col-12">
+							<div className="col-10">
 								<div className="card">
 									<div className="card-header custom-header">
 									<div className="row col-12">
                     <h4 className="col col-md-6">Employment Information</h4>
-                    <div className="col col-md-6 text-right" style={ this.state.pageMode === 'completeOnboarding' ? {display: 'none'} : {}}>
-                      <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</button>
+                    <div className="col col-md-6 text-right pr-0" style={ this.state.pageMode === 'completeOnboarding' ? {display: 'none'} : {}}>
+                      <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button>
                     </div>
                     </div>
 									</div>
@@ -391,7 +392,7 @@ class Employment extends Component {
                     <form className="form-horizontal" >
 											<div className="form-group row">
 												<label for="inputName" className="col-md-2 col-form-label">Rank at Employment</label>
-												<div className="col-md-3">
+												<div className="col-md-4">
 													{/* <select className="form-control w-100" 
 														name="rankAtEmployment"
 														onChange={this.handleChange}
@@ -430,7 +431,7 @@ class Employment extends Component {
 													<span className="text-danger">{this.state.errorMessage1 !== null ? this.state.errorMessage1 : ''}</span>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Branch at Employment</label>
-												<div className="col-md-3">
+												<div className="col-md-4">
                         <Select
                           name="branchAtEmployment"
                           placeholder="Select"
@@ -454,7 +455,7 @@ class Employment extends Component {
 											</div>
                       <div className="form-group row">
 												<label for="inputName" className="col-md-2 col-form-label">Date of Resumption</label>
-												<div className="col-md-3 c-date-picker">
+												<div className="col-md-4 c-date-picker">
                           {/* <input 
                             type="date"
                             className="form-control w-100"
@@ -472,7 +473,7 @@ class Employment extends Component {
 													<span className="text-danger">{this.state.errorMessage2 !== null ? this.state.errorMessage2 : ''}</span>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Salary Amount</label>
-                        <div className="col-md-3">
+                        <div className="col-md-4">
 													<input type="text" 
 														className="form-control"
 														name="salaryAmount"
@@ -483,8 +484,8 @@ class Employment extends Component {
 												</div>
 											</div>
                       <div className="form-group row">
-                        <label for="inputName" className="col-md-2 col-form-label">Department/Unit</label>
-                        <div className="col-md-3">
+                        <label for="inputName" className="col-md-2 pr-0 col-form-label">Department/Unit</label>
+                        <div className="col-md-4">
                           <Select
                             name="unitAtEmployment"
                             placeholder="Select"
@@ -507,7 +508,7 @@ class Employment extends Component {
 													<span className="text-danger">{this.state.errorMessage5 !== null ? this.state.errorMessage5 : ''}</span>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Employee Number</label>
-                        <div className="col-md-3">
+                        <div className="col-md-4">
 													<input type="text" 
 														className="form-control"
 														name="employeeNumber"
@@ -520,7 +521,7 @@ class Employment extends Component {
 											</div>
                       <div className="form-group row">
 												<label for="inputName" className="col-md-2 col-form-label">Job Title</label>
-												<div className="col-md-3">
+												<div className="col-md-4">
                           <Select
                             name="jobTitle"
                             placeholder="Select"
@@ -543,7 +544,7 @@ class Employment extends Component {
 													<span className="text-danger">{this.state.errorMessage4 !== null ? this.state.errorMessage4 : ''}</span>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Skills</label>
-                        <div className="col-md-3">
+                        <div className="col-md-4">
 
                         {/* <Select2
                           name={'skills'}
@@ -653,8 +654,8 @@ class Employment extends Component {
 											</div>
 
 
-                      <div class="form-group mb-0 row justify-content-end" style={{ marginTop: '60px'}}>
-												<div class="col-md-9">
+                      <div class="form-group mb-0 row text-right" style={{ marginTop: '60px'}}>
+												<div class="col-md-12">
                           <button 
                             type="submit"
                             class="btn btn-info mr-5"
