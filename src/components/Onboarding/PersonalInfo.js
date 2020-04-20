@@ -804,7 +804,7 @@ class PersonalInfo extends Component {
 												</div>
                       </div>
                       <div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">No of dependants</label>
+												<label for="inputName" className="col-md-2 col-form-label">No of Dependants</label>
 												<div className="col-md-4">
                           <input type="text" 
                             className="form-control"
@@ -985,12 +985,12 @@ class PersonalInfo extends Component {
                             type="submit"
                             className="btn btn-info mr-5"
                             // onClick={() => this.props.history.push('/create_staff/two')}
-                            onClick={this.handleSubmit}
-                          >NEXT</button>
+                            onClick={this.handleSave}
+                          ><span className="fa fa-save"></span> SAVE</button>
                           <button type="submit" 
                             className="btn btn-primary"
-                            onClick={this.handleSave}
-                          >SAVE</button>
+                            onClick={this.handleSubmit}
+                          ><span className="fa fa-arrow-right"></span> NEXT</button>
 												</div>
 											</div>
 										</form>

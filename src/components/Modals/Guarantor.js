@@ -16,8 +16,8 @@ export const GuarantorModal = (props) => {
 					<div class="modal-dialog modal-lg" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="example-Modal3">CREATE NEW GUARANTOR</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<h5 class="modal-title" id="example-Modal3">{props.modalMode === 'create' ? 'ADD A GUARANTOR' : 'EDIT GUARANTOR DETAILS'}</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={props.closeModal}>
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
@@ -47,7 +47,8 @@ export const GuarantorModal = (props) => {
                       <div class="input-group-prepend select2-padding">
                         <Select
                             className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
-                            defaultValue={props.postData.homePhoneCode}
+                            // defaultValue={props.postData.homePhoneCode}
+                            value={props.customSelect2}
                             onChange={e => props.handleCustomSelect(e, 'homePhoneCode')}
                             options={countryCodes}
                             isSearchable="true"
@@ -98,7 +99,8 @@ export const GuarantorModal = (props) => {
                         </select> */}
                         <Select
                           className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
-                          defaultValue={props.postData.mobilePhoneCode}
+                          // defaultValue={props.postData.mobilePhoneCode}
+                          value={props.customSelect1}
                           onChange={e => props.handleCustomSelect(e, 'mobilePhoneCode')}
                           options={countryCodes}
                           isSearchable="true"
@@ -141,7 +143,8 @@ export const GuarantorModal = (props) => {
                         <Select
                           // isClearable
                           className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
-                          defaultValue={props.postData.businessPhoneCode}
+                          // defaultValue={props.postData.businessPhoneCode}
+                          value={props.customSelect3}
                           onChange={e => props.handleCustomSelect(e, 'businessPhoneCode')}
                           options={countryCodes}
                           isSearchable="true"
@@ -161,7 +164,7 @@ export const GuarantorModal = (props) => {
                   </div>
                 </div>
                 <div className="form-group row">
-                <label for="inputName" className="col-md-3 col-form-label">Relationship with Employee</label>
+                <label for="inputName" className="col-md-3 col-form-label">Relationship</label>
                   <div className="col-md-3">
                     {/* <CustomSelect 
                       optionList={[
@@ -178,7 +181,8 @@ export const GuarantorModal = (props) => {
                     /> */}
                   <CreatableSelect
                     isClearable
-                    defaultValue={props.postData.relationship}
+                    // defaultValue={props.postData.relationship}
+                    value={props.customSelect4}
                     onChange={e => props.handleCustomSelect(e, 'relationship')}
                     options={[
                       { value: 'Family Friend', label: 'Family Friend' },
@@ -194,7 +198,8 @@ export const GuarantorModal = (props) => {
                   <div className="col-md-4">
                   <CreatableSelect
                     isClearable
-                    defaultValue={props.postData.occupation}
+                    // defaultValue={props.postData.occupation}
+                    value={props.customSelect5}
                     onChange={e => props.handleCustomSelect(e, 'occupation')}
                     options={[
                       { value: 'Civil Servant', label: 'Civil Servant' },
@@ -229,7 +234,8 @@ export const GuarantorModal = (props) => {
                       </select> */}
                       <Select
                         className="w-100 pr-0 pl-0 col-md-3 mr-1"
-                        defaultValue={props.postData.residentialCountry}
+                        // defaultValue={props.postData.residentialCountry}
+                        value={props.customSelect6}
                         onChange={e => props.handleCustomSelect(e, 'residentialCountry')}
                         options={countryLists}
                         isSearchable="true"
@@ -322,7 +328,8 @@ export const GuarantorModal = (props) => {
                       </select> */}
                       <Select
                         className="w-100 pr-0 pl-0 col-md-3 mr-1"
-                        defaultValue={props.postData.landedPropertyCountry}
+                        // defaultValue={props.postData.landedPropertyCountry}
+                        value={props.customSelect7}
                         onChange={e => props.handleCustomSelect(e, 'landedPropertyCountry')}
                         options={countryLists}
                         isSearchable="true"
@@ -416,7 +423,8 @@ export const GuarantorModal = (props) => {
                       </select> */}
                       <Select
                         className="w-100 pr-0 pl-0 col-md-3 mr-1"
-                        defaultValue={props.postData.businessCountry}
+                        // defaultValue={props.postData.businessCountry}
+                        value={props.customSelect8}
                         onChange={e => props.handleCustomSelect(e, 'businessCountry')}
                         options={countryLists}
                         isSearchable="true"
@@ -503,7 +511,7 @@ export const GuarantorModal = (props) => {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label for="inputName" className="col-md-5 col-form-label">How long have you known the employee</label>
+                  <label for="inputName" className="col-md-3 col-form-label">Duration of Relationship</label>
                   <div className="col-md-3">
                     {/* <input type="date" 
                       className="form-control"
@@ -525,7 +533,7 @@ export const GuarantorModal = (props) => {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label for="inputName" className="col-md-5 col-form-label">Has the employee been involved in any criminal matters?</label>
+                  <label for="inputName" className="col-md-3 col-form-label">Has the employee been involved in any criminal matters?</label>
                   <div className="col-md-5">
                     <label>
                       <input type="radio" 
@@ -565,8 +573,8 @@ export const GuarantorModal = (props) => {
 								</form>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-								<button  type="button" class="btn btn-primary" onClick={props.addMore}>Add</button>
+								<button type="button" class="btn btn-danger" data-dismiss="modal" onClick={props.closeModal}>Close</button>
+								<button  type="button" class="btn btn-primary" onClick={props.addMore}>{props.modalMode === 'create' ? 'ADD' : 'UPDATE'}</button>
 							</div>
 						</div>
 					</div>

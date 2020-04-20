@@ -94,3 +94,14 @@ input::placeholder {
 .add-link:hover {
   font-weight: bold;
 }
+
+.font-bold {
+  font-weight: 600!important;
+}
+
+
+@media (min-width: 992px) {
+  .modal-lg {
+    max-width: 850px !important;
+  }
+}

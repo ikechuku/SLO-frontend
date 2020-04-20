@@ -60,6 +60,41 @@ const validateQualification = (name, value, otherValue) => {
   }
 }
 
+const validatePreviousExperience = (name, value, otherValue) => {
+  let error = false;
+  if(name === 'endDate'){
+    if (new Date(value) < new Date(otherValue)) {
+      return {
+        error,
+        errorMessage: 'Invalid date, you can not select a day before start date'
+      }
+      
+    }
+
+    if (new Date(value) > new Date(Date.now())) {
+      return {
+        error,
+        errorMessage: 'Invalid date, you can not select a day after today'
+      }
+      
+    }
+  }
+
+  if(name === 'startDate'){
+    if (new Date(value) > new Date(Date.now())) {
+      return {
+        error,
+        errorMessage: 'Invalid date, you can only select a day before today'
+      }
+      
+    }
+  }
+
+  return {
+    error: true
+  }
+}
+
 
 const validateD = (name, value) => {
   let error = false;
@@ -677,7 +712,7 @@ const validateGuarantorFields = (name, value) => {
     let today = new Date();
     let newDob = new Date(value);
     console.log(('today', today.getDate()))
-    if((today.getFullYear() === newDob.getFullYear()) && (today.getDate() <= newDob.getDate())){
+    if((today.getFullYear() === newDob.getFullYear()) && (today.getMonth() <= newDob.getMonth()) && (today.getDate() <= newDob.getDate())){
       return {
         error,
         errorMessage: 'Date cannot be beyond today'
@@ -696,5 +731,6 @@ export {
   validateQualification,
   validateEmploymentInfoForm,
   validateEmpoymentFields,
-  validateGuarantorFields
+  validateGuarantorFields,
+  validatePreviousExperience
 }

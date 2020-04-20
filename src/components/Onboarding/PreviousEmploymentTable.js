@@ -23,7 +23,8 @@ export default function PreviousEmploymentTable(props) {
                 <td>{data.role}</td>
                 <td>{<Moment format='MMM DD, YYYY'>{data.startDate}</Moment>} {' to '} {<Moment format='MMM DD, YYYY'>{data.endDate}</Moment>}</td>
                 <td>
-                  <span className="add-more fa fa-close" onClick={() => props.removeMorePrevious(index)}></span>
+                  <a className="add-more mr-2" data-toggle="modal" data-target="#employmentModal" onClick={() => props.handleEdit(index, 'previousEmployment')}>edit</a>
+                  <a className="add-more" onClick={() => props.removeMorePrevious(index, data.id)}>delete</a>
                 </td>
               </tr>
             )) : ''

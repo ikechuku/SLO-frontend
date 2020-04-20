@@ -82,12 +82,12 @@ export default class ViewDetails extends Component {
             </ol>
 
             <div className="row">
-              <div className="col-12">
+              <div className="col-10">
                 <div className="card">
                   <div className="card-header">
                     <div className="row col-12">
                       <h4 className="col col-md-6"></h4>
-                      <div className="col col-md-6 text-right">
+                      <div className="col col-md-6 text-right pr-0">
                         <h4 className="">APPLICATION STATUS: <span className="text-warning">{user.applicationStatus === 'pending' ? 'Pending' : user.applicationStatus === 'approved' ? 'Approved' : 'Rejected'}</span></h4>
                       </div>
                     </div>
@@ -97,24 +97,39 @@ export default class ViewDetails extends Component {
                       <h4>PERSONAL INFORMATION</h4>
                       <div className="row">
                         <div className="col-md-6">
-                          <p>Full Name: {user.firstName + ' ' + user.middleName + ' ' + user.lastName}</p>
-                          <p>Birth Date: {<Moment format='MMM D,  YYYY'>{user.dob}</Moment>}</p>
-                          <p>Marital Status: {user.maritalStatus || ''}</p>
-                          <p>Address: {user.currentAddress}</p>
-                          <p>Email Address: {user.email || ''}</p>
+                          <p className="row">
+                            <span className="col-md-4 font-bold">Full Name:</span> <span className="col-md-8">{user.firstName + ' ' + user.middleName + ' ' + user.lastName}</span>
+                          </p>
+                          <p className="row">
+                            <span className="col-md-4 font-bold">Birth Date:</span> <span className="col-md-8">{<Moment format='MMM D,  YYYY'>{user.dob}</Moment>}</span>
+                          </p>
+                          <p className="row">
+                            <span className="col-md-4 font-bold">Marital Status:</span> <span className="col-md-8">{user.maritalStatus || ''}</span>
+                          </p>
+                          <p className="row">
+                            <span className="col-md-4 font-bold">Address:</span> <span className="col-md-8">{user.currentAddress} 
+                            <span style={!user.currentCity && !user.currentLga && !user.currentState && !user.currentCountry  ? {display: 'none'} : {}}>(<span style={!user.currentCity ? {display: 'none'} : {}}>{user.currentCity}, </span><span style={!user.currentLga ? {display: 'none'} : {}}>{user.currentLga}, </span><span style={!user.currentState ? {display: 'none'} : {}}>{user.currentState}, </span><span style={!user.currentCountry ? {display: 'none'} : {}}>{user.currentCountry}</span>)</span></span>
+                          </p>
+                          <p className="row">
+                            <span className="col-md-4 font-bold">Email Address:</span> <span className="col-md-8">{user.email || ''}</span>
+                          </p>
                         </div>
                         <div className="col-md-6">
-                          <p>State of origin: {user.stateOfOrigin} State</p>
-                          <p>Gender: {user.gender || ''}</p>
-                          <p>Nationality: {user.nationality || ''}</p>
-                          <p>Phone No: <span>{user.mobilePhone}</span > <span style={!user.homePhone ? {display: 'none'} : {}}>, {user.homePhone}</span> </p>
+                          <p className="row">
+                            <span className="col-md-4 font-bold">State of Origin:</span> <span className="col-md-8"> {user.stateOfOrigin} State</span></p>
+                          <p className="row">
+                            <span className="col-md-4 font-bold">Gender:</span> <span className="col-md-8"> {user.gender || ''}</span></p>
+                          <p className="row">
+                            <span className="col-md-4 font-bold">Nationality:</span> <span className="col-md-8"> {user.nationality || ''}</span></p>
+                          <p className="row">
+                            <span className="col-md-4 font-bold">Phone No:</span> <span className="col-md-8"> <span>{user.mobilePhoneCode + user.mobilePhone}</span > <span style={!user.homePhone ? {display: 'none'} : {}}>, {user.homePhoneCode + user.homePhone}</span> </span></p>
                         </div>
                       </div>
                     </div>
 
                     <div className="mt-5">
                       <h4>QUALIFICATIONS AND EXPERIENCE</h4>
-                      <p style={{ fontWeight: 'bold' }}>Institution attended with Dates</p>
+                      <p style={{ fontWeight: 'bold' }}>Institutions attended with Dates</p>
                         {/* <div className="row">
                         {
                           newEducationHistory.length ? newEducationHistory.map(data => (
@@ -129,9 +144,8 @@ export default class ViewDetails extends Component {
 
                         }
                         </div> */}
-
                         <div class="table-responsive">
-                          <table id="example1" class="col col-md-8 table table-striped table-bordered border-t0 text-nowrap w-100" >
+                          <table id="example1" class="col col-md-12 table table-hover table-bordered border-t0 text-nowrap w-100" >
                             <thead>
                               <tr>
                                 {/* <th className="wd-15p">S/N</th> */}
@@ -153,8 +167,9 @@ export default class ViewDetails extends Component {
                             </tbody>
                           </table>
                         </div>
+                        </div>
 
-                      <p style={{ fontWeight: 'bold' }}>Previous place of employment with date</p>
+                      <p style={{ fontWeight: 'bold' }}>Previous places of employment with date</p>
                       {/* <div className="row">
                         <div className="col-md-6">
                           <p>Company Name: Cocacola Company</p>
@@ -165,7 +180,7 @@ export default class ViewDetails extends Component {
                         </div>
                       </div> */}
                         <div class="table-responsive">
-                          <table id="example1" class="col col-md-8 table table-striped table-bordered border-t0 text-nowrap w-100" >
+                          <table id="example1" class="col col-md-12 table table-hover table-bordered border-t0 text-nowrap w-100" >
                             <thead>
                               <tr>
                                 {/* <th className="wd-15p">S/N</th> */}
@@ -188,27 +203,38 @@ export default class ViewDetails extends Component {
                               }
                             </tbody>
                           </table>
-                        </div>
-                    </div>
+                      </div>
 
 
                     <h4 className="mt-5">EMPLOYMENT INFORMATION</h4>
                       <div className="row">
                         <div className="col-md-6">
-                          <p>Rank at employment: {user.rankAtEmployment}</p>
-                          <p>Unit at Employment: {user.unitAtEmployment}</p>
-                          <p>Salary Amount: {<NumberFormat value={user.salaryAmount} displayType={'text'} thousandSeparator={true} />}</p>
-                          <p>Employee Number: {user.employeeNumber}</p>
-                          <p>No of dependants: {user.noOfDependant}</p>
-                          <p>Religion: {user.religion}</p>
+                          <p className="row">
+                            <span className="col-md-5 font-bold">Rank at employment:</span> <span className="col-md-7">{user.rankAtEmployment}</span></p>
+                          <p className="row">
+                            <span className="col-md-5 font-bold">Unit at Employment:</span> <span className="col-md-7">{user.unitAtEmployment}</span></p>
+                          <p className="row">
+                            <span className="col-md-5 font-bold">Salary Amount:</span> <span className="col-md-7">{<NumberFormat value={user.salaryAmount} displayType={'text'} thousandSeparator={true} />}</span></p>
+                          <p className="row">
+                            <span className="col-md-5 font-bold">Employee Number:</span> <span className="col-md-7">{user.employeeNumber}</span></p>
+                          <p className="row">
+                            <span className="col-md-5 font-bold">No of dependants:</span> <span className="col-md-7">{user.noOfDependant}</span></p>
+                          <p className="row">
+                            <span className="col-md-5 font-bold">Religion:</span> <span className="col-md-7">{user.religion}</span></p>
                         </div>
-                        <div className="col-md-6">
-                          <p>Date of resumption: {<Moment format='MMM D YYYY' value={user.dateOfResumption} />}</p>
-                          <p>Branch at employment: {user.branchAtEmployment}</p>
-                          <p>Job title: {user.jobTitle}</p>
-                          <p>Skills: {user.skills}</p>
-                          <p>Seek Reference: {!user.objectReference ? 'No' : 'YES' }</p>
-                          <p>Reason for leaving last employment: {user.reasonForLeaving}</p>
+                        <div className="col-md-6 pl-0">
+                          <p className="row">
+                            <span className="col-md-5 font-bold">Date of resumption:</span> <span className="col-md-7">{<Moment format='MMM D YYYY' value={user.dateOfResumption} />}</span></p>
+                          <p className="row">
+                            <span className="col-md-5 font-bold">Branch at employment:</span> <span className="col-md-7">{user.branchAtEmployment}</span></p>
+                          <p className="row">
+                            <span className="col-md-5 font-bold">Job title:</span> <span className="col-md-7">{user.jobTitle}</span></p>
+                          <p className="row">
+                            <span className="col-md-5 font-bold">Skills:</span> <span className="col-md-7">{user.skills}</span></p>
+                          <p className="row">
+                            <span className="col-md-5 font-bold">Seek Reference:</span> <span className="col-md-7">{!user.objectReference ? 'No' : 'YES' }</span></p>
+                          <p className="row">
+                            <span className="col-md-5 font-bold">Reason for leaving last employment:</span> <span className="col-md-7">{user.reasonForLeaving}</span></p>
                         </div>
                       </div>
                       {/* <a className="add-more">View More</a> */}
@@ -237,7 +263,7 @@ export default class ViewDetails extends Component {
                       <a className="add-more">View More</a> */}
 
                       <div class="table-responsive">
-                        <table id="example1" class="col col-md-8 table table-striped table-bordered border-t0 text-nowrap w-100" >
+                        <table id="example1" class="col col-md-8 table table-hover table-bordered border-t0 text-nowrap w-100" >
                           <thead>
                             <tr>
                               {/* <th className="wd-15p">S/N</th> */}
@@ -262,14 +288,29 @@ export default class ViewDetails extends Component {
                                   <td>{data.firstName + ' ' + data.middleName + ' ' + data.lastName}</td>
                                   <td>{data.occupation}</td>
                                   <td>{data.relationship}</td>
-                                  <td>{data.homePhone}</td>
-                                  <td>{data.mobilePhone}</td>
+                                  <td>{data.homePhoneCode + data.homePhone}</td>
+                                  <td>{data.mobilePhoneCode + data.mobilePhone}</td>
                                   <td>{data.maritalStatus}</td>
                                   <td>{!data.criminalHistory ? 'No' : 'Yes'}</td>
                                   <td>{<Moment fromNow ago>{data.employeeKnownDate}</Moment>}</td>
-                                  <td>{data.residentialAddress}</td>
-                                  <td>{data.landedPropertyAddress}</td>
-                                  <td>{data.businessAddress}</td>
+                                  <td>{data.residentialAddress}
+                                    <span style={!data.residentialCity && !data.currentLga && !data.residentialState && !data.residentialCountry  ? {display: 'none'} : {}}>(<span style={!data.residentialCity ? {display: 'none'} : {}}>{data.residentialCity}, </span>
+                                    <span style={!data.residentialLga ? {display: 'none'} : {}}>{data.residentialLga}, </span>
+                                    <span style={!data.residentialState ? {display: 'none'} : {}}>{data.residentialState},</span>
+                                    <span style={!data.residentialCountry ? {display: 'none'} : {}}>{user.residentialCountry}</span>)</span>
+                                  </td>
+                                  <td>{data.landedPropertyAddress}
+                                    <span style={!data.landedPropertyCity && !data.landedPropertyLga && !data.landedPropertyState && !data.landedPropertyCountry  ? {display: 'none'} : {}}>(<span style={!data.landedPropertyCity ? {display: 'none'} : {}}>{data.landedPropertyCity}, </span>
+                                    <span style={!data.landedPropertyLga ? {display: 'none'} : {}}>{data.landedPropertyLga},</span>
+                                    <span style={!data.landedPropertyState ? {display: 'none'} : {}}> {data.landedPropertyState}</span>
+                                    <span style={!data.landedPropertyCountry ? {display: 'none'} : {}}>, {data.landedPropertyCountry}</span>)</span>
+                                  </td>
+                                  <td>{data.businessAddress}
+                                    <span style={!data.businessCity && !data.businessLga && !data.businessState && !data.businessCountry  ? {display: 'none'} : {}}>(<span style={!data.businessCity ? {display: 'none'} : {}}>{data.businessCity}, </span>
+                                    <span style={!data.businessLga ? {display: 'none'} : {}}>{data.businessLga}</span>
+                                    <span style={!data.businessState ? {display: 'none'} : {}}>, {data.businessState}</span>
+                                    <span style={!data.businessCountry ? {display: 'none'} : {}}>, {data.businessCountry}</span>)</span>
+                                  </td>
                                   <td>{data.details}</td>
                                 </tr>
                               )) : ''
@@ -282,15 +323,18 @@ export default class ViewDetails extends Component {
 
                       
 
-                      <div class="row mt-3">
-                          <div className="col-md-6 mr-5 text-right cursor-pointer" onClick={e => this.handleStatus(e, 'approved')}>
-                            <span className="fa fa-check-square-o"></span>APPROVE
-                          </div>
-                          <div className="cursor-pointer" onClick={e => this.handleStatus(e, 'rejected')}>
-                            <span className="fa fa-ban text-danger"></span>
-                            DECLINE
-                          </div>
+                      <div class="row mt-3 text-right">
 													
+                          <div class="col-md-12">
+                          <button 
+                            type="submit"
+                            class="btn btn-info mr-5"
+														onClick={e => this.handleStatus(e, 'rejected')}
+                          ><span className="fa fa-ban"></span> DECLINE</button>
+													<button type="submit" class="btn btn-primary" onClick={e => this.handleStatus(e, 'approved')}><span className="fa fa-check-square-o"></span> APPROVE</button>
+												</div>
+
+
 											</div>
 
 

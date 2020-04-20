@@ -13,10 +13,11 @@ import Branch from './components/andyBranch/branch/branch'
 import Department from './components/andyBranch/department/department'
 import Unit from './components/andyBranch/unit/unit'
 import JobType from './components/andyBranch/jobType/jobType'
-// import Testing from './components/testing';
+// import Testing from './components/testing3';
 
 import 'react-notifications/lib/notifications.css';
 import "react-datepicker/dist/react-datepicker.css";
+import 'react-tooltip/dist/index.js'
 
 // import "bootstrap/dist/css/bootstrap.css";
 

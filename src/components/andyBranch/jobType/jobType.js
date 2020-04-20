@@ -1,9 +1,38 @@
-import React, { Component } from 'react'
-import Layout from '../../layout/index'
-import JobTypeTable from './jobTypeTable'
+import React, { Component } from 'react';
+import Layout from '../../layout/index';
+import JobTypeTable from './jobTypeTable';
+import {httpPost, httpGet, httpDelete } from '../../../actions/data.action';
+import { hideLoader, showLoader } from '../../../helpers/loader';
 // import  './departmentTable.css'
 
 export default class jobType extends Component {
+    constructor(){
+		super();
+		this.state = {
+			roles: []
+		}
+	}
+
+	componentDidMount(){
+    this.getRoles()
+  }
+
+  getRoles = async () => {
+    try{
+	  const res = await httpGet('roles');
+	  showLoader()
+      if(res.code === 200){
+				console.log(res.data.roles);
+        this.setState({ roles: res.data.roles})
+        hideLoader()
+      }
+    
+    } catch (error){
+      hideLoader()
+      console.log(error)
+    }
+		
+  }
     render() {
         return (
             <div>
@@ -32,7 +61,9 @@ export default class jobType extends Component {
                                            </div>
 										</div>
 											
-											<JobTypeTable/>
+											<JobTypeTable
+												roles={this.state.roles}
+											/>
 
 										</div>
 									</div>

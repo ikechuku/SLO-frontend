@@ -8,8 +8,8 @@ export const PreviousEmploymentModal = (props) => {
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="example-Modal3">CREATE NEW WORK EXPERIENCE</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<h5 class="modal-title" id="example-Modal3">{props.modalMode === 'create' ? 'ADD NEW WORK EXPERIENCE' : 'EDIT WORK EXPERIENCE'}</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={props.closeModal}>
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
@@ -69,6 +69,7 @@ export const PreviousEmploymentModal = (props) => {
                         dateFormat="yyyy/MM/dd"
                         placeholderText="Click to select a date"
                       />
+                      <br/>
                       <span className="text-danger">{props.endDateErrorMssg7 !== null ? props.endDateErrorMssg7 : ''}</span>
                     </div>
                   </div>
@@ -88,6 +89,7 @@ export const PreviousEmploymentModal = (props) => {
                         dateFormat="yyyy/MM/dd"
                         placeholderText="Click to select a date"
                       />
+                      <br/>
                       <span className="text-danger">{props.endDateErrorMssg3 !== null ? props.endDateErrorMssg3 : ''}</span>
                     </div>
                   </div>
@@ -96,8 +98,12 @@ export const PreviousEmploymentModal = (props) => {
 								</form>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-								<button  type="button" class="btn btn-primary" onClick={props.addMorePrevious}>Add</button>
+								<button type="button" class="btn btn-danger" data-dismiss="modal" onClick={props.closeModal}>Close</button>
+                <button  
+                  type="button" 
+                  class="btn btn-primary" 
+                  onClick={props.addMorePrevious}
+                >{props.modalMode === 'create' ? 'ADD' : 'UPDATE'}</button>
 							</div>
 						</div>
 					</div>

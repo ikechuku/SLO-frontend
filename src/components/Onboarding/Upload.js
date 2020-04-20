@@ -57,8 +57,10 @@ class Upload extends Component {
       if(res.code === 201){
         hideLoader();
         this.setState({ 
-          documents: [...this.state.documents, res.data.upload ]
+          documents: [...this.state.documents, res.data.upload ],
+          fileName: ''
       });
+      this.refs.path.value = '';
       }
     }catch(error){
       hideLoader();
@@ -145,7 +147,7 @@ class Upload extends Component {
                   <div className="row col-12">
                     <h4 className="col col-md-6">Upload</h4>
                     <div className="col col-md-6 text-right pr-0">
-                      <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</button>
+                      <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button>
                     </div>
                     </div>
 									</div>
@@ -157,7 +159,8 @@ class Upload extends Component {
 												<div className="col-md-3">
                           <select 
                             className="form-control w-100"
-                            name='fileName' 
+                            name='fileName'
+                            value={this.state.fileName} 
                             onChange={this.handleChange}
                           >
                             <option value="">Select File</option>
@@ -175,6 +178,7 @@ class Upload extends Component {
                           <input type="file" 
                             className="form-control" 
                             name="path"
+                            ref='path'
                             onChange={this.upload}
                           />
 												</div>
@@ -182,11 +186,36 @@ class Upload extends Component {
                     </form>
 
                     <br/>
-                    <br/>
-                    <br/>
 
+                    <div className="col col-md-12 pr-0 pl-0">
+                      <div class="table-responsive">
+                        <table class="table table-bordered table-hover mb-0 text-nowrap">
+                          <thead>
+                          <tr>
+                            {/* <th className="wd-15p">S/N</th> */}
+                            <th class="wd-15p">File Name</th>
+                            <th class="wd-15p"></th>
+                            <th class="wd-25p"></th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                              {
+                                this.state.documents.length ?
+                                  this.state.documents.map(data => (
+                                    <tr>
+                                      <td>{data.fileName}</td>
+                                      <td>{<a href={`${data.path}`} target="_blank">View document</a>}</td>
+                                      <td><a className="ml-3 text-danger" onClick={() => this.deleteDoc(data.id)} style={{ cursor: 'pointer' }}>Delete</a></td>
+                                    </tr>
+                                  )) : ''
+                              }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                      
 
-                    <div>
+                    {/* <div>
                     <div className="form-group row ">
                         <div className="col-md-2">File Name* </div>
                         <div className="col-md-5 ml-0 pl-0">
@@ -208,18 +237,21 @@ class Upload extends Component {
                           )) : ' '
                       }
                       
-                    </div>
+                    </div> */}
 
 
-                    <div class="form-group mb-0 mt-2 row text-right">
+                    <div class="form-group mb-0 mt-5 row text-right">
 												<div class="col-md-12">
                           <button 
                             type="submit"
                             class="btn btn-info mr-5"
-                            // onClick={() => this.props.history.push('/create_staff/two')}
+                            onClick={this.handleSave}
+                          ><i class="fa fa-save"></i> SAVE</button>
+                          <button 
+                            type="submit" 
+                            class="btn btn-primary" 
                             onClick={this.handleSubmit}
-                          >NEXT</button>
-													<button type="submit" class="btn btn-primary" onClick={this.handleSave}>SAVE</button>
+                          ><i class="fa fa-arrow-right"></i> NEXT</button>
 												</div>
 											</div>
 

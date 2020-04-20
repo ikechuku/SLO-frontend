@@ -11,8 +11,8 @@ export const QualificationModal = (props) => {
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="example-Modal3">CREATE NEW QUALIFICATION</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<h5 class="modal-title" id="example-Modal3">{props.modalMode === 'create' ? 'ADD NEW QUALIFICATION' : 'EDIT QUALIFICATION'}</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={props.closeModal}>
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
@@ -80,6 +80,7 @@ export const QualificationModal = (props) => {
                         dateFormat="yyyy/MM/dd"
                         placeholderText="Click to select a date"
                       />
+                      <br/>
                       <span className="text-danger">{props.endDateErrorMssg5 !== null ? props.endDateErrorMssg5 : ''}</span>
                     </div>
                   </div>
@@ -99,6 +100,7 @@ export const QualificationModal = (props) => {
                         dateFormat="yyyy/MM/dd"
                         placeholderText="Click to select a date"
                       />
+                      <br/>
                       <span className="text-danger">{props.endDateErrorMssg !== null ? props.endDateErrorMssg : ''}</span>
                     </div>
                   </div>
@@ -108,8 +110,12 @@ export const QualificationModal = (props) => {
 								</form>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-								<button  type="button" class="btn btn-primary" onClick={() => props.addMore('qualification')}>Add</button>
+								<button type="button" class="btn btn-danger" data-dismiss="modal" onClick={props.closeModal}>Close</button>
+                <button  
+                  type="button" 
+                  class="btn btn-primary" 
+                  onClick={() => props.addMore('qualification')}
+                >{props.modalMode === 'create' ? 'ADD' : 'UPDATE'}</button>
 							</div>
 						</div>
 					</div>
@@ -121,14 +127,15 @@ export const QualificationModal = (props) => {
 
 
 export const CertificationModal = (props) => {
+  console.log(props.customSelectDefault1)
   return (
     <div>
       <div class="modal fade" id="certificationModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="example-Modal3">CREATE NEW CERTIFACATION</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<h5 class="modal-title" id="example-Modal3">{props.modalMode === 'create' ? 'ADD NEW CERTIFICATION' : 'EDIT CERTIFICATION'}</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={props.closeModal}>
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
@@ -174,9 +181,10 @@ export const CertificationModal = (props) => {
                         placeHolder='Select'
                       /> */}
                       <CreatableSelect
-                        isClearable
                         // className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
-                        defaultValue={props.certification.categoryOfCertification}
+                        // defaultValue={props.certification.categoryOfCertification !== '' ? props.certification.categoryOfCertification : null}
+                        // value={props.certification.categoryOfCertification}
+                        value={props.customSelectDefault1}
                         onChange={e => props.handleCustomSelect(e, 'categoryOfCertification')}
                         options={[
                           { value: 'Google Certification', label: 'Google Certification' },
@@ -232,8 +240,17 @@ export const CertificationModal = (props) => {
 								</form>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-								<button  type="button" class="btn btn-primary" onClick={() => props.addMore('certification')}>Add</button>
+                <button 
+                  type="button" 
+                  class="btn btn-danger" 
+                  data-dismiss="modal"
+                  onClick={props.closeModal}
+                >Close</button>
+                <button  
+                  type="button" 
+                  class="btn btn-primary" 
+                  onClick={() => props.addMore('certification')}
+                >{props.modalMode === 'create' ? 'ADD' : 'UPDATE'}</button>
 							</div>
 						</div>
 					</div>

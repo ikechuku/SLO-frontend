@@ -42,9 +42,15 @@ export default class institutionTable extends Component {
                   <tr key={index}>
                     <td>{data.name}</td>
                     <td>{data.type === 'qualification' ? (data.qualification + ' ' + `(${data.course})`) : (data.certification + ' ' + `(${data.categoryOfCertification})`)}</td>
-                <td>{<Moment format='MMM DD, YYYY'>{data.startDate}</Moment>} {' to '} {<Moment format='MMM DD, YYYY'>{data.endDate}</Moment>}</td>
+                    <td>{<Moment format='MMM DD, YYYY'>{data.startDate}</Moment>} {' to '} {<Moment format='MMM DD, YYYY'>{data.endDate}</Moment>}</td>
                     <td>
-                      <span className="add-more fa fa-close" onClick={() => this.props.removeMore(index)}></span>
+                      {
+                        data.type === 'qualification' ?
+                          <a className="add-more mr-2" data-toggle="modal" data-target="#qualificationModal" onClick={() => this.props.handleEdit(index, data.type)}>edit</a>
+                        : 
+                          <a className="add-more mr-2" data-toggle="modal" data-target="#certificationModal" onClick={() => this.props.handleEdit(index, data.type)}>edit</a>  
+                      }
+                      <a className="add-more" data-tip data-for="deleteWarning" onClick={() => this.props.removeMore(index, data.id)}>delete</a>
                     </td>
                   </tr>
                 )) : ''
@@ -66,7 +72,9 @@ export default class institutionTable extends Component {
                   </tr>
                 </tbody>
               ))} */}
-            <ReactTooltip place="right" type="warning" effect="float"/>
+            <ReactTooltip id="deleteWarning" place="right" type="warning" effect="float">
+              <span>Delete warning</span>
+            </ReactTooltip>
           </table>
         
         </div>

@@ -9,7 +9,7 @@ export default function GuarantorTable(props) {
           <tr>
             {/* <th className="wd-15p">S/N</th> */}
             <th class="wd-15p">Name</th>
-            <th class="wd-15p">Relationship with empoyee</th>
+            <th class="wd-15p">Relationship with employee</th>
             <th class="wd-15p">How long have you know the employee</th>
             <th class="wd-25p"></th>
           </tr>
@@ -22,8 +22,8 @@ export default function GuarantorTable(props) {
               <td>{data.relationship}</td>
               <td>{<Moment fromNow ago>{data.employeeKnownDate}</Moment>}</td>
               <td>
-                {/* <span className="add-more p-3" onClick={() => this.handleEdit(data.id)}>Edit</span> */}
-                <span className="add-more fa fa-close" onClick={() => props.removeMore(index,data.id)}>Delete</span>
+                <span className="add-more p-3" data-toggle="modal" data-target="#guarantorModal" onClick={() => props.handleEdit(index, data.id)}>edit</span>
+                <span className="add-more" onClick={() => props.removeMore(index,data.id)}>delete</span>
               </td>
             </tr>
           )) : ''

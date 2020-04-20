@@ -53,7 +53,14 @@ class Guarantor extends Component {
 			errorMessage4: null,
 			errorMessage5: null,
 			errorMessage6: null,
-			errorMessage7: null
+			errorMessage7: null,
+			modalMode: 'create',
+			editIndex: null,
+			customSelect1: null,
+			customSelect2: null,
+			customSelect3: null,
+			customSelect4: null,
+			customSelect5: null,
 		}
 	}
 
@@ -178,70 +185,66 @@ class Guarantor extends Component {
 		const { postData } = this.state;
 		const value = result !== null ? result.value : ''
 		console.log(name, value)
-		// if(name === 'mobilePhoneCode'){
-		// 	postData[name] = value;
-		// 	this.setState({ 
-		// 		postData,
-		// 	});
-		// 	this.setState(state => {
-    //     return {
-		// 			...state,
-    //       selected1: value
-    //     };
-    //   });
-		// } else if(name === 'homePhoneCode'){
-		// 	postData[name] = value;
-		// 	this.setState({ 
-		// 		postData,
-		// 	});
-		// 	this.setState(state => {
-    //     return {
-		// 			...state,
-    //       selected2: value
-    //     };
-    //   });
-		// } else if(name === 'businessPhoneCode'){
-		// 	postData[name] = value;
-		// 	this.setState({ 
-		// 		postData
-		// 	});
-		// 	this.setState(state => {
-    //     return {
-		// 			...state,
-    //       selected3: value
-    //     };
-    //   });
-		// } else if(name === 'relationship'){
-		// 	postData[name] = value;
-		// 	this.setState({ 
-		// 		postData
-		// 	});
-		// 	this.setState(state => {
-    //     return {
-		// 			...state,
-    //       selected4: value
-    //     };
-    //   });
-		// } else if(name === 'occupation'){
-		// 	postData[name] = value;
-		// 	this.setState({ 
-		// 		postData
-		// 	});
-		// 	this.setState(state => {
-    //     return {
-		// 			...state,
-    //       selected5: value
-    //     };
-    //   });
-		// }
+		if(name === 'mobilePhoneCode'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customSelect1: result
+			});
+			// this.setState(state => {
+      //   return {
+			// 		...state,
+      //     selected1: value
+      //   };
+      // });
+		} else if(name === 'homePhoneCode'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customSelect2: result
+			});
+		} else if(name === 'businessPhoneCode'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customSelect3: result
+			});
+		} else if(name === 'relationship'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customSelect4: result
+			});
+		} else if(name === 'occupation'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customSelect5: result
+			});
+		}	else if(name === 'residentialCountry'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customSelect6: result
+			});
+		} else if(name === 'landedPropertyCountry'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customSelect7: result
+			});
+		} else if(name === 'businessCountry'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customSelect8: result
+			});
+		} else {
+			postData[name] = value;
+			this.setState({ 
+				postData
+			});
+		}
   
-		postData[name] = value;
-		this.setState({ 
-			postData
-		});
+		// postData[name] = value;
+		// this.setState({ 
+		// 	postData
+		// });
   }
 
-	addMore = () => {
+	addMore = async () => {
 		const { 
 			firstName,
 			lastName,
@@ -261,13 +264,20 @@ class Guarantor extends Component {
 
 		console.log(this.state.postData)
 
-		if(firstName === '' || firstName === undefined || lastName === '' || lastName === undefined || middleName === '' || middleName === undefined || mobilePhone === '' || mobilePhone === undefined || businessPhone === '' || businessPhone === undefined || homePhone === '' || homePhone === undefined || residentialAddress === '' || residentialAddress === undefined || landedPropertyAddress === '' || landedPropertyAddress === undefined || businessAddress === '' || businessAddress === undefined || maritalStatus === '' || maritalStatus === undefined || employeeKnownDate === '' ||  employeeKnownDate === undefined || criminalHistory === '' ||criminalHistory === undefined){
+		if(firstName === '' || firstName === undefined || lastName === '' || lastName === undefined || mobilePhone === '' || mobilePhone === undefined || businessPhone === '' || businessPhone === undefined || homePhone === '' || homePhone === undefined || residentialAddress === '' || residentialAddress === undefined || landedPropertyAddress === '' || landedPropertyAddress === undefined || businessAddress === '' || businessAddress === undefined || occupation === '' || occupation === undefined || relationship === '' || relationship === undefined || maritalStatus === '' || maritalStatus === undefined || employeeKnownDate === '' ||  employeeKnownDate === undefined || criminalHistory === '' ||criminalHistory === undefined){
 			return NotificationManager.warning('All fields are required');
 		}
 
-		this.setState({ 
-			moreData: [...this.state.moreData, this.state.postData], 
-		});
+		if(this.state.modalMode === 'edit'){
+			await this.setState({ moreData: [...this.state.moreData].filter((data,index) => index !== parseInt(this.state.editIndex))})
+			this.setState({ 
+				moreData: [...this.state.moreData, this.state.postData], 
+			});
+		} else {
+			this.setState({ 
+				moreData: [...this.state.moreData, this.state.postData], 
+			});
+		}
 		
 		this.setState({ 
 			postData: {
@@ -281,7 +291,7 @@ class Guarantor extends Component {
 				homePhoneCode: '',
 				businessPhoneCode: '',
 				relationship: '',
-				// occupation: '',
+				occupation: '',
 				residentialAddress: '',
 				residentialCountry: '',
 				residentialState: '',
@@ -298,13 +308,48 @@ class Guarantor extends Component {
 				businessLga: '',
 				businessCity: '',
 				maritalStatus: '',
-				// employeeKnownDate: '',
+				employeeKnownDate: '',
 				criminalHistory: '',
-			}
+			},
+			modalMode: 'create',
+			editIndex: null,
+			customSelect1: null,
+			customSelect2: null,
+			customSelect3: null,
+			customSelect4: null,
+			customSelect5: null,
+			customSelect6: null,
+			customSelect7: null,
+			customSelect8: null,
 		});
 		$('.modal').modal('hide');
     $(document.body).removeClass('modal-open');
 		$('.modal-backdrop').remove();
+	}
+
+	handleEdit = async (indexValue) => {
+		await this.setState({
+			postData: [...this.state.moreData].filter((data,index) => index === parseInt(indexValue))[0],
+			editIndex: indexValue, modalMode: 'edit'
+		});
+		const customSelect1 = { value: this.state.postData.mobilePhoneCode, label: this.state.postData.mobilePhoneCode };
+		const customSelect2 = { value: this.state.postData.homePhoneCode, label: this.state.postData.homePhoneCode };
+		const customSelect3 = { value: this.state.postData.businessPhoneCode, label: this.state.postData.businessPhoneCode };
+		const customSelect4 = { value: this.state.postData.relationship, label: this.state.postData.relationship };
+		const customSelect5 = { value: this.state.postData.occupation, label: this.state.postData.occupation };
+		const customSelect6 = { value: this.state.postData.residentialCountry, label: this.state.postData.residentialCountry };
+		const customSelect7 = { value: this.state.postData.landedPropertyCountry, label: this.state.postData.landedPropertyCountry };
+		const customSelect8 = { value: this.state.postData.businessCountry, label: this.state.postData.businessCountry };
+		this.setState({ 
+			customSelect1, 
+			customSelect2, 
+			customSelect3, 
+			customSelect4, 
+			customSelect5,
+			customSelect6,
+			customSelect7,
+			customSelect8,
+	  });
 	}
 
 	removeMore = (value, id) => {
@@ -329,6 +374,52 @@ class Guarantor extends Component {
 			console.log(error)
 		}
 	}
+
+	closeModal = () => {
+    this.setState({
+      postData: {
+				firstName: '',
+				lastName: '',
+				middleName: '',
+				mobilePhone: '',
+				homePhone: '',
+				businessPhone: '',
+				mobilePhoneCode: '',
+				homePhoneCode: '',
+				businessPhoneCode: '',
+				relationship: '',
+				occupation: '',
+				residentialAddress: '',
+				residentialCountry: '',
+				residentialState: '',
+				residentialLga: '',
+				residentialCity: '',
+				landedPropertyAddress: '',
+				landedPropertyCountry: '',
+				landedPropertyState: '',
+				landedPropertyLga: '',
+				landedPropertyCity: '',
+				businessAddress: '',
+				businessCountry: '',
+				businessState: '',
+				businessLga: '',
+				businessCity: '',
+				maritalStatus: '',
+				employeeKnownDate: '',
+				criminalHistory: '',
+			},
+			modalMode: 'create',
+			editIndex: null,
+			customSelect1: null,
+			customSelect2: null,
+			customSelect3: null,
+			customSelect4: null,
+			customSelect5: null,
+			customSelect6: null,
+			customSelect7: null,
+			customSelect8: null,
+    })
+  }
 
 	handleSubmit = async (e) => {
     e.preventDefault()
@@ -441,7 +532,8 @@ class Guarantor extends Component {
 										{ 
 											<GuarantorTable
 												moreData={this.state.moreData}
-												removeMore={this.removeMore} 
+												removeMore={this.removeMore}
+												handleEdit={this.handleEdit} 
 											/>
 										}
 
@@ -455,10 +547,13 @@ class Guarantor extends Component {
 												<button 
 													type="submit"
 													class="btn btn-info mr-5"
-													// onClick={() => props.props.history.push('/create_staff/five')}
+													onClick={this.handleSave}
+												><i class="fa fa-save"></i> SAVE</button>
+												<button 
+													type="submit" 
+													class="btn btn-primary" 
 													onClick={this.handleSubmit}
-												>NEXT</button>
-												<button type="submit" class="btn btn-primary" onClick={this.handleSave}>SAVE</button>
+												><i class="fa fa-arrow-right"></i> NEXT</button>
 											</div>
 										</div>
 									</div>
@@ -475,6 +570,14 @@ class Guarantor extends Component {
 					postData={this.state.postData}
 					getLGA={this.getLGA}
 					handleCustomSelect={this.handleCustomSelect}
+					customSelect1={this.state.customSelect1}
+					customSelect2={this.state.customSelect2}
+					customSelect3={this.state.customSelect3}
+					customSelect4={this.state.customSelect4}
+					customSelect5={this.state.customSelect5}
+					customSelect6={this.state.customSelect6}
+					customSelect7={this.state.customSelect7}
+					customSelect8={this.state.customSelect8}
 					errorMessage1={this.state.errorMessage1}
 					errorMessage2={this.state.errorMessage2}
 					errorMessage3={this.state.errorMessage3}
@@ -482,6 +585,8 @@ class Guarantor extends Component {
 					errorMessage5={this.state.errorMessage5}
 					errorMessage6={this.state.errorMessage6}
 					errorMessage7={this.state.errorMessage7}
+					modalMode={this.state.modalMode}
+					closeModal={this.closeModal}
 				/>
       </Layout>
     )

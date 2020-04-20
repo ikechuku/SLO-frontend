@@ -391,7 +391,7 @@ class Employment extends Component {
 
                     <form className="form-horizontal" >
 											<div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">Rank at Employment</label>
+												<label for="inputName" className="col-md-2 col-form-label">Rank</label>
 												<div className="col-md-4">
 													{/* <select className="form-control w-100" 
 														name="rankAtEmployment"
@@ -430,7 +430,7 @@ class Employment extends Component {
                           />
 													<span className="text-danger">{this.state.errorMessage1 !== null ? this.state.errorMessage1 : ''}</span>
 												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Branch at Employment</label>
+                        <label for="inputName" className="col-md-2 col-form-label">Branch</label>
 												<div className="col-md-4">
                         <Select
                           name="branchAtEmployment"
@@ -659,10 +659,9 @@ class Employment extends Component {
                           <button 
                             type="submit"
                             class="btn btn-info mr-5"
-														// onClick={() => this.props.history.push('/create_staff/four')}
-														onClick={e => this.handleSubmit(e,'submit')}
-                          >NEXT</button>
-													<button type="submit" class="btn btn-primary" onClick={e => this.handleSave(e,'save')}>SAVE</button>
+														onClick={e => this.handleSave(e,'save')}
+                          ><i class="fa fa-save"></i> SAVE</button>
+													<button type="submit" class="btn btn-primary" onClick={e => this.handleSubmit(e,'submit')} ><i class="fa fa-arrow-right"></i> NEXT</button>
 												</div>
 											</div>
                     </form>

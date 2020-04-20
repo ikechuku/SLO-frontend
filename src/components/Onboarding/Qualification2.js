@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import { NotificationManager } from 'react-notifications';
-import { httpPost, httpPatch } from '../../actions/data.action';
+import { httpPost, httpPatch, httpDelete } from '../../actions/data.action';
 import { hideLoader, showLoader } from '../../helpers/loader';
 import Layout from '../layout'
 import InstitutionTable from './InstitutionTable';
 import PreviousEmploymentTable from './PreviousEmploymentTable';
 import {QualificationModal, CertificationModal} from '../Modals/Institution';
-import { validateQualification, validateD } from '../../helpers/validations';
+import { validateQualification, validateD, validatePreviousExperience } from '../../helpers/validations';
 import { PreviousEmploymentModal } from '../Modals/pEmploymentModal';
 import MoreInfoForm from './MoreInfoForm';
 
@@ -34,10 +34,13 @@ class Qualification extends Component {
       endDateErrorMssg6: null,
       endDateErrorMssg7: null,
       pageMode: 'create',
+      customSelectDefault1: null,
       date1: new Date(),
       date2: new Date(),
       date3: new Date(),
       date4: new Date(),
+      modalMode: 'create',
+      editIndex: null
     }
   }
 
@@ -134,15 +137,15 @@ class Qualification extends Component {
 
   handleCustomSelect = (result, name) => {
 		const { certification } = this.state;
-		const value = result !== null ? result.value : '';
+    const value = result !== null ? result.value : '';
   
 		certification[name] = value;
 		this.setState({ 
-			certification
+			certification, customSelectDefault1: result
 		});
   }
 
-  addMore = (type) => {
+  addMore = async (type) => {
     if(type === 'qualification'){
       if(this.state.qualification.name === undefined  || this.state.qualification.name === ''  || this.state.qualification.qualification === undefined || this.state.qualification.qualification === '' || this.state.qualification.course === undefined || this.state.qualification.course === '' || this.state.qualification.startDate === undefined || this.state.qualification.startDate === '' || this.state.qualification.endDate === undefined || this.state.qualification.endDate === '' ){
         return NotificationManager.warning('All fields must be filled');
@@ -157,9 +160,16 @@ class Qualification extends Component {
         return NotificationManager.warning('Complete all required fields')
       }
 
-      this.setState({ 
-        moreInstitution: [...this.state.moreInstitution, this.state.qualification], 
-      });
+      if(this.state.modalMode === 'edit'){
+        await this.setState({ moreInstitution: [...this.state.moreInstitution].filter((data,index) => index !== parseInt(this.state.editIndex)) });
+        this.setState({ 
+          moreInstitution: [...this.state.moreInstitution, this.state.qualification], 
+        });
+      } else {
+        this.setState({ 
+          moreInstitution: [...this.state.moreInstitution, this.state.qualification], 
+        });
+      }
 
       $('.modal').modal('hide');
       $(document.body).removeClass('modal-open');
@@ -172,10 +182,11 @@ class Qualification extends Component {
           course: '',
           startDate: '',
           endDate: ''
-        } 
+        },
+        modalMode: 'create',
+        editIndex: null 
       });
     } else {
-      console.log(this.state.certification)
       if(this.state.certification.name === undefined || this.state.certification.name === '' || this.state.certification.certification === undefined || this.state.certification.certification === '' || this.state.certification.categoryOfCertification === undefined || this.state.certification.categoryOfCertification === '' || this.state.certification.startDate === undefined || this.state.certification.startDate === '' || this.state.certification.endDate === undefined || this.state.certification.endDate === '' ){
         return NotificationManager.warning('All fields must be filled');
       }
@@ -189,9 +200,16 @@ class Qualification extends Component {
         return NotificationManager.warning('Complete all required fields')
       }
 
-      this.setState({ 
-        moreInstitution: [...this.state.moreInstitution, this.state.certification], 
-      });
+      if(this.state.modalMode === 'edit'){
+        await this.setState({ moreInstitution: [...this.state.moreInstitution].filter((data,index) => index !== parseInt(this.state.editIndex)) })
+        this.setState({ 
+          moreInstitution: [...this.state.moreInstitution, this.state.certification], 
+        });
+      } else {
+        this.setState({ 
+          moreInstitution: [...this.state.moreInstitution, this.state.certification], 
+        });
+      }
 
       $('.modal').modal('hide');
       $(document.body).removeClass('modal-open');
@@ -203,18 +221,38 @@ class Qualification extends Component {
           certification: '',
           categoryOfCertification: '',
           startDate: '',
-          endDate: ''
-        } 
+          endDate: '',
+        },
+        modalMode: 'create',
+        editIndex: null,
+        customSelectDefault1: null 
       });
     } 
     // this.showQualificationCard()
   }
 
-  removeMore = (value) => {
-    this.setState({
-      moreInstitution: this.state.moreInstitution.filter((interest,index) => index !== parseInt(value))
-    });
+  removeMore = (value, id) => {
+    if(this.state.pageMode === 'create'){
+      this.setState({
+        moreInstitution: this.state.moreInstitution.filter((interest,index) => index !== parseInt(value))
+      });
+    } else {
+      this.deleteInstitution(id, value);
+    }
   }
+
+  deleteInstitution = async (id, indexValue) => {
+		try{
+			const res = await httpDelete(`auth/delete_institution/${id}`);
+			if(res.code === 200){
+				this.setState({
+					moreInstitution: this.state.moreInstitution.filter((interest,index) => index !== parseInt(indexValue))
+				})
+			}
+		}catch(error){
+			console.log(error)
+		}
+	}
 
   handlePrevious = async (e, nameValue) => {
     const { previousEmployment } = this.state;
@@ -224,7 +262,7 @@ class Qualification extends Component {
       this.setState({ 
         previousEmployment
       })
-      const isValidate = await validateQualification(nameValue, this.state.previousEmployment.endDate, this.state.previousEmployment.startDate);
+      const isValidate = await validatePreviousExperience(nameValue, this.state.previousEmployment.endDate, this.state.previousEmployment.startDate);
       if(!isValidate.error){
         this.setState({ 
           endDateErrorMssg3: isValidate.errorMessage, 
@@ -239,7 +277,7 @@ class Qualification extends Component {
       this.setState({ 
         previousEmployment
       })
-      const isValidate = await validateQualification(nameValue, this.state.previousEmployment.startDate );
+      const isValidate = await validatePreviousExperience(nameValue, this.state.previousEmployment.startDate );
       if(!isValidate.error){
         this.setState({ 
           endDateErrorMssg7: isValidate.errorMessage, 
@@ -271,7 +309,7 @@ class Qualification extends Component {
     //console.log(`${[e.target.name]}: ${e.target.value}`);
   }
 
-  addMorePrevious = () => {
+  addMorePrevious = async () => {
     if(this.state.previousEmployment.employerName === undefined || this.state.previousEmployment.address === undefined || this.state.previousEmployment.role === undefined || this.state.previousEmployment.startDate === undefined || this.state.previousEmployment.endDate === undefined ){
       return NotificationManager.warning('All fields must be filled');
     }
@@ -285,9 +323,16 @@ class Qualification extends Component {
       return NotificationManager.warning('Complete all required fields')
     }
 
-    this.setState({ 
-      morePrevious: [...this.state.morePrevious, this.state.previousEmployment], 
-    });
+    if(this.state.modalMode === 'edit'){
+      await this.setState({ morePrevious: [...this.state.morePrevious].filter((data,index) => index !== parseInt(this.state.editIndex)) })
+      this.setState({ 
+        morePrevious: [...this.state.morePrevious, this.state.previousEmployment], 
+      });
+    } else {
+      this.setState({ 
+        morePrevious: [...this.state.morePrevious, this.state.previousEmployment], 
+      });
+    }
 
     $('.modal').modal('hide');
     $(document.body).removeClass('modal-open');
@@ -302,10 +347,80 @@ class Qualification extends Component {
     } });
   }
 
-  removeMorePrevious = (value) => {
+  removeMorePrevious = (value, id) => {
+    if(this.state.pageMode === 'create'){
+      this.setState({
+        morePrevious: this.state.morePrevious.filter((interest,index) => index !== parseInt(value))
+      });
+    } else {
+      this.deleteWorkHistory(id, value);
+    }
+  }
+
+  deleteWorkHistory = async (id, indexValue) => {
+		try{
+			const res = await httpDelete(`auth/delete_work_history/${id}`);
+			if(res.code === 200){
+				this.setState({
+					morePrevious: this.state.morePrevious.filter((interest,index) => index !== parseInt(indexValue))
+				})
+			}
+		}catch(error){
+			console.log(error)
+		}
+	}
+
+  handleEdit = async (indexValue, name) => {
+    // const { qualification, certification, previousEmployment } = this.state;
+    if(name === 'qualification'){
+      // const qualificationObj = [...this.state.moreInstitution].filter((data,index) => index === parseInt(indexValue))[0];
+      // qualification['name'] = qualificationObj.name;
+      // qualification['course'] = qualificationObj.course;
+      // qualification['qualification'] = qualificationObj.qualification;
+      // qualification['startDate'] = qualificationObj.startDate;
+      // qualification['endDate'] = qualificationObj.endDate;
+      this.setState({ qualification: [...this.state.moreInstitution].filter((data,index) => index === parseInt(indexValue))[0],
+        editIndex: indexValue, modalMode: 'edit' });
+    } else if(name === 'certification'){
+      await this.setState({ certification: [...this.state.moreInstitution].filter((data,index) => index === parseInt(indexValue))[0],
+        editIndex: indexValue, modalMode: 'edit' });
+      const customSelectValue = { value: this.state.certification.categoryOfCertification, label: this.state.certification.categoryOfCertification };
+      this.setState({ customSelectDefault1: customSelectValue });
+    } else {
+      this.setState({
+        previousEmployment: [...this.state.morePrevious].filter((data,index) => index === parseInt(indexValue))[0],
+        editIndex: indexValue, modalMode: 'edit'
+      })
+    }
+  }
+
+  closeModal = () => {
     this.setState({
-      morePrevious: this.state.morePrevious.filter((interest,index) => index !== parseInt(value))
-    });
+      qualification: {
+        name: '',
+        qualification: '',
+        course: '',
+        startDate: '',
+        endDate: '',
+      },
+      certification: {
+        name: '',
+        certification: '',
+        categoryOfCertification: '',
+        startDate: '',
+        endDate: '',
+      },
+      previousEmployment: {
+        employerName: '',
+        address: '',
+        role: '',
+        startDate: '',
+        endDate: ''
+      },
+      customSelectDefault1: null,
+      modalMode: 'create',
+      editIndex: null
+    })
   }
 
   handleMoreInfo = (e) => {
@@ -424,6 +539,7 @@ class Qualification extends Component {
   }
 
   render() {
+    console.log(this.state.qualification)
     return (
       <Layout>
         <div class="app-content">
@@ -449,10 +565,11 @@ class Qualification extends Component {
                     </div>
 									</div>
 									<div className="card-body">
-                    <h6 className="mb-4">Institution attended with date</h6>
+                    <h6 className="mb-4">Institutions attended with dates</h6>
                     <InstitutionTable
                       moreInstitution={this.state.moreInstitution}
                       removeMore={this.removeMore}
+                      handleEdit={this.handleEdit}
                     />
 
                     <div class="card-header custom-header">
@@ -461,11 +578,12 @@ class Qualification extends Component {
 										</div>
 
 
-                    <h6 className="mt-5 mb-3">Place of previous employment with date</h6>
+                    <h6 className="mt-5 mb-3">Place of previous employments with dates</h6>
 
                     <PreviousEmploymentTable
                       morePrevious={this.state.morePrevious}
                       removeMorePrevious={this.removeMorePrevious}
+                      handleEdit={this.handleEdit}
                     />
 
                     <div class="card-header custom-header">
@@ -474,7 +592,6 @@ class Qualification extends Component {
 
 
                     <h6 className="mt-5">Additional Information</h6>
-                    <div className="row">
                       <MoreInfoForm 
                         handleMoreInfo={this.handleMoreInfo}
                         objectReference={this.state.objectReference}
@@ -482,7 +599,6 @@ class Qualification extends Component {
                         moreInfo={this.state.moreInfo} 
                         erro
                       />
-                    </div>
 
                     <div class="form-group mb-0 mt-2 text-right">
                       <div class="col-md-12">
@@ -490,9 +606,9 @@ class Qualification extends Component {
                           type="submit"
                           class="btn btn-info mr-5"
                           // onClick={() => this.props.history.push('/create_staff/two')}
-                          onClick={this.handleSubmit}
-                        >NEXT</button>
-                        <button type="submit" class="btn btn-primary" onClick={this.handleSave}>SAVE</button>
+                          onClick={this.handleSave}
+                        ><i class="fa fa-save"></i> SAVE</button>
+                        <button type="submit" class="btn btn-primary" onClick={this.handleSubmit}><i class="fa fa-arrow-right"></i> NEXT</button>
                       </div>
                     </div>
 
@@ -517,6 +633,8 @@ class Qualification extends Component {
           endDateErrorMssg2={this.state.endDateErrorMssg2}
           endDateErrorMssg5={this.state.endDateErrorMssg5}
           endDateErrorMssg6={this.state.endDateErrorMssg6}
+          modalMode={this.state.modalMode}
+          closeModal={this.closeModal}
         />
 
         <CertificationModal
@@ -531,6 +649,9 @@ class Qualification extends Component {
           endDateErrorMssg2={this.state.endDateErrorMssg2}
           endDateErrorMssg5={this.state.endDateErrorMssg5}
           endDateErrorMssg6={this.state.endDateErrorMssg6}
+          modalMode={this.state.modalMode}
+          customSelectDefault1={this.state.customSelectDefault1}
+          closeModal={this.closeModal}
         />
 
         <PreviousEmploymentModal 
@@ -540,6 +661,8 @@ class Qualification extends Component {
           endDateErrorMssg3={this.state.endDateErrorMssg3}
           endDateErrorMssg4={this.state.endDateErrorMssg4}
           endDateErrorMssg7={this.state.endDateErrorMssg7}
+          modalMode={this.state.modalMode}
+          closeModal={this.closeModal}
         />
       </Layout>
     )

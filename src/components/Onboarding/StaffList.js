@@ -73,9 +73,9 @@ class StaffList extends Component {
       {
         "sn": `${index + 1}`,
         "fullname": <span>{data.lastName} {data.firstName}</span>,
-        "position": `${data.jobTitle}`,
-        "startdate": <Moment format='MMM DD YYYY'>{data.createdAt}</Moment>,
-        "status": `${data.applicationStatus}`,
+        "position": data.jobTitle || '',
+        "startdate": <Moment format='MMM DD, YYYY'>{data.createdAt}</Moment>,
+        "status": data.applicationStatus || '',
         "action": <a><Link to={`/view_details/${data.id}`} className="add-more">View Details</Link>
         <span className="ml-3 cursor-pointer" onClick={e => this.navigateToEdit(e, data.id, data.onBoarding)}>Edit</span></a>
       }
