@@ -46,11 +46,11 @@ export default class institutionTable extends Component {
                     <td>
                       {
                         data.type === 'qualification' ?
-                          <a className="add-more mr-2" data-toggle="modal" data-target="#qualificationModal" onClick={() => this.props.handleEdit(index, data.type)}>edit</a>
+                          <a className="add-more mr-2" data-toggle="modal" data-target="#qualificationModal" onClick={() => this.props.handleEdit(index, data.type)}>Edit</a>
                         : 
-                          <a className="add-more mr-2" data-toggle="modal" data-target="#certificationModal" onClick={() => this.props.handleEdit(index, data.type)}>edit</a>  
+                          <a className="add-more mr-2" data-toggle="modal" data-target="#certificationModal" onClick={() => this.props.handleEdit(index, data.type)}>Edit</a>  
                       }
-                      <a className="add-more" data-tip data-for="deleteWarning" onClick={() => this.props.removeMore(index, data.id)}>delete</a>
+                      <a className="add-more" data-tip data-for="deleteWarning" onClick={() => this.props.removeMore(index, data.id)}>Delete</a>
                     </td>
                   </tr>
                 )) : ''

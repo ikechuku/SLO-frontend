@@ -25,7 +25,7 @@ export const GuarantorModal = (props) => {
 								<form>
                 <div className="col col-md-12">  
                 <div className="form-group row">
-                  <label for="inputName" className="col-md-3 col-form-label">First Name</label>
+                  <label for="inputName" className="col-md-3 col-form-label">First Name <span className="impt">*</span></label>
                   <div className="col-md-3">
                     <input type="text" 
                       className="form-control"
@@ -78,7 +78,7 @@ export const GuarantorModal = (props) => {
                     />
                     <span className="text-danger">{props.errorMessage3 !== null ? props.errorMessage3 : ''}</span>
                   </div>
-                  <label for="inputName" className="col-md-2 col-form-label">Mobile Phone</label>
+                  <label for="inputName" className="col-md-2 col-form-label">Mobile Phone <span className="impt">*</span></label>
                   <div className="col-md-4">
                     {/* <input type="text" 
                       className="form-control"
@@ -120,7 +120,7 @@ export const GuarantorModal = (props) => {
                   </div>
                 </div> 
                 <div className="form-group row">
-                  <label for="inputName" className="col-md-3 col-form-label">Surname</label>
+                  <label for="inputName" className="col-md-3 col-form-label">Surname <span className="impt">*</span></label>
                     <div className="col-md-3">
                       <input type="text" 
                         className="form-control"
@@ -164,7 +164,7 @@ export const GuarantorModal = (props) => {
                   </div>
                 </div>
                 <div className="form-group row">
-                <label for="inputName" className="col-md-3 col-form-label">Relationship</label>
+                <label for="inputName" className="col-md-3 col-form-label">Relationship <span className="impt">*</span></label>
                   <div className="col-md-3">
                     {/* <CustomSelect 
                       optionList={[
@@ -180,7 +180,7 @@ export const GuarantorModal = (props) => {
                       placeHolder='Select'
                     /> */}
                   <CreatableSelect
-                    isClearable
+                    // isClearable
                     // defaultValue={props.postData.relationship}
                     value={props.customSelect4}
                     onChange={e => props.handleCustomSelect(e, 'relationship')}
@@ -194,10 +194,10 @@ export const GuarantorModal = (props) => {
                     name="relationship"
                   />
                   </div>
-                  <label for="inputName" className="col-md-2 col-form-label">Occupation</label>
+                  <label for="inputName" className="col-md-2 col-form-label">Occupation <span className="impt">*</span></label>
                   <div className="col-md-4">
                   <CreatableSelect
-                    isClearable
+                    // isClearable
                     // defaultValue={props.postData.occupation}
                     value={props.customSelect5}
                     onChange={e => props.handleCustomSelect(e, 'occupation')}
@@ -211,7 +211,7 @@ export const GuarantorModal = (props) => {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label for="inputName" className="col-md-3 col-form-label">Residential Address</label>
+                  <label for="inputName" className="col-md-3 col-form-label">Residential Address <span className="impt">*</span></label>
                   <div className="col-md-3">
                     <input type="text" 
                       className="form-control"
@@ -494,7 +494,7 @@ export const GuarantorModal = (props) => {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label for="inputName" className="col-md-3 col-form-label">Marital Status</label>
+                  <label for="inputName" className="col-md-3 col-form-label">Marital Status <span className="impt">*</span></label>
                   <div className="col-md-3">
                     <select
                       className="form-control w-100"
@@ -511,7 +511,7 @@ export const GuarantorModal = (props) => {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label for="inputName" className="col-md-3 col-form-label">Duration of Relationship</label>
+                  <label for="inputName" className="col-md-3 col-form-label">Duration of Relationship <span className="impt">*</span></label>
                   <div className="col-md-3">
                     {/* <input type="date" 
                       className="form-control"
@@ -533,12 +533,12 @@ export const GuarantorModal = (props) => {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label for="inputName" className="col-md-3 col-form-label">Has the employee been involved in any criminal matters?</label>
+                  <label for="inputName" className="col-md-3 col-form-label">Has the employee been involved in any criminal matters? <span className="impt">*</span></label>
                   <div className="col-md-5">
                     <label>
                       <input type="radio" 
                         name="criminalHistory" 
-                        className="minimal"
+                        className="minimal mr-2"
                         onChange={props.handleChange}
                         value='true'
                         checked={props.postData.criminalHistory === true ? true : ''}
@@ -548,7 +548,7 @@ export const GuarantorModal = (props) => {
                     <label style={{ paddingLeft: '10px'}}>
                       <input type="radio" 
                         name="criminalHistory" 
-                        className="minimal"
+                        className="minimal mr-2"
                         onChange={props.handleChange}
                         value='false'
                         checked={props.postData.criminalHistory === false ? true : ''}

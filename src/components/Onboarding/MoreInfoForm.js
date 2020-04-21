@@ -9,7 +9,7 @@ export default function MoreInfoForm(props) {
           <label>
             <input type="radio" 
               name="objectReference"
-              className="minimal"
+              className="minimal mr-2"
               onChange={props.handleMoreInfo}
               value="Yes" 
               checked={props.objectReference === 'Yes' ? true : ''}
@@ -19,7 +19,7 @@ export default function MoreInfoForm(props) {
           <label style={{ paddingLeft: '25px'}}>
             <input type="radio" 
               name="objectReference"
-              className="minimal"
+              className="minimal mr-2"
               onChange={props.handleMoreInfo}
               value='No'
               checked={props.objectReference === 'No' ? true : ''} 
@@ -36,7 +36,7 @@ export default function MoreInfoForm(props) {
           onChange={props.handleMoreInfo}
           value={props.reasonForLeaving}
         >
-          <option value="">select reason</option>
+          <option value="" disabled>Select Reason</option>
           <option value="Relocation">Relocation</option>
           <option value="Sacked">Sacked</option>
           <option value="Change in carrer path">Change in carrer path</option>

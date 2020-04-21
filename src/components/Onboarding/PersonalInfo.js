@@ -593,18 +593,6 @@ class PersonalInfo extends Component {
                           />
                           <span className="text-danger">{this.state.errorMessage1 !== null ? this.state.errorMessage1 : ''}</span>
 												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Surname <span className="impt">*</span></label>
-                        <div className="col-md-4">
-                          <input type="text" 
-                            className="form-control"
-                            name="lastName"
-                            defaultValue={this.state.data.lastName}
-                            onChange={this.handleChange}
-                          />
-                          <span className="text-danger">{this.state.errorMessage2 !== null ? this.state.errorMessage2 : ''}</span>
-												</div>
-											</div>
-                      <div className="form-group row">
                         <label for="inputName" className="col-md-2 col-form-label">Middle Name</label>
 												<div className="col-md-4">
                           <input type="text" 
@@ -614,6 +602,18 @@ class PersonalInfo extends Component {
                             onChange={this.handleChange}
                           />
                           <span className="text-danger">{this.state.errorMessage3 !== null ? this.state.errorMessage3 : ''}</span>
+												</div>
+											</div>
+                      <div className="form-group row">
+                      <label for="inputName" className="col-md-2 col-form-label">Surname <span className="impt">*</span></label>
+                      <div className="col-md-4">
+                        <input type="text" 
+                          className="form-control"
+                          name="lastName"
+                          defaultValue={this.state.data.lastName}
+                          onChange={this.handleChange}
+                        />
+                        <span className="text-danger">{this.state.errorMessage2 !== null ? this.state.errorMessage2 : ''}</span>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Email Address <span className="impt">*</span></label>
                         <div className="col-md-4">
@@ -775,7 +775,7 @@ class PersonalInfo extends Component {
                             onChange={this.handleChange} 
                             value={this.state.data.maritalStatus}
                           >
-                            <option value="">Select</option>
+                            <option value="" disabled>Select</option>
 														<option value="Single">Single</option>
 														<option value="Married">Married</option>
                             <option value="Divorced">Divorced</option>
@@ -857,7 +857,7 @@ class PersonalInfo extends Component {
                               value={this.state.data.currentLGA}
                               style={(this.state.currentCountry !== '') && (this.state.currentCountry !== null) && (this.state.currentCountry !== 'Nigeria') ? { display: 'none'} : {} }>
                             >
-                              <option value="">LGA</option>
+                              <option value="" disabled>LGA</option>
                               {
                                 this.getLGA(this.state.data.currentState)
                               }
@@ -941,7 +941,7 @@ class PersonalInfo extends Component {
                               value={this.state.data.permanentLGA}
                               style={(this.state.permanentCountry !== '') && (this.state.permanentCountry !== null) && (this.state.permanentCountry !== 'Nigeria') ? { display: 'none'} : {} }
                             >
-                              <option value="">LGA</option>
+                              <option value="" disabled>LGA</option>
                               {
                                 this.getLGA(this.state.data.permanentState)
                               }

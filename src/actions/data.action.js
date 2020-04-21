@@ -17,7 +17,7 @@ export const httpPost = async (url, postBody) => {
   } catch (error){
     hideLoader()
     // return error
-    NotificationManager.error((error.response.data.message) || ('Something went wrong. Please retry.'),'Opps!',3000)
+    NotificationManager.error((error.response.data.message) || ('Something went wrong. Please retry.'),'Oops!',3000)
   }
 };
 
@@ -30,7 +30,7 @@ export const httpPatch = async (url, postBody) => {
   } catch (error){
     hideLoader()
     // return error
-    NotificationManager.error((error.response.data.message) || ('Something went wrong. Please retry.'),'Opps!',3000)
+    NotificationManager.error((error.response.data.message) || ('Something went wrong. Please retry.'),'Oops!',3000)
   }
 };
 
@@ -43,7 +43,7 @@ export const httpDelete = async (url, postBody) => {
   } catch (error){
     hideLoader()
     // return error
-    NotificationManager.error((error.response.data.message) || ('Something went wrong. Please retry.'),'Opps!',3000)
+    NotificationManager.error((error.response.data.message) || ('Something went wrong. Please retry.'),'Oops!',3000)
   }
 };
 
@@ -56,7 +56,7 @@ export const httpGet = async (url) => {
   } catch (error){
     hideLoader()
     // return error;
-    NotificationManager.error((error.response.data.message) || ('Something went wrong. Please retry.'),'Opps!',3000)
+    NotificationManager.error((error.response.data.message) || ('Something went wrong. Please retry.'),'Oops!',3000)
   }
 };
 
@@ -69,6 +69,6 @@ export const httpPostFormData = async (url, postBody) => {
   } catch (error){
     hideLoader()
     // return error
-    NotificationManager.error((error.response.data.message) || ('Something went wrong. Please retry.'),'Opps!',3000)
+    NotificationManager.error((error.response.data.message) || ('Something went wrong. Please retry.'),'Oops!',3000)
   }
 };

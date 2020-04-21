@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { NotificationManager } from 'react-notifications';
 import { Link } from 'react-router-dom';
 import Layout from '../layout/index';
-import { httpPostFormData, httpDelete } from '../../actions/data.action';
+import { httpPostFormData, httpDelete, httpPost } from '../../actions/data.action';
 import validateImage from '../../helpers/validateImage';
 import { hideLoader, showLoader } from '../../helpers/loader';
 
@@ -71,7 +71,6 @@ class Upload extends Component {
   deleteDoc = async (id) => {
     try{
 
-      console.log(id)
       const res = await httpDelete(`auth/document/${id}`);
 
       if(res.code === 200){
@@ -85,12 +84,16 @@ class Upload extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(this.state.postBody);
+    // console.log(this.state.postBody);
     try{
       const { id } = this.props.match.params;
 
+      if(!this.state.documents.length){
+        return NotificationManager.warning('A minimum of one document is required');
+      }
+
       showLoader();
-      const res = await httpPostFormData(`auth/complete_onboarding_five/${id}`);
+      const res = await httpPost(`auth/complete_onboarding_five/${id}`);
       if(res.code === 201){
         hideLoader();
         // setState({ userId: res.data.id });
@@ -109,6 +112,10 @@ class Upload extends Component {
     showLoader();
     try{
       const { id } = this.props.match.params;
+
+      if(!this.state.documents.length){
+        return NotificationManager.warning('A minimum of one document is required');
+      }
 
       const res = await httpPostFormData(`auth/complete_onboarding_five/${id}`);
       if(res.code === 201){

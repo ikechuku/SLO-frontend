@@ -250,22 +250,36 @@ class Guarantor extends Component {
 			lastName,
 			middleName,
 			mobilePhone,
+			mobilePhoneCode,
 			homePhone,
 			businessPhone,
 			relationship,
 			occupation,
 			residentialAddress,
+			residentialCountry,
+			residentialState,
+			residentialLga,
+			residentialCity,
 			landedPropertyAddress,
 			businessAddress,
 			maritalStatus,
 			employeeKnownDate,
-			criminalHistory
+			criminalHistory,
+			details
 		} = this.state.postData;
 
 		console.log(this.state.postData)
 
-		if(firstName === '' || firstName === undefined || lastName === '' || lastName === undefined || mobilePhone === '' || mobilePhone === undefined || businessPhone === '' || businessPhone === undefined || homePhone === '' || homePhone === undefined || residentialAddress === '' || residentialAddress === undefined || landedPropertyAddress === '' || landedPropertyAddress === undefined || businessAddress === '' || businessAddress === undefined || occupation === '' || occupation === undefined || relationship === '' || relationship === undefined || maritalStatus === '' || maritalStatus === undefined || employeeKnownDate === '' ||  employeeKnownDate === undefined || criminalHistory === '' ||criminalHistory === undefined){
+		if(firstName === '' || firstName === undefined || lastName === '' || lastName === undefined || mobilePhone === '' || mobilePhone === undefined || mobilePhoneCode === '' || mobilePhoneCode === undefined || residentialAddress === '' || residentialAddress === undefined || residentialCountry === '' || residentialCountry === undefined || residentialState === '' || residentialState === undefined || residentialLga === '' || residentialLga === undefined || residentialCity === '' || residentialCity === undefined || occupation === '' || occupation === undefined || relationship === '' || relationship === undefined || maritalStatus === '' || maritalStatus === undefined || employeeKnownDate === '' ||  employeeKnownDate === undefined || criminalHistory === '' ||criminalHistory === undefined){
 			return NotificationManager.warning('All fields are required');
+		}
+
+		if(criminalHistory !== '' || criminalHistory !== undefined){
+			if(criminalHistory){
+				if(details === '' || details === undefined ){
+					return NotificationManager.warning('All fields are required');
+				}
+			}
 		}
 
 		if(this.state.modalMode === 'edit'){
@@ -428,7 +442,7 @@ class Guarantor extends Component {
 			const { id } = this.props.match.params;
 
 			if(this.state.moreData.length < 3){
-				return NotificationManager.warning('A minimum of 3 guarantor is required')
+				return NotificationManager.warning('A minimum of 3 Guarantors is required')
 			}
 
 			if(this.state.pageMode === 'edit'){
@@ -471,12 +485,26 @@ class Guarantor extends Component {
 		e.preventDefault()
     try{
 			const { id } = this.props.match.params;
-			showLoader();
-      const res = await httpPost(`auth/onboarding_four/${id}`, this.state.postData);
-      if(res.code === 201){
-        hideLoader();
-      }
-      console.log(res)
+
+			if(this.state.moreData.length < 3){
+				return NotificationManager.warning('A minimum of 3 Guarantors is required')
+			}
+
+			if(this.state.pageMode === 'edit'){
+				showLoader();
+				const res = await httpPatch(`auth/edit_onboarding_four/${id}`, this.state.moreData);
+				if(res.code === 201){
+					hideLoader();
+					this.setState({ moreData: res.data.guarantor });
+				}
+			} else {
+				showLoader();
+				const res = await httpPost(`auth/onboarding_four/${id}`, this.state.moreData);
+				if(res.code === 201){
+					hideLoader();
+					this.setState({ moreData: res.data.guarantor });
+				}
+			}
     } catch (error){
 			hideLoader();
       console.log(error)

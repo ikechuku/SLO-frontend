@@ -27,7 +27,7 @@ var validation = {
     return pattern.test(str);
   },
   isNameOnly: (str) => {
-    const pattern = /^(?=.{1,50}$)[a-z]+(?:['-_.\s][a-z]+)*$/i;
+    const pattern = /^(?=.{1,50}$)[a-z]+(?:['-_.\s][a-z][\s]+)*$/i;
     return pattern.test(str);
   }
 };
@@ -710,9 +710,10 @@ const validateGuarantorFields = (name, value) => {
 
   if(name === 'employeeKnownDate'){
     let today = new Date();
+    today.setHours(0,0,0,0);
     let newDob = new Date(value);
-    console.log(('today', today.getDate()))
-    if((today.getFullYear() === newDob.getFullYear()) && (today.getMonth() <= newDob.getMonth()) && (today.getDate() <= newDob.getDate())){
+    // console.log(('today', today.getDate()))
+    if(newDob >= today){
       return {
         error,
         errorMessage: 'Date cannot be beyond today'

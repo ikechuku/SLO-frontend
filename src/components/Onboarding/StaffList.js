@@ -68,6 +68,8 @@ class StaffList extends Component {
     // })
   }
 
+  // <span className="ml-3 cursor-pointer" onClick={e => this.navigateToEdit(e, data.id, data.onBoarding)}>Edit</span>
+
   bodyRow = () => {
     const body = this.state.users.map((data, index) => (
       {
@@ -76,8 +78,7 @@ class StaffList extends Component {
         "position": data.jobTitle || '',
         "startdate": <Moment format='MMM DD, YYYY'>{data.createdAt}</Moment>,
         "status": data.applicationStatus || '',
-        "action": <a><Link to={`/view_details/${data.id}`} className="add-more">View Details</Link>
-        <span className="ml-3 cursor-pointer" onClick={e => this.navigateToEdit(e, data.id, data.onBoarding)}>Edit</span></a>
+        "action": <a><Link to={`/view_details/${data.id}`} className="add-more">View Details</Link></a>
       }
     ));
     return body;

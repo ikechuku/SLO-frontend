@@ -5,7 +5,7 @@ export default function PreviousEmploymentTable(props) {
   return (
     <div className="col col-md-12 ml-0 pl-0">
     <div className="table-responsive" >
-    <table id="example1" class="table table-hover table-bordered border-t0 text-nowrap w-100" >
+    <table id="example1" class="table table-hover table-bordered mb-0 border-t0 text-nowrap w-100" >
         <thead>
           <tr>
             {/* <th className="wd-15p">S/N</th> */}
@@ -23,8 +23,8 @@ export default function PreviousEmploymentTable(props) {
                 <td>{data.role}</td>
                 <td>{<Moment format='MMM DD, YYYY'>{data.startDate}</Moment>} {' to '} {<Moment format='MMM DD, YYYY'>{data.endDate}</Moment>}</td>
                 <td>
-                  <a className="add-more mr-2" data-toggle="modal" data-target="#employmentModal" onClick={() => props.handleEdit(index, 'previousEmployment')}>edit</a>
-                  <a className="add-more" onClick={() => props.removeMorePrevious(index, data.id)}>delete</a>
+                  <a className="add-more mr-2" data-toggle="modal" data-target="#employmentModal" onClick={() => props.handleEdit(index, 'previousEmployment')}>Edit</a>
+                  <a className="add-more" onClick={() => props.removeMorePrevious(index, data.id)}>Delete</a>
                 </td>
               </tr>
             )) : ''
