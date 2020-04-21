@@ -27,7 +27,7 @@ var validation = {
     return pattern.test(str);
   },
   isNameOnly: (str) => {
-    const pattern = /^(?=.{1,50}$)[a-z]+(?:['-_.\s][a-z][\s]+)*$/i;
+    const pattern = /^(?=.{1,50}$)[a-z]+(?:['-_.\s][a-z ]+)*$/i;
     return pattern.test(str);
   }
 };

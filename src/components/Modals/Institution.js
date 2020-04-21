@@ -40,7 +40,7 @@ export const QualificationModal = (props) => {
                         onChange={props.handleQualification}
                         value={props.qualification.qualification}  
                       >
-                        <option value="" disabled>Select</option>
+                        <option value="" disabled selected>Select</option>
                         <option value="SSCE">SSCE(This covers WAEC,NECO,GCE)</option>
                         <option value="OND">OND</option>
                         <option value="NCE">NCE</option>

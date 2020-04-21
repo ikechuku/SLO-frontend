@@ -468,7 +468,8 @@ class Qualification extends Component {
         const res = await httpPatch(`auth/edit_onboarding_two/${id}`, data);
         if(res.code === 200){
           hideLoader();
-          this.setState({ 
+          console.log(res.data)
+          await this.setState({ 
             institution: res.data.savedInstitution, 
             previousEmployment: res.data.savedEmployment
           });
@@ -486,7 +487,7 @@ class Qualification extends Component {
           hideLoader();
           // setState({ userId: res.data.id });
           //return this.props.history.push(`/create_staff/three/${res.data.id}`)
-          this.setState({ 
+          await this.setState({ 
             institution: res.data.savedInstitution, 
             previousEmployment: res.data.savedEmployment
           });
@@ -526,11 +527,17 @@ class Qualification extends Component {
         return;
       }
 
+      if(this.state.pageMode === 'edit'){
+        const res = await httpPatch(`auth/edit_onboarding_two/${id}`, data);
+       if(res.code === 201){
+        hideLoader();
+       }
+     } else {
       const res = await httpPost(`auth/onboarding_two/${id}`, data);
       if(res.code === 201){
-        hideLoader();
+       hideLoader();
       }
-      console.log(res)
+     }
     } catch (error){
       hideLoader()
       console.log(error)

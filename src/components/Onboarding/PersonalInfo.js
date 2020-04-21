@@ -754,6 +754,7 @@ class PersonalInfo extends Component {
                               value={this.state.data.homePhoneCode}
                               onChange={this.handleChange}
                             >
+                              <option value="" disabled selected>Select</option>
                               {getAllDialCode()}
                             </select>
                           </div>
@@ -775,7 +776,7 @@ class PersonalInfo extends Component {
                             onChange={this.handleChange} 
                             value={this.state.data.maritalStatus}
                           >
-                            <option value="" disabled>Select</option>
+                            <option value="" disabled selected>Select</option>
 														<option value="Single">Single</option>
 														<option value="Married">Married</option>
                             <option value="Divorced">Divorced</option>
@@ -857,7 +858,7 @@ class PersonalInfo extends Component {
                               value={this.state.data.currentLGA}
                               style={(this.state.currentCountry !== '') && (this.state.currentCountry !== null) && (this.state.currentCountry !== 'Nigeria') ? { display: 'none'} : {} }>
                             >
-                              <option value="" disabled>LGA</option>
+                              <option value="" disabled selected>LGA</option>
                               {
                                 this.getLGA(this.state.data.currentState)
                               }
@@ -941,7 +942,7 @@ class PersonalInfo extends Component {
                               value={this.state.data.permanentLGA}
                               style={(this.state.permanentCountry !== '') && (this.state.permanentCountry !== null) && (this.state.permanentCountry !== 'Nigeria') ? { display: 'none'} : {} }
                             >
-                              <option value="" disabled>LGA</option>
+                              <option value="" disabled selected>LGA</option>
                               {
                                 this.getLGA(this.state.data.permanentState)
                               }

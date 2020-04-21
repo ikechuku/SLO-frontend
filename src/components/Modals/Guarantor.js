@@ -502,7 +502,7 @@ export const GuarantorModal = (props) => {
                       onChange={props.handleChange}
                       value={props.postData.maritalStatus}
                     >
-                      <option value="">Select</option>	
+                      <option value="" disabled selected>Select</option>	
                       <option value="Single">Single</option>
                       <option value="Married">Married</option>
                       <option value="Divorced">Divorced</option>
