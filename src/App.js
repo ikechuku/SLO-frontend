@@ -9,10 +9,16 @@ import Upload from './components/Onboarding/Upload';
 import PendingApplication from './components/Onboarding/Pending';
 import StaffList from './components/Onboarding/StaffList';
 import ViewDetails from './components/Onboarding/ViewDetails';
-import Branch from './components/andyBranch/branch/branch'
-import Department from './components/andyBranch/department/department'
-import Unit from './components/andyBranch/unit/unit'
-import Role from './components/andyBranch/role'
+import Branch from './components/branch/branch'
+import Department from './components/department/department'
+import Unit from './components/unit/unit';
+import Role from './components/role';
+import Kpi from './components/KPI';
+import Responsibility from './components/responsibility';
+import PendingActions from './components/Leave/pendingAction/pendingActions';
+import CreateLeave from './components/Leave/createLeave/createLeave';
+import LeaveMangement from './components/Leave/LeaveManagement';
+import LeaveHistory from './components/Leave/leaveHistory';
 // import Testing from './components/testing3';
 
 import 'react-notifications/lib/notifications.css';
@@ -30,7 +36,8 @@ function App() {
           {/* <Route exact path="/" component={Homepage}/> */}
           {/* <Route exact path="/login" component={Login} /> */}
           {/* <Route path="/create_staff/one" component={PersonalInfo} /> */}
-          <Route exact path="/" component={PersonalInfo} />
+          <Route exact path="/" component={PendingActions} />
+          <Route exact path="/create_staff/one" component={PersonalInfo} />
           <Route path="/create_staff/two/:id" component={Qualification} />
           <Route path="/create_staff/three/:id" component={Employment} />
           <Route path="/create_staff/four/:id" component={Guarantor} />
@@ -42,6 +49,11 @@ function App() {
           <Route path="/departments" component={Department} />
           <Route path="/units" component={Unit} />
           <Route path="/roles" component={Role} />
+          <Route path="/kpi" component={Kpi} />
+          <Route path="/responsibility" component={Responsibility} />
+          <Route path="/leave_setup" component={CreateLeave} />
+          <Route path="/leave_management" component={LeaveMangement} />
+          <Route path="/leave_history" component={LeaveHistory} />
           {/* <Route path="/testing" component={Testing} /> */}
         
 

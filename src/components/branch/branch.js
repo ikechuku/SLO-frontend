@@ -3,12 +3,12 @@ import $ from 'jquery';
 import { NotificationManager } from 'react-notifications';
 import axios from 'axios'
 import { modal } from 'bootstrap';
-import Layout from '../../layout/index'
-import {httpPost, httpGet, httpDelete, httpPatch } from '../../../actions/data.action';
-import { hideLoader, showLoader } from '../../../helpers/loader';
+import Layout from '../layout/index'
+import {httpPost, httpGet, httpDelete, httpPatch } from '../../actions/data.action';
+import { hideLoader, showLoader } from '../../helpers/loader';
 import  './branchStyle/branch.css';
 import BranchTable from './branchTable';
-import BranchModal from '../../Modals/Branch';
+import BranchModal from '../Modals/Branch';
 
 
 
@@ -133,7 +133,8 @@ constructor(props){
         region: ''
 			},
 			modalMode: 'create',
-			currentEditId: null,
+      currentEditId: null,
+      errorMessage1: null
 		})
 	}
 

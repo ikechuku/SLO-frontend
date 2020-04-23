@@ -1,0 +1,20 @@
+.remove-border{
+    border-bottom: none !important;
+}
+
+
+.base-score{
+    text-align: end;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-right: 2px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 18px;
+    border-right: 2px solid #012F5D;
+}
+
+.base-score span{
+    margin: 3px;
+}

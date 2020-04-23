@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { NotificationManager } from 'react-notifications';
 import $ from 'jquery';
-import Layout from '../../layout/index';
+import Layout from '../layout/index';
 import DepartmentTable from './departmentTable';
 import  './departmentTable.css';
-import { DepartmentModal } from '../../Modals/Department';
-import { httpGet, httpPatch, httpPost, httpDelete } from '../../../actions/data.action';
-import { showLoader, hideLoader } from '../../../helpers/loader';
+import { DepartmentModal } from '../Modals/Department';
+import { httpGet, httpPatch, httpPost, httpDelete } from '../../actions/data.action';
+import { showLoader, hideLoader } from '../../helpers/loader';
 
 export default class department extends Component {
 	constructor(){

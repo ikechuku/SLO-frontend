@@ -345,7 +345,7 @@ class PersonalInfo extends Component {
           // return this.props.history.push(`/create_staff/four/${res.data.id}`)
           return this.props.history.push({
             pathname: `/create_staff/two/${res.data.id}`,
-            backurl: `/`,
+            backurl: `/create_staff/one`,
             savedState: this.state
           });
         }
@@ -362,7 +362,7 @@ class PersonalInfo extends Component {
           // return this.props.history.push(`/create_staff/two/${res.data.id}`)
           return this.props.history.push({
             pathname: `/create_staff/two/${res.data.id}`,
-            backurl: '/',
+            backurl: '/create_staff/one',
             savedState: this.state,
             direction: 'forward'
           });
@@ -575,7 +575,9 @@ class PersonalInfo extends Component {
 							<div className="col-10">
 								<div className="card">
 									<div className="card-header">
-										<h4>Personal Information</h4>
+                    <div className="col-md-12">
+										  <h4>Personal Information</h4>
+                    </div>
 									</div>
 									<div className="card-body">
 

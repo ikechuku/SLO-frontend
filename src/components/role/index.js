@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { NotificationManager } from 'react-notifications';
 import $ from 'jquery';
-import Layout from '../../layout/index';
+import Layout from '../layout/index';
 import RoleTable from './roleTable';
-import {httpPost, httpGet, httpDelete, httpPatch } from '../../../actions/data.action';
-import { hideLoader, showLoader } from '../../../helpers/loader';
-import { RoleModal } from '../../Modals/Role';
+import {httpPost, httpGet, httpDelete, httpPatch } from '../../actions/data.action';
+import { hideLoader, showLoader } from '../../helpers/loader';
+import { RoleModal } from '../Modals/Role';
 // import  './departmentTable.css'
 
 export default class Role extends Component {
@@ -96,7 +96,7 @@ export default class Role extends Component {
 		const res = await httpGet(`role/${id}`);
 		console.log(res.data)
 		if(res.code === 200){
-			const customSelect1 = { value: res.data.role.departmentId, label: res.data.role.department.name };
+			const customSelect1 = res.data.role.departmentId !== null ? { value: res.data.role.departmentId, label: res.data.role.department.name } : { value: res.data.role.unit.departmentId, label: res.data.role.unit.department.name };
 			const customSelect2 = res.data.role.unitId !== null ? { value: res.data.role.unitId, label: res.data.role.unit.name } : null;
 			this.setState({ 
 				role: res.data.role, 
@@ -167,13 +167,15 @@ export default class Role extends Component {
 	clearState = () => {
 		this.setState({
 			role: {
-				name: '',
+				title: '',
 				departmentId: ''
 			},
 			modalMode: 'create',
 			currentEditId: null,
 			customSelect1: null,
-			customSelect2: null 
+			customSelect2: null ,
+			errorMessage1: null,
+			errorMessage2: null,
 		})
 	}
 

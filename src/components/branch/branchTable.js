@@ -1,9 +1,6 @@
-import React, { Component } from 'react'
-import { httpGet,httpDelete } from '../../../actions/data.action';
-import { hideLoader, showLoader } from '../../../helpers/loader';
-import axios from 'axios'
+import React, { Component } from 'react';
 import ReactTooltip from "react-tooltip";
-import Table from '../../../helpers/customTable';
+import Table from '../../helpers/customTable';
 
 
 

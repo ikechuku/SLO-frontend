@@ -1,0 +1,119 @@
+.par{
+    width: 50vw;
+    margin-bottom: 50px;
+}
+
+@media(max-width:766px){
+    .par{
+        width:95vw;
+        margin-bottom: 50px;
+        margin-right: 20px;
+    }
+    
+}
+
+.todoHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: white;
+    padding: 20px 20px 0px 20px;
+}
+
+.data1 h1{
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.data1 p{
+    font-size: 12px;
+ padding-top: 3px;
+}
+
+.data2 button{
+   margin: 0px 7px 0px 0px;;
+    width: 87px;
+   
+}
+
+@media(max-width:375px){
+    .data2 {
+       display: flex;
+    }
+    
+}
+
+.data2 :first-child{
+    background: #003766;
+    color: white;
+ border: none;
+border-radius: 4px;
+cursor: pointer;
+}
+
+.data2 :last-child{
+    border: none;
+    background: #E7F5FF;
+border-radius: 4px;
+color: #003766;
+cursor: pointer;
+}
+
+.AddTodoDIV{
+    background-color: white;
+    padding: 5px 20px 20px 20px;
+}
+
+.AddTodoDIV input{
+    width: 226px;
+    height: 40px;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    background: rgba(0, 0, 0, 0.0001);
+border: 0.5px solid rgba(0, 0, 0, 0.24);
+box-sizing: border-box;
+padding-left: 10px;
+}
+
+.AddTodoDIV input::placeholder{
+    color: #8D8D8D;
+    font-size: 12px;
+    padding-left: 10px;
+}
+
+.AddTodoDIV button{
+    width: 68px;
+    height: 40px;
+    padding-left: 0;
+    margin-left: 0;
+    border: none;
+    background: #003766;
+    color: white;
+
+}
+
+.todoss{
+height: 60px;
+background: #FAFAFA;
+border-radius: 5px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 0 20px 0 20px;
+
+}
+.flex1 input{
+    margin-right: 15px;
+}
+
+.flex1 span{
+    font-weight: 700;
+}
+
+.flex2 .fa-trash{
+    margin-left: 15px;
+    cursor: pointer;
+}
