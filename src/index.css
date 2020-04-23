@@ -99,6 +99,11 @@ input::placeholder {
   font-weight: 600!important;
 }
 
+thead .thead-th {
+  font-weight: 600 !important;
+  background-color: #f6f6f9 !important;
+}
+
 
 @media (min-width: 992px) {
   .modal-lg {

@@ -3,7 +3,7 @@ import { httpGet,httpDelete } from '../../../actions/data.action';
 import { hideLoader, showLoader } from '../../../helpers/loader';
 import axios from 'axios'
 import ReactTooltip from "react-tooltip";
-const API_URL = 'http://jsonplaceholder.typicode.com';
+import Table from '../../../helpers/customTable';
 
 
 
@@ -14,42 +14,43 @@ export default class branchTable extends Component {
 	
 	}
 
+	bodyRow = () => {
+		const body = this.props.branches.map((data, index) => (
+			{
+				"branchName": data.name,
+				"region": data.region,
+				"address": data.address,
+				"action": <a><span class='edit' data-toggle="modal" data-target="#branchModal" onClick={() => this.props.handleEdit(data.id)}>Edit</span><span class='del' onClick={() => this.props.handleDelete(data.id)}>Delete</span></a>
+			}
+		));
+		return body;
+	}
+	
+	header = () => {
+		const header = [
+			{
+				title: 'Branch Name (filterable)',
+				prop: 'branchName',
+				sortable: true,
+				filterable: true
+			},
+			{ title: 'Region', prop: 'region', sortable: true },
+			{ title: 'Address', prop: 'address', sortable: true },
+			{ title: 'Actions', prop: 'action' },
+		];
+		return header;
+	}
+
 	render() {
-		
 		return (
-				<div>
-						<div class="table-responsive">
-										<table class="table table-bordered table-hover mb-0 text-nowrap">
-										<thead>
-											<tr>
-												<th>Branch Name</th>
-												<th>Region</th>
-												<th>Address</th>
-												<th>Actions</th>
-												
-											</tr>
-											</thead>
-											{this.props.branches.map((data) => (
-												<tbody>
-											<tr key={data.id}>
-										
-												<td>{data.name}</td>
-												<td>{data.region}</td>
-												<td>{data.address}</td>
-												<td>
-																												<span class='edit'>Edit</span>
-													<button data-tip="React-tooltip" disabled={this.state.loading?true : false} onClick={() => this.props.deleteBranch(data.id)}
-														class='del '>{this.state.loading?'Loading...' : 'Delete'}</button>
-																										</td>
-											</tr>
-											</tbody>
-											))}
-											<ReactTooltip place="right" type="warning" effect="float"/>
-										</table>
-									
-									</div>
-									
-				</div>
+			<div class="table-responsive" style={{overflow: 'hidden'}}>
+				<Table 
+          body={this.bodyRow}
+					head={this.header}
+					rowsPerPage={10}
+					rowsPerPageOption={[10, 15, 20, 25]}
+        />
+			</div>
 		)
 	}
 }

@@ -12,7 +12,7 @@ import ViewDetails from './components/Onboarding/ViewDetails';
 import Branch from './components/andyBranch/branch/branch'
 import Department from './components/andyBranch/department/department'
 import Unit from './components/andyBranch/unit/unit'
-import JobType from './components/andyBranch/jobType/jobType'
+import Role from './components/andyBranch/role'
 // import Testing from './components/testing3';
 
 import 'react-notifications/lib/notifications.css';
@@ -41,7 +41,7 @@ function App() {
           <Route path="/branches" component={Branch} />
           <Route path="/departments" component={Department} />
           <Route path="/units" component={Unit} />
-          <Route path="/roles" component={JobType} />
+          <Route path="/roles" component={Role} />
           {/* <Route path="/testing" component={Testing} /> */}
         
 

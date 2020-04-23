@@ -1,15 +1,26 @@
 import React, { Component } from 'react';
+import $ from 'jquery';
+import { NotificationManager } from 'react-notifications';
 import Layout from '../../layout/index';
 import UnitTable from './unitTable';
-import {httpPost, httpGet, httpDelete } from '../../../actions/data.action';
+import {httpPost, httpGet, httpDelete, httpPatch } from '../../../actions/data.action';
 import { hideLoader, showLoader } from '../../../helpers/loader';
+import UnitModal from '../../Modals/Unit';
 // import  './departmentTable.css'
 
 export default class unit extends Component {
 	constructor(){
 		super();
 		this.state = {
-			units: []
+			units: [],
+			unit: {},
+			modalMode: 'create',
+			currentEditId: null,
+			customSelect1: null,
+			errorMessage1: null,
+			errorMessage2: null,
+			departmentOptions: [],
+
 		}
 	}
 
@@ -19,10 +30,17 @@ export default class unit extends Component {
 
   getUnits = async () => {
     try{
-	  const res = await httpGet('units');
-	  showLoader()
+			showLoader()
+		  const res = await httpGet('units');
+		  const data = await httpGet('departments');
+
+		  let optionList = [];
+		  await [...data.data.departments].map(data => (
+		  	optionList.push({ value: data.id, label: data.name })
+		  ))
+
       if(res.code === 200){
-        this.setState({ units: res.data.units})
+        this.setState({ units: res.data.units, departmentOptions: optionList })
         hideLoader()
       }
     
@@ -30,89 +48,165 @@ export default class unit extends Component {
       hideLoader()
       console.log(error)
     }
-		
-  }
+	}
+
+	handleChange = async (e, name) => {
+		const { unit } = this.state;
+		if(name === 'departmentId'){
+			unit[name] = e.value;
+			await this.setState({ unit, customSelect1: e, errorMessage2: null });
+			this.getUnits();
+		} else {
+			unit[e.target.name] = e.target.value;
+			this.setState({ unit, errorMessage1: null });
+		}
+	}
+
+	handleEdit = async (id) => {
+		const res = await httpGet(`unit/${id}`);
+		if(res.code === 200){
+			const customSelect1 = { value: res.data.unit.departmentId, label: res.data.unit.department.name };
+			this.setState({ 
+				unit: res.data.unit, 
+				currentEditId: id, 
+				modalMode: 'edit',
+				customSelect1,
+			});
+		}
+	}
+
+	handleDelete = async(id) => {
+		showLoader();
+		const res = await httpDelete(`unit/delete/${id}`);
+		if(res.code === 200){
+			this.getUnits();
+			hideLoader();
+		}
+	}
+
+	handleSubmit = async(btnType) => {
+		showLoader();
+		const { 
+			unit, 
+			currentEditId, 
+			modalMode,
+			errorMessage1,
+			errorMessage2
+		} = this.state;
+
+		if(unit.name === undefined || unit.name === ''){
+			hideLoader();
+			this.setState({ errorMessage1: 'Unit Name is required'});
+			return;
+		}
+
+		if(unit.departmentId === undefined || unit.departmentId === ''){
+			hideLoader();
+			this.setState({ errorMessage2: 'Department is required'});
+			return;
+		}
+
+		if(errorMessage1 !== null || errorMessage2 !== null){
+			hideLoader();
+			return NotificationManager.warning('Complete all required fields')
+		}
+
+		if(modalMode === 'create'){
+			const res = await httpPost(`unit/create`, unit);
+		  if(res.code === 201){
+			  $('.modal').modal('hide');
+			  $(document.body).removeClass('modal-open');
+			  $('.modal-backdrop').remove();
+		  }
+		} else {
+		  const res = await httpPatch(`unit/update/${currentEditId}`, unit);
+		  if(res.code === 200){
+			  $('.modal').modal('hide');
+			  $(document.body).removeClass('modal-open');
+			  $('.modal-backdrop').remove();
+		  }
+		}
+		this.getUnits();
+		this.clearState();
+		hideLoader();
+	}
+
+	clearState = () => {
+		this.setState({
+			unit: {
+				name: '',
+				departmentId: ''
+			},
+			modalMode: 'create',
+			currentEditId: null,
+			customSelect1: null
+		})
+	}
+
+	closeModal = () => {
+    this.clearState()
+	}
+	
+
 
 	render() {
-		return (
-			<div>
+		const { 
+			departmentOptions, 
+			customSelect1, 
+			errorMessage1, 
+			errorMessage2,
+			modalMode, 
+			unit } = this.state;
 
-				<Layout page="units">
+		return (
+			<Layout page="units">
 
 				<div class="app-content">
-				<section class="section">
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="#" class="text-muted">Home</a></li>
-					<li class="breadcrumb-item"><a href="#" class="text-muted">Performance</a></li>
-					<li class="breadcrumb-item active text-" aria-current="page">Branch</li>
-				</ol>
+					<section class="section">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="#" class="text-muted">Home</a></li>
+						<li class="breadcrumb-item"><a href="#" class="text-muted">Performance</a></li>
+						<li class="breadcrumb-item active text-" aria-current="page">Branch</li>
+					</ol>
 						<div class="section-body">
-						<div class="row">
-							
-						<div class="col-lg-8">
-																
-							<div class="card">
-
-								<div class="card-body">
-									<div class="card-header custom-header">
-									<button type="button" class="btn " data-toggle="modal" data-target="#exampleModal3">CREATE NEW</button>
-									<div class="inputf">
-													<input placeholder="Input a Branch Name"/><button className="search-bt">Search</button>
-											</div>
+							<div class="row">
+								
+							<div class="col-lg-8">
+																	
+								<div class="card">
+								<div class="card-header custom-header">
+								<div className="col col-md-12">
+										<button type="button" class="btn " data-toggle="modal" data-target="#unitModal">CREATE NEW</button>
+									</div>
 								</div>
-									
-									<UnitTable
-										units={this.state.units}
-									/>
+									<div class="card-body">
+										
+										<UnitTable
+											units={this.state.units}
+											handleEdit={this.handleEdit}
+											modalMode={modalMode}
+											handleDelete={this.handleDelete}
+										/>
 
+									</div>
 								</div>
 							</div>
 						</div>
-														</div>
-														</div>
-
-										
-						
-								</section>
-								</div>
-								<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog"  aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="example-Modal3">CREATE NEW UNIT</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+					</div>
+				</section>
 				</div>
-				<div class="modal-body">
-					<form>
-						<div class="form-group">
-							<label for="recipient-name" class="form-control-label">UNIT NAME</label>
-							<input type="text" class="form-control" id="recipient-name"/>
-						</div>
-					
-																		
-						<label for="recipient-name" class="form-control-label">Department</label>
-						<select class="form-control sel" id="exampleFormControlSelect1">
-								
-						<option>Select Department</option>
-						<option>Unit A</option>
-						<option>Unit B</option>
-						<option>Unit C</option>
-						<option>Unit D</option>
-						</select>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Create Now</button>
-				</div>
-			</div>
-		</div>
-	</div>
-					</Layout>
-					
-			</div>
+				<UnitModal
+				  unit={unit}
+				  departmentOptions={departmentOptions}
+				  customSelect1={customSelect1}
+				  handleChange={this.handleChange}
+				  handleSubmit={this.handleSubmit}
+				  closeModal={this.closeModal}
+				  modalMode={modalMode}
+					errorMessage1={errorMessage1}
+					errorMessage2={errorMessage2}
+				/>			
+			</Layout>				
 		)
 	}
 }

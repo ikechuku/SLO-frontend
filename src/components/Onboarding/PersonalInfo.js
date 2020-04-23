@@ -358,7 +358,7 @@ class PersonalInfo extends Component {
         const res = await httpPost('auth/create_staff', this.state.data);
         if(res.code === 201){
           hideLoader();
-          this.setState({ userId: res.data.id });
+          await this.setState({ userId: res.data.id });
           // return this.props.history.push(`/create_staff/two/${res.data.id}`)
           return this.props.history.push({
             pathname: `/create_staff/two/${res.data.id}`,
@@ -474,8 +474,6 @@ class PersonalInfo extends Component {
     if(this.props.location.direction === 'backward'){
       this.setState({...this.props.location.savedState, pageMode: 'edit'});
     }
-
-    console.log(getDialCode('Nigeria'))
 	}
 
   getLGA = (state) => {
@@ -754,7 +752,7 @@ class PersonalInfo extends Component {
                               value={this.state.data.homePhoneCode}
                               onChange={this.handleChange}
                             >
-                              <option value="" disabled selected>Select</option>
+                              {/* <option value="" disabled selected>Select</option> */}
                               {getAllDialCode()}
                             </select>
                           </div>

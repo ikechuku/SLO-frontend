@@ -134,6 +134,8 @@ class StaffList extends Component {
                        <Table 
                         body={this.bodyRow}
                         head={this.header}
+                        rowsPerPage={10}
+                        rowsPerPageOption={[10, 15, 20, 25]}
                       />
 									</div>
 									</div>

@@ -84,7 +84,7 @@ const CustomTable = React.memo(props => {
       </Components.Row>
       <Components.Row>
         <Components.Col xs="12">
-          <Components.Table className="table table-striped table-bordered border-t0 text-nowrap">
+          <Components.Table className="table table-hover table-bordered border-t0 text-nowrap">
             <TableHeader
               classes={classes}
               tableHeaders={tableHeaders}
@@ -111,10 +111,11 @@ const CustomTable = React.memo(props => {
         </Components.Col>
       </Components.Row>
       <Components.Row className="controlRow__root bottom">
-        <Components.Col xs={12} md={3} />
-        <Components.Col xs={12} md={3}>
-        </Components.Col>
-        <Components.Col xs={12} md={6} className="text-right">
+        {/* <Components.Col xs={12} md={3} />
+        <Components.Col xs={12} md={3} /> */}
+      <Components.Col md={12} className="text-right">
+        
+        <Components.Col>
           <Pagination
             classes={{
               Button: css`
@@ -133,6 +134,7 @@ const CustomTable = React.memo(props => {
             }}
           />
         </Components.Col>
+      </Components.Col>
       </Components.Row>
     </>
   );
@@ -198,8 +200,8 @@ function Wrapper(props) {
         tableHeaders={props.head()}
         tableBody={props.body()}
         tableClass="striped hover responsive bordered"
-        rowsPerPage={5}
-        rowsPerPageOption={[5, 10, 15, 20]}
+        rowsPerPage={props.rowsPerPage}
+        rowsPerPageOption={props.rowsPerPageOption}
         initialSort={{ prop: 'username', isAscending: true }}
         // onSort={onSortFunction}
         labels={customLabels}

@@ -10,7 +10,6 @@ const DepartmentTable = (props) => {
 						<tr>
 							<th>Department Nam</th>
 							<th>Actions</th>
-							
 						</tr>
 					</thead>
 					
@@ -20,8 +19,8 @@ const DepartmentTable = (props) => {
 								<tr>
 									<td>{data.name}</td>
 									<td>
-										<span class='edit' data-toggle="modal" data-target="#editDepartment" onClick={() => props.getSingleDepartment(data.id)}>Edit</span>
-										<span class='del'>Delete</span>
+										<span class='edit' data-toggle="modal" data-target="#departmentModal" onClick={() => props.getSingleDepartment(data.id)}>Edit</span>
+										<span class='del' onClick={() => props.handleDelete(data.id)}>Delete</span>
 									</td>
 								</tr>
 							)) : ''

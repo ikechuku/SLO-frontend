@@ -98,7 +98,7 @@ export default class ViewDetails extends Component {
                       <div className="row">
                         <div className="col-md-6">
                           <p className="row">
-                            <span className="col-md-4 font-bold">Full Name:</span> <span className="col-md-8">{user.firstName + ' ' + user.middleName + ' ' + user.lastName}</span>
+                            <span className="col-md-4 font-bold">Full Name:</span> <span className="col-md-8">{user.firstName + ' ' + (user.middleName || null) + ' ' + user.lastName}</span>
                           </p>
                           <p className="row">
                             <span className="col-md-4 font-bold">Birth Date:</span> <span className="col-md-8">{<Moment format='MMM D,  YYYY'>{user.dob}</Moment>}</span>

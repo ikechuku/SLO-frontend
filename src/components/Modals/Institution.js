@@ -2,12 +2,12 @@ import React from 'react';
 import DatePicker from "react-datepicker";
 import CustomSelect from '../../helpers/Select2';
 import CreatableSelect from 'react-select/creatable';
-import { now } from 'moment';
+import moment from 'moment';
 
 export const QualificationModal = (props) => {
   return (
     <div>
-      <div class="modal fade" id="qualificationModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal fade" id="qualificationModal" data-backdrop="static" data-keyboard="false" tabIndex="-1" role="dialog" aria-hidden="true">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -75,7 +75,7 @@ export const QualificationModal = (props) => {
                       /> */}
                       <DatePicker
                         className="form-control"
-                        selected={props.qualification.startDate}
+                        selected={props.date1}
                         onChange={(e) => props.handleQualification(e, 'startDate')}
                         dateFormat="yyyy/MM/dd"
                         placeholderText="Click to select a date"
@@ -95,7 +95,7 @@ export const QualificationModal = (props) => {
                       /> */}
                       <DatePicker
                         className="form-control"
-                        selected={props.qualification.endDate}
+                        selected={props.date2}
                         onChange={(e) => props.handleQualification(e, 'endDate')}
                         dateFormat="yyyy/MM/dd"
                         placeholderText="Click to select a date"
@@ -125,12 +125,20 @@ export const QualificationModal = (props) => {
   )
 };
 
-
+// const testDate = moment('Tue Apr 21 2020 20:58:08 GMT+0100 (West Africa Standard Time)').toDate()
+// const getCorrectDate = (date) => {
+//   const isDate = date === undefined ? '' : date
+//   console.log(date, isDate)
+//   const testDate = moment(date).toDate();
+//   return date === undefined ? undefined : testDate;
+// }
+// console.log(testDate)
 export const CertificationModal = (props) => {
-  console.log(props.customSelectDefault1)
+  
+  console.log(props.certification.endDate)
   return (
     <div>
-      <div class="modal fade" id="certificationModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal fade" id="certificationModal" data-backdrop="static" data-keyboard="false" tabIndex="-1" role="dialog" aria-hidden="true">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -207,7 +215,9 @@ export const CertificationModal = (props) => {
                       /> */}
                       <DatePicker
                         className="form-control"
-                        selected={props.certification.startDate}
+                        selected={props.date3}
+                        // selected={getCorrectDate(props.certification.startDate)}
+                        // selected={moment("2019-02-07").toDate()}
                         onChange={(e) => props.handleCertification(e, 'startDate')}
                         dateFormat="yyyy/MM/dd"
                         placeholderText="Click to select a date"
@@ -226,7 +236,7 @@ export const CertificationModal = (props) => {
                       /> */}
                      <DatePicker
                         className="form-control"
-                        selected={props.certification.endDate}
+                        selected={props.date4}
                         onChange={(e) => props.handleCertification(e, 'endDate')}
                         dateFormat="yyyy/MM/dd"
                         placeholderText="Click to select a date"

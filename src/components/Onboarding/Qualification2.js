@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import $ from 'jquery';
 import { NotificationManager } from 'react-notifications';
 import { httpPost, httpPatch, httpDelete } from '../../actions/data.action';
@@ -35,10 +36,12 @@ class Qualification extends Component {
       endDateErrorMssg7: null,
       pageMode: 'create',
       customSelectDefault1: null,
-      date1: new Date(),
-      date2: new Date(),
-      date3: new Date(),
-      date4: new Date(),
+      date1: undefined,
+      date2: undefined,
+      date3: undefined,
+      date4: undefined,
+      date5: undefined,
+      date6: undefined,
       modalMode: 'create',
       editIndex: null
     }
@@ -51,7 +54,7 @@ class Qualification extends Component {
     if(nameValue === 'endDate'){
       qualification[nameValue] = e;
       this.setState({ 
-        qualification
+        qualification, date2: e
       })
       const isValidate = validateQualification(nameValue, this.state.qualification.endDate, this.state.qualification.startDate);
       if(!isValidate.error){
@@ -66,7 +69,7 @@ class Qualification extends Component {
     } else if(nameValue === 'startDate'){
       qualification[nameValue] = e;
       this.setState({ 
-        qualification
+        qualification, date1: e
       })
       const isValidate = validateQualification(nameValue, this.state.qualification.startDate );
       if(!isValidate.error){
@@ -93,7 +96,7 @@ class Qualification extends Component {
     if(nameValue === 'endDate'){
       certification[nameValue] = e;
       this.setState({ 
-        certification
+        certification, date4: e
       })
       const isValidate = await validateQualification(nameValue, this.state.certification.endDate, this.state.certification.startDate);
       if(!isValidate.error){
@@ -110,7 +113,7 @@ class Qualification extends Component {
       console.log(e)
       certification[nameValue] = e;
       this.setState({ 
-        certification
+        certification, date3: e
       })
       const isValidate = await validateQualification(nameValue, this.state.certification.startDate );
       if(!isValidate.error){
@@ -184,7 +187,9 @@ class Qualification extends Component {
           endDate: ''
         },
         modalMode: 'create',
-        editIndex: null 
+        editIndex: null,
+        date1: undefined,
+        date2: undefined 
       });
     } else {
       if(this.state.certification.name === undefined || this.state.certification.name === '' || this.state.certification.certification === undefined || this.state.certification.certification === '' || this.state.certification.categoryOfCertification === undefined || this.state.certification.categoryOfCertification === '' || this.state.certification.startDate === undefined || this.state.certification.startDate === '' || this.state.certification.endDate === undefined || this.state.certification.endDate === '' ){
@@ -225,7 +230,9 @@ class Qualification extends Component {
         },
         modalMode: 'create',
         editIndex: null,
-        customSelectDefault1: null 
+        customSelectDefault1: null,
+        date3: undefined,
+        date4: undefined 
       });
     } 
     // this.showQualificationCard()
@@ -260,7 +267,7 @@ class Qualification extends Component {
     if(nameValue === 'endDate'){
       previousEmployment[nameValue] = e;
       this.setState({ 
-        previousEmployment
+        previousEmployment, date6: e
       })
       const isValidate = await validatePreviousExperience(nameValue, this.state.previousEmployment.endDate, this.state.previousEmployment.startDate);
       if(!isValidate.error){
@@ -275,7 +282,7 @@ class Qualification extends Component {
     } else if(nameValue === 'startDate'){
       previousEmployment[nameValue] = e;
       this.setState({ 
-        previousEmployment
+        previousEmployment, date5: e
       })
       const isValidate = await validatePreviousExperience(nameValue, this.state.previousEmployment.startDate );
       if(!isValidate.error){
@@ -338,13 +345,19 @@ class Qualification extends Component {
     $(document.body).removeClass('modal-open');
     $('.modal-backdrop').remove();
     
-    this.setState({ previousEmployment: {
-      employerName: '',
-      address: '',
-      role: '',
-      startDate: '',
-      endDate: ''
-    } });
+    this.setState({ 
+      previousEmployment: {
+        employerName: '',
+        address: '',
+        role: '',
+        startDate: '',
+        endDate: ''
+      },
+      modalMode: 'create',
+      editIndex: null,
+      date5: undefined,
+      date6: undefined 
+    });
   }
 
   removeMorePrevious = (value, id) => {
@@ -379,18 +392,26 @@ class Qualification extends Component {
       // qualification['qualification'] = qualificationObj.qualification;
       // qualification['startDate'] = qualificationObj.startDate;
       // qualification['endDate'] = qualificationObj.endDate;
-      this.setState({ qualification: [...this.state.moreInstitution].filter((data,index) => index === parseInt(indexValue))[0],
+      await this.setState({ qualification: [...this.state.moreInstitution].filter((data,index) => index === parseInt(indexValue))[0],
         editIndex: indexValue, modalMode: 'edit' });
+      const date1 = moment(this.state.qualification.startDate).toDate();
+      const date2 = moment(this.state.qualification.endDate).toDate();
+      this.setState({ date1, date2 });
     } else if(name === 'certification'){
       await this.setState({ certification: [...this.state.moreInstitution].filter((data,index) => index === parseInt(indexValue))[0],
         editIndex: indexValue, modalMode: 'edit' });
       const customSelectValue = { value: this.state.certification.categoryOfCertification, label: this.state.certification.categoryOfCertification };
-      this.setState({ customSelectDefault1: customSelectValue });
+      const date3 = moment(this.state.certification.startDate).toDate();
+      const date4 = moment(this.state.certification.endDate).toDate();
+      this.setState({ customSelectDefault1: customSelectValue, date3, date4 });
     } else {
-      this.setState({
+      await this.setState({
         previousEmployment: [...this.state.morePrevious].filter((data,index) => index === parseInt(indexValue))[0],
         editIndex: indexValue, modalMode: 'edit'
       })
+      const date5 = moment(this.state.previousEmployment.startDate).toDate();
+      const date6 = moment(this.state.previousEmployment.endDate).toDate();
+      this.setState({ date5, date6 });
     }
   }
 
@@ -419,7 +440,13 @@ class Qualification extends Component {
       },
       customSelectDefault1: null,
       modalMode: 'create',
-      editIndex: null
+      editIndex: null,
+      date1: undefined,
+      date2: undefined,
+      date3: undefined,
+      date4: undefined,
+      date5: undefined,
+      date6: undefined
     })
   }
 
@@ -452,7 +479,7 @@ class Qualification extends Component {
       const data = {
         // institution: (!this.state.moreInstitution.length) ? this.state.institution : [...this.state.moreInstitution, this.state.institution],
         institution: this.state.moreInstitution,
-        previousEmployment: (!this.state.morePrevious.length) ? this.state.previousEmployment : [...this.state.morePrevious],
+        previousEmployment: this.state.morePrevious,
         objectReference: this.state.objectReference,
         reasonForLeaving: this.state.reasonForLeaving,
         moreInfo: this.state.moreInfo
@@ -463,16 +490,21 @@ class Qualification extends Component {
         NotificationManager.warning("Fill in at least one institution")
         return;
       }
+      console.log('req body', data)
+      // console.log('ch', moment('Tue Apr 21 2020 20:58:08 GMT+0100 (West Africa Standard Time)').format())
 
       if(this.state.pageMode === 'edit'){
         const res = await httpPatch(`auth/edit_onboarding_two/${id}`, data);
-        if(res.code === 200){
+        if(res.code === 201){
           hideLoader();
-          console.log(res.data)
           await this.setState({ 
-            institution: res.data.savedInstitution, 
-            previousEmployment: res.data.savedEmployment
+            moreInstitution: res.data.savedInstitution, 
+            morePrevious: res.data.savedEmployment
           });
+
+          console.log('state', this.state)
+          console.log('resoonse', res.data)
+
   
           return this.props.history.push({
             pathname: `/create_staff/three/${res.data.id}`,
@@ -488,8 +520,8 @@ class Qualification extends Component {
           // setState({ userId: res.data.id });
           //return this.props.history.push(`/create_staff/three/${res.data.id}`)
           await this.setState({ 
-            institution: res.data.savedInstitution, 
-            previousEmployment: res.data.savedEmployment
+            moreInstitution: res.data.savedInstitution, 
+            morePrevious: res.data.savedEmployment
           });
   
           return this.props.history.push({
@@ -515,7 +547,7 @@ class Qualification extends Component {
       const { id } = this.props.match.params;
       const data = {
         institution: this.state.moreInstitution,
-        previousEmployment: (!this.state.morePrevious.length) ? this.state.previousEmployment : [...this.state.morePrevious],
+        previousEmployment: this.state.morePrevious,
         objectReference: this.state.objectReference,
         reasonForLeaving: this.state.reasonForLeaving,
         moreInfo: this.state.moreInfo
@@ -642,6 +674,8 @@ class Qualification extends Component {
           endDateErrorMssg6={this.state.endDateErrorMssg6}
           modalMode={this.state.modalMode}
           closeModal={this.closeModal}
+          date1={this.state.date1}
+          date2={this.state.date2}
         />
 
         <CertificationModal
@@ -659,6 +693,8 @@ class Qualification extends Component {
           modalMode={this.state.modalMode}
           customSelectDefault1={this.state.customSelectDefault1}
           closeModal={this.closeModal}
+          date3={this.state.date3}
+          date4={this.state.date4}
         />
 
         <PreviousEmploymentModal 
@@ -670,6 +706,8 @@ class Qualification extends Component {
           endDateErrorMssg7={this.state.endDateErrorMssg7}
           modalMode={this.state.modalMode}
           closeModal={this.closeModal}
+          date5={this.state.date5}
+          date6={this.state.date6}
         />
       </Layout>
     )

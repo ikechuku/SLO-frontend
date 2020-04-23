@@ -64,7 +64,8 @@ export const PreviousEmploymentModal = (props) => {
                       /> */}
                       <DatePicker
                         className="form-control"
-                        selected={props.previousEmployment.startDate}
+                        // selected={props.previousEmployment.startDate}
+                        selected={props.date5}
                         onChange={(e) => props.handlePrevious(e, 'startDate')}
                         dateFormat="yyyy/MM/dd"
                         placeholderText="Click to select a date"
@@ -84,7 +85,8 @@ export const PreviousEmploymentModal = (props) => {
                       /> */}
                       <DatePicker
                         className="form-control"
-                        selected={props.previousEmployment.endDate}
+                        // selected={props.previousEmployment.endDate}
+                        selected={props.date6}
                         onChange={(e) => props.handlePrevious(e, 'endDate')}
                         dateFormat="yyyy/MM/dd"
                         placeholderText="Click to select a date"
