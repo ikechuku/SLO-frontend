@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Table from '../../../helpers/customTable';
+import Table from '../../helpers/customTable';
 
 class RoleTable extends Component {
 	constructor(props){

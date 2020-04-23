@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Table from '../../../helpers/customTable';
+import Table from '../../helpers/customTable';
 
 export default class unitTable extends Component {
 	constructor(props){

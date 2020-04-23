@@ -1,0 +1,143 @@
+
+
+.fff{
+  padding: 5px;
+}
+
+
+.inbox-head{
+  display: flex;
+  justify-content: space-between;
+  /* background-color: #0069D9; */
+  background-color: #013364;
+  height: 40px;
+  color: white;
+  text-align: center;
+line-height: 3;
+}
+
+ .inbox-head .inbox-headi{
+  font-weight: 600;
+padding-left: 10px;
+
+} 
+
+ .inbox-head .inbox-head-name button{
+background-color: #013362;
+border: none;
+margin-bottom: 4px;
+
+} 
+
+.inbox-head .inbox-head-name button:hover{
+  background-color: #013362 !important;
+  
+  
+  }
+  
+
+
+
+ .inbox-head .inbox-head-name{
+  font-weight: 600;
+padding-right: 12px;
+
+}
+.nowrap{
+margin: 0 !important;
+
+} 
+.andy-table{
+ 
+  border-style: solid;
+  width: 50vw !important;
+  background-color: white;
+  border: none;
+ padding-top: 0;
+ margin-top: 0;
+  filter: drop-shadow(1px 1px 1px rgba(128, 128, 128, 0.411));
+  margin-top: 20px;
+  border-collapse: collapse;
+  overflow: scroll;
+  white-space: nowrap;
+text-overflow: ellipsis;
+ margin: 20px 30px 0 190px; 
+}  
+
+.tr{
+
+  height: 47px;
+
+} 
+
+.andy-td, .andy-th { 
+
+  border-bottom: 2px solid rgba(128, 128, 128, 0.205); 
+  text-align: center;
+  padding: 0;
+  margin: 0;
+ border-spacing: 0;
+text-align: start;
+padding-left: 10px;
+
+  } 
+
+ 
+
+  .andy-th{
+      height: 47px;
+     text-align: start;
+  }
+
+  .andy-tr{
+      text-align: start !important;
+  } 
+
+
+
+tbody .andy-tr:hover{
+/* background-color: #0069D9; */
+background-color: #013364;
+color: white !important;
+cursor: pointer;
+}
+
+@media(max-width:1048px){
+
+  .responsiv-table{
+      overflow: scroll;
+      width: 90vw;
+      margin-top: 20px;
+   }
+   .inbox-head{
+     
+   }
+}
+
+ .animation{
+ animation: chats 500ms ease-in forwards;
+} 
+ 
+@keyframes chats{
+   0%{
+       opacity: 0;
+       transform: translateX(400px);
+   }
+
+   100%{
+      transform: translateX(0);
+  }
+} 
+
+.coloe{
+   color: white;
+   /* background-color:#0069D9 ; */
+   background-color: #013364;
+}
+
+.hideform{
+   display: none;
+}
+.showgroupDetails{
+   display: block;
+}

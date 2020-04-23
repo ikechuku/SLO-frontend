@@ -409,7 +409,8 @@
 .side-menu__item.active, .side-menu__item:hover, .side-menu__item:focus {
 	text-decoration: none;
 	color: rgba(255,255,255);
-	background: linear-gradient(#3d4192, #5d61bf);
+	/* background: linear-gradient(#3d4192, #5d61bf); */
+	background: linear-gradient(#013364, #02488c);
 }
 .app.sidebar-mini.sidenav-toggled .side-menu__item.active .side-menu__label{
 	color: rgba(255,255,255);

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import { NotificationManager } from 'react-notifications';
-import Layout from '../../layout/index';
+import Layout from '../layout/index';
 import UnitTable from './unitTable';
-import {httpPost, httpGet, httpDelete, httpPatch } from '../../../actions/data.action';
-import { hideLoader, showLoader } from '../../../helpers/loader';
-import UnitModal from '../../Modals/Unit';
+import {httpPost, httpGet, httpDelete, httpPatch } from '../../actions/data.action';
+import { hideLoader, showLoader } from '../../helpers/loader';
+import UnitModal from '../Modals/Unit';
 // import  './departmentTable.css'
 
 export default class unit extends Component {
@@ -139,7 +139,9 @@ export default class unit extends Component {
 			},
 			modalMode: 'create',
 			currentEditId: null,
-			customSelect1: null
+			customSelect1: null,
+			errorMessage1: null,
+			errorMessage2: null,
 		})
 	}
 

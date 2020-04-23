@@ -1,0 +1,61 @@
+.checkBoxTabP{
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0;
+    text-align: start;
+    align-items: flex-start;
+    margin-left: -10px;
+}
+
+.checkBoxTa label{
+    margin-right: 5px;
+    font-size: 10px;
+    font-weight: 700;
+   
+}
+
+.checkBoxTa input{
+  text-align: center;
+  margin-top: 9px;
+}
+
+.reason{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-top: 10px;
+}
+
+.reason h1{
+    font-size: 15px;
+    margin-top: 5px;
+    font-weight: 600;
+}
+
+.reason p{
+    font-size: 13px;
+}
+
+.leavepay{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    font-weight: 700;
+}
+
+.leavepay label{
+margin-right: 10px;
+margin-bottom: -4px;
+}
+
+.addi p{
+    font-size: 12px;
+    padding: 0;
+    margin: 10px;
+}
+
+.addi{
+    margin-bottom: 10px;
+}

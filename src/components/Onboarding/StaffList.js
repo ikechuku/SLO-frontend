@@ -57,7 +57,7 @@ class StaffList extends Component {
       })
     } else {
       return this.props.history.push({
-        pathname: '/',
+        pathname: '/create_staff/one',
         direction: 'editUserOnboarding'
       })
     }
