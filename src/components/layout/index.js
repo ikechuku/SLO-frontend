@@ -7,7 +7,7 @@ const Layout = (props) => {
     <div className="app">
       <div className="main-wrapper">
         <Nav />
-        <Sidebar />
+        <Sidebar props={props}/>
         {props.children}
       </div>
     </div>

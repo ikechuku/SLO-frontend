@@ -18,7 +18,8 @@ var validation = {
       return str1 === str2;
   },
   isPhoneNumber: (str) => {
-    const pattern = /^[\d+-]{3,15}$/;
+    // const pattern = /^[\d+-]{3,15}$/;
+    const pattern = /^\d{10}$/;
     return pattern.test(str);
   },
   isLetterOnly: (str) => {
@@ -26,7 +27,7 @@ var validation = {
     return pattern.test(str);
   },
   isNameOnly: (str) => {
-    const pattern = /^(?=.{1,50}$)[a-z]+(?:['-_.\s][a-z]+)*$/i;
+    const pattern = /^(?=.{1,50}$)[a-z]+(?:['-_.\s][a-z ]+)*$/i;
     return pattern.test(str);
   }
 };
@@ -44,6 +45,51 @@ const validateQualification = (name, value, otherValue) => {
     }
   }
 
+  if(name === 'startDate'){
+    if (new Date(value) > new Date(Date.now())) {
+      return {
+        error,
+        errorMessage: 'Invalid date, you can only select a day before today'
+      }
+      
+    }
+  }
+
+  return {
+    error: true
+  }
+}
+
+const validatePreviousExperience = (name, value, otherValue) => {
+  let error = false;
+  if(name === 'endDate'){
+    if (new Date(value) < new Date(otherValue)) {
+      return {
+        error,
+        errorMessage: 'Invalid date, you can not select a day before start date'
+      }
+      
+    }
+
+    if (new Date(value) > new Date(Date.now())) {
+      return {
+        error,
+        errorMessage: 'Invalid date, you can not select a day after today'
+      }
+      
+    }
+  }
+
+  if(name === 'startDate'){
+    if (new Date(value) > new Date(Date.now())) {
+      return {
+        error,
+        errorMessage: 'Invalid date, you can only select a day before today'
+      }
+      
+    }
+  }
+
   return {
     error: true
   }
@@ -52,11 +98,33 @@ const validateQualification = (name, value, otherValue) => {
 
 const validateD = (name, value) => {
   let error = false;
-  if(name === 'firstName'){
-    if (value === '' || value === null || value === undefined || value.length < 3){
+  
+  if(name === 'employerName'){
+    if (value === '' || value === null || value === undefined || !value.length){
       return {
         error,
-        errorMessage: 'First name cannot be less than 3 characters'
+        errorMessage: 'Employer name cannot be less than 1 character'
+      }
+    }
+
+    // console.log(validation.isNameOnly(value))
+    if(!(validation.isNameOnly(value))){
+      return {
+        error,
+        errorMessage: 'Employer name should only contain alphabets'
+      };
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'firstName'){
+    if (value === '' || value === null || value === undefined || !value.length){
+      return {
+        error,
+        errorMessage: 'First name cannot be less than 1 character'
       }
     }
 
@@ -74,10 +142,10 @@ const validateD = (name, value) => {
   }
 
   if(name === 'lastName'){
-    if (value === '' || value === null || value === undefined || value.length < 3){
+    if (value === '' || value === null || value === undefined || !value.length){
       return {
         error,
-        errorMessage: 'Last name cannot be less than 3 characters'
+        errorMessage: 'Last name cannot be less than 1 character'
       }
     }
   
@@ -94,14 +162,18 @@ const validateD = (name, value) => {
   }
 
   if(name  === 'middleName'){
-    if (value === '' || value === null || value === undefined || value.length < 3){
+    // if (value === '' || value === null || value === undefined || !value.length){
+    //   return {
+    //     error,
+    //     errorMessage: 'Middle name cannot be less than 1 character'
+    //   }
+    // }
+    
+    if (value === '' || value === null || value === undefined || !value.length){
       return {
-        error,
-        errorMessage: 'Middle name cannot be less than 3 characters'
+        error: true
       }
-    }
-  
-    if(!(validation.isNameOnly(value))){
+    } else if(!(validation.isNameOnly(value))){
       return {
         error,
         errorMessage: 'Middle name should only contain alphabets'
@@ -130,7 +202,7 @@ const validateD = (name, value) => {
     if(!(validation.isPhoneNumber(value))){
       return {
         error,
-        errorMessage: 'Mobile phone must be valid: 3 - 15 characters with +, - and only numbers'
+        errorMessage: 'Mobile phone must be valid: 10 characters and only numbers'
       }
     }
 
@@ -140,10 +212,14 @@ const validateD = (name, value) => {
   }
 
   if(name === 'homePhone'){
-    if(!(validation.isPhoneNumber(value))){
+    if (value === '' || value === null || value === undefined || !value.length){
+      return {
+        error: true
+      }
+    } else if(!(validation.isPhoneNumber(value))){
       return {
         error,
-        errorMessage: 'Home phone must be valid: 3 - 15 characters with +, - and only numbers'
+        errorMessage: 'Home phone must be valid: 10 characters and only numbers'
       }
     }
 
@@ -165,11 +241,37 @@ const validateD = (name, value) => {
     }
   }
 
+  if(name === 'currentAddress'){
+    if (value === '' || value === null || value === undefined ){
+      return {
+        error,
+        errorMessage: 'Current Address is required'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
   if(name === 'gender'){
     if (value === '' || value === null || value === undefined ){
       return {
         error,
         errorMessage: 'Gender is required'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'noOfDependant'){
+    if(!(validation.isNumber(value))){
+      return {
+        error,
+        errorMessage: 'Number of dependants can only be positive integers'
       }
     }
 
@@ -186,6 +288,15 @@ const validateD = (name, value) => {
       }
     }
 
+    let today = new Date();
+    let newDob = new Date(value);
+    if(((today.getFullYear() - newDob.getFullYear()) < 16) || ((today.getFullYear() - newDob.getFullYear()) > 70)){
+      return {
+        error,
+        errorMessage: 'Date of birth cannot be less than 16 years and greater than 70 years'
+      }
+    }
+
     return {
       error: true
     }
@@ -198,13 +309,14 @@ const validateData = (postData) => {
   const {
         firstName,
         lastName,
-        middleName,
+        // middleName,
         email,
         mobilePhone,
         homePhone,
         nationality,
         dob,
-        gender
+        gender,
+        currentAddress
       } = postData;
 
     if (firstName === '' || firstName === null || firstName === undefined || firstName.length < 3){
@@ -223,13 +335,13 @@ const validateData = (postData) => {
       }
     }
 
-    if (middleName === '' || middleName === null || middleName === undefined || middleName.length < 3){
-      return {
-        error,
-        type: 'middleName',
-        errorMessage: 'Middle name is required'
-      }
-    }
+    // if (middleName === '' || middleName === null || middleName === undefined || middleName.length < 3){
+    //   return {
+    //     error,
+    //     type: 'middleName',
+    //     errorMessage: 'Middle name is required'
+    //   }
+    // }
 
     if (email === '' || email === null || email === undefined || email.length < 3){
       return {
@@ -263,19 +375,27 @@ const validateData = (postData) => {
       }
     }
 
-    if (homePhone === '' || homePhone === null || homePhone === undefined || homePhone.length < 3){
-      return {
-        error,
-        type: 'homePhone',
-        errorMessage: 'Home phone is required'
-      }
-    }
+    // if (homePhone === '' || homePhone === null || homePhone === undefined || homePhone.length < 3){
+    //   return {
+    //     error,
+    //     type: 'homePhone',
+    //     errorMessage: 'Home phone is required'
+    //   }
+    // }
 
     if (nationality === '' || nationality === null || nationality === undefined || nationality.length < 3){
       return {
         error,
         type: 'nationality',
         errorMessage: 'Nationality is required'
+      }
+    }
+
+    if (currentAddress === '' || currentAddress === null || currentAddress === undefined || currentAddress.length < 3){
+      return {
+        error,
+        type: 'currentAddress',
+        errorMessage: 'Current Address is required'
       }
     }
 
@@ -355,7 +475,7 @@ const validateEmploymentInfoForm = (postData) => {
     }
   }
 
-  if (skills === '' || skills === null || skills === undefined){
+  if (!skills.length){
     return {
       error,
       type: 'skills',
@@ -443,6 +563,13 @@ const validateEmpoymentFields = (name, value) => {
       }
     }
 
+    if(!(validation.isNumber(value))){
+      return {
+        error,
+        errorMessage: 'Salary amount can only be positive integers'
+      }
+    }
+
     return {
       error: true
     }
@@ -479,10 +606,10 @@ const validateEmpoymentFields = (name, value) => {
 const validateGuarantorFields = (name, value) => {
   let error = false;
   if(name === 'firstName'){
-    if (value === '' || value === null || value === undefined || value.length < 3){
+    if (value === '' || value === null || value === undefined || !value.length){
       return {
         error,
-        errorMessage: 'First name cannot be less than 3 characters'
+        errorMessage: 'First name cannot be less than 1 character'
       }
     }
 
@@ -499,10 +626,10 @@ const validateGuarantorFields = (name, value) => {
   }
 
   if(name === 'lastName'){
-    if (value === '' || value === null || value === undefined || value.length < 3){
+    if (value === '' || value === null || value === undefined || !value.length){
       return {
         error,
-        errorMessage: 'Last name cannot be less than 3 characters'
+        errorMessage: 'Last name cannot be less than 1 character'
       }
     }
   
@@ -519,14 +646,18 @@ const validateGuarantorFields = (name, value) => {
   }
 
   if(name  === 'middleName'){
-    if (value === '' || value === null || value === undefined || value.length < 3){
-      return {
-        error,
-        errorMessage: 'Middle name cannot be less than 3 characters'
-      }
-    }
+    // if (value === '' || value === null || value === undefined || !value.length){
+    //   return {
+    //     error,
+    //     errorMessage: 'Middle name cannot be less than 1 character'
+    //   }
+    // }
   
-    if(!(validation.isNameOnly(value))){
+    if (value === '' || value === null || value === undefined || !value.length){
+      return {
+        error: true
+      }
+    } else if(!(validation.isNameOnly(value))){
       return {
         error,
         errorMessage: 'Middle name should only contain alphabets'
@@ -542,7 +673,7 @@ const validateGuarantorFields = (name, value) => {
     if(!(validation.isPhoneNumber(value))){
       return {
         error,
-        errorMessage: 'Mobile phone must be valid: 3 - 15 characters with +, - and only numbers'
+        errorMessage: 'Mobile phone must be valid: 10 characters and only numbers'
       }
     }
 
@@ -555,7 +686,7 @@ const validateGuarantorFields = (name, value) => {
     if(!(validation.isPhoneNumber(value))){
       return {
         error,
-        errorMessage: 'Home phone must be valid: 3 - 15 characters with +, - and only numbers'
+        errorMessage: 'Home phone must be valid: 10 characters and only numbers'
       }
     }
 
@@ -568,7 +699,24 @@ const validateGuarantorFields = (name, value) => {
     if(!(validation.isPhoneNumber(value))){
       return {
         error,
-        errorMessage: 'Business phone must be valid: 3 - 15 characters with +, - and only numbers'
+        errorMessage: 'Business phone must be valid: 10 characters and only numbers'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'employeeKnownDate'){
+    let today = new Date();
+    today.setHours(0,0,0,0);
+    let newDob = new Date(value);
+    // console.log(('today', today.getDate()))
+    if(newDob >= today){
+      return {
+        error,
+        errorMessage: 'Date cannot be beyond today'
       }
     }
 
@@ -584,5 +732,6 @@ export {
   validateQualification,
   validateEmploymentInfoForm,
   validateEmpoymentFields,
-  validateGuarantorFields
+  validateGuarantorFields,
+  validatePreviousExperience
 }

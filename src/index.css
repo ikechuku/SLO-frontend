@@ -61,3 +61,52 @@ code {
   background: #838ab6;
   color: white !important;
 }
+
+
+.select2-padding .css-g1d714-ValueContainer {
+  /* padding: 2px 59px 2px 8px !important; */
+  padding: 2px 4px 2px 0px !important;
+  width: 65px !important;
+}
+
+.css-1hwfws3 {
+  padding: 2px 4px 2px 0px !important;
+  width: 65px !important;
+}
+
+.c-date-picker .react-datepicker-wrapper{
+  width: 100% !important
+}
+
+input::placeholder {
+  opacity: 0.3 !important;
+}
+
+.form-control::placeholder {
+  opacity: 0.3 !important;
+}
+
+.add-link {
+  text-decoration: underline !important;
+  cursor: pointer;
+}
+
+.add-link:hover {
+  font-weight: bold;
+}
+
+.font-bold {
+  font-weight: 600!important;
+}
+
+thead .thead-th {
+  font-weight: 600 !important;
+  background-color: #f6f6f9 !important;
+}
+
+
+@media (min-width: 992px) {
+  .modal-lg {
+    max-width: 850px !important;
+  }
+}

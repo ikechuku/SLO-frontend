@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import Moment from 'react-moment';
+import $ from 'jquery';
 import Layout from '../layout/index';
 import { httpPost, httpPatch, httpDelete } from '../../actions/data.action';
 import { hideLoader, showLoader } from '../../helpers/loader';
 import { NotificationManager } from 'react-notifications';
 import { validateGuarantorFields } from '../../helpers/validations';
-import { states, countries } from './Info';
 import { slga, getLga } from '../../helpers/states';
-import CustomSelect from '../../helpers/Select2';
+import GuarantorTable from './GuarantorTable';
+import { GuarantorModal } from '../Modals/Guarantor'
 
 class Guarantor extends Component {
 	constructor(props){
@@ -20,6 +21,9 @@ class Guarantor extends Component {
 				mobilePhone: '',
 				homePhone: '',
 				businessPhone: '',
+				mobilePhoneCode: '',
+				homePhoneCode: '',
+				businessPhoneCode: '',
 				relationship: '',
 				occupation: '',
 				residentialAddress: '',
@@ -33,6 +37,10 @@ class Guarantor extends Component {
 				landedPropertyLga: '',
 				landedPropertyCity: '',
 				businessAddress: '',
+				businessCountry: '',
+				businessState: '',
+				businessLga: '',
+				businessCity: '',
 				maritalStatus: '',
 				employeeKnownDate: '',
 				criminalHistory: ''
@@ -44,15 +52,37 @@ class Guarantor extends Component {
 			errorMessage3: null,
 			errorMessage4: null,
 			errorMessage5: null,
-			errorMessage6: null
+			errorMessage6: null,
+			errorMessage7: null,
+			modalMode: 'create',
+			editIndex: null,
+			customSelect1: null,
+			customSelect2: null,
+			customSelect3: null,
+			customSelect4: null,
+			customSelect5: null,
 		}
 	}
 
-	handleChange = async (e) => {
+	handleChange = async (e, nameValue) => {
 		const { postData } = this.state;
-		let details = e.target;
-		console.log(details.name, details.value)
-		if(details.name === 'criminalHistory'){
+		let details = e !== null ? e.target : '';
+
+		if(nameValue === 'employeeKnownDate'){
+			postData[nameValue] = e;
+			this.setState({ postData });
+			const isValidate = validateGuarantorFields(nameValue, this.state.postData.employeeKnownDate);
+      if(!isValidate.error){
+        this.setState({ 
+          errorMessage7: isValidate.errorMessage, 
+        })
+        return;
+      } else {
+				console.log('here')
+				this.setState({ errorMessage7: null  })
+			}
+
+		} else if(details.name === 'criminalHistory'){
 			let value;
 			if(details.value === "true"){
 				value = true;
@@ -62,116 +92,207 @@ class Guarantor extends Component {
 			postData[e.target.name] = value;
 			this.setState({ postData });
 		} else if(details.name === 'firstName'){
-      const isValidate = await validateGuarantorFields(e.target.name, e.target.value);
+			postData[details.name] = details.value;
+      this.setState({ 
+        postData
+      })
+			const isValidate = await validateGuarantorFields(details.name, this.state.postData.firstName);
       if(!isValidate.error){
         this.setState({ 
           errorMessage1: isValidate.errorMessage, 
         })
         return;
-      }
-      postData[details.name] = details.value;
-      this.setState({ 
-        postData,
-        errorMessage1: null 
-      })
+      } else {
+				this.setState({ errorMessage1: null  })
+			}
     } else if(details.name === 'lastName'){
-      const isValidate = await validateGuarantorFields(e.target.name, e.target.value);
+			postData[details.name] = details.value;
+      this.setState({ 
+        postData 
+      })
+      const isValidate = await validateGuarantorFields(e.target.name, this.state.postData.lastName);
       if(!isValidate.error){
         this.setState({ 
           errorMessage2: isValidate.errorMessage, 
         })
         return;
-      }
-      postData[details.name] = details.value;
-      this.setState({ 
-        postData,
-        errorMessage2: null 
-      })
+      } else {
+				this.setState({errorMessage2: null});
+			}
     } else if(details.name === 'middleName'){
-      const isValidate = await validateGuarantorFields(e.target.name, e.target.value);
+			postData[details.name] = details.value;
+      this.setState({ 
+        postData 
+      })
+      const isValidate = await validateGuarantorFields(e.target.name, this.state.postData.middleName);
       if(!isValidate.error){
         this.setState({ 
-          errorMessage3: isValidate.errorMessage, 
+					errorMessage3: isValidate.errorMessage,
         })
         return;
-      }
-      postData[details.name] = details.value;
-      this.setState({ 
-        postData,
-        errorMessage3: null 
-      })
+      } else {
+				this.setState({errorMessage3: null })
+			}
     } else if(details.name === 'mobilePhone'){
-      const isValidate = await validateGuarantorFields(e.target.name, e.target.value);
+			postData[details.name] = details.value;
+      this.setState({ 
+        postData 
+      })
+      const isValidate = await validateGuarantorFields(e.target.name, this.state.postData.mobilePhone);
       if(!isValidate.error){
         this.setState({ 
-          errorMessage4: isValidate.errorMessage, 
+					errorMessage4: isValidate.errorMessage,
         })
         return;
-      }
-      postData[details.name] = details.value;
-      this.setState({ 
-        postData,
-        errorMessage4: null 
-      })
+      } else {
+				this.setState({errorMessage4: null})
+			}
     } else if(details.name === 'homePhone'){
+			postData[details.name] = details.value;
+      this.setState({ 
+        postData
+      })
       const isValidate = await validateGuarantorFields(e.target.name, e.target.value);
       if(!isValidate.error){
         this.setState({ 
           errorMessage5: isValidate.errorMessage, 
         })
         return;
-      }
-      postData[details.name] = details.value;
-      this.setState({ 
-        postData,
-        errorMessage5: null 
-      })
+      } else {
+				this.setState({errorMessage5: null })
+			}
     } else if(details.name === 'businessPhone'){
+			postData[details.name] = details.value;
+      this.setState({ 
+        postData
+      })
       const isValidate = await validateGuarantorFields(e.target.name, e.target.value);
       if(!isValidate.error){
         this.setState({ 
           errorMessage6: isValidate.errorMessage, 
         })
         return;
-      }
-      postData[details.name] = details.value;
-      this.setState({ 
-        postData,
-        errorMessage6: null 
-      })
+      } else {
+				this.setState({errorMessage6: null})
+			}
     } else {
 			postData[details.name] = details.value;
 			this.setState({ postData });
 		}
 	}
 
-	addMore = () => {
+	handleCustomSelect = (result, name) => {
+		const { postData } = this.state;
+		const value = result !== null ? result.value : ''
+		console.log(name, value)
+		if(name === 'mobilePhoneCode'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customSelect1: result
+			});
+			// this.setState(state => {
+      //   return {
+			// 		...state,
+      //     selected1: value
+      //   };
+      // });
+		} else if(name === 'homePhoneCode'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customSelect2: result
+			});
+		} else if(name === 'businessPhoneCode'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customSelect3: result
+			});
+		} else if(name === 'relationship'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customSelect4: result
+			});
+		} else if(name === 'occupation'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customSelect5: result
+			});
+		}	else if(name === 'residentialCountry'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customSelect6: result
+			});
+		} else if(name === 'landedPropertyCountry'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customSelect7: result
+			});
+		} else if(name === 'businessCountry'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customSelect8: result
+			});
+		} else {
+			postData[name] = value;
+			this.setState({ 
+				postData
+			});
+		}
+  
+		// postData[name] = value;
+		// this.setState({ 
+		// 	postData
+		// });
+  }
+
+	addMore = async () => {
 		const { 
 			firstName,
 			lastName,
 			middleName,
 			mobilePhone,
+			mobilePhoneCode,
 			homePhone,
 			businessPhone,
 			relationship,
 			occupation,
 			residentialAddress,
+			residentialCountry,
+			residentialState,
+			residentialLga,
+			residentialCity,
 			landedPropertyAddress,
 			businessAddress,
 			maritalStatus,
 			employeeKnownDate,
-			criminalHistory
+			criminalHistory,
+			details
 		} = this.state.postData;
 
 		console.log(this.state.postData)
 
-		if(firstName === '' || lastName === '' || middleName === '' || mobilePhone === '' || businessPhone === '' || relationship === '' || homePhone === '' || occupation === '' || residentialAddress === '' || landedPropertyAddress === '' || businessAddress === '' || maritalStatus === '' || employeeKnownDate === '' || criminalHistory === ''){
+		if(firstName === '' || firstName === undefined || lastName === '' || lastName === undefined || mobilePhone === '' || mobilePhone === undefined || mobilePhoneCode === '' || mobilePhoneCode === undefined || residentialAddress === '' || residentialAddress === undefined || residentialCountry === '' || residentialCountry === undefined || residentialState === '' || residentialState === undefined || residentialLga === '' || residentialLga === undefined || residentialCity === '' || residentialCity === undefined || occupation === '' || occupation === undefined || relationship === '' || relationship === undefined || maritalStatus === '' || maritalStatus === undefined || employeeKnownDate === '' ||  employeeKnownDate === undefined || criminalHistory === '' ||criminalHistory === undefined){
 			return NotificationManager.warning('All fields are required');
 		}
 
-		this.setState({ 
-			moreData: [...this.state.moreData, this.state.postData], 
-		});
+		if(criminalHistory !== '' || criminalHistory !== undefined){
+			if(criminalHistory){
+				if(details === '' || details === undefined ){
+					return NotificationManager.warning('All fields are required');
+				}
+			}
+		}
+
+		if(this.state.modalMode === 'edit'){
+			await this.setState({ moreData: [...this.state.moreData].filter((data,index) => index !== parseInt(this.state.editIndex))})
+			this.setState({ 
+				moreData: [...this.state.moreData, this.state.postData], 
+			});
+		} else {
+			this.setState({ 
+				moreData: [...this.state.moreData, this.state.postData], 
+			});
+		}
+		
 		this.setState({ 
 			postData: {
 				firstName: '',
@@ -180,6 +301,9 @@ class Guarantor extends Component {
 				mobilePhone: '',
 				homePhone: '',
 				businessPhone: '',
+				mobilePhoneCode: '',
+				homePhoneCode: '',
+				businessPhoneCode: '',
 				relationship: '',
 				occupation: '',
 				residentialAddress: '',
@@ -193,11 +317,53 @@ class Guarantor extends Component {
 				landedPropertyLga: '',
 				landedPropertyCity: '',
 				businessAddress: '',
+				businessCountry: '',
+				businessState: '',
+				businessLga: '',
+				businessCity: '',
 				maritalStatus: '',
 				employeeKnownDate: '',
-				criminalHistory: ''
-			}
+				criminalHistory: '',
+			},
+			modalMode: 'create',
+			editIndex: null,
+			customSelect1: null,
+			customSelect2: null,
+			customSelect3: null,
+			customSelect4: null,
+			customSelect5: null,
+			customSelect6: null,
+			customSelect7: null,
+			customSelect8: null,
 		});
+		$('.modal').modal('hide');
+    $(document.body).removeClass('modal-open');
+		$('.modal-backdrop').remove();
+	}
+
+	handleEdit = async (indexValue) => {
+		await this.setState({
+			postData: [...this.state.moreData].filter((data,index) => index === parseInt(indexValue))[0],
+			editIndex: indexValue, modalMode: 'edit'
+		});
+		const customSelect1 = { value: this.state.postData.mobilePhoneCode, label: this.state.postData.mobilePhoneCode };
+		const customSelect2 = { value: this.state.postData.homePhoneCode, label: this.state.postData.homePhoneCode };
+		const customSelect3 = { value: this.state.postData.businessPhoneCode, label: this.state.postData.businessPhoneCode };
+		const customSelect4 = { value: this.state.postData.relationship, label: this.state.postData.relationship };
+		const customSelect5 = { value: this.state.postData.occupation, label: this.state.postData.occupation };
+		const customSelect6 = { value: this.state.postData.residentialCountry, label: this.state.postData.residentialCountry };
+		const customSelect7 = { value: this.state.postData.landedPropertyCountry, label: this.state.postData.landedPropertyCountry };
+		const customSelect8 = { value: this.state.postData.businessCountry, label: this.state.postData.businessCountry };
+		this.setState({ 
+			customSelect1, 
+			customSelect2, 
+			customSelect3, 
+			customSelect4, 
+			customSelect5,
+			customSelect6,
+			customSelect7,
+			customSelect8,
+	  });
 	}
 
 	removeMore = (value, id) => {
@@ -223,6 +389,52 @@ class Guarantor extends Component {
 		}
 	}
 
+	closeModal = () => {
+    this.setState({
+      postData: {
+				firstName: '',
+				lastName: '',
+				middleName: '',
+				mobilePhone: '',
+				homePhone: '',
+				businessPhone: '',
+				mobilePhoneCode: '',
+				homePhoneCode: '',
+				businessPhoneCode: '',
+				relationship: '',
+				occupation: '',
+				residentialAddress: '',
+				residentialCountry: '',
+				residentialState: '',
+				residentialLga: '',
+				residentialCity: '',
+				landedPropertyAddress: '',
+				landedPropertyCountry: '',
+				landedPropertyState: '',
+				landedPropertyLga: '',
+				landedPropertyCity: '',
+				businessAddress: '',
+				businessCountry: '',
+				businessState: '',
+				businessLga: '',
+				businessCity: '',
+				maritalStatus: '',
+				employeeKnownDate: '',
+				criminalHistory: '',
+			},
+			modalMode: 'create',
+			editIndex: null,
+			customSelect1: null,
+			customSelect2: null,
+			customSelect3: null,
+			customSelect4: null,
+			customSelect5: null,
+			customSelect6: null,
+			customSelect7: null,
+			customSelect8: null,
+    })
+  }
+
 	handleSubmit = async (e) => {
     e.preventDefault()
     // console.log(this.state.postData);
@@ -230,12 +442,14 @@ class Guarantor extends Component {
 			const { id } = this.props.match.params;
 
 			if(this.state.moreData.length < 3){
-				return NotificationManager.warning('A minimum of 3 guarantor is required')
+				return NotificationManager.warning('A minimum of 3 Guarantors is required')
 			}
 
 			if(this.state.pageMode === 'edit'){
+				showLoader();
 				const res = await httpPatch(`auth/edit_onboarding_four/${id}`, this.state.moreData);
 				if(res.code === 201){
+					hideLoader();
 					this.setState({ moreData: res.data.guarantor });
 
 					return this.props.history.push({
@@ -246,8 +460,10 @@ class Guarantor extends Component {
 					});
 				}
 			} else {
+				showLoader();
 				const res = await httpPost(`auth/onboarding_four/${id}`, this.state.moreData);
 				if(res.code === 201){
+					hideLoader();
 					this.setState({ moreData: res.data.guarantor });
 					// return this.props.history.push(`/create_staff/five/${res.data.id}`)
 					return this.props.history.push({
@@ -257,25 +473,38 @@ class Guarantor extends Component {
 						direction: 'forward'
 					});
 				}
-				console.log(res)
 			}
       
     } catch (error){
+			hideLoader()
       console.log(error)
     }
 	}
 
 	handleSave = async (e) => {
 		e.preventDefault()
-		showLoader();
     try{
 			const { id } = this.props.match.params;
 
-      const res = await httpPost(`auth/onboarding_four/${id}`, this.state.postData);
-      if(res.code === 201){
-        hideLoader();
-      }
-      console.log(res)
+			if(this.state.moreData.length < 3){
+				return NotificationManager.warning('A minimum of 3 Guarantors is required')
+			}
+
+			if(this.state.pageMode === 'edit'){
+				showLoader();
+				const res = await httpPatch(`auth/edit_onboarding_four/${id}`, this.state.moreData);
+				if(res.code === 201){
+					hideLoader();
+					this.setState({ moreData: res.data.guarantor });
+				}
+			} else {
+				showLoader();
+				const res = await httpPost(`auth/onboarding_four/${id}`, this.state.moreData);
+				if(res.code === 201){
+					hideLoader();
+					this.setState({ moreData: res.data.guarantor });
+				}
+			}
     } catch (error){
 			hideLoader();
       console.log(error)
@@ -292,8 +521,9 @@ class Guarantor extends Component {
 	
 	componentDidMount(){
     if(this.props.location.direction === 'backward'){
-			console.log(this.props.location.savedState)
       this.setState({ moreData: this.props.location.savedState, pageMode: 'edit'});
+    } else if(this.props.location.direction === 'completeOnboarding'){
+      this.setState({ pageMode: 'completeOnboarding'});
     }
 	}
 
@@ -316,430 +546,44 @@ class Guarantor extends Component {
             </ol>
 
             <div className="row">
-							<div className="col-12">
+							<div className="col-10">
 								<div className="card">
-									<div className="card-header">
-									<div className="row">
+									<div className="card-header custom-header">
+									<div className="row col-12">
                     <h4 className="col col-md-6">Guarantor Information</h4>
-                    <div className="col col-md-6 text-right">
-                      <h4 className="cursor-pointer" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</h4>
+                    <div className="col col-md-6 text-right pr-0" style={ this.state.pageMode === 'completeOnboarding' ? {display: 'none'} : {}}>
+                      <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button>
                     </div>
                     </div>
 									</div>
 									<div className="card-body">
+										{ 
+											<GuarantorTable
+												moreData={this.state.moreData}
+												removeMore={this.removeMore}
+												handleEdit={this.handleEdit} 
+											/>
+										}
 
-                    <form className="form-horizontal" >
-										<div class="table-responsive" style={!this.state.moreData.length ? { display: "none"} : {}}>
-                          <table id="example1" class="col col-md-8 offset-md-2 table table-striped table-bordered border-t0 text-nowrap w-100" >
-                            <thead>
-                              <tr>
-                                {/* <th className="wd-15p">S/N</th> */}
-                                <th class="wd-15p">Name</th>
-                                <th class="wd-15p">Relationship with empoyee</th>
-																<th class="wd-15p">How long have you know the employee</th>
-                                <th class="wd-25p"></th>
-                              </tr>
-                            </thead>
-                            <tbody>                                {
-                                this.state.moreData.length ? this.state.moreData.map((data, index) => (
-                                  <tr key={index}>
-                                    {/* <td>{index + 1}</td> */}
-                                    <td>{data.firstName + ' ' + data.lastName}</td>
-                                    <td>{data.relationship}</td>
-																		<td>{<Moment fromNow ago>{data.employeeKnownDate}</Moment>}</td>
-                                    <td>
-																			{/* <span className="add-more p-3" onClick={() => this.handleEdit(data.id)}>Edit</span> */}
-                                      <span className="add-more" onClick={() => this.removeMore(index,data.id)}>Delete</span>
-                                    </td>
-                                  </tr>
-                                )) : ''
-                              }
-                              </tbody>
-                            </table>
-                          </div>
-											<div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">First Name</label>
-												<div className="col-md-3">
-													<input type="text" 
-														className="form-control"
-														name="firstName"
-														onChange={this.handleChange}
-														defaultValue={this.state.postData.firstName}
-													/>
-													<span className="text-danger">{this.state.errorMessage1 !== null ? this.state.errorMessage1 : ''}</span>
-												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Last Name</label>
-                        <div className="col-md-3">
-													<input type="text" 
-														className="form-control"
-														name="lastName"
-														onChange={this.handleChange}
-														defaultValue={this.state.postData.lastName}
-													/>
-													<span className="text-danger">{this.state.errorMessage2 !== null ? this.state.errorMessage2 : ''}</span>
-												</div>
-											</div>
-                      <div className="form-group row">
-                        <label for="inputName" className="col-md-2 col-form-label">Middle Name</label>
-												<div className="col-md-3">
-													<input type="text" 
-														className="form-control"
-														name="middleName"
-														onChange={this.handleChange}
-														defaultValue={this.state.postData.middleName}
-													/>
-													<span className="text-danger">{this.state.errorMessage3 !== null ? this.state.errorMessage3 : ''}</span>
-												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Mobile Phone</label>
-                        <div className="col-md-3">
-													<input type="text" 
-														className="form-control"
-														name="mobilePhone"
-														onChange={this.handleChange}
-														defaultValue={this.state.postData.mobilePhone}
-													/>
-													<span className="text-danger">{this.state.errorMessage4 !== null ? this.state.errorMessage4 : ''}</span>
-												</div>
-                      </div> 
-											<div className="form-group row">
-                        <label for="inputName" className="col-md-2 col-form-label">Home Phone</label>
-												<div className="col-md-3">
-													<input type="text" 
-														name="homePhone" 
-														className="form-control"
-														onChange={this.handleChange}
-														defaultValue={this.state.postData.homePhone}
-													/>
-													<span className="text-danger">{this.state.errorMessage5 !== null ? this.state.errorMessage5 : ''}</span>
-												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Business Phone</label>
-                        <div className="col-md-3">
-													<input type="text" 
-														className="form-control"
-														name="businessPhone"
-														onChange={this.handleChange}
-														defaultValue={this.state.postData.businessPhone}
-													/>
-													<span className="text-danger">{this.state.errorMessage6 !== null ? this.state.errorMessage6 : ''}</span>
-												</div>
-                      </div>
-                      <div className="form-group row">
-                      <label for="inputName" className="col-md-2 col-form-label">Relationship with employee</label>
-												<div className="col-md-3">
-													<CustomSelect 
-														optionList={[
-															{ value: 'Family Friend', text: 'Family Friend', id: 1 },
-															{ value: 'Pastor', text: 'Pastor', id: 2 },
-															{ value: 'Spiritual Head', text: 'Spiritual Head' , id: 3 },
-															{ value: 'Relative', text: 'Relative' , id: 4 },
-															{ value: 'Friend', text: 'Friend' , id: 5 }, 
-														]}
-														handleChange={this.handleChange}
-														name={'relationship'}
-														value={this.state.postData.relationship}
-														placeHolder='Select'
-													/>
-													{/* <select 
-														className="form-control w-100"
-														name="relationship"
-														onChange={this.handleChange}
-														value={this.state.postData.relationship}
-													>
-														<option value="select">Select</option>
-														<option value="Family Friend">Family Friend</option>
-														<option value="Pastor">Pastor</option>
-														<option value="Spiritual Head">Spiritual Head</option>
-														<option value="Relative">Relative</option>
-														<option value="Friend">Friend</option>
-														<option value="Other">other [please specify]</option>
-													</select> */}
-												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Occupation</label>
-                        <div className="col-md-3">
-												<CustomSelect 
-													optionList={[
-														{ value: 'Civil Servant', text: 'Civil Servant', id: 1 },
-														{ value: 'Clergy', text: 'Clergy', id: 2 },
-														{ value: 'Business person', text: 'Business person' , id: 3 } 
-													]}
-													handleChange={this.handleChange}
-													name={'occupation'}
-													value={this.state.postData.occupation}
-													placeHolder='Select'
-												/>
-												{/* <select class="js-example-basic-single" name="state">
-													<option value="AL">Alabama</option>
-													<option value="WY">Wyoming</option>
-												</select> */}
-													{/* <select
-														className="form-control js-example-basic-single"
-														name="occupation"
-														onChange={this.handleChange}
-														value={this.state.postData.occupation}
-													>
-														<option value="">select</option>
-														<option value="Civil Servant">Civil Servant</option>
-														<option value="Clergy">Clergy</option>
-														<option value="Business person">Business person</option>
-														<option value="Other">other [please specify]</option>
-													</select> */}
-												</div>
-											</div>
-                      <div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">Residential Address</label>
-												<div className="col-md-3">
-													<input type="text" 
-														className="form-control"
-														name="residentialAddress"
-														onChange={this.handleChange}
-														value={this.state.postData.residentialAddress}
-													/>
-												</div>
-												<div className="col-md-5">
-                          <div className="row">
-                            <select 
-                              name="residentialCountry" 
-                              className="form-control w-100 col-md-3 mr-1"
-                              onChange={this.handleChange}
-                              value={this.state.postData.residentialCountry} 
-                            >
-                              { 
-                                countries('Country')
-                              }
-                            </select>
-                            <select 
-                              name="residentialState" 
-                              className="form-control w-100 col-md-3 mr-1"
-                              onChange={this.handleChange}
-                              value={this.state.postData.residentialState}
-                            >
-                              {
-                                states('States')
-                              }
-                            </select>
-                            <select 
-                              name="residentialLga" 
-                              className="form-control w-100 col-md-3 mr-1"
-                              onChange={this.handleChange} 
-                              value={this.state.postData.residentialLGA}
-                            >
-                              <option value="">LGA</option>
-                              {
-                                this.getLGA(this.state.postData.residentialState)
-                              }
-                            </select>
-                            <select 
-                              name="residentialCity" 
-                              className="form-control w-100 col-md-2"
-                              onChange={this.handleChange}
-                              value={this.state.postData.residentialCity} 
-                            >
-                              <option value="">City</option>
-                              <option value="">Nigeria</option>
-                              <option value="">Ghana</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">Landed Property Address</label>
-												<div className="col-md-3">
-													<input type="text" 
-														className="form-control"
-														name="landedPropertyAddress"
-														onChange={this.handleChange}
-														value={this.state.postData.landedPropertyAddress}
-													/>
-												</div>
-												<div className="col-md-5">
-                          <div className="row">
-                            <select 
-                              name="landedPropertyCountry" 
-                              className="form-control w-100 col-md-3 mr-1"
-                              onChange={this.handleChange}
-                              value={this.state.postData.landedPropertyCountry} 
-                            >
-                              { 
-                                countries('Country')
-                              }
-                            </select>
-                            <select 
-                              name="landedPropertyState" 
-                              className="form-control w-100 col-md-3 mr-1"
-                              onChange={this.handleChange}
-                              value={this.state.postData.landedPropertyState}
-                            >
-                              {
-                                states('States')
-                              }
-                            </select>
-                            <select 
-                              name="landedPropertyLga" 
-                              className="form-control w-100 col-md-3 mr-1"
-                              onChange={this.handleChange} 
-                              value={this.state.postData.landedPropertyLGA}
-                            >
-                              <option value="">LGA</option>
-                              {
-                                this.getLGA(this.state.postData.landedPropertyState)
-                              }
-                            </select>
-                            <select 
-                              name="landedPropertyCity" 
-                              className="form-control w-100 col-md-2"
-                              onChange={this.handleChange}
-                              value={this.state.postData.landedPropertyCity} 
-                            >
-                              <option value="">City</option>
-                              <option value="">Nigeria</option>
-                              <option value="">Ghana</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">Business Address</label>
-												<div className="col-md-3">
-													<input type="text" 
-														className="form-control"
-														name="businessAddress"
-														onChange={this.handleChange}
-														value={this.state.postData.businessAddress}
-													/>
-												</div>
-												<div className="col-md-5">
-                          <div className="row">
-                            <select 
-                              name="businessCountry" 
-                              className="form-control w-100 col-md-3 mr-1"
-                              onChange={this.handleChange}
-                              value={this.state.postData.businessCountry} 
-                            >
-                              { 
-                                countries('Country')
-                              }
-                            </select>
-                            <select 
-                              name="businessState" 
-                              className="form-control w-100 col-md-3 mr-1"
-                              onChange={this.handleChange}
-                              value={this.state.postData.businessState}
-                            >
-                              {
-                                states('States')
-                              }
-                            </select>
-                            <select 
-                              name="businessLga" 
-                              className="form-control w-100 col-md-3 mr-1"
-                              onChange={this.handleChange} 
-                              value={this.state.postData.businessLGA}
-                            >
-                              <option value="">LGA</option>
-                              {
-                                this.getLGA(this.state.postData.businessState)
-                              }
-                            </select>
-                            <select 
-                              name="businessCity" 
-                              className="form-control w-100 col-md-2"
-                              onChange={this.handleChange}
-                              value={this.state.postData.businessCity} 
-                            >
-                              <option value="">City</option>
-                              <option value="">Nigeria</option>
-                              <option value="">Ghana</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="form-group row">
-                        <label for="inputName" className="col-md-2 col-form-label">Marital Status</label>
-												<div className="col-md-3">
-													<select
-														className="form-control w-100"
-														name="maritalStatus" 
-														onChange={this.handleChange}
-														value={this.state.postData.maritalStatus}
-													>
-														<option value="">Select</option>	
-														<option value="Single">Single</option>
-														<option value="Married">Married</option>
-														<option value="Divorced">Divorced</option>
-                            <option value="Widowed">Widowed</option>
-													</select>
-												</div>
-                      </div>
-                      <div className="form-group row">
-												<label for="inputName" className="col-md-4 col-form-label">How long have you known the employee</label>
-												<div className="col-md-3">
-													<input type="date" 
-														className="form-control"
-														name="employeeKnownDate"
-														onChange={this.handleChange}
-														value={this.state.postData.employeeKnownDate}
-													/>
-												</div>
-												<div className="col-md-3 p-2" style={!this.state.postData.employeeKnownDate ? { display: 'none'} : {}}>
-													<Moment fromNow ago>{this.state.postData.employeeKnownDate}</Moment>
-												</div>
-                      </div>
-                      <div className="form-group row">
-												<label for="inputName" className="col-md-5 col-form-label">Has the employee been involved in any criminal matters?</label>
-                        <div className="col-md-5">
-                          <label>
-														<input type="radio" 
-															name="criminalHistory" 
-															className="minimal"
-															onChange={this.handleChange}
-															value='true'
-															checked={this.state.postData.criminalHistory === true ? true : ''}
-														/>
-                            Yes
-													</label>
-													<label style={{ paddingLeft: '10px'}}>
-														<input type="radio" 
-															name="criminalHistory" 
-															className="minimal"
-															onChange={this.handleChange}
-															value='false'
-															checked={this.state.postData.criminalHistory === false ? true : ''}
-														/>
-														No
-													</label>
-												</div>
-                      </div>
-                      <div className="form-group row" style={!this.state.postData.criminalHistory ? {display: 'none'} : {display: 'flex'}}>
-												<label for="inputName" className="col-md-2 col-form-label">Give details</label>
-												<div className="col-md-8">
-													<input type="text" 
-														className="form-control"
-														name="details"
-														onChange={this.handleChange}
-														value={this.state.postData.details}
-													/>
-												</div>
-                      </div>
-											<div className="form-group row">
-												<label for="inputName" className="col-md-5 col-form-label"></label>
-												<div className="col-md-7">
-													<a className="add-more" onClick={this.addMore}>+Add More</a>
-												</div>
-											</div>
-                      
+										<div class="card-header custom-header">
+                      <a class="add-link " data-toggle="modal" data-target="#guarantorModal"><span className="fa fa-plus"></span> Add Guarantor</a>
+										</div>
 
-                      <div class="form-group mb-0 mt-2 row justify-content-end">
-												<div class="col-md-9">
-                          <button 
-                            type="submit"
-                            class="btn btn-info mr-5"
-														// onClick={() => this.props.history.push('/create_staff/five')}
-														onClick={this.handleSubmit}
-                          >NEXT</button>
-													<button type="submit" class="btn btn-primary" onClick={this.handleSave}>SAVE</button>
-												</div>
+
+										<div class="form-group mb-0 mt-5 row text-right">
+											<div class="col-md-12">
+												<button 
+													type="submit"
+													class="btn btn-info mr-5"
+													onClick={this.handleSave}
+												><i class="fa fa-save"></i> SAVE</button>
+												<button 
+													type="submit" 
+													class="btn btn-primary" 
+													onClick={this.handleSubmit}
+												><i class="fa fa-arrow-right"></i> NEXT</button>
 											</div>
-										</form>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -748,6 +592,30 @@ class Guarantor extends Component {
 
           </section>
         </div>
+				<GuarantorModal
+					handleChange={this.handleChange}
+					addMore={this.addMore}
+					postData={this.state.postData}
+					getLGA={this.getLGA}
+					handleCustomSelect={this.handleCustomSelect}
+					customSelect1={this.state.customSelect1}
+					customSelect2={this.state.customSelect2}
+					customSelect3={this.state.customSelect3}
+					customSelect4={this.state.customSelect4}
+					customSelect5={this.state.customSelect5}
+					customSelect6={this.state.customSelect6}
+					customSelect7={this.state.customSelect7}
+					customSelect8={this.state.customSelect8}
+					errorMessage1={this.state.errorMessage1}
+					errorMessage2={this.state.errorMessage2}
+					errorMessage3={this.state.errorMessage3}
+					errorMessage4={this.state.errorMessage4}
+					errorMessage5={this.state.errorMessage5}
+					errorMessage6={this.state.errorMessage6}
+					errorMessage7={this.state.errorMessage7}
+					modalMode={this.state.modalMode}
+					closeModal={this.closeModal}
+				/>
       </Layout>
     )
   }

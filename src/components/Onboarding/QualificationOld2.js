@@ -8,7 +8,7 @@ import EmploymentForm from './EmploymentForm';
 import MoreInfoForm from './MoreInfoForm';
 import { NotificationManager } from 'react-notifications';
 import { hideLoader, showLoader } from '../../helpers/loader';
-import { validateQualification } from '../../helpers/validations';
+import { validateQualification, validateD } from '../../helpers/validations';
 
 class Qualification extends Component {
   constructor(props){
@@ -25,6 +25,12 @@ class Qualification extends Component {
       moreInfo: '',
       showDropDown: false,
       endDateErrorMssg: null,
+      endDateErrorMssg2: null,
+      endDateErrorMssg3: null,
+      endDateErrorMssg4: null,
+      endDateErrorMssg5: null,
+      endDateErrorMssg6: null,
+      endDateErrorMssg7: null,
       pageMode: 'create',
     }
   }
@@ -34,34 +40,81 @@ class Qualification extends Component {
     let details = e.target;
     //console.log(`${[e.target.name]}: ${e.target.value}`);
     if(e.target.name === 'endDate'){
-      const isValidate = await validateQualification(e.target.name, e.target.value, this.state.qualification.startDate);
+      qualification[details.name] = details.value;
+      this.setState({ 
+        qualification
+      })
+      const isValidate = await validateQualification(e.target.name, this.state.qualification.endDate, this.state.qualification.startDate);
       if(!isValidate.error){
         this.setState({ 
           endDateErrorMssg: isValidate.errorMessage, 
         })
         // console.log(isValidate.errorMessage)
         return;
+      } else {
+        this.setState({ endDateErrorMssg: null })
       }
+    } else if(e.target.name === 'startDate'){
       qualification[details.name] = details.value;
       this.setState({ 
-        qualification,
-        endDateErrorMssg: null 
+        qualification
       })
+      const isValidate = await validateQualification(e.target.name, this.state.qualification.startDate );
+      if(!isValidate.error){
+        this.setState({ 
+          endDateErrorMssg5: isValidate.errorMessage, 
+        })
+        // console.log(isValidate.errorMessage)
+        return;
+      } else {
+        this.setState({ endDateErrorMssg5: null })
+      }
     }
     qualification[details.name] = details.value;
     qualification['type'] = 'qualification';
     this.setState({ qualification });
   }
 
-  handleCertificationChange = (e) => {
+  handleCertificationChange = async (e) => {
     const { certification } = this.state;
-    //console.log(`${[e.target.name]}: ${e.target.value}`);
+    let details = e.target;
+    console.log(`${[e.target.name]}: ${e.target.value}`);
     if(e.target.name === 'certification'){
       certification[e.target.name] = e.target.value;
       certification['type'] = 'certification';
       this.setState({ certification, showDropDown: !this.state.showDropDown });
+    } else if(details.name === 'endDate'){
+      certification[details.name] = details.value;
+      this.setState({ 
+        certification
+      })
+      const isValidate = await validateQualification(e.target.name, this.state.certification.endDate, this.state.certification.startDate);
+      if(!isValidate.error){
+        this.setState({ 
+          endDateErrorMssg2: isValidate.errorMessage, 
+        })
+        // console.log(isValidate.errorMessage)
+        return;
+      } else {
+        this.setState({ endDateErrorMssg2: null })
+      }
+    } else if(e.target.name === 'startDate'){
+      certification[details.name] = details.value;
+      this.setState({ 
+        certification
+      })
+      const isValidate = await validateQualification(e.target.name, this.state.certification.startDate );
+      if(!isValidate.error){
+        this.setState({ 
+          endDateErrorMssg6: isValidate.errorMessage, 
+        })
+        // console.log(isValidate.errorMessage)
+        return;
+      } else {
+        this.setState({ endDateErrorMssg6: null })
+      }
     } else {
-      certification[e.target.name] = e.target.value;
+      certification[details.name] =details.value;
       this.setState({ certification, showDropDown: false });
     }
 
@@ -85,6 +138,15 @@ class Qualification extends Component {
         return NotificationManager.warning('All fields must be filled');
       }
 
+      const { 
+        endDateErrorMssg, endDateErrorMssg5
+      } = this.state;
+  
+      if(endDateErrorMssg !== null || endDateErrorMssg5 !== null){
+        hideLoader()
+        return NotificationManager.warning('Complete all required fields')
+      }
+
       this.setState({ 
         moreInstitution: [...this.state.moreInstitution, this.state.qualification], 
       });
@@ -98,8 +160,18 @@ class Qualification extends Component {
         } 
       });
     } else {
-      if(this.state.certification.name === undefined || this.state.certification.certification === undefined || this.state.certification.startDate === undefined || this.state.certification.endDate === undefined ){
+      console.log(this.state.certification)
+      if(this.state.certification.name === undefined || this.state.certification.name === '' || this.state.certification.certification === undefined || this.state.certification.certification === '' || this.state.certification.categoryOfCertification === undefined || this.state.certification.categoryOfCertification === '' || this.state.certification.startDate === undefined || this.state.certification.startDate === '' || this.state.certification.endDate === undefined || this.state.certification.endDate === '' ){
         return NotificationManager.warning('All fields must be filled');
+      }
+
+      const { 
+        endDateErrorMssg2, endDateErrorMssg6
+      } = this.state;
+  
+      if(endDateErrorMssg2 !== null || endDateErrorMssg6 !== null){
+        hideLoader()
+        return NotificationManager.warning('Complete all required fields')
       }
 
       this.setState({ 
@@ -109,6 +181,7 @@ class Qualification extends Component {
         certification: {
           name: '',
           certification: '',
+          categoryOfCertification: '',
           startDate: '',
           endDate: ''
         } 
@@ -125,16 +198,72 @@ class Qualification extends Component {
     
   }
 
-  handlePrevious = (e) => {
+  handlePrevious = async (e) => {
     const { previousEmployment } = this.state;
+    let details = e.target;
+    if(details.name === 'endDate'){
+      previousEmployment[details.name] = details.value;
+      this.setState({ 
+        previousEmployment
+      })
+      const isValidate = await validateQualification(e.target.name, this.state.previousEmployment.endDate, this.state.previousEmployment.startDate);
+      if(!isValidate.error){
+        this.setState({ 
+          endDateErrorMssg3: isValidate.errorMessage, 
+        })
+        // console.log(isValidate.errorMessage)
+        return;
+      } else {
+        this.setState({ endDateErrorMssg3: null })
+      }
+    } else if(e.target.name === 'startDate'){
+      previousEmployment[details.name] = details.value;
+      this.setState({ 
+        previousEmployment
+      })
+      const isValidate = await validateQualification(e.target.name, this.state.previousEmployment.startDate );
+      if(!isValidate.error){
+        this.setState({ 
+          endDateErrorMssg7: isValidate.errorMessage, 
+        })
+        // console.log(isValidate.errorMessage)
+        return;
+      } else {
+        this.setState({ endDateErrorMssg7: null })
+      }
+    } else if(details.name === 'employerName'){
+      previousEmployment[details.name] = details.value;
+      this.setState({ 
+        previousEmployment
+      })
+      const isValidate = await validateD(e.target.name, e.target.value);
+      if(!isValidate.error){
+        this.setState({ 
+          endDateErrorMssg4: isValidate.errorMessage, 
+        })
+        // console.log(isValidate.errorMessage)
+        return;
+      } else {
+        this.setState({ endDateErrorMssg4: null })
+      }
+    }
     //console.log(`${[e.target.name]}: ${e.target.value}`);
-    previousEmployment[e.target.name] = e.target.value;
+    previousEmployment[details.name] = details.value;
     this.setState({ previousEmployment });
   }
 
   addMorePrevious = () => {
     if(this.state.previousEmployment.employerName === undefined || this.state.previousEmployment.address === undefined || this.state.previousEmployment.role === undefined || this.state.previousEmployment.startDate === undefined || this.state.previousEmployment.endDate === undefined ){
       return NotificationManager.warning('All fields must be filled');
+    }
+
+    const { 
+      endDateErrorMssg3, endDateErrorMssg4, endDateErrorMssg7
+    } = this.state;
+
+    if(endDateErrorMssg3 !== null || endDateErrorMssg4 !== null, endDateErrorMssg7 !== null){
+      hideLoader()
+      return NotificationManager.warning('Complete all required fields')
     }
 
     this.setState({ 
@@ -174,6 +303,8 @@ class Qualification extends Component {
   componentDidMount(){
     if(this.props.location.direction === 'backward'){
       this.setState({...this.props.location.savedState, pageMode: 'edit'});
+    } else if(this.props.location.direction === 'completeOnboarding'){
+      this.setState({ pageMode: 'completeOnboarding'});
     }
 	}
 
@@ -288,11 +419,12 @@ class Qualification extends Component {
             <div className="row">
 							<div className="col-12">
 								<div className="card">
-									<div className="card-header">
-                    <div className="row">
+									<div className="card-header custom-header">
+                    <div className="row col-12">
                     <h4 className="col col-md-6">Qualification and Experience</h4>
-                    <div className="col col-md-6 text-right">
-                      <h4 className="cursor-pointer" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</h4>
+                    <div className="col col-md-6 text-right" style={ this.state.pageMode === 'completeOnboarding' ? {display: 'none'} : {}}>
+                      <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}>
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i>Back</button>
                     </div>
                     </div>
 									</div>
@@ -311,6 +443,9 @@ class Qualification extends Component {
                           handleShowDropDown={this.handleShowDropDown}
                           showDropDown={this.state.showDropDown}
                           endDateErrorMssg={this.state.endDateErrorMssg}
+                          endDateErrorMssg2={this.state.endDateErrorMssg2}
+                          endDateErrorMssg5={this.state.endDateErrorMssg5}
+                          endDateErrorMssg6={this.state.endDateErrorMssg6}
                         />
                         <div class="table-responsive" style={!this.state.moreInstitution.length ? { display: "none"} : {}}>
                           <table id="example1" class="col col-md-8 offset-md-2 table table-striped table-bordered border-t0 text-nowrap w-100" >
@@ -352,7 +487,10 @@ class Qualification extends Component {
                         <EmploymentForm 
                           handlePrevious={this.handlePrevious}
                           addMorePrevious={this.addMorePrevious}
-                          previousEmployment={this.state.previousEmployment} 
+                          previousEmployment={this.state.previousEmployment}
+                          endDateErrorMssg3={this.state.endDateErrorMssg3}
+                          endDateErrorMssg4={this.state.endDateErrorMssg4}
+                          endDateErrorMssg7={this.state.endDateErrorMssg7}
                         />
                         <div className="col-md-6" style={!this.state.morePrevious.length ? { display: "none"} : {}}>
                         <table id="example1" class="table table-striped table-bordered border-t0 text-nowrap w-100" >
@@ -387,6 +525,7 @@ class Qualification extends Component {
                           objectReference={this.state.objectReference}
                           reasonForLeaving={this.state.reasonForLeaving}
                           moreInfo={this.state.moreInfo} 
+                          erro
                         />
                       </div>
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import Moment from 'react-moment';
 import Layout from '../layout';
 import { httpGet } from '../../actions/data.action';
 import { hideLoader } from '../../helpers/loader';
@@ -32,16 +33,52 @@ class StaffList extends Component {
     }
   }
 
+  navigateToEdit = (e, id, onBoarding) => {
+    console.log(id, onBoarding)
+    if(parseInt(onBoarding) === 4){
+      return this.props.history.push({
+        pathname: `/create_staff/five/${id}`,
+        direction: 'completeOnboarding'
+      })
+    } else if(parseInt(onBoarding) === 3){
+      return this.props.history.push({
+        pathname: `/create_staff/four/${id}`,
+        direction: 'completeOnboarding'
+      })
+    }else if(parseInt(onBoarding) === 2){
+      return this.props.history.push({
+        pathname: `/create_staff/three/${id}`,
+        direction: 'completeOnboarding'
+      })
+    }else if(parseInt(onBoarding) === 1){
+      return this.props.history.push({
+        pathname: `/create_staff/two/${id}`,
+        direction: 'completeOnboarding'
+      })
+    } else {
+      return this.props.history.push({
+        pathname: '/',
+        direction: 'editUserOnboarding'
+      })
+    }
+    // return this.props.history.push({
+    //   pathname: `${this.props.location.backurl}`,
+    //   savedState: this.props.location.savedState,
+    //   direction: 'backward'
+    // })
+  }
+
+  // <span className="ml-3 cursor-pointer" onClick={e => this.navigateToEdit(e, data.id, data.onBoarding)}>Edit</span>
+
   bodyRow = () => {
     const body = this.state.users.map((data, index) => (
       {
         "sn": `${index + 1}`,
         "fullname": <span>{data.lastName} {data.firstName}</span>,
-        "position": `${data.jobTitle}`,
-        "startdate": `${data.createdAt.slice(0,10)}`,
-        "status": `${data.applicationStatus}`,
-        "action": <a><Link to={`/view_details/${data.id}`} className="add-more">View Details</Link>
-        <span className="ml-3 cursor-pointer">Edit</span></a>
+        "position": data.jobTitle || '',
+        "startdate": <Moment format='MMM DD, YYYY'>{data.createdAt}</Moment>,
+        "status": data.applicationStatus || '',
+        "action": <a><Link to={`/view_details/${data.id}`} className="add-more">View Details</Link></a>
       }
     ));
     return body;
@@ -93,10 +130,12 @@ class StaffList extends Component {
                     </div>
 									</div>
 									<div class="card-body">
-										<div class="">
+										<div class="table-responsive">
                        <Table 
                         body={this.bodyRow}
                         head={this.header}
+                        rowsPerPage={10}
+                        rowsPerPageOption={[10, 15, 20, 25]}
                       />
 									</div>
 									</div>

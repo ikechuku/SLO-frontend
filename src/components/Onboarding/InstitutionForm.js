@@ -1,4 +1,5 @@
 import React from 'react'
+import CustomSelect from '../../helpers/Select2';
 
 export default function InstitutionForm(props) {
   console.log(props)
@@ -8,7 +9,8 @@ export default function InstitutionForm(props) {
       <div className="form-group row">
         <label for="inputName" className="col-md-5 col-form-label">Institution Name</label>
         <div className="col-md-7">
-          <input type="text" 
+          <input type="text"
+            placeholder="University of Ibadan" 
             className="form-control"
             name="name"
             onChange={props.handleQualification}
@@ -40,7 +42,8 @@ export default function InstitutionForm(props) {
       <div className="form-group row">
         <label for="inputName" className="col-md-5 col-form-label">Course Studied</label>
         <div className="col-md-7">
-          <input type="text" 
+          <input type="text"
+            placeholder="Computer Enginering" 
             className="form-control"
             name="course"
             onChange={props.handleQualification}
@@ -57,6 +60,7 @@ export default function InstitutionForm(props) {
             onChange={props.handleQualification}
             value={props.qualification.startDate} 
           />
+          <span className="text-danger">{props.endDateErrorMssg5 !== null ? props.endDateErrorMssg5 : ''}</span>
         </div>
       </div>
       <div className="form-group row">
@@ -66,7 +70,7 @@ export default function InstitutionForm(props) {
             className="form-control"
             name="endDate"
             onChange={props.handleQualification}
-            defaultValue={props.qualification.endDate} 
+            value={props.qualification.endDate} 
           />
           <span className="text-danger">{props.endDateErrorMssg !== null ? props.endDateErrorMssg : ''}</span>
         </div>
@@ -84,7 +88,8 @@ export default function InstitutionForm(props) {
     <div className="form-group row">
       <label for="inputName" className="col-md-5 col-form-label">Institution Name</label>
       <div className="col-md-7">
-        <input type="text" 
+        <input type="text"
+          placeholder="World Certification Institution" 
           className="form-control"
           name="name"
           onChange={props.handleCertification}
@@ -93,9 +98,33 @@ export default function InstitutionForm(props) {
       </div>
     </div>
     <div className="form-group row">
-      <label for="inputName" className="col-md-5 col-form-label">Certification</label>
+      <label for="inputName" className="col-md-5 col-form-label">Certification Name</label>
       <div className="col-md-7">
-        <input type="text" 
+        <input type="text"
+          placeholder="CCNA" 
+          className="form-control"
+          name="certification"
+          onChange={props.handleCertification}
+          value={props.certification.certification} 
+        />
+      </div>
+    </div>
+    <div className="form-group row">
+      <label for="inputName" className="col-md-5 col-form-label">Category of certification</label>
+      <div className="col-md-7">
+        <CustomSelect 
+          optionList={[
+            { value: 'Google Certification', text: 'Google Certification', id: 1 },
+            { value: 'HND', text: 'HND', id: 2 },
+            { value: 'OND', text: 'OND' , id: 3 },
+          ]}
+          handleChange={props.handleCertification}
+          name={'categoryOfCertification'}
+          value={props.certification.categoryOfCertification}
+          placeHolder='Select'
+        />
+
+        {/* <input type="text" 
           className="form-control"
           name="certification"
           onChange={props.handleCertification}
@@ -108,7 +137,7 @@ export default function InstitutionForm(props) {
           <p className="dropdown-btn" onClick={() => props.handleDropDown('HND')}>HND</p>
           <p className="dropdown-btn" onClick={() => props.handleDropDown('OND')}>OND</p>
           <p className="dropdown-btn" onClick={() => props.handleDropDown('CCNA Cert')}>CCNA Cert</p>
-        </div>
+        </div> */}
       </div>
     </div>
     <div className="form-group row">
@@ -120,6 +149,7 @@ export default function InstitutionForm(props) {
           onChange={props.handleCertification}
           value={props.certification.startDate} 
         />
+        <span className="text-danger">{props.endDateErrorMssg6 !== null ? props.endDateErrorMssg6 : ''}</span>
       </div>
     </div>
     <div className="form-group row">
@@ -129,8 +159,9 @@ export default function InstitutionForm(props) {
           className="form-control"
           name="endDate"
           onChange={props.handleCertification}
-          value={props.certification.endDate} 
+          value={props.certification.endDate}
         />
+        <span className="text-danger">{props.endDateErrorMssg2 !== null ? props.endDateErrorMssg2 : ''}</span>
       </div>
     </div>
     <div className="form-group row">

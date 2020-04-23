@@ -2,14 +2,14 @@ import React from 'react'
 
 export default function MoreInfoForm(props) {
   return (
-    <div className="col col-md-10">
+    <div className="col-md-12 pl-0">
       <div className="form-group row">
-        <label for="inputName" className="col-md-7 pr-0 col-form-label">Do you object to us seeking any reference from any of your past employer</label>
-        <div className="col-md-4 pt-2">
+        <label for="inputName" className="col-md-5 pr-0 col-form-label">Do you object to us seeking any reference from any of your past employer</label>
+        <div className="col-md-7 pt-2">
           <label>
             <input type="radio" 
               name="objectReference"
-              className="minimal"
+              className="minimal mr-2"
               onChange={props.handleMoreInfo}
               value="Yes" 
               checked={props.objectReference === 'Yes' ? true : ''}
@@ -19,7 +19,7 @@ export default function MoreInfoForm(props) {
           <label style={{ paddingLeft: '25px'}}>
             <input type="radio" 
               name="objectReference"
-              className="minimal"
+              className="minimal mr-2"
               onChange={props.handleMoreInfo}
               value='No'
               checked={props.objectReference === 'No' ? true : ''} 
@@ -36,7 +36,7 @@ export default function MoreInfoForm(props) {
           onChange={props.handleMoreInfo}
           value={props.reasonForLeaving}
         >
-          <option value="">select reason</option>
+          <option value="" disabled>Select Reason</option>
           <option value="Relocation">Relocation</option>
           <option value="Sacked">Sacked</option>
           <option value="Change in carrer path">Change in carrer path</option>

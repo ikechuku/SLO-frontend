@@ -1,0 +1,89 @@
+/* 
+
+@media (min-width:770px){
+    .card-body{
+    padding-left: 250px !important;
+    padding-top: 100px !important;
+    }
+} */
+
+.custom-header{
+    display: flex !important;
+}
+
+.custom-header .inputf{
+    margin-left: auto !important;
+}
+
+
+.custom-header .btn {
+    padding: 0 !important;
+    font-size: 12px !important;
+    border-radius: 30px !important;
+    line-height: 30px !important;
+    border: 1px solid #edeaea !important;
+    width: 119px !important;
+    text-align: center !important;
+    height: 43px !important;
+    background-color: #012F5D !important;
+    color: white !important;
+    
+ 
+}
+.custom-header .btn :hover{
+    background-color: #012F5D !important;
+    color: white !important;
+}
+
+.edit{
+    padding: 5px;
+    color: green;
+    cursor: pointer;
+}
+
+.del{
+    color: red;
+    padding: 5px;
+    cursor: pointer;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    
+}
+
+.del:disabled{
+    color: grey;
+
+  
+    
+}
+
+
+.search-bt{
+    background-color: #012F5D;
+    margin: 0;
+    border: none;
+    height: 36px;
+    width: 80px;
+    color: white;
+    outline: none;
+    cursor: pointer;
+}
+
+.inputf input
+{
+border: 1px solid #012F5D;
+outline: none;
+height: 35px;
+}
+
+.inputf input::placeholder
+{
+color:  #012F5D;
+padding: 5px;
+font-size: 90%;
+}
+
+.sel{
+    height: 38px !important;
+}

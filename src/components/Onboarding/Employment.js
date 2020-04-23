@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-// import DatePicker from 'react-bootstrap-date-picker';
+import DatePicker from 'react-datepicker';
 import Select2 from 'react-select2-wrapper';
+import Select from 'react-select';
+import moment from 'moment'
 // import 'react-select2-wrapper/css/select2.css';
 import { NotificationManager } from 'react-notifications';
 import { httpPatch, httpGet } from '../../actions/data.action';
@@ -14,7 +16,8 @@ class Employment extends Component {
 	constructor(props){
 		super(props)
 		this.state = {
-			postData: {},
+      postData: {},
+      multiValue: [],
 			errorMessage1: null,
 			errorMessage2: null,
 			errorMessage3: null,
@@ -24,77 +27,84 @@ class Employment extends Component {
 			errorMessage7: null,
       errorMessage8: null,
       units: [],
-      roles: []
+      roles: [],
+      branches: []
 		}
 	}
 
-	handleChange = async (e) => {
+	handleChange = async (e, nameValue) => {
 		const { postData } = this.state;
-		let details = e.target;
-		if(details.name === 'rankAtEmployment'){
-      const isValidate = await validateEmpoymentFields(e.target.name, e.target.value);
-      if(!isValidate.error){
-        this.setState({ 
-          errorMessage1: isValidate.errorMessage, 
-        })
-        return;
-      }
-      postData[details.name] = details.value;
-      this.setState({ 
-        postData,
-        errorMessage1: null 
-      })
-    } else if(details.name === 'dateOfResumption'){
-      const isValidate = await validateEmpoymentFields(e.target.name, e.target.value);
+    let details = e !== null ? e.target : '';
+    
+		if(nameValue === 'dateOfResumption'){
+      // const newDate = moment(e).format('l');
+      // console.log(e, newDate)
+      postData[nameValue] = e;
+      this.setState({ postData });
+      const isValidate = await validateEmpoymentFields(nameValue, this.state.postData.dateOfResumption);
       if(!isValidate.error){
         this.setState({ 
           errorMessage2: isValidate.errorMessage, 
         })
         return;
+      } else {
+        this.setState({ errorMessage2: null })
       }
-      postData[details.name] = details.value;
-      this.setState({ 
-        postData,
-        errorMessage2: null 
-      })
-    } else if(details.name === 'branchAtEmployment'){
-      const isValidate = await validateEmpoymentFields(e.target.name, e.target.value);
+
+    } else if(nameValue === 'branchAtEmployment'){
+      const isValidate = await validateEmpoymentFields('branchAtEmployment', e.value);
       if(!isValidate.error){
         this.setState({ 
           errorMessage3: isValidate.errorMessage, 
         })
         return;
       }
-      postData[details.name] = details.value;
+      postData['branchAtEmployment'] = e.value;
       this.setState({ 
         postData,
         errorMessage3: null 
       })
-    } else if(details.name === 'jobTitle'){
-      const isValidate = await validateEmpoymentFields(e.target.name, e.target.value);
+
+    } else if(nameValue === 'jobTitle'){
+      const isValidate = await validateEmpoymentFields('jobTitle', e.value);
       if(!isValidate.error){
         this.setState({ 
           errorMessage4: isValidate.errorMessage, 
         })
         return;
       }
-      postData[details.name] = details.value;
+      postData['jobTitle'] = e.value;
       this.setState({ 
         postData,
         errorMessage4: null 
       })
-    } else if(details.name === 'unitAtEmployment'){
-      const isValidate = await validateEmpoymentFields(e.target.name, e.target.value);
+
+    } else if(nameValue === 'unitAtEmployment'){
+      const isValidate = await validateEmpoymentFields('unitAtEmployment', e.value);
       if(!isValidate.error){
         this.setState({ 
           errorMessage5: isValidate.errorMessage, 
         })
         return;
       }
-      postData[details.name] = details.value;
+      postData['unitAtEmployment'] = e.value;
       this.setState({ 
         postData,
         errorMessage5: null 
+      })
+
+    } else if(nameValue === 'rankAtEmployment'){
+      const isValidate = await validateEmpoymentFields(nameValue, e.value);
+      if(!isValidate.error){
+        this.setState({ 
+          errorMessage1: isValidate.errorMessage, 
+        })
+        return;
+      }
+      postData[nameValue] = e.value;
+      this.setState({ 
+        postData,
+        errorMessage1: null 
       })
     } else if(details.name === 'salaryAmount'){
       const isValidate = await validateEmpoymentFields(e.target.name, e.target.value);
@@ -116,55 +126,87 @@ class Employment extends Component {
           errorMessage7: isValidate.errorMessage, 
         })
         return;
+      } else {
+        postData[details.name] = details.value;
+        this.setState({ 
+          postData,
+          errorMessage7: null 
+        })
       }
-      postData[details.name] = details.value;
-      this.setState({ 
-        postData,
-        errorMessage7: null 
-      })
     } 
-    // else if(details.name === 'skills'){
-    //   const isValidate = await validateEmpoymentFields(e.target.name, e.target.value);
-    //   if(!isValidate.error){
-    //     this.setState({ 
-    //       errorMessage8: isValidate.errorMessage, 
-    //     })
-    //     return;
-    //   }
-    //   postData[details.name] = details.value;
-    //   this.setState({ 
-    //     postData,
-    //     errorMessage8: null 
-    //   })
-    // }
-    // postData[e.target.name] = e.target.value;
-    // this.setState({ postData });
   }
   
-  handleSkills = async e => {
-    const { postData } = this.state;
-    let details = e.target;
-    console.log(e.target.name, e.target.value)
-    // const isValidate = await validateEmpoymentFields(e.target.name, e.target.value);
-    //   if(!isValidate.error){
-    //     this.setState({ 
-    //       errorMessage8: isValidate.errorMessage, 
-    //     })
-    //     return;
-    //   }
-      postData[details.name] = details.value;
-      this.setState({ 
-        postData,
-        errorMessage8: null 
-      })
+  // handleSkills = async e => {
+  //   const { postData } = this.state;
+  //   let details = e.target;
+  //   console.log(e.target.name, e.target.value)
+  //   // const isValidate = await validateEmpoymentFields(e.target.name, e.target.value);
+  //   //   if(!isValidate.error){
+  //   //     this.setState({ 
+  //   //       errorMessage8: isValidate.errorMessage, 
+  //   //     })
+  //   //     return;
+  //   //   }
+  //     postData[details.name] = details.value;
+  //     this.setState({ 
+  //       postData,
+  //       errorMessage8: null 
+  //     })
+  // }
+
+  handleCustomSelect = (result, name) => {
+		const { postData } = this.state;
+    const value = result !== null ? result.value : null;
+    if(name === 'skills'){
+
+      this.setState(state => {
+        return {
+          multiValue: result
+        };
+      });
+    }
+		postData[name] = value;
+		this.setState({ 
+      postData,
+      errorMessage8: null 
+		});
   }
 
 	handleSubmit = async (e, btnType) => {
 		e.preventDefault()
 		showLoader();
-		// console.log(this.state.postData);
+    console.log(this.state.postData);
 
-		const isValidate = await validateEmploymentInfoForm(this.state.postData);
+    const {
+      rankAtEmployment,
+      unitAtEmployment,
+      dateOfResumption,
+      salaryAmount,
+      branchAtEmployment,
+      employeeNumber,
+      jobTitle,
+      skills
+    } = this.state.postData;
+
+    let newValue = [];
+      this.state.multiValue.length ? this.state.multiValue.map(data => (
+        newValue.push(data.value)
+      )) : newValue = [];
+
+    const data = {
+      rankAtEmployment,
+      unitAtEmployment,
+      dateOfResumption,
+      salaryAmount,
+      branchAtEmployment,
+      employeeNumber,
+      jobTitle,
+      skills: newValue
+    }
+
+    console.log(data);
+
+		const isValidate = await validateEmploymentInfoForm(data);
     //console.log('gets hers', isValidate)
     if(!isValidate.error){
       if(isValidate.type === 'rankAtEmployment'){
@@ -223,7 +265,7 @@ class Employment extends Component {
       }
 
 			if(btnType === 'submit'){
-				const res = await httpPatch(`auth/onboarding_three/${id}`, this.state.postData);
+				const res = await httpPatch(`auth/onboarding_three/${id}`, data);
 				if(res.code === 200){
 					hideLoader();
 					// setState({ userId: res.data.id });
@@ -236,7 +278,7 @@ class Employment extends Component {
 					});
 				}
 			} else {
-				const res = await httpPatch(`auth/onboarding_three/${id}`, this.state.postData);
+				const res = await httpPatch(`auth/onboarding_three/${id}`, data);
 				if(res.code === 200){
 					hideLoader();
 				}
@@ -264,13 +306,36 @@ class Employment extends Component {
   //   }
   // }
 
+
+
   getFieldDetails = async() => {
     try{
       const res = await httpGet('units');
       const data = await httpGet('roles');
+      const resData = await httpGet('all_branch');
       if(res.code === 200){
         hideLoader()
-        this.setState({ units: res.data.units, roles: data.data.roles });
+
+        let optionList = [];
+        [...resData.data.branches].map(data => {
+          optionList.push({ value: data.name, label: data.name });
+        });
+
+        let unitOptions = [];
+        [...res.data.units].map(data => {
+          unitOptions.push({ value: data.name, label: data.department.name + '/' + data.name });
+        });
+
+        let roleOptions = [];
+        [...data.data.roles].map(data => {
+          roleOptions.push({ value: data.title, label: data.title });
+        });
+
+        this.setState({ 
+          units: unitOptions, 
+          roles: roleOptions,
+          branches: optionList
+        });
       }
 
     }catch(error){
@@ -283,8 +348,12 @@ class Employment extends Component {
     if(this.props.location.direction === 'backward'){
       this.getFieldDetails();
       this.setState({...this.props.location.savedState});
+    }else if(this.props.location.direction === 'completeOnboarding'){
+      this.setState({ pageMode: 'completeOnboarding'});
+      this.getFieldDetails()
+    } else {
+      this.getFieldDetails()
     }
-    this.getFieldDetails()
 	}
 	
 	handleBackButton = () => {
@@ -308,13 +377,13 @@ class Employment extends Component {
             </ol>
 
             <div className="row">
-							<div className="col-12">
+							<div className="col-10">
 								<div className="card">
-									<div className="card-header">
-									<div className="row">
+									<div className="card-header custom-header">
+									<div className="row col-12">
                     <h4 className="col col-md-6">Employment Information</h4>
-                    <div className="col col-md-6 text-right">
-                      <h4 className="cursor-pointer" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</h4>
+                    <div className="col col-md-6 text-right pr-0" style={ this.state.pageMode === 'completeOnboarding' ? {display: 'none'} : {}}>
+                      <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button>
                     </div>
                     </div>
 									</div>
@@ -322,9 +391,9 @@ class Employment extends Component {
 
                     <form className="form-horizontal" >
 											<div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">Rank at employment</label>
-												<div className="col-md-3">
-													<select className="form-control w-100" 
+												<label for="inputName" className="col-md-2 col-form-label">Rank <span className="impt">*</span></label>
+												<div className="col-md-4">
+													{/* <select className="form-control w-100" 
 														name="rankAtEmployment"
 														onChange={this.handleChange}
 														defaultValue={this.state.postData.rankAtEmployment}
@@ -340,12 +409,91 @@ class Employment extends Component {
 														<option value="Director">Director</option>
 														<option value="PM">PM</option>
 														<option value="DGM">DGM</option>
-													</select>
+													</select> */}
+                          <Select
+                            name="rankAtEmployment"
+                            placeholder="Select"
+                            defaultValue={this.state.postData.rankAtEmployment}
+                            options={[
+                              { value: "PA 1", label: "PA 1" },
+                              { value: "PA 2", label: "PA 2" },
+                              { value: "PO 1", label: "PO 1" },
+                              { value: "PO 2", label: "PO 2" },
+                              { value: "SPO", label: "SPO" },
+                              { value: "Manager", label: "Manager" },
+                              { value: "Senior Manager", label: "Senior Manager" },
+                              { value: "Director", label: "Director" },
+                              { value: "PM", label: "PM" },
+                              { value: "DGM", label: "DGM" },
+                            ]}
+                            onChange={(e) => this.handleChange(e, 'rankAtEmployment')}
+                          />
 													<span className="text-danger">{this.state.errorMessage1 !== null ? this.state.errorMessage1 : ''}</span>
 												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Unit at employment</label>
-                        <div className="col-md-3">
-													<select className="form-control w-100" 
+                        <label for="inputName" className="col-md-2 col-form-label">Branch <span className="impt">*</span></label>
+												<div className="col-md-4">
+                        <Select
+                          name="branchAtEmployment"
+                          placeholder="Select"
+                          defaultValue={this.state.postData.branchAtEmployment}
+                          options={this.state.branches}
+                          onChange={(e) => this.handleChange(e, 'branchAtEmployment')}
+                        />
+													{/* <select className="form-control w-100" 
+														name="branchAtEmployment"
+														onChange={this.handleChange}
+														defaultValue={this.state.postData.branchAtEmployment}
+													>
+														{
+															branchList.map(data => (
+																data
+															))
+														}
+													</select> */}
+													<span className="text-danger">{this.state.errorMessage3 !== null ? this.state.errorMessage3 : ''}</span>
+												</div>
+											</div>
+                      <div className="form-group row">
+												<label for="inputName" className="col-md-2 col-form-label">Date of Resumption <span className="impt">*</span></label>
+												<div className="col-md-4 c-date-picker">
+                          {/* <input 
+                            type="date"
+                            className="form-control w-100"
+                            name="dateOfResumption"
+														onChange={this.handleChange}
+														defaultValue={this.state.postData.dateOfResumption}
+                          /> */}
+                          <DatePicker
+                            className="form-control"
+                            placeholderText="Click to select a date"
+                            selected={this.state.postData.dateOfResumption}
+                            onChange={(e) => this.handleChange(e, 'dateOfResumption')}
+                            dateFormat="yyyy/MM/dd"
+                          />
+													<span className="text-danger">{this.state.errorMessage2 !== null ? this.state.errorMessage2 : ''}</span>
+												</div>
+                        <label for="inputName" className="col-md-2 col-form-label">Salary Amount <span className="impt">*</span></label>
+                        <div className="col-md-4">
+													<input type="text" 
+														className="form-control"
+														name="salaryAmount"
+														onChange={this.handleChange}
+														defaultValue={this.state.postData.salaryAmount}
+													/>
+													<span className="text-danger">{this.state.errorMessage6 !== null ? this.state.errorMessage6 : ''}</span>
+												</div>
+											</div>
+                      <div className="form-group row">
+                        <label for="inputName" className="col-md-2 pr-0 col-form-label">Department/Unit <span className="impt">*</span></label>
+                        <div className="col-md-4">
+                          <Select
+                            name="unitAtEmployment"
+                            placeholder="Select"
+                            defaultValue={this.state.postData.unitAtEmployment}
+                            options={this.state.units}
+                            onChange={(e) => this.handleChange(e, 'unitAtEmployment')}
+                          />
+													{/* <select className="form-control w-100" 
 														name="unitAtEmployment"
 														onChange={this.handleChange}
 														defaultValue={this.state.postData.unitOfEmployment}
@@ -356,62 +504,11 @@ class Employment extends Component {
                                 <option value={data.name}>{data.department.name + '/' + data.name}</option>
                               )) : ''
                             }
-													</select>
+													</select> */}
 													<span className="text-danger">{this.state.errorMessage5 !== null ? this.state.errorMessage5 : ''}</span>
 												</div>
-											</div>
-                      <div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">Date of resumption</label>
-												<div className="col-md-3">
-                          <input 
-                            type="date"
-                            className="form-control w-100"
-                            name="dateOfResumption"
-														onChange={this.handleChange}
-														defaultValue={this.state.postData.dateOfResumption}
-                          />
-
-													{/* <select className="form-control w-100" 
-														name="dateOfResumption"
-														onChange={this.handleChange}
-														defaultValue={this.state.postData.dateOfResumption}
-													>
-														<option value="">select</option>
-														<option value="select">select</option>
-														<option value="select">select</option>
-														<option value="select">select</option>
-													</select> */}
-													<span className="text-danger">{this.state.errorMessage2 !== null ? this.state.errorMessage2 : ''}</span>
-												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Salary amount</label>
-                        <div className="col-md-3">
-													<input type="number" 
-														className="form-control"
-														name="salaryAmount"
-														onChange={this.handleChange}
-														defaultValue={this.state.postData.salaryAmount}
-													/>
-													<span className="text-danger">{this.state.errorMessage6 !== null ? this.state.errorMessage6 : ''}</span>
-												</div>
-											</div>
-                      <div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">Branch at employment</label>
-												<div className="col-md-3">
-													<select className="form-control w-100" 
-														name="branchAtEmployment"
-														onChange={this.handleChange}
-														defaultValue={this.state.postData.branchAtEmployment}
-													>
-														{
-															branchList.map(data => (
-																data
-															))
-														}
-													</select>
-													<span className="text-danger">{this.state.errorMessage3 !== null ? this.state.errorMessage3 : ''}</span>
-												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Employee Number</label>
-                        <div className="col-md-3">
+                        <label for="inputName" className="col-md-2 col-form-label">Employee Number <span className="impt">*</span></label>
+                        <div className="col-md-4">
 													<input type="text" 
 														className="form-control"
 														name="employeeNumber"
@@ -423,9 +520,16 @@ class Employment extends Component {
 												</div>
 											</div>
                       <div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">Job Title</label>
-												<div className="col-md-3">
-													<select className="form-control w-100" 
+												<label for="inputName" className="col-md-2 col-form-label">Job Title <span className="impt">*</span></label>
+												<div className="col-md-4">
+                          <Select
+                            name="jobTitle"
+                            placeholder="Select"
+                            defaultValue={this.state.postData.jobTitle}
+                            options={this.state.roles}
+                            onChange={(e) => this.handleChange(e, 'jobTitle')}
+                          />
+													{/* <select className="form-control w-100" 
 														name="jobTitle"
 														onChange={this.handleChange}
 														defaultValue={this.state.postData.jobTitle}
@@ -436,13 +540,13 @@ class Employment extends Component {
                               <option value={data.title}>{data.title}</option>
                               )) : ''
                             }
-													</select>
+													</select> */}
 													<span className="text-danger">{this.state.errorMessage4 !== null ? this.state.errorMessage4 : ''}</span>
 												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Skills</label>
-                        <div className="col-md-3">
+                        <label for="inputName" className="col-md-2 col-form-label">Skills <span className="impt">*</span></label>
+                        <div className="col-md-4">
 
-                        <Select2
+                        {/* <Select2
                           name={'skills'}
                           data={[
                             { value: "communications", text: 'communications', id: 1 },
@@ -470,7 +574,33 @@ class Employment extends Component {
                             placeholder: 'search by tags',
                             tags: true
                           }}
-                        />
+                        /> */}
+                        <Select
+                            // className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
+                            isMulti
+                            value={this.state.multiValue}
+                            onChange={e => this.handleCustomSelect(e, 'skills')}
+                            options={[
+                              { value: "communications", label: 'communications', },
+                              { value: "teamwork", label: 'teamwork', },
+                              { value: "problem solving", label: 'problem solving', },
+                              { value: "initiative & enterprise", label: 'initiative & enterprise', },
+                              { value: "planning & organizing", label: 'planning & organizing', },
+                              { value: "self-management", label: 'self-management', },
+                              { value: "creative thinking", label: 'creative thinking', },
+                              { value: "technology", label: 'technology', },
+                              { value: "learning", label: 'learning', },
+                              { value: "negotiation & persuasion", label: 'negotiation & persuasion', },
+                              { value: "leadership", label: 'leadership', },
+                              { value: "confidence", label: 'confidence', },
+                              { value: "ability to work under pressure", label: 'ability to work under pressure', },
+                              { value: "preseverance & motivation", label: 'preseverance & motivation', },
+                              { value: "resilience", label: 'resilience', },
+                              { value: "analytic skills", label: 'analytic skills', },
+                            ]}
+                            isSearchable="true"
+                            name="skills"
+                          />
                           {/* <CustomSelect 
                             name={'skills'}
                             handleChange={this.handleChange}
@@ -524,15 +654,14 @@ class Employment extends Component {
 											</div>
 
 
-                      <div class="form-group mb-0 mt-5 row justify-content-end">
-												<div class="col-md-9">
+                      <div class="form-group mb-0 row text-right" style={{ marginTop: '60px'}}>
+												<div class="col-md-12">
                           <button 
                             type="submit"
                             class="btn btn-info mr-5"
-														// onClick={() => this.props.history.push('/create_staff/four')}
-														onClick={e => this.handleSubmit(e,'submit')}
-                          >NEXT</button>
-													<button type="submit" class="btn btn-primary" onClick={e => this.handleSave(e,'save')}>SAVE</button>
+														onClick={e => this.handleSave(e,'save')}
+                          ><i class="fa fa-save"></i> SAVE</button>
+													<button type="submit" class="btn btn-primary" onClick={e => this.handleSubmit(e,'submit')} ><i class="fa fa-arrow-right"></i> NEXT</button>
 												</div>
 											</div>
                     </form>
