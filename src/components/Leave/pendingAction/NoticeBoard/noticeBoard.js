@@ -1,113 +1,78 @@
-import React, { Component } from 'react'
-import Layout from '../../../layout/index'
-import '../pending.css'
+import React, { Component } from "react";
+import Layout from "../../../layout/index";
+import "../Todo/todo.css";
 
-export default class noticeBoard extends Component {
-    render() {
-        return (
-            <div>
-              
-            <div>
+export default class NoticeBoard extends Component {
+	render() {
+		return (
+			<div class="animation par">
+				<div className="todoHeader">
+					<div className="data1">
+						<h1>Saturday, 1 june 2029</h1>
+						<p>3 Active Tasks</p>
+					</div>
+					<div className="data2">
+						<button className="btn- btn-sm">Completed</button>
+						<button className="btn- btn-sm">Incomplete</button>
+					</div>
+				</div>
 
-              
-									<div class="animation">
-										
-										<div class="responsiv-table">
-											<div class="res ">
-                                            <span className="inbox-head">
-                                                           <span className="inbox-headi">Notice Board</span>
-                                                           <span className="inbox-head-name"><button className="btn btn-sm btn-success">Create</button></span>
-                                                       </span>
-												<table  class="nowrap andy-table">
-                                                    <thead>
-                                                      
-													<tr className="andy-tr">
-														
-														<th  className="andy-th">From</th>
-														<th  className="andy-th">Label</th>
-														<th  className="andy-th">Subject</th>
-														<th  className="andy-th">Message</th>
-														<th  className="andy-th">Date</th>
-														
-													</tr>
-                                                    </thead>
-                                                    <tbody>
-													<tr  class='andy-tr tr'>
-													
-														<td  className="andy-td">Joshua Welch</td>
-														<td  className="andy-td"><button className="btn btn-sm btn-primary extr">Group </button></td>
-														<td  className="andy-td">App Development</td>
-														<td  className="andy-td">We need more hands on the </td>
-														<td  className="andy-td">15-10-2018 </td>
-														
-													</tr>
-													<tr  class='andy-tr tr'>
-														
-														<td  className="andy-td">Alan	Randall</td>
-                                                        <td  className="andy-td"><button className="btn btn-sm btn-danger extr">Private</button></td>
-														
-														<td  className="andy-td">Personal</td>
-														<td  className="andy-td">We need more hands on the</td>
-														<td  className="andy-td">15-10-2018 </td>
-														
-													</tr>
-													<tr  class='andy-tr tr'>
-														
-														<td  className="andy-td">Jack	Greene</td>
-                                                        <td  className="andy-td"><button className="btn btn-sm btn-primary extr">Group </button></td>
-														
-														<td  className="andy-td">Slo App Team</td>
-														<td  className="andy-td">We need more hands on the</td>
-														<td  className="andy-td">15-10-2018</td>
-													
-													</tr>
-													<tr  class='andy-tr tr'>
-													
-														<td  className="andy-td">Sean Lawrence</td>
-														<td  className="andy-td"><button className="btn btn-sm btn-danger extr">Private</button></td>
-														
-														<td  className="andy-td">Personal</td>
-														<td  className="andy-td">We need more hands on the</td>
-														<td  className="andy-td">15-10-2018</td>
-													
-													</tr>
-													<tr  class='andy-tr tr'>
-														
-														<td  className="andy-td">Oliver Welch</td>
-														<td  className="andy-td"><button className="btn btn-sm btn-primary extr">Group </button></td>
-														
-														<td  className="andy-td">Politics</td>
-														<td  className="andy-td">We need more hands on the</td>
-														<td  className="andy-td">15-10-2018 </td>
-														
-													</tr>
-                                                    </tbody>
-												</table>
-											</div>
-										</div>
-									</div>
-								</div>
+				<div className="AddTodoDIV">
+					<input placeholder="Add New Task" className="todoInput" type="text" />
+					<button className="btn- btn-sm">Add</button>
+				</div>
 
+				<div className="todoss">
+					<div className="flex1">
+						<input type="checkbox" />
 
+						<span>Client Meeting at 2:30</span>
+					</div>
 
+					<div className="flex2">
+						<span className="date">10-12-2098</span>
+						<i class="fa fa-trash"></i>
+					</div>
+				</div>
+				<div className="todoss">
+					<div className="flex1">
+						<input type="checkbox" />
 
+						<span>Client Meeting at 2:30</span>
+					</div>
 
+					<div className="flex2">
+						<span className="date">10-12-2098</span>
+						<i class="fa fa-trash"></i>
+					</div>
+				</div>
 
+				<div className="todoss">
+					<div className="flex1">
+						<input type="checkbox" />
 
+						<span>Client Meeting at 2:30</span>
+					</div>
 
+					<div className="flex2">
+						<span className="date">10-12-2098</span>
+						<i class="fa fa-trash"></i>
+					</div>
+				</div>
 
+				<div className="todoss">
+					<div className="flex1">
+						<input type="checkbox" />
 
+						<span>Client Meeting at 2:30</span>
+					</div>
 
-
-
-
-
-
-
-
-
-                
-            </div>
-        )
-    }
+					<div className="flex2">
+						<span className="date">10-12-2098</span>
+						<i class="fa fa-trash"></i>
+					</div>
+				</div>
+			</div>
+		);
+	}
 }

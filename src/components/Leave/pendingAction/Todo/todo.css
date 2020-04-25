@@ -6,8 +6,9 @@
 @media(max-width:766px){
     .par{
         width:95vw;
+        margin: 10px;
         margin-bottom: 50px;
-        margin-right: 20px;
+      
     }
     
 }
