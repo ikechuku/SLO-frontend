@@ -23,11 +23,16 @@ export default class Todo extends Component {
 				</div>
 
 				<div className="todoss">
-					<div className="flex1">
-						<input type="checkbox" />
-
-						<span>Client Meeting at 2:30</span>
+					<div className="checkx">
+						<div class="checkbox-container circular-container">
+							<label class="checkbox-label">
+								<input type="checkbox" />
+								<span class="checkbox-custom circular"></span>
+							</label>
+						</div>
 					</div>
+
+					<span className="infooo">Client Meeting at 2:30</span>
 
 					<div className="flex2">
 						<span className="date">10-12-2098</span>
@@ -35,24 +40,16 @@ export default class Todo extends Component {
 					</div>
 				</div>
 				<div className="todoss">
-					<div className="flex1">
-						<input type="checkbox" />
-
-						<span>Client Meeting at 2:30</span>
+					<div className="checkx">
+						<div class="checkbox-container circular-container">
+							<label class="checkbox-label">
+								<input type="checkbox" />
+								<span class="checkbox-custom circular"></span>
+							</label>
+						</div>
 					</div>
 
-					<div className="flex2">
-						<span className="date">10-12-2098</span>
-						<i class="fa fa-trash"></i>
-					</div>
-				</div>
-
-				<div className="todoss">
-					<div className="flex1">
-						<input type="checkbox" />
-
-						<span>Client Meeting at 2:30</span>
-					</div>
+					<span className="infooo">Client Meeting at 2:30</span>
 
 					<div className="flex2">
 						<span className="date">10-12-2098</span>
@@ -61,11 +58,34 @@ export default class Todo extends Component {
 				</div>
 
 				<div className="todoss">
-					<div className="flex1">
-						<input type="checkbox" />
-
-						<span>Client Meeting at 2:30</span>
+					<div className="checkx">
+						<div class="checkbox-container circular-container">
+							<label class="checkbox-label">
+								<input type="checkbox" />
+								<span class="checkbox-custom circular"></span>
+							</label>
+						</div>
 					</div>
+
+					<span className="infooo">Client Meeting at 2:30</span>
+
+					<div className="flex2">
+						<span className="date">10-12-2098</span>
+						<i class="fa fa-trash"></i>
+					</div>
+				</div>
+
+				<div className="todoss">
+					<div className="checkx">
+						<div class="checkbox-container circular-container">
+							<label class="checkbox-label">
+								<input type="checkbox" />
+								<span class="checkbox-custom circular"></span>
+							</label>
+						</div>
+					</div>
+
+					<span className="infooo">Client Meeting at 2:30</span>
 
 					<div className="flex2">
 						<span className="date">10-12-2098</span>

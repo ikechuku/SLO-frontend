@@ -98,7 +98,12 @@ export default class Chat extends Component {
 											>
 												<td>
 													{" "}
-													<input type="checkbox" name="" id="" />
+													<div class="checkbox-container">
+														<label className="checkbox-label">
+															<input type="checkbox" />
+															<span className="checkbox-custom rectangular"></span>
+														</label>
+													</div>
 												</td>
 												<td className="td-chat">Joshua Welch</td>
 												<td className="td-chat">
@@ -117,7 +122,12 @@ export default class Chat extends Component {
 											<tr class="table-tr-chat tr">
 												<td>
 													{" "}
-													<input type="checkbox" name="" id="" />
+													<div class="checkbox-container">
+														<label className="checkbox-label">
+															<input type="checkbox" />
+															<span className="checkbox-custom rectangular"></span>
+														</label>
+													</div>
 												</td>
 
 												<td className="td-chat">Alan Randall</td>
@@ -137,7 +147,12 @@ export default class Chat extends Component {
 											<tr class="table-tr-chat tr">
 												<td>
 													{" "}
-													<input type="checkbox" name="" id="" />
+													<div class="checkbox-container">
+														<label className="checkbox-label">
+															<input type="checkbox" />
+															<span className="checkbox-custom rectangular"></span>
+														</label>
+													</div>
 												</td>
 
 												<td className="td-chat">Jack Greene</td>
@@ -157,7 +172,12 @@ export default class Chat extends Component {
 											<tr class="table-tr-chat tr">
 												<td>
 													{" "}
-													<input type="checkbox" name="" id="" />
+													<div class="checkbox-container">
+														<label className="checkbox-label">
+															<input type="checkbox" />
+															<span className="checkbox-custom rectangular"></span>
+														</label>
+													</div>
 												</td>
 												<td className="td-chat">Sean Lawrence</td>
 												<td className="td-chat">
@@ -176,7 +196,12 @@ export default class Chat extends Component {
 											<tr class="table-tr-chat tr">
 												<td>
 													{" "}
-													<input type="checkbox" name="" id="" />
+													<div class="checkbox-container">
+														<label className="checkbox-label">
+															<input type="checkbox" />
+															<span className="checkbox-custom rectangular"></span>
+														</label>
+													</div>
 												</td>
 												<td className="td-chat">Sean Lawrence</td>
 												<td className="td-chat">
@@ -196,7 +221,12 @@ export default class Chat extends Component {
 											<tr class="table-tr-chat tr">
 												<td>
 													{" "}
-													<input type="checkbox" name="" id="" />
+													<div class="checkbox-container">
+														<label className="checkbox-label">
+															<input type="checkbox" />
+															<span className="checkbox-custom rectangular"></span>
+														</label>
+													</div>
 												</td>
 												<td className="td-chat">Sean Lawrence</td>
 												<td className="td-chat">
@@ -215,7 +245,12 @@ export default class Chat extends Component {
 											<tr class="table-tr-chat tr">
 												<td>
 													{" "}
-													<input type="checkbox" name="" id="" />
+													<div class="checkbox-container">
+														<label className="checkbox-label">
+															<input type="checkbox" />
+															<span className="checkbox-custom rectangular"></span>
+														</label>
+													</div>
 												</td>
 												<td className="td-chat">Sean Lawrence</td>
 												<td className="td-chat">
@@ -234,7 +269,12 @@ export default class Chat extends Component {
 											<tr class="table-tr-chat tr">
 												<td>
 													{" "}
-													<input type="checkbox" name="" id="" />
+													<div class="checkbox-container">
+														<label className="checkbox-label">
+															<input type="checkbox" />
+															<span className="checkbox-custom rectangular"></span>
+														</label>
+													</div>
 												</td>
 												<td className="td-chat">Oliver Welch</td>
 												<td className="td-chat">

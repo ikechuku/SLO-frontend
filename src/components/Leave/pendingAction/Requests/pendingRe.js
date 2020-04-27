@@ -36,17 +36,15 @@ export default class pendingRequet extends Component {
 					</div>
 				</div>
 
-				<div className="AddpendingDIV">
-					<input
-						placeholder="Add New Task"
-						className="pendingInput"
-						type="text"
-					/>
-					<button className="btn- btn-sm">Add</button>
-				</div>
-
 				<div className="pendingss">
-					<input type="checkbox" />
+					<div className="checkx">
+						<div class="checkbox-container circular-container">
+							<label class="checkbox-label">
+								<input type="checkbox" />
+								<span class="checkbox-custom circular"></span>
+							</label>
+						</div>
+					</div>
 
 					<div className="username">
 						<span>John Doe</span>
@@ -102,7 +100,14 @@ export default class pendingRequet extends Component {
 				</div>
 
 				<div className="pendingss">
-					<input type="checkbox" />
+					<div className="checkx">
+						<div class="checkbox-container circular-container">
+							<label class="checkbox-label">
+								<input type="checkbox" />
+								<span class="checkbox-custom circular"></span>
+							</label>
+						</div>
+					</div>
 
 					<div className="username">
 						<span>John Doe</span>
@@ -158,7 +163,14 @@ export default class pendingRequet extends Component {
 				</div>
 
 				<div className="pendingss">
-					<input type="checkbox" />
+					<div className="checkx">
+						<div class="checkbox-container circular-container">
+							<label class="checkbox-label">
+								<input type="checkbox" />
+								<span class="checkbox-custom circular"></span>
+							</label>
+						</div>
+					</div>
 
 					<div className="username">
 						<span>John Doe</span>
@@ -214,7 +226,14 @@ export default class pendingRequet extends Component {
 				</div>
 
 				<div className="pendingss">
-					<input type="checkbox" />
+					<div className="checkx">
+						<div class="checkbox-container circular-container">
+							<label class="checkbox-label">
+								<input type="checkbox" />
+								<span class="checkbox-custom circular"></span>
+							</label>
+						</div>
+					</div>
 
 					<div className="username">
 						<span>John Doe</span>
