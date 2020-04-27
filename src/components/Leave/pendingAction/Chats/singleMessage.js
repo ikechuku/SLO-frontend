@@ -4,7 +4,7 @@ import addChatMate from "./imgs/addChatMates.png";
 export default class singleMessage extends Component {
 	render() {
 		return (
-			<div className="centerChat">
+			<div className="centerChat animation-user-chat">
 				<div className="chatBox">
 					<div className="responsive-chat">
 						<div className="chatHead">

@@ -13,7 +13,7 @@ export default class pendingActions extends Component {
 
 		this.state = {
 			pages: {
-				switcher: "pending",
+				switcher: "chats",
 			},
 			chatControl: {
 				ChatType: "none",

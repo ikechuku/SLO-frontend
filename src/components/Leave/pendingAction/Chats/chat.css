@@ -176,7 +176,7 @@
 	border-radius: 4px;
 }
 
-@media (max-width: 679px) {
+@media (max-width: 952px) {
 	.head-section-two {
 		display: flex;
 		justify-content: flex-start;
@@ -184,7 +184,7 @@
 		flex-direction: column;
 	}
 	.head-section-two-input input {
-		width: 70vw;
+		width: 48vw;
 		margin-bottom: 20px;
 	}
 	.button-container {
@@ -192,6 +192,12 @@
 	}
 	.inbox-head-chat {
 		display: none;
+	}
+}
+
+@media (max-width: 500px) {
+	.head-section-two-input input {
+		width: 65vw;
 	}
 }
 
@@ -263,6 +269,20 @@ tbody .table-tr-chat:hover {
 
 .animation {
 	animation: chats 500ms ease-in forwards;
+}
+
+.animation-user-chat {
+	animation: perChats 500ms ease-in forwards;
+}
+
+@keyframes perChats {
+	0% {
+		opacity: 0;
+		transform: translateY(-80px);
+	}
+	100% {
+		transform: translateY(0);
+	}
 }
 
 @keyframes chats {
@@ -500,12 +520,30 @@ tbody .table-tr-chat:hover {
 	.wrapList {
 		margin-bottom: 25px;
 	}
+	.section-o {
+		margin-left: 20px;
+		margin-right: 20px;
+	}
 }
 
-@media (max-width: 932px) {
+@media (max-width: 952px) {
+	.section-o {
+		height: 100%;
+		width: calc(100vw - 34vw);
+	}
+}
+
+@media (max-width: 779px) {
+	.section-o {
+		height: 100%;
+		width: calc(100vw - 10vw);
+	}
+}
+
+@media (max-width: 969px) {
 	.table-responsivee {
-		width: 100vw;
-		overflow: scroll;
+		width: 100%;
+		overflow-X: scroll;
 	}
 	TaBle-chat {}
 	.chatCon {
