@@ -1,0 +1,237 @@
+.par {
+	width: 50vw;
+	margin-bottom: 50px;
+	margin-left: 20px;
+}
+
+@media (max-width: 1222px) {
+	.par {
+		width: 65vw;
+		margin: 10px;
+		margin-bottom: 50px;
+	}
+}
+
+@media (max-width: 766px) {
+	.par {
+		width: 90vw;
+		margin-bottom: 50px;
+	}
+}
+
+.pendingHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	background-color: white;
+	padding: 20px 20px 0px 20px;
+}
+
+.data1 h1 {
+	font-size: 15px;
+	font-weight: 700;
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+.data1 p {
+	font-size: 12px;
+	padding-top: 3px;
+}
+
+.data2 button {
+	margin: 0px 7px 0px 0px;
+	width: 87px;
+}
+
+@media (max-width: 375px) {
+	.data2 {
+		display: flex;
+	}
+}
+
+.data22 {
+	padding-top: 0px;
+}
+
+.data22 button {
+	border: none;
+	background: #013867;
+	border-radius: 4px;
+	color: white;
+	cursor: pointer;
+	font-weight: 500;
+	font-size: 12px;
+	padding: 4px 8px 4px 8px;
+	line-height: 2;
+}
+
+.AddpendingDIV {
+	background-color: white;
+	padding: 5px 20px 20px 20px;
+}
+
+.AddpendingDIV input {
+	width: 226px;
+	height: 40px;
+	border-radius: 5px 0 0 5px;
+	outline: none;
+	background: rgba(0, 0, 0, 0.0001);
+	border: 0.5px solid rgba(0, 0, 0, 0.24);
+	box-sizing: border-box;
+	padding-left: 10px;
+}
+
+.AddpendingDIV input::placeholder {
+	color: #8d8d8d;
+	font-size: 12px;
+	padding-left: 10px;
+}
+
+.AddpendingDIV button {
+	width: 68px;
+	height: 40px;
+	padding-left: 0;
+	margin-left: 0;
+	border: none;
+	background: #003766;
+	color: white;
+}
+
+.pendingss {
+	height: 60px;
+	background: #fafafa;
+	border-radius: 5px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 20px 0 20px;
+}
+
+.username {
+	margin-top: 0;
+}
+
+.username span:first-child {
+	color: rgb(146, 150, 174);
+	font-size: 14px;
+	margin-right: 5px;
+}
+
+.username span:last-child {
+	color: #999999;
+	font-size: 11px;
+}
+
+.request-type span {
+	font-size: 12px;
+	color: rgb(129, 137, 180);
+	font-weight: 700;
+}
+
+.pend-btn-aprove {
+	background-color: #003766;
+	color: white;
+}
+
+.pend-btn-reject {
+	background-color: #ec1c24;
+	color: white;
+}
+
+.date-p {
+	font-size: 12px;
+	color: rgb(146, 150, 174);
+}
+
+.flex2 .fa-trash {
+	margin-left: 15px;
+	cursor: pointer;
+}
+
+.pendingss input {
+	border: none;
+}
+
+.request input {
+	margin-bottom: 13px;
+}
+
+.request textarea {
+	height: 120px;
+}
+
+.clsModal {
+	position: fixed;
+	right: 0;
+	top: 0;
+	margin: 15px;
+	color: rgb(221, 85, 85);
+	font-weight: 700;
+	font-size: 17px;
+	margin-bottom: 18px;
+	cursor: pointer;
+}
+
+@media(max-width:540px) {
+	.approve_div {
+		display: none;
+	}
+	.re-trash {
+		display: none;
+	}
+	.mobile-dropD {
+		display: flex;
+		flex-direction: column;
+		margin-top: 50px;
+	}
+	.mobile-btns button {
+		margin: 10px;
+	}
+	.delREQ {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+	}
+	.delREQ p {
+		padding: 10px 10px 1px 10px;
+		font-weight: 600;
+	}
+	.delREQ i {
+		font-size: 20px;
+		color: #ec1c24;
+		margin-bottom: 20px;
+	}
+}
+
+@media(min-width:540px) {
+	.re-drop {
+		display: none;
+	}
+}
+
+.re-drop {
+	cursor: pointer;
+	font-size: 20px;
+}
+
+.show_btns_mobile {
+	position: fixed;
+	right: 0;
+	width: 50vw;
+	height: fit-content;
+	background-color: white;
+	filter: drop-shadow(2px 4px 6px grey);
+	border-radius: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+@media(min-width:540px) {
+	.show_btns_mobile {
+		display: none;
+	}
+}

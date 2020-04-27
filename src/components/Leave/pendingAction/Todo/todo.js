@@ -1,102 +1,98 @@
-import React, { Component } from 'react'
-import Layout from '../../../layout/index'
-import './todo.css'
+import React, { Component } from "react";
+import Layout from "../../../layout/index";
+import "./todo.css";
 
 export default class Todo extends Component {
-    render() {
-        return (
-        			<div class="animation par">
-										
-										
-                   <div className="todoHeader">
-					   <div className="data1">
-						   <h1>
-                          Saturday, 1 june 2029
-						   </h1>
-						   <p> 
-                            3 Active Tasks
-						   </p>
-					   </div>
-					   <div className="data2">
-                      <button className="btn- btn-sm">Completed</button>
-					  <button className="btn- btn-sm">Incomplete</button>
-					   </div>
-				   </div>
+	render() {
+		return (
+			<div class="animation par">
+				<div className="todoHeader">
+					<div className="data1">
+						<h1>Saturday, 1 june 2029</h1>
+						<p>3 Active Tasks</p>
+					</div>
+					<div className="data2">
+						<button className="btn- btn-sm">Completed</button>
+						<button className="btn- btn-sm">Incomplete</button>
+					</div>
+				</div>
 
-				   <div className="AddTodoDIV">
+				<div className="AddTodoDIV">
+					<input placeholder="Add New Task" className="todoInput" type="text" />
+					<button className="btn- btn-sm">Add</button>
+				</div>
 
-					   <input placeholder="Add New Task" className="todoInput" type="text"/><button className="btn- btn-sm">Add</button>
-	
-                        </div>
-
-
-						<div className="todoss">
-							<div className="flex1">
-                            <input type="checkbox"/>
-								
-								<span>Client Meeting at 2:30</span>
-							</div>
-
-							<div className="flex2">
-
-                            <span className="date">
-                              10-12-2098
-							</span>
-							<i class="fa fa-trash"></i>
-							</div>
+				<div className="todoss">
+					<div className="checkx">
+						<div class="checkbox-container circular-container">
+							<label class="checkbox-label">
+								<input type="checkbox" />
+								<span class="checkbox-custom circular"></span>
+							</label>
 						</div>
-						<div className="todoss">
-							<div className="flex1">
-                            <input type="checkbox"/>
-								
-								<span>Client Meeting at 2:30</span>
-							</div>
+					</div>
 
-							<div className="flex2">
+					<span className="infooo">Client Meeting at 2:30</span>
 
-                            <span className="date">
-                              10-12-2098
-							</span>
-							<i class="fa fa-trash"></i>
-							</div>
+					<div className="flex2">
+						<span className="date">10-12-2098</span>
+						<i class="fa fa-trash"></i>
+					</div>
+				</div>
+				<div className="todoss">
+					<div className="checkx">
+						<div class="checkbox-container circular-container">
+							<label class="checkbox-label">
+								<input type="checkbox" />
+								<span class="checkbox-custom circular"></span>
+							</label>
 						</div>
+					</div>
 
-						<div className="todoss">
-							<div className="flex1">
-                            <input type="checkbox"/>
-								
-								<span>Client Meeting at 2:30</span>
-							</div>
+					<span className="infooo">Client Meeting at 2:30</span>
 
-							<div className="flex2">
+					<div className="flex2">
+						<span className="date">10-12-2098</span>
+						<i class="fa fa-trash"></i>
+					</div>
+				</div>
 
-                            <span className="date">
-                              10-12-2098
-							</span>
-							<i class="fa fa-trash"></i>
-							</div>
+				<div className="todoss">
+					<div className="checkx">
+						<div class="checkbox-container circular-container">
+							<label class="checkbox-label">
+								<input type="checkbox" />
+								<span class="checkbox-custom circular"></span>
+							</label>
 						</div>
+					</div>
 
-						<div className="todoss">
-							<div className="flex1">
-                            <input type="checkbox"/>
-								
-								<span>Client Meeting at 2:30</span>
-							</div>
+					<span className="infooo">Client Meeting at 2:30</span>
 
-							<div className="flex2">
+					<div className="flex2">
+						<span className="date">10-12-2098</span>
+						<i class="fa fa-trash"></i>
+					</div>
+				</div>
 
-                            <span className="date">
-                              10-12-2098
-							</span>
-							<i class="fa fa-trash"></i>
-							</div>
+				<div className="todoss">
+					<div className="checkx">
+						<div class="checkbox-container circular-container">
+							<label class="checkbox-label">
+								<input type="checkbox" />
+								<span class="checkbox-custom circular"></span>
+							</label>
 						</div>
+					</div>
 
+					<span className="infooo">Client Meeting at 2:30</span>
 
-
-                
-            </div>
-        )
-    }
+					<div className="flex2">
+						<span className="date">10-12-2098</span>
+						<i class="fa fa-trash"></i>
+					</div>
+				</div>
+			</div>
+		);
+	}
 }
