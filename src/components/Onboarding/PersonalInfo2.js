@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import DatePicker from "react-datepicker";
-import Moment from 'react-moment'
-import moment from 'moment'
- 
+import CreatableSelect from 'react-select/creatable'; 
 import Select from 'react-select';
 import { NotificationManager } from 'react-notifications';
 import { Link } from 'react-router-dom';
@@ -13,9 +11,6 @@ import { slga, getLga } from '../../helpers/states';
 import { validateData, validateD } from '../../helpers/validations';
 import { showLoader, hideLoader } from '../../helpers/loader';
 import { getDialCode, getAllDialCode, countryCodes } from '../../helpers/dailCodes';
-import {CustomSelect2} from '../../helpers/Select2';
-import CustomSelect from '../../helpers/Select2';
-
 
 class PersonalInfo extends Component {
   constructor(props){
@@ -27,6 +22,12 @@ class PersonalInfo extends Component {
       country: null,
       currentCountry: null,
       permanentCountry: null,
+      customMobile: null,
+      customHome: null,
+      customMaritalStatus: null,
+      customSkills: null,
+      customHobbies: null,
+      customReligion: null,
       errorMessage1: null,
       errorMessage2: null,
       errorMessage3: null,
@@ -41,11 +42,22 @@ class PersonalInfo extends Component {
     }
   }
 
-  handleChange = (e) => {
+  handleChange = (e, name) => {
     e.preventDefault();
     const { data } = this.state;
     let details = e.target;
     if(details.name === 'noOfDependant'){
+      const isValidate = validateD(e.target.name, e.target.value);
+      if(!isValidate.error){
+        this.setState({ 
+          errorMessage10: isValidate.errorMessage, 
+        })
+        return;
+      }
+      data[details.name] = parseInt(details.value);
+      this.setState({ data, errorMessage10: null });
+
+    } else if(details.name === 'noOfImmediateFamily'){
       const isValidate = validateD(e.target.name, e.target.value);
       if(!isValidate.error){
         this.setState({ 
@@ -173,26 +185,10 @@ class PersonalInfo extends Component {
     }
   }
 
-  handleDobChange = (e) => {
+  handleCustomSelect = (result, name) => {
     const { data } = this.state;
-    // console.log(details.value)
-    // this.setState({ 
-    //   dob: date,
-    // });
-    // const newDate = moment(date).format('l');
-    // const isValidate = validateD('dob', newDate);
-    // if(!isValidate.error){
-    //   this.setState({ 
-    //     errorMessage8: isValidate.errorMessage,
-    //   })
-    //   return;
-    // } else {
-    //   data['dob'] = newDate;
-    //   this.setState({ data, errorMessage8: null })
-    // }
-
-
-    data['dob'] = e;
+    if(name === 'dob'){
+      data['dob'] = result;
       this.setState({ 
         data
       })
@@ -205,11 +201,7 @@ class PersonalInfo extends Component {
       } else {
         this.setState({ errorMessage8: null })
       }
-  }
-
-  handleCustomSelect = (result, name) => {
-    const { data } = this.state;
-    if(name === 'nationality'){
+    } else if(name === 'nationality'){
       const isValidate = validateD('nationality', result.value);
       if(!isValidate.error){
         this.setState({ 
@@ -218,24 +210,27 @@ class PersonalInfo extends Component {
         return;
       }
       data['nationality'] = result.value;
-      data['mobilePhoneCode'] = getDialCode(result.value);
-      data['homePhoneCode'] = getDialCode(result.value);
+      const customCode = getDialCode(result.value);
+      data['mobilePhoneCode'] = customCode.value
+      data['homePhoneCode'] = customCode.value;
       this.setState({ 
         data, 
-        country: result.value, 
+        country: result.value,
+        customMobile: customCode,
+        customHome: customCode,
         errorMessage7: null 
       })
     } else if(name === 'mobilePhoneCode'){
       data[name] = result.value;
       this.setState({ 
         data,
-        mobilePhoneCode: result,
+        customMobile: result,
       });
     } else if(name === 'homePhoneCode'){
       data[name] = result.value;
       this.setState({ 
         data,
-        homePhoneCode: result,
+        customHome: result,
       });
     } else if(name === 'currentCountry'){
       data[name] = result.value;
@@ -249,6 +244,36 @@ class PersonalInfo extends Component {
         data,
         permanentCountry: result.value,
       });
+    } else if(name === 'religion'){
+      data[name] = result.value;
+      this.setState({ 
+        data,
+        customReligion: result,
+      });
+    } else if(name === 'maritalStatus'){
+      data[name] = result.value;
+      this.setState({ 
+        data,
+        customMaritalStatus: result,
+      });
+    } else if(name === 'staffCategory'){
+      data[name] = result.value;
+      this.setState({ 
+        data,
+        customStaffCategory: result,
+      });
+    } else if(name === 'hobbies'){
+      data[name] = result.value;
+      this.setState({ 
+        data,
+        customHobbies: result,
+      });
+    } else if(name === 'skills'){
+      data[name] = result.value;
+      this.setState({ 
+        data,
+        customSkills: result,
+      });
     } else {
       data[name] = result.value;
       this.setState({ 
@@ -259,223 +284,20 @@ class PersonalInfo extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault()
-    showLoader();
-    // const isValidate = await validateData(this.state.data);
-    // if(isValidate === 'error'){
-    //   return hideLoader();
-    // }
-
-    // if(this.state.errorMessage !== null){
-    //   hideLoader()
-    //   return NotificationManager.warning(this.state.errorMessage)
-    // }
-    // console.log('gets hers', this.state.data)
-    const isValidate = await validateData(this.state.data);
-    if(!isValidate.error){
-      if(isValidate.type === 'firstName'){
-        this.setState({ 
-          errorMessage1: isValidate.errorMessage,
-        })
-      } else if(isValidate.type === 'lastName'){
-        this.setState({ 
-          errorMessage2: isValidate.errorMessage,
-        })
-      // } else if(isValidate.type === 'middleName'){
-      //   this.setState({ 
-      //     errorMessage3: isValidate.errorMessage,
-      //   })
-      } else if(isValidate.type === 'email'){
-        this.setState({ 
-          errorMessage4: isValidate.errorMessage,
-        })
-      } else if(isValidate.type === 'mobilePhone'){
-        this.setState({ 
-          errorMessage5: isValidate.errorMessage,
-        })
-      // } else if(isValidate.type === 'homePhone'){
-      //   this.setState({ 
-      //     errorMessage6: isValidate.errorMessage,
-      //   })
-      } else if(isValidate.type === 'nationality'){
-        this.setState({ 
-          errorMessage7: isValidate.errorMessage,
-        })
-      } else if(isValidate.type === 'dob'){
-        this.setState({ 
-          errorMessage8: isValidate.errorMessage,
-        })
-      } else if(isValidate.type === 'gender'){
-        this.setState({ 
-          errorMessage9: isValidate.errorMessage,
-        })
-      } else if(isValidate.type === 'currentAddress'){
-        this.setState({ 
-          errorMessage11: isValidate.errorMessage,
-        })
-      }
-    } 
-
-    const { 
-      errorMessage1, 
-      errorMessage2, 
-      errorMessage3, 
-      errorMessage4, 
-      errorMessage5, 
-      errorMessage6, 
-      errorMessage7, 
-      errorMessage8, 
-      errorMessage9,
-      errorMessage10,
-      errorMessage11
-    } = this.state;
-
-    console.log(errorMessage7)
-    if(errorMessage1 !== null || errorMessage2 !== null || errorMessage3 !== null || errorMessage4 !== null || errorMessage5 !== null || errorMessage6 !== null || errorMessage7 !== null || errorMessage8 !== null || errorMessage9 !== null || errorMessage10 !== null || errorMessage11 !== null ){
-      hideLoader()
-      return NotificationManager.warning('Complete all required fields')
-    }
-
-
-
-      // showLoader();
-    if(this.state.pageMode === 'edit'){
-      try {
-        const { userId } = this.state;
-        const res = await httpPatch(`auth/edit_staff/${userId}`, this.state.data);
-        if(res.code === 200){
-          hideLoader();
-          // setState({ userId: res.data.id });
-          // return this.props.history.push(`/create_staff/four/${res.data.id}`)
-          return this.props.history.push({
-            pathname: `/create_staff/two/${res.data.id}`,
-            backurl: `/create_staff/one`,
-            savedState: this.state
-          });
-        }
-      } catch(error){
-        hideLoader();
-        console.log(error)
-      }
-    } else {
-      try{
-        const res = await httpPost('auth/create_staff', this.state.data);
-        if(res.code === 201){
-          hideLoader();
-          await this.setState({ userId: res.data.id });
-          // return this.props.history.push(`/create_staff/two/${res.data.id}`)
-          return this.props.history.push({
-            pathname: `/create_staff/two/${res.data.id}`,
-            backurl: '/create_staff/one',
-            savedState: this.state,
-            direction: 'forward'
-          });
-        }
-      } catch (error){
-        hideLoader();
-        console.log(error)
-      }
-    }
-  }
-
-  handleSave = async (e) => {
-    e.preventDefault();
-    showLoader();
-    // const isValidate = await validateData(this.state.data);
-    // if(isValidate === 'error'){
-    //   return hideLoader();
-    // }
-    const isValidate = await validateData(this.state.data);
-    //console.log('gets hers', isValidate)
-    if(!isValidate.error){
-      if(isValidate.type === 'firstName'){
-        this.setState({ 
-          errorMessage1: isValidate.errorMessage,
-        })
-      } else if(isValidate.type === 'lastName'){
-        this.setState({ 
-          errorMessage2: isValidate.errorMessage,
-        })
-      // } else if(isValidate.type === 'middleName'){
-      //   this.setState({ 
-      //     errorMessage3: isValidate.errorMessage,
-      //   })
-      } else if(isValidate.type === 'email'){
-        this.setState({ 
-          errorMessage4: isValidate.errorMessage,
-        })
-      } else if(isValidate.type === 'mobilePhone'){
-        this.setState({ 
-          errorMessage5: isValidate.errorMessage,
-        })
-      } else if(isValidate.type === 'homePhone'){
-        this.setState({ 
-          errorMessage6: isValidate.errorMessage,
-        })
-      } else if(isValidate.type === 'nationality'){
-        this.setState({ 
-          errorMessage7: isValidate.errorMessage,
-        })
-      } else if(isValidate.type === 'dob'){
-        this.setState({ 
-          errorMessage8: isValidate.errorMessage,
-        })
-      } else if(isValidate.type === 'gender'){
-        this.setState({ 
-          errorMessage9: isValidate.errorMessage,
-        })
-      }
-    } 
-
-    const { 
-      errorMessage1, 
-      errorMessage2, 
-      errorMessage3, 
-      errorMessage4, 
-      errorMessage5, 
-      errorMessage6, 
-      errorMessage7, 
-      errorMessage8, 
-      errorMessage9,
-      errorMessage10
-    } = this.state;
-
-    if(errorMessage1 !== null || errorMessage2 !== null || errorMessage3 !== null || errorMessage4 !== null || errorMessage5 !== null || errorMessage6 !== null || errorMessage7 !== null || errorMessage8 !== null || errorMessage9 !== null || errorMessage10 !== null ){
-      hideLoader()
-      return NotificationManager.warning('Complete all required fields')
-    }
-
-    try{
-      if(this.state.pageMode === 'edit'){
-        const { userId } = this.state;
-        const res = await httpPatch(`auth/edit_staff/${userId}`, this.state.data);
-        if(res.code === 201){
-          hideLoader();
-        }
-      } else {
-        const res = await httpPost('auth/create_staff', this.state.data);
-        if(res.code === 201){
-          hideLoader();
-        }
-      }
-    } catch (error){
-      hideLoader()
-      console.log(error)
-    }
+    console.log(this.state.data);
   }
 
   componentDidMount(){
     if(this.props.location.direction === 'backward'){
-      this.setState({...this.props.location.savedState, pageMode: 'edit'});
+      // get User details and save to state
     }
 	}
 
   getLGA = (state) => {
     const lga = getLga(state) || [];
-    return lga.length ? lga.map(data => (
+    return lga.map(data => (
       { value: data.name, label: data.name }
-    )) : ''
-    //   <option value={`${data.name}`}>{data.name}</option>
-    // )) : <option value="">LGA</option>
+    ))
   }
 
   getStateOption = () => {
@@ -490,13 +312,15 @@ class PersonalInfo extends Component {
       )
     } else {
       return (
-        <CustomSelect2
-        optionList={stateLists}
-        handleChange={this.handleChange}
-        name="stateOfOrigin"
-        value={this.state.data.stateOfOrigin}
-        placeHolder='Select Your State'
-      />
+        <Select
+          className="w-100 pr-0 pl-0 mr-1"
+          options={stateLists2}
+          onChange={e => this.handleCustomSelect(e, 'stateOfOrigin')}
+          name="stateOfOrigin"
+          defaultValue={this.state.data.stateOfOrigin}
+          isSearchable="true"
+          placeholder='Select Your State'
+        />
       )
     }
   }
@@ -755,7 +579,7 @@ class PersonalInfo extends Component {
                       </div>
                       <div className="form-group row">
                         <label for="inputName" className="col-md-2 col-form-label">Lga <span className="impt">*</span></label>
-                        <div className="col-md-4 select2-padding">
+                        <div className="col-md-4">
                           { this.getLgaOption() }
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Bvn</label>
@@ -773,18 +597,9 @@ class PersonalInfo extends Component {
 												<div className="col-md-4">
                         <div class="input-group mb-3">
                           <div class="input-group-prepend select2-padding">
-                            {/* <select 
-                              class="input-group-text" 
-                              id="basic-addon"
-                              name="mobilePhoneCode"
-                              value={this.state.data.mobilePhoneCode}
-                              onChange={this.handleChange}
-                            >
-                              {getAllDialCode()}
-                            </select> */}
                             <Select
                               className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
-                              value={this.state.mobilePhoneCode}
+                              value={this.state.customMobile}
                               onChange={e => this.handleCustomSelect(e, 'mobilePhoneCode')}
                               options={countryCodes}
                               isSearchable="true"
@@ -807,18 +622,9 @@ class PersonalInfo extends Component {
                         <div className="col-md-4">
                         <div class="input-group mb-3">
                           <div class="input-group-prepend select2-padding">
-                            {/* <select 
-                              class="input-group-text" 
-                              id="basic-addon3"
-                              name="homePhoneCode"
-                              value={this.state.data.homePhoneCode}
-                              onChange={this.handleChange}
-                            >
-                              {getAllDialCode()}
-                            </select> */}
                             <Select
                               className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
-                              value={this.state.homePhoneCode}
+                              value={this.state.customHome}
                               onChange={e => this.handleCustomSelect(e, 'homePhoneCode')}
                               options={countryCodes}
                               isSearchable="true"
@@ -841,7 +647,7 @@ class PersonalInfo extends Component {
 												<div className="col-md-4">
                           <Select
                             className="form-control pt-0 pb-0 pr-0 pl-0 border-0 w-100"
-                            value={this.state.data.maritalStatus}
+                            value={this.state.customMaritalStatus}
                             onChange={e => this.handleCustomSelect(e, 'maritalStatus')}
                             options={[
                               { value: 'Single', label: 'Single' },
@@ -852,23 +658,12 @@ class PersonalInfo extends Component {
                             placeholder="Select"
                             name="maritalStatus"
                           />
-                          {/* <select className="form-control w-100"
-                            name="maritalStatus" 
-                            onChange={this.handleChange} 
-                            value={this.state.data.maritalStatus}
-                          >
-                            <option value="" disabled selected>Select</option>
-														<option value="Single">Single</option>
-														<option value="Married">Married</option>
-                            <option value="Divorced">Divorced</option>
-                            <option value="Widowed">Widowed</option>
-													</select> */}
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Religion</label>
                         <div className="col-md-4">
                           <Select
                             className="pt-0 pb-0 pr-0 pl-0 border-0"
-                            defaultValue={this.state.data.religion}
+                            value={this.state.customReligion}
                             onChange={e => this.handleCustomSelect(e, 'religion')}
                             options={[
                               { value: 'Islam', label: 'Islam'},
@@ -895,7 +690,7 @@ class PersonalInfo extends Component {
 												<div className="col-md-4">
                           <Select
                             className="pt-0 pb-0 pr-0 pl-0 border-0"
-                            defaultValue={this.state.data.staffCategory}
+                            value={this.state.customStaffCategory}
                             onChange={e => this.handleCustomSelect(e, 'staffCategory')}
                             options={[
                               { value: 'Full time', label: 'Full time'},
@@ -910,6 +705,66 @@ class PersonalInfo extends Component {
                             placeholder="Select"
                           />
                           <span className="text-danger">{this.state.errorMessage12 !== null ? this.state.errorMessage12 : ''}</span>
+												</div>
+                      </div>
+                      <div className="form-group row">
+												<label for="inputName" className="col-md-2 col-form-label">Hobbies</label>
+												<div className="col-md-4">
+                          <CreatableSelect
+                            isMulti
+                            value={this.state.customHobbies}
+                            onChange={e => this.handleCustomSelect(e, 'hobbies')}
+                            options={[
+                              { value: "reading", label: 'reading', },
+                              { value: "travelling", label: 'travelling', },
+                              { value: "learning new things", label: 'learning new things', },
+                            ]}
+                            isSearchable="true"
+                            name="hobbies"
+                          />
+                          <span className="text-danger">{this.state.errorMessage13 !== null ? this.state.errorMessage13 : ''}</span>
+												</div>
+                        <label for="inputName" className="col-md-2 col-form-label">Skills</label>
+												<div className="col-md-4">
+                          <Select
+                            isMulti
+                            value={this.state.customSkills}
+                            onChange={e => this.handleCustomSelect(e, 'skills')}
+                            options={[
+                              { value: "communications", label: 'communications', },
+                              { value: "teamwork", label: 'teamwork', },
+                              { value: "problem solving", label: 'problem solving', },
+                              { value: "initiative & enterprise", label: 'initiative & enterprise', },
+                              { value: "planning & organizing", label: 'planning & organizing', },
+                              { value: "self-management", label: 'self-management', },
+                              { value: "creative thinking", label: 'creative thinking', },
+                              { value: "technology", label: 'technology', },
+                              { value: "learning", label: 'learning', },
+                              { value: "negotiation & persuasion", label: 'negotiation & persuasion', },
+                              { value: "leadership", label: 'leadership', },
+                              { value: "confidence", label: 'confidence', },
+                              { value: "ability to work under pressure", label: 'ability to work under pressure', },
+                              { value: "preseverance & motivation", label: 'preseverance & motivation', },
+                              { value: "resilience", label: 'resilience', },
+                              { value: "analytic skills", label: 'analytic skills', },
+                            ]}
+                            isSearchable="true"
+                            name="skills"
+                          />
+                          <span className="text-danger">{this.state.errorMessage12 !== null ? this.state.errorMessage12 : ''}</span>
+												</div>
+                      </div>
+                      <div className="form-group row">
+												<label for="inputName" className="col-md-2 col-form-label">No of Immediate Family</label>
+												<div className="col-md-4">
+                          <input type="text" 
+                            className="form-control"
+                            name="noOfImmediateFamily"
+                            defaultValue={this.state.data.noOfImmediateFamily === null ? this.state.data.noOfImmediateFamily : 0}
+                            // value={this.state.data.noOfDependant}
+                            onChange={this.handleChange}
+                          />
+                          <span className="text-danger">{this.state.errorMessage10 !== null ? this.state.errorMessage10 : ''}</span>
 												</div>
                       </div>
                       <div className="form-group row">
@@ -983,29 +838,17 @@ class PersonalInfo extends Component {
                           </div>
                         </div>
                       </div>
-                      {/* <div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">Other Features</label>
-												<div className="col-md-8">
-                          <input type="text" 
-                            className="form-control"
-                            name="otherFeatures"
-                            onChange={this.handleChange}
-                            value={this.state.data.otherFeatures}
-                          />
-												</div>
-                      </div> */}
 
                       <div className="form-group row mb-0 mt-2 text-right">
 												<div className="col-md-12">
                           <button 
                             type="submit"
                             className="btn btn-info mr-5"
-                            // onClick={() => this.props.history.push('/create_staff/two')}
-                            onClick={this.handleSave}
+                            onClick={e => this.handleSubmit(e, 'save')}
                           ><span className="fa fa-save"></span> SAVE</button>
                           <button type="submit" 
                             className="btn btn-primary"
-                            onClick={this.handleSubmit}
+                            onClick={e => this.handleSubmit(e, 'submit')}
                           ><span className="fa fa-arrow-right"></span> NEXT</button>
 												</div>
 											</div>

@@ -74,6 +74,10 @@ code {
   width: 65px !important;
 }
 
+.select2-padding .css-yk16xz-control {
+  padding-left: 10px !important;
+}
+
 .c-date-picker .react-datepicker-wrapper{
   width: 100% !important
 }

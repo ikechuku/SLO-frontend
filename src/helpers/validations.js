@@ -280,6 +280,19 @@ const validateD = (name, value) => {
     }
   }
 
+  if(name === 'noOfImmediateFamily'){
+    if(!(validation.isNumber(value))){
+      return {
+        error,
+        errorMessage: 'Number of immediate family can only be positive integers'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
   if(name === 'dob'){
     if (value === '' || value === null || value === undefined ){
       return {

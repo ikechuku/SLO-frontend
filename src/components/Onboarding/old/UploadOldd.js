@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Layout from '../layout/index';
-import { httpPostFormData } from '../../actions/data.action';
-import validateImage from '../../helpers/validateImage';
+import Layout from '../../layout/index';
+import { httpPostFormData } from '../../../actions/data.action';
+import validateImage from '../../../helpers/validateImage';
 
 class Upload extends Component {
   constructor(props){
@@ -14,8 +14,7 @@ class Upload extends Component {
         guarantorSignedDocument: [],
         identityForm: [],
         certificates: []
-      },
-      src: null
+      }
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -26,24 +25,13 @@ class Upload extends Component {
 
   upload = async e => {
     const { fileName, postBody } = this.state;
-    console.log(e.target.files)
+    console.log(fileName)
     const imageData = e.target.files[0];
     const validFormat = validateImage(imageData);
     if (validFormat.valid) {
       //NotificationManager.success(validFormat.message,'Yippe!',3000);
       postBody[fileName] = [...postBody[fileName], e.target.files[0]];
       this.setState({ postBody });
-
-      const reader = new FileReader()
-      reader.addEventListener(
-        'load',
-        () =>
-          this.setState({
-            src: reader.result,
-          }),
-          false
-      )
-      reader.readAsDataURL(e.target.files[0]);
 
     } else {
       //NotificationManager.error(validFormat.message,'Yippe!',3000);
@@ -97,7 +85,6 @@ class Upload extends Component {
 
 
   render() {
-    console.log(this.state.src)
     return (
       <Layout>
         <div class="app-content">
@@ -156,29 +143,20 @@ class Upload extends Component {
                           <Link className="ml-3 text-danger"></Link>
                         </div>
 											</div>
-
-                      {
-                        this.state.postBody.passportPhoto.length && 
-                          this.state.postBody.passportPhoto.map((data,index) => (
-                            <div key={index}>
-                              <div className="form-group row justify-content-center">
-                                <div className="col-md-2">Passport photo</div>
-                                <div className="col-md-5 ml-0 pl-0">
-                                  <img src={this.state.src}>View document</img>
-                                  <Link className="ml-3 text-danger">Delete</Link>
-                                </div>
-                              </div>
-                              {/* <div className="form-group row justify-content-center">
-                                <div className="col-md-2">Identity form</div>
-                                <div className="col-md-5 ml-0 pl-0">
-                                  <Link>View document</Link>
-                                  <Link className="ml-3 text-danger">Delete</Link>
-                                </div>
-                              </div> */}
-                            </div>
-                          ))
-                      }
-                      
+											<div className="form-group row justify-content-center">
+                        <div className="col-md-2">Passport photo</div>
+                        <div className="col-md-5 ml-0 pl-0">
+                          <Link>View document</Link>
+                          <Link className="ml-3 text-danger">Delete</Link>
+                        </div>
+											</div>
+                      <div className="form-group row justify-content-center">
+                        <div className="col-md-2">Identity form</div>
+                        <div className="col-md-5 ml-0 pl-0">
+                          <Link>View document</Link>
+                          <Link className="ml-3 text-danger">Delete</Link>
+                        </div>
+											</div>
                     </div>
 
 

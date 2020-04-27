@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { httpPatch } from '../../actions/data.action';
-import Layout from '../layout/index'
+import { httpPatch } from '../../../actions/data.action';
+import Layout from '../../layout/index'
 
 class Employment extends Component {
 	constructor(props){

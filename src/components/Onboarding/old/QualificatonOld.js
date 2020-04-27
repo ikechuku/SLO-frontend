@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import Layout from '../layout/index'
-import { httpPost } from '../../actions/data.action';
+import Layout from '../../layout/index'
+import { httpPost } from '../../../actions/data.action';
 import './style.css';
 
 class Qualification extends Component {
