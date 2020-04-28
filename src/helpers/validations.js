@@ -22,6 +22,11 @@ var validation = {
     const pattern = /^\d{10}$/;
     return pattern.test(str);
   },
+  isBvnNumber: (str) => {
+    // const pattern = /^[\d+-]{3,15}$/;
+    const pattern = /^\d{11}$/;
+    return pattern.test(str);
+  },
   isLetterOnly: (str) => {
     const pattern = /^[a-z]{2,40}$/i;
     return pattern.test(str);
@@ -198,6 +203,22 @@ const validateD = (name, value) => {
     }
   }
 
+  if(name === 'bvn'){
+    if (value !== ''){
+      console.log(value)
+      if(!(validation.isBvnNumber(value))){
+        return {
+          error,
+          errorMessage: 'Bvn must be valid: 11 characters and only numbers'
+        }
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
   if(name === 'mobilePhone'){
     if(!(validation.isPhoneNumber(value))){
       return {
@@ -329,7 +350,19 @@ const validateData = (postData) => {
         nationality,
         dob,
         gender,
-        currentAddress
+        currentAddress,
+        currentCountry,
+        currentState,
+        currentLga,
+        lga,
+        maritalStatus,
+        noOfDependants,
+        staffCategory,
+        noOfImmediateFamily,
+        permanentAddress,
+        permanentCountry,
+        permanentState,
+        permanentLga
       } = postData;
 
     if (firstName === '' || firstName === null || firstName === undefined || firstName.length < 3){
@@ -388,13 +421,13 @@ const validateData = (postData) => {
       }
     }
 
-    // if (homePhone === '' || homePhone === null || homePhone === undefined || homePhone.length < 3){
-    //   return {
-    //     error,
-    //     type: 'homePhone',
-    //     errorMessage: 'Home phone is required'
-    //   }
-    // }
+    if (homePhone === '' || homePhone === null || homePhone === undefined || homePhone.length < 3){
+      return {
+        error,
+        type: 'homePhone',
+        errorMessage: 'Home phone is required'
+      }
+    }
 
     if (nationality === '' || nationality === null || nationality === undefined || nationality.length < 3){
       return {
@@ -409,6 +442,102 @@ const validateData = (postData) => {
         error,
         type: 'currentAddress',
         errorMessage: 'Current Address is required'
+      }
+    }
+
+    if (currentCountry === '' || currentCountry === null || currentCountry === undefined || currentCountry.length < 3){
+      return {
+        error,
+        type: 'currentCountry',
+        errorMessage: 'Current Country is required'
+      }
+    }
+
+    if (currentState === '' || currentState === null || currentState === undefined || currentState.length < 3){
+      return {
+        error,
+        type: 'currentState',
+        errorMessage: 'Current State is required'
+      }
+    }
+
+    if (currentLga === '' || currentLga === null || currentLga === undefined || currentLga.length < 3){
+      return {
+        error,
+        type: 'currentLga',
+        errorMessage: 'Current Lga is required'
+      }
+    }
+
+    if (lga === '' || lga === null || lga === undefined || lga.length < 3){
+      return {
+        error,
+        type: 'lga',
+        errorMessage: 'Lga is required'
+      }
+    }
+
+    if (maritalStatus === '' || maritalStatus === null || maritalStatus === undefined || maritalStatus.length < 3){
+      return {
+        error,
+        type: 'maritalStatus',
+        errorMessage: 'Marital status is required'
+      }
+    }
+
+    if (noOfDependants === ''){
+      return {
+        error,
+        type: 'noOfDependants',
+        errorMessage: 'No of dependants is required'
+      }
+    }
+
+    if (staffCategory === '' || staffCategory === null || staffCategory === undefined || staffCategory.length < 3){
+      return {
+        error,
+        type: 'staffCategory',
+        errorMessage: 'Staff category is required'
+      }
+    }
+
+    if (noOfImmediateFamily === ''){
+      return {
+        error,
+        type: 'noOfImmediateFamily',
+        errorMessage: 'No of immediate family is required'
+      }
+    }
+
+    if (permanentAddress === '' || permanentAddress === null || permanentAddress === undefined || permanentAddress.length < 3){
+      return {
+        error,
+        type: 'permanentAddress',
+        errorMessage: 'Permanent Address is required'
+      }
+    }
+
+    if (permanentCountry === '' || permanentCountry === null || permanentCountry === undefined || permanentCountry.length < 3){
+      return {
+        error,
+        type: 'permanentCountry',
+        errorMessage: 'Permanent Country is required'
+      }
+    }
+
+    if (permanentState === '' || permanentState === null || permanentState === undefined || permanentState.length < 3){
+      return {
+        error,
+        type: 'permanentState',
+        errorMessage: 'Permanent State is required'
+      }
+    }
+
+    if (permanentLga === '' || permanentLga === null || permanentLga === undefined || permanentLga.length < 3){
+      return {
+        error,
+        type: 'permanentLga',
+        errorMessage: 'Permanent Lga is required'
       }
     }
 

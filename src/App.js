@@ -1,7 +1,7 @@
 import React from 'react';
 import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
 import { NotificationContainer } from 'react-notifications';
-import PersonalInfo from './components/Onboarding/PersonalInfo2';
+import PersonalInfo from './components/Onboarding/PersonalInfo';
 import Qualification from './components/Onboarding/Qualification2';
 import Employment from './components/Onboarding/Employment';
 import Guarantor from './components/Onboarding/Guarantor';

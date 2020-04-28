@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
 import DatePicker from "react-datepicker";
-import Moment from 'react-moment'
-import moment from 'moment'
- 
+import CreatableSelect from 'react-select/creatable'; 
 import Select from 'react-select';
 import { NotificationManager } from 'react-notifications';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 import Layout from '../layout/index';
-import { httpPost, httpPatch } from '../../actions/data.action';
+import { httpPost, httpPatch, httpGet, httpPostFormData, httpDelete } from '../../actions/data.action';
+import validateImage from '../../helpers/validateImage';
 import { states, countries, countryLists, stateLists, stateLists2 } from './Info';
 import { slga, getLga } from '../../helpers/states';
 import { validateData, validateD } from '../../helpers/validations';
 import { showLoader, hideLoader } from '../../helpers/loader';
 import { getDialCode, getAllDialCode, countryCodes } from '../../helpers/dailCodes';
-import {CustomSelect2} from '../../helpers/Select2';
-import CustomSelect from '../../helpers/Select2';
-
 
 class PersonalInfo extends Component {
   constructor(props){
@@ -27,21 +24,53 @@ class PersonalInfo extends Component {
       country: null,
       currentCountry: null,
       permanentCountry: null,
-      errorMessage1: null,
-      errorMessage2: null,
-      errorMessage3: null,
-      errorMessage4: null,
-      errorMessage5: null,
-      errorMessage6: null,
-      errorMessage7: null,
-      errorMessage8: null,
-      errorMesage9: null,
-      errorMessage10: null,
-      errorMessage11: null
+      customNationality: null,
+      customState: null,
+      customLga: null,
+      customCurrentCountry: null,
+      customCurrentState: null,
+      customCurrentLga: null,
+      customPermanentCountry: null,
+      customPermanentState: null,
+      customPermanentLga: null,
+      customStaffCategory: null,
+      customMobile: null,
+      customHome: null,
+      customMaritalStatus: null,
+      customSkills: null,
+      customHobbies: null,
+      customReligion: null,
+      customDob: null,
+      firstNameErrorMessage: null,
+      lastNameErrorMessage: null,
+      middleNameErrorMessage: null,
+      emailErrorMessage: null,
+      mobileErrorMessage: null,
+      homeErrorMessage: null,
+      nationalityErrorMessage: null,
+      originErrorMessage: null,
+      dobErrorMessage: null,
+      genderErrorMessage: null,
+      dependantsErrorMessage: null,
+      currentErrorMessage: null,
+      staffCategoryErrorMessage: null,
+      immediateFamilyErrorMessage: null,
+      lgaErrorMessage: null,
+      maritalErrorMessage: null,
+      permanentErrorMessage: null,
+      pageMode: 'create',
+      documents: [],
+      fileName: '',
+      uploadBody: {},
     }
   }
 
-  handleChange = (e) => {
+  handleFileChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+
+  handleChange = (e, name) => {
     e.preventDefault();
     const { data } = this.state;
     let details = e.target;
@@ -49,12 +78,35 @@ class PersonalInfo extends Component {
       const isValidate = validateD(e.target.name, e.target.value);
       if(!isValidate.error){
         this.setState({ 
-          errorMessage10: isValidate.errorMessage, 
+          dependantsErrorMessage: isValidate.errorMessage, 
         })
         return;
       }
       data[details.name] = parseInt(details.value);
-      this.setState({ data, errorMessage10: null });
+      this.setState({ data, dependantsErrorMessage: null });
+
+    } else if(details.name === 'bvn'){
+      const isValidate = validateD(e.target.name, e.target.value);
+      console.log(isValidate.error)
+      if(!isValidate.error){
+        this.setState({ 
+          bvnErrorMessage: isValidate.errorMessage, 
+        })
+        return;
+      }
+      data[details.name] = parseInt(details.value);
+      this.setState({ data, bvnErrorMessage: null });
+
+    } else if(details.name === 'noOfImmediateFamily'){
+      const isValidate = validateD(e.target.name, e.target.value);
+      if(!isValidate.error){
+        this.setState({ 
+          immediateFamilyErrorMessage: isValidate.errorMessage, 
+        })
+        return;
+      }
+      data[details.name] = parseInt(details.value);
+      this.setState({ data, immediateFamilyErrorMessage: null });
 
     } else if(details.name === 'currentAddress'){
       data[details.name] = details.value;
@@ -62,108 +114,112 @@ class PersonalInfo extends Component {
       const isValidate = validateD(e.target.name, this.state.data.currentAddress);
       if(!isValidate.error){
         this.setState({ 
-          errorMessage11: isValidate.errorMessage, 
+          currentErrorMessage: isValidate.errorMessage, 
         })
         return;
       } else {
-        this.setState({ errorMessage11: null });
+        this.setState({ currentErrorMessage: null });
       }
+
+    } else if(details.name === 'permanentAddress'){
+      data[details.name] = details.value;
+      this.setState({ data, permanentErrorMessage: null });
 
     } else if(details.name === 'firstName') {
       const isValidate = validateD(e.target.name, e.target.value);
       if(!isValidate.error){
         this.setState({ 
-          errorMessage1: isValidate.errorMessage
+          firstNameErrorMessage: isValidate.errorMessage
         })
         return;
       }
       data[details.name] = details.value;
       this.setState({ 
         data,
-        errorMessage1: null 
+        firstNameErrorMessage: null 
       });
 
     } else if(details.name === 'lastName') {
       const isValidate = validateD(e.target.name, e.target.value);
       if(!isValidate.error){
         this.setState({ 
-          errorMessage2: isValidate.errorMessage, 
+          lastNameErrorMessage: isValidate.errorMessage, 
         })
         return;
       }
       data[details.name] = details.value;
       this.setState({ 
         data, 
-        errorMessage2: null 
+        lastNameErrorMessage: null 
       });
 
     } else if(details.name === 'middleName') {
       const isValidate = validateD(e.target.name, e.target.value);
       if(!isValidate.error){
         this.setState({ 
-          errorMessage3: isValidate.errorMessage,
+          middleNameErrorMessage: isValidate.errorMessage,
         })
         return;
       }
       data[details.name] = details.value;
       this.setState({ 
         data,
-        errorMessage3: null 
+        middleNameErrorMessage: null 
       });
 
     } else if(details.name === 'email') {
       const isValidate = validateD(e.target.name, e.target.value);
       if(!isValidate.error){
         this.setState({ 
-          errorMessage4: isValidate.errorMessage, 
+          emailErrorMessage: isValidate.errorMessage, 
         })
         return;
       }
       data[details.name] = details.value;
       this.setState({ 
         data,
-        errorMessage4: null 
+        emailErrorMessage: null 
       });
 
     } if(details.name === 'mobilePhone') {
       const isValidate = validateD(e.target.name, e.target.value);
       if(!isValidate.error){
         this.setState({ 
-          errorMessage5: isValidate.errorMessage, 
+          mobileErrorMessage: isValidate.errorMessage, 
         })
         return;
       }
       data[details.name] = details.value;
       this.setState({ 
         data,
-        errorMessage5: null 
+        mobileErrorMessage: null 
       });
 
     } else if(details.name === 'homePhone') {
       const isValidate = validateD(e.target.name, e.target.value);
       if(!isValidate.error){
         this.setState({ 
-          errorMessage6: isValidate.errorMessage,
+          homeErrorMessage: isValidate.errorMessage,
         })
         return;
       }
       data[details.name] = details.value;
       this.setState({ 
         data,
-        errorMessage6: null 
+        homeErrorMessage: null 
       });
     } else if(details.name === 'gender') {
       const isValidate = validateD(e.target.name, e.target.value);
       if(!isValidate.error){
         this.setState({ 
-          errorMessage9: isValidate.errorMessage,
+          genderErrorMessage: isValidate.errorMessage,
         })
         return;
       }
       data[details.name] = details.value;
       this.setState({ 
         data,
-        errorMessage9: null 
+        genderErrorMessage: null 
       });
     } else {
       data[details.name] = details.value;
@@ -173,81 +229,146 @@ class PersonalInfo extends Component {
     }
   }
 
-  handleDobChange = (e) => {
+  handleCustomSelect = async (result, name) => {
     const { data } = this.state;
-    // console.log(details.value)
-    // this.setState({ 
-    //   dob: date,
-    // });
-    // const newDate = moment(date).format('l');
-    // const isValidate = validateD('dob', newDate);
-    // if(!isValidate.error){
-    //   this.setState({ 
-    //     errorMessage8: isValidate.errorMessage,
-    //   })
-    //   return;
-    // } else {
-    //   data['dob'] = newDate;
-    //   this.setState({ data, errorMessage8: null })
-    // }
-
-
-    data['dob'] = e;
+    if(name === 'dob'){
+      data['dob'] = result;
       this.setState({ 
-        data
+        data, customDob: result
       })
       const isValidate = validateD('dob', this.state.data.dob);
       if(!isValidate.error){
         this.setState({ 
-          errorMessage8: isValidate.errorMessage,
+          dobErrorMessage: isValidate.errorMessage,
         })
         return;
       } else {
-        this.setState({ errorMessage8: null })
+        this.setState({ dobErrorMessage: null })
       }
-  }
-
-  handleCustomSelect = (result, name) => {
-    const { data } = this.state;
-    if(name === 'nationality'){
+    } else if(name === 'nationality'){
       const isValidate = validateD('nationality', result.value);
       if(!isValidate.error){
         this.setState({ 
-          errorMessage7: isValidate.errorMessage, 
+          nationalityErrorMessage: isValidate.errorMessage, 
         })
         return;
       }
       data['nationality'] = result.value;
-      data['mobilePhoneCode'] = getDialCode(result.value);
-      data['homePhoneCode'] = getDialCode(result.value);
+      const customCode = getDialCode(result.value);
+      data['mobilePhoneCode'] = customCode.value
+      data['homePhoneCode'] = customCode.value;
       this.setState({ 
         data, 
-        country: result.value, 
-        errorMessage7: null 
+        country: result.value,
+        customNationality: result,
+        customMobile: customCode,
+        customHome: customCode,
+        nationalityErrorMessage: null 
       })
     } else if(name === 'mobilePhoneCode'){
       data[name] = result.value;
       this.setState({ 
         data,
-        mobilePhoneCode: result,
+        customMobile: result,
       });
     } else if(name === 'homePhoneCode'){
       data[name] = result.value;
       this.setState({ 
         data,
-        homePhoneCode: result,
+        customHome: result,
       });
     } else if(name === 'currentCountry'){
       data[name] = result.value;
       this.setState({ 
         data,
+        customCurrentCountry: result,
         currentCountry: result.value,
+      });
+    } else if(name === 'currentState'){
+      data[name] = result.value;
+      this.setState({ 
+        data,
+        customCurrentState: result
+      });
+    } else if(name === 'currentLga'){
+      data[name] = result.value;
+      this.setState({ 
+        data,
+        customCurrentLga: result
       });
     } else if(name === 'permanentCountry'){
       data[name] = result.value;
       this.setState({ 
         data,
+        customPermanentCountry: result,
         permanentCountry: result.value,
+      });
+    } else if(name === 'permanentState'){
+      data[name] = result.value;
+      this.setState({ 
+        data,
+        customPermanentState: result
+      });
+    } else if(name === 'permanentLga'){
+      data[name] = result.value;
+      this.setState({ 
+        data,
+        customPermanentLga: result
+      });
+    } else if(name === 'religion'){
+      data[name] = result.value;
+      this.setState({ 
+        data,
+        customReligion: result,
+      });
+    } else if(name === 'maritalStatus'){
+      data[name] = result.value;
+      this.setState({ 
+        data,
+        customMaritalStatus: result,
+        maritalErrorMessage: null
+      });
+    } else if(name === 'staffCategory'){
+      data[name] = result.value;
+      this.setState({ 
+        data,
+        customStaffCategory: result,
+        staffCategoryErrorMessage: null
+      });
+
+    } else if(name === 'hobbies'){
+      await this.setState({ customHobbies: result });
+      let newValue = [];
+      this.state.customHobbies.length ? this.state.customHobbies.map(data => (
+        newValue.push(data.value)
+      )) : newValue = [];
+      data[name] = newValue.join(',');
+      this.setState({ data });
+
+    } else if(name === 'skills'){
+      await this.setState({ customSkills: result });
+      let newValue = [];
+      this.state.customSkills.length ? this.state.customSkills.map(data => (
+        newValue.push(data.value)
+      )) : newValue = [];
+      data[name] = newValue.join(',');
+      this.setState({ 
+        data,
+        customSkills: result,
+      });
+    } else if(name === 'stateOfOrigin') {
+      data[name] = result.value;
+      this.setState({ 
+        data,
+        customState: result,
+        originErrorMessage: null 
+      });
+    } else if(name === 'lga') {
+      data[name] = result.value;
+      this.setState({ 
+        data,
+        customLga: result,
+        lgaErrorMessage: null 
       });
     } else {
       data[name] = result.value;
@@ -257,100 +378,167 @@ class PersonalInfo extends Component {
     }
   }
 
-  handleSubmit = async (e) => {
+  handleSubmit = async (e, btnType) => {
     e.preventDefault()
     showLoader();
-    // const isValidate = await validateData(this.state.data);
-    // if(isValidate === 'error'){
-    //   return hideLoader();
-    // }
+    // console.log('postdata', this.state.data);
+    // console.log('state', this.state);
 
-    // if(this.state.errorMessage !== null){
-    //   hideLoader()
-    //   return NotificationManager.warning(this.state.errorMessage)
-    // }
-    // console.log('gets hers', this.state.data)
     const isValidate = await validateData(this.state.data);
     if(!isValidate.error){
       if(isValidate.type === 'firstName'){
         this.setState({ 
-          errorMessage1: isValidate.errorMessage,
+          firstNameErrorMessage: isValidate.errorMessage,
         })
       } else if(isValidate.type === 'lastName'){
         this.setState({ 
-          errorMessage2: isValidate.errorMessage,
+          lastNameErrorMessage: isValidate.errorMessage,
         })
-      // } else if(isValidate.type === 'middleName'){
-      //   this.setState({ 
-      //     errorMessage3: isValidate.errorMessage,
-      //   })
       } else if(isValidate.type === 'email'){
         this.setState({ 
-          errorMessage4: isValidate.errorMessage,
+          emailErrorMessage: isValidate.errorMessage,
         })
       } else if(isValidate.type === 'mobilePhone'){
         this.setState({ 
-          errorMessage5: isValidate.errorMessage,
+          mobileErrorMessage: isValidate.errorMessage,
         })
-      // } else if(isValidate.type === 'homePhone'){
-      //   this.setState({ 
-      //     errorMessage6: isValidate.errorMessage,
-      //   })
+      } else if(isValidate.type === 'homePhone'){
+        this.setState({ 
+          homeErrorMessage: isValidate.errorMessage,
+        })
       } else if(isValidate.type === 'nationality'){
         this.setState({ 
-          errorMessage7: isValidate.errorMessage,
+          nationalityErrorMessage: isValidate.errorMessage,
         })
       } else if(isValidate.type === 'dob'){
         this.setState({ 
-          errorMessage8: isValidate.errorMessage,
+          dobErrorMessage: isValidate.errorMessage,
         })
       } else if(isValidate.type === 'gender'){
         this.setState({ 
-          errorMessage9: isValidate.errorMessage,
+          genderErrorMessage: isValidate.errorMessage,
         })
       } else if(isValidate.type === 'currentAddress'){
         this.setState({ 
-          errorMessage11: isValidate.errorMessage,
+          currentErrorMessage: isValidate.errorMessage,
+        })
+      } else if(isValidate.type === 'currentCountry'){
+        this.setState({ 
+          currentErrorMessage: isValidate.errorMessage,
+        })
+      } else if(isValidate.type === 'currentState'){
+        this.setState({ 
+          currentErrorMessage: isValidate.errorMessage,
+        })
+      } else if(isValidate.type === 'currentLga'){
+        this.setState({ 
+          currentErrorMessage: isValidate.errorMessage,
+        })
+      } else if(isValidate.type === 'lga'){
+        this.setState({ 
+          lgaErrorMessage: isValidate.errorMessage,
+        })
+      } else if(isValidate.type === 'maritalStatus'){
+        this.setState({ 
+          maritalErrorMessage: isValidate.errorMessage,
+        })
+      } else if(isValidate.type === 'noOfDependants'){
+        this.setState({ 
+          dependantsErrorMessage: isValidate.errorMessage,
+        })
+      } else if(isValidate.type === 'staffCategory'){
+        this.setState({ 
+          staffCategoryErrorMessage: isValidate.errorMessage,
+        })
+      } else if(isValidate.type === 'noOfImmediateFamily'){
+        this.setState({ 
+          immediateFamilyErrorMessage: isValidate.errorMessage,
+        })
+      } else if(isValidate.type === 'permanentAddress'){
+        this.setState({ 
+          permanentErrorMessage: isValidate.errorMessage,
+        })
+      } else if(isValidate.type === 'permanentCountry'){
+        this.setState({ 
+          permanentErrorMessage: isValidate.errorMessage,
+        })
+      } else if(isValidate.type === 'permanentState'){
+        this.setState({ 
+          permanentErrorMessage: isValidate.errorMessage,
+        })
+      } else if(isValidate.type === 'permanentLga'){
+        this.setState({ 
+          permanentErrorMessage: isValidate.errorMessage,
         })
       }
-    } 
+    }
 
     const { 
-      errorMessage1, 
-      errorMessage2, 
-      errorMessage3, 
-      errorMessage4, 
-      errorMessage5, 
-      errorMessage6, 
-      errorMessage7, 
-      errorMessage8, 
-      errorMessage9,
-      errorMessage10,
-      errorMessage11
+      firstNameErrorMessage,
+      lastNameErrorMessage,
+      middleNameErrorMessage,
+      emailErrorMessage,
+      mobileErrorMessage,
+      homeErrorMessage,
+      nationalityErrorMessage,
+      originErrorMessage,
+      dobErrorMessage,
+      genderErrorMessage,
+      dependantsErrorMessage,
+      currentErrorMessage,
+      staffCategoryErrorMessage,
+      immediateFamilyErrorMessage,
+      lgaErrorMessage,
+      maritalErrorMessage,
+      permanentErrorMessage,
     } = this.state;
 
-    console.log(errorMessage7)
-    if(errorMessage1 !== null || errorMessage2 !== null || errorMessage3 !== null || errorMessage4 !== null || errorMessage5 !== null || errorMessage6 !== null || errorMessage7 !== null || errorMessage8 !== null || errorMessage9 !== null || errorMessage10 !== null || errorMessage11 !== null ){
+    if(firstNameErrorMessage !== null ||
+      lastNameErrorMessage !== null ||
+      middleNameErrorMessage !== null ||
+      emailErrorMessage !== null ||
+      mobileErrorMessage !== null ||
+      homeErrorMessage !== null ||
+      nationalityErrorMessage !== null ||
+      originErrorMessage !== null ||
+      dobErrorMessage !== null ||
+      genderErrorMessage !== null ||
+      dependantsErrorMessage !== null ||
+      currentErrorMessage !== null ||
+      staffCategoryErrorMessage !== null ||
+      immediateFamilyErrorMessage !== null ||
+      lgaErrorMessage !== null ||
+      maritalErrorMessage !== null ||
+      permanentErrorMessage !== null){
       hideLoader()
       return NotificationManager.warning('Complete all required fields')
     }
 
 
-
-      // showLoader();
     if(this.state.pageMode === 'edit'){
       try {
         const { userId } = this.state;
-        const res = await httpPatch(`auth/edit_staff/${userId}`, this.state.data);
-        if(res.code === 200){
-          hideLoader();
-          // setState({ userId: res.data.id });
-          // return this.props.history.push(`/create_staff/four/${res.data.id}`)
-          return this.props.history.push({
-            pathname: `/create_staff/two/${res.data.id}`,
-            backurl: `/create_staff/one`,
-            savedState: this.state
-          });
+        if(btnType === 'submit'){
+          const res = await httpPatch(`auth/edit_staff/${userId}`, this.state.data);
+          if(res.code === 200){
+            await this.saveDoc();
+            hideLoader();
+            // setState({ userId: res.data.id });
+            // return this.props.history.push(`/create_staff/four/${res.data.id}`)
+            return this.props.history.push({
+              pathname: `/create_staff/two/${res.data.id}`,
+              backurl: `/create_staff/one`,
+              // savedState: this.state
+              savedId: res.data.id
+            });
+          }
+        } else {
+          const { userId } = this.state;
+          const res = await httpPatch(`auth/edit_staff/${userId}`, this.state.data);
+          if(res.code === 200){
+            await this.saveDoc()
+            hideLoader();
+          }
         }
       } catch(error){
         hideLoader();
@@ -358,17 +546,27 @@ class PersonalInfo extends Component {
       }
     } else {
       try{
-        const res = await httpPost('auth/create_staff', this.state.data);
-        if(res.code === 201){
-          hideLoader();
-          await this.setState({ userId: res.data.id });
-          // return this.props.history.push(`/create_staff/two/${res.data.id}`)
-          return this.props.history.push({
-            pathname: `/create_staff/two/${res.data.id}`,
-            backurl: '/create_staff/one',
-            savedState: this.state,
-            direction: 'forward'
-          });
+        if(btnType === 'submit'){
+          const res = await httpPost('auth/create_staff', this.state.data);
+          if(res.code === 201){
+            hideLoader();
+            await this.setState({ userId: res.data.id });
+            await this.saveDoc()
+            // return this.props.history.push(`/create_staff/two/${res.data.id}`)
+            return this.props.history.push({
+              pathname: `/create_staff/two/${res.data.id}`,
+              backurl: '/create_staff/one',
+              // savedState: this.state,
+              savedId: res.data.id,
+              direction: 'forward'
+            });
+          }
+        } else {
+          const res = await httpPost('auth/create_staff', this.state.data);
+          if(res.code === 201){
+            await this.saveDoc()
+            hideLoader();
+          }
         }
       } catch (error){
         hideLoader();
@@ -377,109 +575,168 @@ class PersonalInfo extends Component {
     }
   }
 
-  handleSave = async (e) => {
-    e.preventDefault();
-    showLoader();
-    // const isValidate = await validateData(this.state.data);
-    // if(isValidate === 'error'){
-    //   return hideLoader();
-    // }
-    const isValidate = await validateData(this.state.data);
-    //console.log('gets hers', isValidate)
-    if(!isValidate.error){
-      if(isValidate.type === 'firstName'){
-        this.setState({ 
-          errorMessage1: isValidate.errorMessage,
-        })
-      } else if(isValidate.type === 'lastName'){
-        this.setState({ 
-          errorMessage2: isValidate.errorMessage,
-        })
-      // } else if(isValidate.type === 'middleName'){
-      //   this.setState({ 
-      //     errorMessage3: isValidate.errorMessage,
-      //   })
-      } else if(isValidate.type === 'email'){
-        this.setState({ 
-          errorMessage4: isValidate.errorMessage,
-        })
-      } else if(isValidate.type === 'mobilePhone'){
-        this.setState({ 
-          errorMessage5: isValidate.errorMessage,
-        })
-      } else if(isValidate.type === 'homePhone'){
-        this.setState({ 
-          errorMessage6: isValidate.errorMessage,
-        })
-      } else if(isValidate.type === 'nationality'){
-        this.setState({ 
-          errorMessage7: isValidate.errorMessage,
-        })
-      } else if(isValidate.type === 'dob'){
-        this.setState({ 
-          errorMessage8: isValidate.errorMessage,
-        })
-      } else if(isValidate.type === 'gender'){
-        this.setState({ 
-          errorMessage9: isValidate.errorMessage,
-        })
-      }
-    } 
+  upload = async (e, fileName) => {
+    let { uploadBody } = this.state;
+    const imageData = e.target.files[0];
+    const validFormat = validateImage(imageData);
+    if (validFormat.valid) {
+      //NotificationManager.success(validFormat.message,'Yippe!',3000);
+      // postBody[fileName] = [...postBody[fileName], e.target.files[0]];
 
-    const { 
-      errorMessage1, 
-      errorMessage2, 
-      errorMessage3, 
-      errorMessage4, 
-      errorMessage5, 
-      errorMessage6, 
-      errorMessage7, 
-      errorMessage8, 
-      errorMessage9,
-      errorMessage10
-    } = this.state;
-
-    if(errorMessage1 !== null || errorMessage2 !== null || errorMessage3 !== null || errorMessage4 !== null || errorMessage5 !== null || errorMessage6 !== null || errorMessage7 !== null || errorMessage8 !== null || errorMessage9 !== null || errorMessage10 !== null ){
-      hideLoader()
-      return NotificationManager.warning('Complete all required fields')
+      uploadBody[fileName] = e.target.files[0];
+      this.setState({ uploadBody });
+    } else {
+      //NotificationManager.error(validFormat.message,'Yippe!',3000);
+      e.target.value = '';
     }
+  };
 
+  saveDoc = async () => {
     try{
-      if(this.state.pageMode === 'edit'){
-        const { userId } = this.state;
-        const res = await httpPatch(`auth/edit_staff/${userId}`, this.state.data);
+      const { uploadBody, userId, pageMode } = this.state;
+
+      if(uploadBody.identification === undefined && uploadBody.passportPhotograph === undefined){
+        return;
+      }
+
+      if(pageMode === 'create'){
+        let formData = new FormData();
+        formData.append('passportPhotograph', uploadBody.passportPhotograph);
+        formData.append('identification', uploadBody.identification);
+
+        const res = await httpPostFormData(`auth/onboarding_one_uploads/${userId}`, formData);
         if(res.code === 201){
           hideLoader();
         }
       } else {
-        const res = await httpPost('auth/create_staff', this.state.data);
+        let formData = new FormData();
+        formData.append('passportPhotograph', uploadBody.passportPhotograph);
+        formData.append('identification', uploadBody.identification);
+
+        const res = await httpPostFormData(`auth/edit_onboarding_one_uploads/${userId}`, formData);
         if(res.code === 201){
           hideLoader();
         }
       }
-    } catch (error){
-      hideLoader()
+    }catch(error){
+      hideLoader();
       console.log(error)
     }
   }
 
-  componentDidMount(){
-    if(this.props.location.direction === 'backward'){
-      this.setState({...this.props.location.savedState, pageMode: 'edit'});
+  deleteDoc = async (id) => {
+    try{
+
+      const res = await httpDelete(`auth/document/${id}`);
+
+      if(res.code === 200){
+        this.getUserDetails()
+      }
+    }catch(error){
+      console.log(error)
     }
-	}
+
+  }
+
+  async componentDidMount(){
+    if(this.props.location.direction === 'backward'){
+      // get User details and save to state
+      const { savedId } = this.props.location;
+      await this.getUserDetails(savedId);
+      this.setState({ userId: savedId, pageMode: 'edit' });
+    }
+    // if(this.state.pageMode === 'edit'){
+    //   // get User details and save to state
+    //   const id = 'f657d590-a27f-4f3c-b9a1-6f61a686bb4b';
+    //   this.getUserDetails(id);
+    //   this.setState({ userId: id, pageMode: 'edit' });
+    // }
+  }
+  
+  getUserDetails = async (id) => {
+    try {
+      const res = await httpGet(`auth/get_onboarding_one/${id}`);
+      if(res.code === 200){
+        const { 
+          nationality, 
+          mobilePhoneCode, 
+          homePhoneCode, 
+          maritalStatus, 
+          religion, 
+          dob, 
+          staffCategory,
+          skills,
+          hobbies,
+          stateOfOrigin,
+          lga,
+          currentCountry,
+          currentState,
+          currentLga,
+          permanentCountry,
+          permanentState,
+          permanentLga
+        } = res.data.user;
+        const customNationality = { value: nationality, label: nationality};
+        const customState = { value: stateOfOrigin, label: stateOfOrigin};
+        const customLga = { value: lga, label: lga};
+        const customCurrentCountry = { value: currentCountry, label: currentCountry};
+        const customCurrentState = { value: currentState, label: currentState};
+        const customCurrentLga = { value: currentLga, label: currentLga};
+        const customPermanentCountry = { value: permanentCountry, label: permanentCountry};
+        const customPermanentState = { value: permanentState, label: permanentState};
+        const customPermanentLga = { value: permanentLga, label: permanentLga};
+        const customMobile = { value: mobilePhoneCode, label: mobilePhoneCode };
+        const customHome = { value: homePhoneCode, label: homePhoneCode };
+        const customMaritalStatus = { value: maritalStatus, label: maritalStatus };
+        const customReligion = { value: religion, label: religion };
+        const customDob = moment(dob).toDate();
+        const customStaffCategory = { value: staffCategory, label: staffCategory }
+        let customSkills = [], customHobbies = [];
+        const newSkills = skills !== null ? skills.split(',') : [];
+        await newSkills.map(data => (
+          customSkills.push({ value: data, label: data })
+        ));
+        const newHobbies = hobbies !== null ? hobbies.split(',') : [];
+        await newHobbies.map(data => (
+          customHobbies.push({ value: data, label: data })
+        ));
+        
+        this.setState({
+          data: res.data.user,
+          customNationality,
+          customState,
+          customLga,
+          customCurrentCountry,
+          customCurrentState,
+          customCurrentLga,
+          customPermanentCountry,
+          customPermanentState,
+          customPermanentLga,
+          customMobile,
+          customHome,
+          customMaritalStatus,
+          customStaffCategory,
+          customSkills,
+          customHobbies,
+          customReligion,
+          customDob
+        });
+      }
+    }catch(error){
+      hideLoader();
+      console.log(error)
+    }
+  }
 
   getLGA = (state) => {
     const lga = getLga(state) || [];
-    return lga.length ? lga.map(data => (
+    return lga.map(data => (
       { value: data.name, label: data.name }
-    )) : ''
-    //   <option value={`${data.name}`}>{data.name}</option>
-    // )) : <option value="">LGA</option>
+    ))
   }
 
   getStateOption = () => {
-    if((this.state.country !== 'Nigeria') || !this.state.country){
+    if((this.state.data.nationality !== 'Nigeria') || !this.state.data.nationality){
       return (
         <input type="text" 
         className="form-control"
@@ -490,19 +747,21 @@ class PersonalInfo extends Component {
       )
     } else {
       return (
-        <CustomSelect2
-        optionList={stateLists}
-        handleChange={this.handleChange}
-        name="stateOfOrigin"
-        value={this.state.data.stateOfOrigin}
-        placeHolder='Select Your State'
-      />
+        <Select
+          className="w-100 pr-0 pl-0 mr-1"
+          options={stateLists2}
+          onChange={e => this.handleCustomSelect(e, 'stateOfOrigin')}
+          name="stateOfOrigin"
+          value={this.state.customState}
+          isSearchable="true"
+          placeholder='Select Your State'
+        />
       )
     }
   }
 
   getLgaOption = () => {
-    if((this.state.country !== 'Nigeria') || !this.state.country){
+    if((this.state.data.nationality !== 'Nigeria') || !this.state.data.nationality){
       return (
         <input type="text" 
         className="form-control"
@@ -515,7 +774,7 @@ class PersonalInfo extends Component {
       return (
         <Select
         className=" w-100 pr-0 pl-0 mr-1"
-        defaultValue={this.state.data.lga}
+        value={this.state.customLga}
         onChange={e => this.handleCustomSelect(e, 'lga')}
         options={this.getLGA(this.state.data.stateOfOrigin)}
         isSearchable='true'
@@ -527,10 +786,10 @@ class PersonalInfo extends Component {
   }
 
   getCurrentState = () => {
-    if((this.state.currentCountry !== 'Nigeria') || !this.state.currentCountry){
+    if((this.state.data.currentCountry !== 'Nigeria') || !this.state.data.currentCountry){
       return (
         <input type="text"
-        disabled={this.state.currentCountry === null ? "disabled" : ""}  
+        disabled={this.state.data.currentCountry === null ? "disabled" : ""}  
         className="form-control col-md-3 mr-1"
         name="currentState"
         placeholder="State"
@@ -542,7 +801,7 @@ class PersonalInfo extends Component {
       return (
         <Select
           className=" w-100 col-md-3 pr-0 pl-0 mr-1"
-          defaultValue={this.state.data.currentState}
+          value={this.state.customCurrentState}
           onChange={e => this.handleCustomSelect(e, 'currentState')}
           options={stateLists2}
           isSearchable="true"
@@ -553,7 +812,7 @@ class PersonalInfo extends Component {
   }
 
   getCurrentLga = () => {
-    if((this.state.currentCountry !== 'Nigeria') || !this.state.currentCountry){
+    if((this.state.data.currentCountry !== 'Nigeria') || !this.state.data.currentCountry){
       return (
         <input type="text"
         className="form-control col-md-3 mr-1"
@@ -561,14 +820,14 @@ class PersonalInfo extends Component {
         name="currentLga" 
         value={this.state.data.currentLGA}
         onChange={this.handleChange}
-        disabled={this.state.currentCountry === null ? "disabled" : ""}
+        disabled={this.state.data.currentCountry === null ? "disabled" : ""}
       />
       )
     } else {
       return (
         <Select
           className=" w-100 col-md-3 pr-0 pl-0 mr-1"
-          defaultValue={this.state.data.currentLga}
+          value={this.state.customCurrentLga}
           onChange={e => this.handleCustomSelect(e, 'currentLga')}
           options={this.getLGA(this.state.data.currentState)}
           isSearchable="true"
@@ -579,10 +838,10 @@ class PersonalInfo extends Component {
   }
 
   getPermanentState = () => {
-    if((this.state.permanentCountry !== 'Nigeria') || !this.state.permanentCountry){
+    if((this.state.data.permanentCountry !== 'Nigeria') || !this.state.data.permanentCountry){
       return (
         <input type="text"
-        disabled={this.state.permanentCountry === null ? "disabled" : ""}  
+        disabled={this.state.data.permanentCountry === null ? "disabled" : ""}  
         className="form-control col-md-3 mr-1"
         name="permanentState"
         placeholder="State"
@@ -594,7 +853,7 @@ class PersonalInfo extends Component {
       return (
         <Select
           className=" w-100 col-md-3 pr-0 pl-0 mr-1"
-          defaultValue={this.state.data.permanentState}
+          defaultValue={this.state.customPermanentState}
           onChange={e => this.handleCustomSelect(e, 'permanentState')}
           options={stateLists2}
           isSearchable="true"
@@ -605,7 +864,7 @@ class PersonalInfo extends Component {
   }
 
   getPermanentLga = () => {
-    if((this.state.permanentCountry !== 'Nigeria') || !this.state.permanentCountry){
+    if((this.state.data.permanentCountry !== 'Nigeria') || !this.state.data.permanentCountry){
       return (
         <input type="text"
         className="form-control col-md-3 mr-1"
@@ -613,14 +872,14 @@ class PersonalInfo extends Component {
         name="permanentLga" 
         value={this.state.data.permanentLGA}
         onChange={this.handleChange}
-        disabled={this.state.permanentCountry === null ? "disabled" : ""}
+        disabled={this.state.data.permanentCountry === null ? "disabled" : ""}
       />
       )
     } else {
       return (
         <Select
           className=" w-100 col-md-3 pr-0 pl-0 mr-1"
-          defaultValue={this.state.data.permanentLga}
+          defaultValue={this.state.customPermanentLga}
           onChange={e => this.handleCustomSelect(e, 'permanentLga')}
           options={this.getLGA(this.state.data.permanentState)}
           isSearchable="true"
@@ -631,6 +890,9 @@ class PersonalInfo extends Component {
   }
 
   render() {
+    const { data } = this.state;
+    const newUploads = data.uploads !== undefined ? data.uploads : [];
+
     return (
       <Layout page="staff">
         <div className="app-content">
@@ -661,7 +923,7 @@ class PersonalInfo extends Component {
                             defaultValue={this.state.data.firstName}
                             onChange={e => this.handleChange(e)}
                           />
-                          <span className="text-danger">{this.state.errorMessage1 !== null ? this.state.errorMessage1 : ''}</span>
+                          <span className="text-danger">{this.state.firstNameErrorMessage !== null ? this.state.firstNameErrorMessage : ''}</span>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Middle Name</label>
 												<div className="col-md-4">
@@ -671,7 +933,7 @@ class PersonalInfo extends Component {
                             defaultValue={this.state.data.middleName}
                             onChange={this.handleChange}
                           />
-                          <span className="text-danger">{this.state.errorMessage3 !== null ? this.state.errorMessage3 : ''}</span>
+                          <span className="text-danger">{this.state.middleNameErrorMessage !== null ? this.state.middleNameErrorMessage : ''}</span>
 												</div>
 											</div>
                       <div className="form-group row">
@@ -683,7 +945,7 @@ class PersonalInfo extends Component {
                           defaultValue={this.state.data.lastName}
                           onChange={this.handleChange}
                         />
-                        <span className="text-danger">{this.state.errorMessage2 !== null ? this.state.errorMessage2 : ''}</span>
+                        <span className="text-danger">{this.state.lastNameErrorMessage !== null ? this.state.lastNameErrorMessage : ''}</span>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Email Address <span className="impt">*</span></label>
                         <div className="col-md-4">
@@ -693,7 +955,7 @@ class PersonalInfo extends Component {
                             defaultValue={this.state.data.email}
                             onChange={this.handleChange}
                           />
-                          <span className="text-danger">{this.state.errorMessage4 !== null ? this.state.errorMessage4 : ''}</span>
+                          <span className="text-danger">{this.state.emailErrorMessage !== null ? this.state.emailErrorMessage : ''}</span>
 												</div>
                       </div> 
 											<div className="form-group row">
@@ -720,43 +982,45 @@ class PersonalInfo extends Component {
 														Female
 													</label>
                           <br/>
-                          <span className="text-danger">{this.state.errorMessage9 !== null ? this.state.errorMessage9 : ''}</span>
+                          <span className="text-danger">{this.state.genderErrorMessage !== null ? this.state.genderErrorMessage : ''}</span>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Date of Birth <span className="impt">*</span></label>
                         <div className="col-md-4 c-date-picker">
                           <DatePicker
                             className="form-control"
-                            selected={this.state.data.dob}
-                            onChange={this.handleDobChange}
+                            selected={this.state.customDob}
+                            onChange={e => this.handleCustomSelect(e, 'dob')}
                             dateFormat="yyyy/MM/dd"
                             placeholderText="Click to select a date"
                           />
                           <br/>
-                          <span className="text-danger">{this.state.errorMessage8 !== null ? this.state.errorMessage8 : ''}</span>
+                          <span className="text-danger">{this.state.dobErrorMessage !== null ? this.state.dobErrorMessage : ''}</span>
 												</div>
                       </div>
                       <div className="form-group row">
                         <label for="inputName" className="col-md-2 col-form-label">Nationality <span className="impt">*</span></label>
                         <div className="col-md-4">
                           <Select
-                            defaultValue={this.state.data.nationality}
+                            value={this.state.customNationality}
                             onChange={e => this.handleCustomSelect(e, 'nationality')}
                             options={countryLists}
                             isSearchable="true"
                             name="country"
                             placeholder="Select"
                           />
-                          <span className="text-danger">{this.state.errorMessage7 !== null ? this.state.errorMessage7 : ''}</span>
+                          <span className="text-danger">{this.state.nationalityErrorMessage !== null ? this.state.nationalityErrorMessage : ''}</span>
 												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">State of Origin</label>
+                        <label for="inputName" className="col-md-2 col-form-label">State of Origin <span className="impt">*</span></label>
 												<div className="col-md-4">
                           { this.getStateOption() }
+                          <span className="text-danger">{this.state.state !== null ? this.state.state : ''}</span>
 												</div>
                       </div>
                       <div className="form-group row">
                         <label for="inputName" className="col-md-2 col-form-label">Lga <span className="impt">*</span></label>
-                        <div className="col-md-4 select2-padding">
+                        <div className="col-md-4">
                           { this.getLgaOption() }
+                          <span className="text-danger">{this.state.lgaErrorMessage !== null ? this.state.lgaErrorMessage : ''}</span>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Bvn</label>
 												<div className="col-md-4">
@@ -766,6 +1030,7 @@ class PersonalInfo extends Component {
                             defaultValue={this.state.data.bvn}
                             onChange={this.handleChange}
                           />
+                          <span className="text-danger">{this.state.bvnErrorMessage !== null ? this.state.bvnErrorMessage : ''}</span>
 												</div>
                       </div>
                       <div className="form-group row">
@@ -773,18 +1038,9 @@ class PersonalInfo extends Component {
 												<div className="col-md-4">
                         <div class="input-group mb-3">
                           <div class="input-group-prepend select2-padding">
-                            {/* <select 
-                              class="input-group-text" 
-                              id="basic-addon"
-                              name="mobilePhoneCode"
-                              value={this.state.data.mobilePhoneCode}
-                              onChange={this.handleChange}
-                            >
-                              {getAllDialCode()}
-                            </select> */}
                             <Select
                               className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
-                              value={this.state.mobilePhoneCode}
+                              value={this.state.customMobile}
                               onChange={e => this.handleCustomSelect(e, 'mobilePhoneCode')}
                               options={countryCodes}
                               isSearchable="true"
@@ -801,24 +1057,15 @@ class PersonalInfo extends Component {
                             defaultValue={this.state.data.mobilePhone}
                           />
                         </div>
-                          <span className="text-danger">{this.state.errorMessage5 !== null ? this.state.errorMessage5 : ''}</span>
+                          <span className="text-danger">{this.state.mobileErrorMessage !== null ? this.state.mobileErrorMessage : ''}</span>
 												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Home Phone</label>
+                        <label for="inputName" className="col-md-2 col-form-label">Home Phone <span className="impt">*</span></label>
                         <div className="col-md-4">
                         <div class="input-group mb-3">
                           <div class="input-group-prepend select2-padding">
-                            {/* <select 
-                              class="input-group-text" 
-                              id="basic-addon3"
-                              name="homePhoneCode"
-                              value={this.state.data.homePhoneCode}
-                              onChange={this.handleChange}
-                            >
-                              {getAllDialCode()}
-                            </select> */}
                             <Select
                               className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
-                              value={this.state.homePhoneCode}
+                              value={this.state.customHome}
                               onChange={e => this.handleCustomSelect(e, 'homePhoneCode')}
                               options={countryCodes}
                               isSearchable="true"
@@ -833,15 +1080,15 @@ class PersonalInfo extends Component {
                             defaultValue={this.state.data.homePhone}
                           />
                         </div>
-                          <span className="text-danger">{this.state.errorMessage6 !== null ? this.state.errorMessage6 : ''}</span>
+                          <span className="text-danger">{this.state.homeErrorMessage !== null ? this.state.homeErrorMessage : ''}</span>
 												</div>
 											</div>
                       <div className="form-group row">
-                        <label for="inputName" className="col-md-2 col-form-label">Marital Status</label>
+                        <label for="inputName" className="col-md-2 col-form-label">Marital Status <span className="impt">*</span></label>
 												<div className="col-md-4">
                           <Select
                             className="form-control pt-0 pb-0 pr-0 pl-0 border-0 w-100"
-                            value={this.state.data.maritalStatus}
+                            value={this.state.customMaritalStatus}
                             onChange={e => this.handleCustomSelect(e, 'maritalStatus')}
                             options={[
                               { value: 'Single', label: 'Single' },
@@ -852,27 +1099,18 @@ class PersonalInfo extends Component {
                             placeholder="Select"
                             name="maritalStatus"
                           />
-                          {/* <select className="form-control w-100"
-                            name="maritalStatus" 
-                            onChange={this.handleChange} 
-                            value={this.state.data.maritalStatus}
-                          >
-                            <option value="" disabled selected>Select</option>
-														<option value="Single">Single</option>
-														<option value="Married">Married</option>
-                            <option value="Divorced">Divorced</option>
-                            <option value="Widowed">Widowed</option>
-													</select> */}
+                          <span className="text-danger">{this.state.maritalErrorMessage !== null ? this.state.maritalErrorMessage : ''}</span>
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Religion</label>
                         <div className="col-md-4">
                           <Select
                             className="pt-0 pb-0 pr-0 pl-0 border-0"
-                            defaultValue={this.state.data.religion}
+                            value={this.state.customReligion}
                             onChange={e => this.handleCustomSelect(e, 'religion')}
                             options={[
                               { value: 'Islam', label: 'Islam'},
-                              { value: 'Christianity', label: 'Christianity'}
+                              { value: 'Christianity', label: 'Christianity'},
+                              { value: 'Other', label: 'Other'}
                             ]}
                             name="religion"
                             placeholder="Select"
@@ -880,22 +1118,22 @@ class PersonalInfo extends Component {
 												</div>
                       </div>
                       <div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">No of Dependants</label>
+												<label for="inputName" className="col-md-2 col-form-label">No of Dependants <span className="impt">*</span></label>
 												<div className="col-md-4">
                           <input type="text" 
                             className="form-control"
                             name="noOfDependant"
-                            defaultValue={this.state.data.noOfDependant === null ? this.state.data.noOfDependant : 0}
+                            defaultValue={this.state.data.noOfDependant !== null ? this.state.data.noOfDependant : 0}
                             // value={this.state.data.noOfDependant}
                             onChange={this.handleChange}
                           />
-                          <span className="text-danger">{this.state.errorMessage10 !== null ? this.state.errorMessage10 : ''}</span>
+                          <span className="text-danger">{this.state.dependantsErrorMessage !== null ? this.state.dependantsErrorMessage : ''}</span>
 												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Staff Category</label>
+                        <label for="inputName" className="col-md-2 col-form-label">Staff Category <span className="impt">*</span></label>
 												<div className="col-md-4">
                           <Select
                             className="pt-0 pb-0 pr-0 pl-0 border-0"
-                            defaultValue={this.state.data.staffCategory}
+                            value={this.state.customStaffCategory}
                             onChange={e => this.handleCustomSelect(e, 'staffCategory')}
                             options={[
                               { value: 'Full time', label: 'Full time'},
@@ -909,7 +1147,66 @@ class PersonalInfo extends Component {
                             name="staffCategory"
                             placeholder="Select"
                           />
-                          <span className="text-danger">{this.state.errorMessage12 !== null ? this.state.errorMessage12 : ''}</span>
+                          <span className="text-danger">{this.state.staffCategoryErrorMessage !== null ? this.state.staffCategoryErrorMessage : ''}</span>
+												</div>
+                      </div>
+                      <div className="form-group row">
+												<label for="inputName" className="col-md-2 col-form-label">Hobbies</label>
+												<div className="col-md-4">
+                          <CreatableSelect
+                            isMulti
+                            value={this.state.customHobbies}
+                            onChange={e => this.handleCustomSelect(e, 'hobbies')}
+                            options={[
+                              { value: "reading", label: 'reading', },
+                              { value: "travelling", label: 'travelling', },
+                              { value: "learning new things", label: 'learning new things', },
+                            ]}
+                            isSearchable="true"
+                            name="hobbies"
+                          />
+                          <span className="text-danger">{this.state.errorMessage13 !== null ? this.state.errorMessage13 : ''}</span>
+												</div>
+                        <label for="inputName" className="col-md-2 col-form-label">Skills</label>
+												<div className="col-md-4">
+                          <Select
+                            isMulti
+                            value={this.state.customSkills}
+                            onChange={e => this.handleCustomSelect(e, 'skills')}
+                            options={[
+                              { value: "communications", label: 'communications', },
+                              { value: "teamwork", label: 'teamwork', },
+                              { value: "problem solving", label: 'problem solving', },
+                              { value: "initiative & enterprise", label: 'initiative & enterprise', },
+                              { value: "planning & organizing", label: 'planning & organizing', },
+                              { value: "self-management", label: 'self-management', },
+                              { value: "creative thinking", label: 'creative thinking', },
+                              { value: "technology", label: 'technology', },
+                              { value: "learning", label: 'learning', },
+                              { value: "negotiation & persuasion", label: 'negotiation & persuasion', },
+                              { value: "leadership", label: 'leadership', },
+                              { value: "confidence", label: 'confidence', },
+                              { value: "ability to work under pressure", label: 'ability to work under pressure', },
+                              { value: "preseverance & motivation", label: 'preseverance & motivation', },
+                              { value: "resilience", label: 'resilience', },
+                              { value: "analytic skills", label: 'analytic skills', },
+                            ]}
+                            isSearchable="true"
+                            name="skills"
+                          />
+												</div>
+                      </div>
+                      <div className="form-group row">
+												<label for="inputName" className="col-md-2 col-form-label">No of Immediate Family <span className="impt">*</span></label>
+												<div className="col-md-4">
+                          <input type="text" 
+                            className="form-control"
+                            name="noOfImmediateFamily"
+                            defaultValue={this.state.data.noOfImmediateFamily !== null ? this.state.data.noOfImmediateFamily : 0}
+                            // value={this.state.data.noOfDependant}
+                            onChange={this.handleChange}
+                          />
+                          <span className="text-danger">{this.state.immediateFamilyErrorMessage !== null ? this.state.immediateFamilyErrorMessage : ''}</span>
 												</div>
                       </div>
                       <div className="form-group row">
@@ -921,14 +1218,14 @@ class PersonalInfo extends Component {
                             onChange={this.handleChange}
                             value={this.state.data.currentAddress}
                           />
-                          <span className="text-danger">{this.state.errorMessage11 !== null ? this.state.errorMessage11 : ''}</span>
+                          <span className="text-danger">{this.state.currentErrorMessage !== null ? this.state.currentErrorMessage : ''}</span>
 												</div>
                         <div className="col-md-6 pr-0">
                           <div className="row">
 
                             <Select
                               className="w-100 pr-0 pl-0 col-md-3 mr-1"
-                              defaultValue={this.state.data.currentCountry}
+                              defaultValue={this.state.customCurrentCountry}
                               onChange={e => this.handleCustomSelect(e, 'currentCountry')}
                               options={countryLists}
                               isSearchable="true"
@@ -950,7 +1247,7 @@ class PersonalInfo extends Component {
                         </div>
                       </div>
                       <div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">Permanent Address</label>
+												<label for="inputName" className="col-md-2 col-form-label">Permanent Address <span className="impt">*</span></label>
 												<div className="col-md-4">
                           <input type="text" 
                             className="form-control"
@@ -958,12 +1255,13 @@ class PersonalInfo extends Component {
                             onChange={this.handleChange}
                             value={this.state.data.permanentAddress}
                           />
+                          <span className="text-danger">{this.state.permanentErrorMessage !== null ? this.state.permanentErrorMessage : ''}</span>
 												</div>
                         <div className="col-md-6 pr-0">
                           <div className="row">
                             <Select
                               className="w-100 pr-0 pl-0 col-md-3 mr-1"
-                              defaultValue={this.state.data.permanentCountry}
+                              value={this.state.customPermanentCountry}
                               onChange={e => this.handleCustomSelect(e, 'permanentCountry')}
                               options={countryLists}
                               isSearchable="true"
@@ -983,30 +1281,70 @@ class PersonalInfo extends Component {
                           </div>
                         </div>
                       </div>
-                      {/* <div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">Other Features</label>
-												<div className="col-md-8">
-                          <input type="text" 
-                            className="form-control"
-                            name="otherFeatures"
-                            onChange={this.handleChange}
-                            value={this.state.data.otherFeatures}
+                      
+                      <div className="form-group row">
+                        <label for="inputName" className="col-md-2 col-form-label">Passport Photograph</label>
+                        <div className="col-md-4">
+                          <input type="file" 
+                            className="form-control" 
+                            name="path"
+                            ref='path'
+                            onChange={e => this.upload(e, 'passportPhotograph')}
                           />
 												</div>
-                      </div> */}
+                        <label for="inputName" className="col-md-2 col-form-label">Means of Identification</label>
+                        <div className="col-md-4">
+                          <input type="file" 
+                            className="form-control" 
+                            name="path"
+                            ref='iPath'
+                            onChange={e => this.upload(e, 'identification')}
+                          />
+												</div>
+											</div>
+
+                      <div className="col col-md-12 pr-0 pl-0" style={this.state.pageMode !== 'edit' ? {display: 'none'} : {}}>
+                      <div class="table-responsive">
+                        <table class="table table-bordered table-hover mb-0 text-nowrap">
+                          <thead>
+                          <tr>
+                            {/* <th className="wd-15p">S/N</th> */}
+                            <th class="wd-15p">File Name</th>
+                            <th class="wd-15p"></th>
+                            <th class="wd-25p"></th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                            {
+                              newUploads.length ?
+                                newUploads.map(data => (
+                                  <tr>
+                                    <td>{data.fileName}</td>
+                                    <td>{<a href={`${data.path}`} target="_blank">View document</a>}</td>
+                                    <td><a className="ml-3 text-danger" onClick={() => this.deleteDoc(data.id)} style={{ cursor: 'pointer' }}>Delete</a></td>
+                                  </tr>
+                                )) : 'No document found'
+                              }
+                          </tbody>
+                        </table>
+                      </div>
+                      </div>
+
+
+                      <br/>
+                      <br/>
 
                       <div className="form-group row mb-0 mt-2 text-right">
 												<div className="col-md-12">
                           <button 
                             type="submit"
                             className="btn btn-info mr-5"
-                            // onClick={() => this.props.history.push('/create_staff/two')}
-                            onClick={this.handleSave}
+                            onClick={e => this.handleSubmit(e, 'save')}
                           ><span className="fa fa-save"></span> SAVE</button>
                           <button type="submit" 
                             className="btn btn-primary"
-                            onClick={this.handleSubmit}
-                          ><span className="fa fa-arrow-right"></span> NEXT</button>
+                            onClick={e => this.handleSubmit(e, 'submit')}
+                          ><span className="fa fa-arrow-right"></span> {this.state.pageMode === 'create' ? 'NEXT' : 'UPDATE & CONTINUE'}</button>
 												</div>
 											</div>
 										</form>

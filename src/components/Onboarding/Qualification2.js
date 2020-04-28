@@ -457,7 +457,7 @@ class Qualification extends Component {
   handleBackButton = () => {
     return this.props.history.push({
       pathname: `${this.props.location.backurl}`,
-      savedState: this.props.location.savedState,
+      savedId: this.props.location.savedId,
       direction: 'backward'
     })
   }
