@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import Moment from 'react-moment';
+import moment from 'moment';
 import $ from 'jquery';
+import Select from 'react-select';
+import { stateLists2 } from './Info';
 import Layout from '../layout/index';
-import { httpPost, httpPatch, httpDelete } from '../../actions/data.action';
+import { httpPost, httpPatch, httpDelete, httpGet } from '../../actions/data.action';
 import { hideLoader, showLoader } from '../../helpers/loader';
 import { NotificationManager } from 'react-notifications';
 import { validateGuarantorFields } from '../../helpers/validations';
 import { slga, getLga } from '../../helpers/states';
 import GuarantorTable from './GuarantorTable';
-import { GuarantorModal } from '../Modals/Guarantor'
+import { GuarantorModal } from '../Modals/Guarantor';
+import { getDialCode } from '../../helpers/dailCodes';
 
 class Guarantor extends Component {
 	constructor(props){
@@ -31,6 +35,11 @@ class Guarantor extends Component {
 				residentialState: '',
 				residentialLga: '',
 				residentialCity: '',
+				permanentAddress: '',
+				permanentCountry: '',
+				permanentState: '',
+				permanentLga: '',
+				permanentCity: '',
 				landedPropertyAddress: '',
 				landedPropertyCountry: '',
 				landedPropertyState: '',
@@ -43,7 +52,11 @@ class Guarantor extends Component {
 				businessCity: '',
 				maritalStatus: '',
 				employeeKnownDate: '',
-				criminalHistory: ''
+				criminalHistory: '',
+				nationality: '',
+				state: '',
+				lga: '',
+				bvn: ''
 			},
 			moreData: [],
 			pageMode: 'create',
@@ -56,11 +69,28 @@ class Guarantor extends Component {
 			errorMessage7: null,
 			modalMode: 'create',
 			editIndex: null,
+			userId: null,
 			customSelect1: null,
 			customSelect2: null,
 			customSelect3: null,
 			customSelect4: null,
 			customSelect5: null,
+			customKnownDate: null,
+			customNationality: null,
+			customState: null,
+			customLga: null,
+			customResidentialCountry: null,
+			customResidentialState: null,
+			customResidentialLga: null,
+			customPermanentCountry: null,
+			customPermanentState: null, 
+			customPermanentLga: null,
+			customLandedPropertyCountry: null,
+			customLandedPropertyState: null,
+			customLandedPropertyLga: null,
+			customBusinessCountry: null,
+			customBusinessState: null,
+			customBusinessLga: null
 		}
 	}
 
@@ -70,7 +100,7 @@ class Guarantor extends Component {
 
 		if(nameValue === 'employeeKnownDate'){
 			postData[nameValue] = e;
-			this.setState({ postData });
+			this.setState({ postData, customKnownDate: e });
 			const isValidate = validateGuarantorFields(nameValue, this.state.postData.employeeKnownDate);
       if(!isValidate.error){
         this.setState({ 
@@ -221,15 +251,80 @@ class Guarantor extends Component {
 			this.setState({ 
 				postData, customSelect6: result
 			});
+		} else if(name === 'residentialState'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customResidentialState: result
+			});
+		} else if(name === 'residentialLga'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customResidentialLga: result
+			});
+		} else if(name === 'permanentCountry'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customPermanentCountry: result
+			});
+		} else if(name === 'permanentState'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customPermanentState: result
+			});
+		} else if(name === 'permanentLga'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customPermanentLga: result
+			});
 		} else if(name === 'landedPropertyCountry'){
 			postData[name] = value;
 			this.setState({ 
 				postData, customSelect7: result
 			});
+		} else if(name === 'landedPropertyState'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customLandedPropertyState: result
+			});
+		} else if(name === 'landedPropertyLga'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customLandedPropertyLga: result
+			});
 		} else if(name === 'businessCountry'){
 			postData[name] = value;
 			this.setState({ 
 				postData, customSelect8: result
+			});
+		} else if(name === 'businessState'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customBusinessState: result
+			});
+		} else if(name === 'businessLga'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customBusinessLga: result
+			});
+		} else if(name === 'nationality'){
+			postData[name] = value;
+			const customCode = getDialCode(value);
+      postData['mobilePhoneCode'] = customCode.value
+			postData['homePhoneCode'] = customCode.value;
+			postData['businessPhoneCode'] = customCode.value;
+			this.setState({ 
+				postData, customNationality: result, 
+				customSelect1: customCode, customSelect2: customCode, customSelect3: customCode
+			});
+		} else if(name === 'state'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customState: result
+			});
+		} else if(name === 'lga'){
+			postData[name] = value;
+			this.setState({ 
+				postData, customLga: result
 			});
 		} else {
 			postData[name] = value;
@@ -255,22 +350,60 @@ class Guarantor extends Component {
 			businessPhone,
 			relationship,
 			occupation,
+			nationality,
+			state,
+			lga,
 			residentialAddress,
 			residentialCountry,
 			residentialState,
 			residentialLga,
 			residentialCity,
-			landedPropertyAddress,
+			permanentAddress,
+			permanentCountry,
+			permanentState,
+			permanentLga,
+			permanentCity,
 			businessAddress,
+			businessCountry,
+			businessState,
+			businessLga,
+			businessCity,
+			landedPropertyAddress,
 			maritalStatus,
 			employeeKnownDate,
 			criminalHistory,
 			details
 		} = this.state.postData;
 
-		console.log(this.state.postData)
+		// console.log(this.state.postData)
 
-		if(firstName === '' || firstName === undefined || lastName === '' || lastName === undefined || mobilePhone === '' || mobilePhone === undefined || mobilePhoneCode === '' || mobilePhoneCode === undefined || residentialAddress === '' || residentialAddress === undefined || residentialCountry === '' || residentialCountry === undefined || residentialState === '' || residentialState === undefined || residentialLga === '' || residentialLga === undefined || residentialCity === '' || residentialCity === undefined || occupation === '' || occupation === undefined || relationship === '' || relationship === undefined || maritalStatus === '' || maritalStatus === undefined || employeeKnownDate === '' ||  employeeKnownDate === undefined || criminalHistory === '' ||criminalHistory === undefined){
+		if(firstName === '' || firstName === undefined || 
+			lastName === '' || lastName === undefined || 
+			mobilePhone === '' || mobilePhone === undefined || 
+			mobilePhoneCode === '' || mobilePhoneCode === undefined || 
+			residentialAddress === '' || residentialAddress === undefined || 
+			residentialCountry === '' || residentialCountry === undefined || 
+			residentialState === '' || residentialState === undefined || 
+			residentialLga === '' || residentialLga === undefined || 
+			residentialCity === '' || residentialCity === undefined || 
+			permanentAddress === '' || permanentAddress === undefined || 
+			permanentCountry === '' || permanentCountry === undefined || 
+			permanentState === '' || permanentState === undefined || 
+			permanentLga === '' || permanentLga === undefined || 
+			permanentCity === '' || permanentCity === undefined || 
+			businessAddress === '' || businessAddress === undefined || 
+			businessCountry === '' || businessCountry === undefined || 
+			businessState === '' || businessState === undefined || 
+			businessLga === '' || businessLga === undefined || 
+			businessCity === '' || businessCity === undefined || 
+			nationality === '' || nationality === undefined || 
+			state === '' || state === undefined || 
+			lga === '' || lga === undefined || 
+			occupation === '' || occupation === undefined || 
+			relationship === '' || relationship === undefined || 
+			maritalStatus === '' || maritalStatus === undefined || 
+			employeeKnownDate === '' ||  employeeKnownDate === undefined || 
+			criminalHistory === '' ||criminalHistory === undefined){
 			return NotificationManager.warning('All fields are required');
 		}
 
@@ -306,6 +439,15 @@ class Guarantor extends Component {
 				businessPhoneCode: '',
 				relationship: '',
 				occupation: '',
+				nationality: '',
+				state: '',
+				lga: '',
+				bvn: '',
+				permanentAddress: '',
+				permanentCountry: '',
+				permanentState: '',
+				permanentLga: '',
+				permanentCity: '',
 				residentialAddress: '',
 				residentialCountry: '',
 				residentialState: '',
@@ -335,6 +477,21 @@ class Guarantor extends Component {
 			customSelect6: null,
 			customSelect7: null,
 			customSelect8: null,
+			customNationality: null,
+			customState: null,
+			customLga: null,
+			customResidentialCountry: null,
+			customResidentialState: null,
+			customResidentialLga: null,
+			customPermanentCountry: null,
+			customPermanentState: null, 
+			customPermanentLga: null,
+			customLandedPropertyCountry: null,
+			customLandedPropertyState: null,
+			customLandedPropertyLga: null,
+			customBusinessCountry: null,
+			customBusinessState: null,
+			customBusinessLga: null
 		});
 		$('.modal').modal('hide');
     $(document.body).removeClass('modal-open');
@@ -342,18 +499,41 @@ class Guarantor extends Component {
 	}
 
 	handleEdit = async (indexValue) => {
+		const { id } = this.props.match.params;
 		await this.setState({
 			postData: [...this.state.moreData].filter((data,index) => index === parseInt(indexValue))[0],
-			editIndex: indexValue, modalMode: 'edit'
+			editIndex: indexValue, modalMode: 'edit', userId: id
 		});
-		const customSelect1 = { value: this.state.postData.mobilePhoneCode, label: this.state.postData.mobilePhoneCode };
-		const customSelect2 = { value: this.state.postData.homePhoneCode, label: this.state.postData.homePhoneCode };
-		const customSelect3 = { value: this.state.postData.businessPhoneCode, label: this.state.postData.businessPhoneCode };
-		const customSelect4 = { value: this.state.postData.relationship, label: this.state.postData.relationship };
-		const customSelect5 = { value: this.state.postData.occupation, label: this.state.postData.occupation };
-		const customSelect6 = { value: this.state.postData.residentialCountry, label: this.state.postData.residentialCountry };
-		const customSelect7 = { value: this.state.postData.landedPropertyCountry, label: this.state.postData.landedPropertyCountry };
-		const customSelect8 = { value: this.state.postData.businessCountry, label: this.state.postData.businessCountry };
+
+		const {
+			mobilePhoneCode, homePhoneCode, businessPhoneCode,
+			relationship, occupation, residentialCountry, landedPropertyCountry,
+			businessCountry, nationality, state, lga, residentialState, residentialLga,
+			permanentCountry, permanentState, permanentLga, landedPropertyState, landedPropertyLga,
+			businessState, businessLga, employeeKnownDate
+		} = this.state.postData;
+
+		const customSelect1 = { value: mobilePhoneCode, label: mobilePhoneCode };
+		const customSelect2 = { value: homePhoneCode, label: homePhoneCode };
+		const customSelect3 = { value: businessPhoneCode, label: businessPhoneCode };
+		const customSelect4 = { value: relationship, label: relationship };
+		const customSelect5 = { value: occupation, label: occupation };
+		const customSelect6 = { value: residentialCountry, label: residentialCountry };
+		const customSelect7 = { value: landedPropertyCountry, label: landedPropertyCountry };
+		const customSelect8 = { value: businessCountry, label: businessCountry };
+		const customKnownDate = moment(employeeKnownDate).toDate();
+		const customNationality = { value: nationality , label: nationality };
+		const customState = { value: state , label: state };
+		const customLga = { value: lga , label: lga };
+		const customResidentialState = { value: residentialState, label: residentialState };
+		const customResidentialLga = { value: residentialLga, label: residentialLga };
+		const customPermanentCountry = { value: permanentCountry, label: permanentCountry };
+		const customPermanentState = { value: permanentState, label: permanentState }; 
+		const customPermanentLga = { value: permanentLga, label: permanentLga };
+		const customLandedPropertyState = { value: landedPropertyState, label: landedPropertyState };
+		const customLandedPropertyLga = { value: landedPropertyLga, label: landedPropertyLga };
+		const customBusinessState = { value: businessState, label: businessState };
+		const customBusinessLga = { value: businessLga, label: businessLga };
 		this.setState({ 
 			customSelect1, 
 			customSelect2, 
@@ -363,6 +543,19 @@ class Guarantor extends Component {
 			customSelect6,
 			customSelect7,
 			customSelect8,
+			customKnownDate,
+			customNationality,
+			customLga,
+			customState,
+			customResidentialState,
+			customResidentialLga,
+			customPermanentCountry,
+			customPermanentState, 
+			customPermanentLga,
+			customLandedPropertyState,
+			customLandedPropertyLga,
+			customBusinessState,
+			customBusinessLga
 	  });
 	}
 
@@ -408,6 +601,11 @@ class Guarantor extends Component {
 				residentialState: '',
 				residentialLga: '',
 				residentialCity: '',
+				permanentAddress: '',
+				permanentCountry: '',
+				permanentState: '',
+				permanentLga: '',
+				permanentCity: '',
 				landedPropertyAddress: '',
 				landedPropertyCountry: '',
 				landedPropertyState: '',
@@ -421,6 +619,10 @@ class Guarantor extends Component {
 				maritalStatus: '',
 				employeeKnownDate: '',
 				criminalHistory: '',
+				nationality: '',
+				state: '',
+				lga: '',
+				bvn: '',
 			},
 			modalMode: 'create',
 			editIndex: null,
@@ -432,8 +634,20 @@ class Guarantor extends Component {
 			customSelect6: null,
 			customSelect7: null,
 			customSelect8: null,
+			customNationality: null,
+			customState: null,
+			customLga: null,
+			customResidentialState: null,
+			customResidentialLga: null,
+			customPermanentCountry: null,
+			customPermanentState: null, 
+			customPermanentLga: null,
+			customLandedPropertyState: null,
+			customLandedPropertyLga: null,
+			customBusinessState: null,
+			customBusinessLga: null
     })
-  }
+	}
 
 	handleSubmit = async (e) => {
     e.preventDefault()
@@ -450,28 +664,33 @@ class Guarantor extends Component {
 				const res = await httpPatch(`auth/edit_onboarding_four/${id}`, this.state.moreData);
 				if(res.code === 201){
 					hideLoader();
-					this.setState({ moreData: res.data.guarantor });
+					// this.setState({ moreData: res.data.guarantor });
 
-					return this.props.history.push({
-						pathname: `/create_staff/five/${res.data.id}`,
-						backurl: `/create_staff/four/${res.data.id}`,
-						savedState: this.state.moreData,
-						direction: 'forward'
-					});
+					NotificationManager.success('Completed Successfully', 'Onboarding Status')
+					return this.props.history.push('/staff_list');
+					// return this.props.history.push({
+					// 	pathname: `/create_staff/five/${res.data.id}`,
+					// 	backurl: `/create_staff/four/${res.data.id}`,
+					// 	savedState: this.state.moreData,
+					// 	direction: 'forward'
+					// });
 				}
 			} else {
 				showLoader();
 				const res = await httpPost(`auth/onboarding_four/${id}`, this.state.moreData);
 				if(res.code === 201){
 					hideLoader();
-					this.setState({ moreData: res.data.guarantor });
+					// this.setState({ moreData: res.data.guarantor });
+
+					NotificationManager.success('Completed Successfully', 'Onboarding Status')
+					return this.props.history.push('/staff_list');
 					// return this.props.history.push(`/create_staff/five/${res.data.id}`)
-					return this.props.history.push({
-						pathname: `/create_staff/five/${res.data.id}`,
-						backurl: `/create_staff/four/${res.data.id}`,
-						savedState: this.state.moreData,
-						direction: 'forward'
-					});
+					// return this.props.history.push({
+					// 	pathname: `/create_staff/five/${res.data.id}`,
+					// 	backurl: `/create_staff/four/${res.data.id}`,
+					// 	savedState: this.state.moreData,
+					// 	direction: 'forward'
+					// });
 				}
 			}
       
@@ -512,19 +731,39 @@ class Guarantor extends Component {
 	}
 
 	handleBackButton = () => {
+		const { id } = this.props.match.params;
     return this.props.history.push({
-      pathname: `${this.props.location.backurl}`,
-			savedState: this.props.location.savedState,
+      pathname: `/create_staff/three/${id}`,
+			savedId: this.props.location.savedId,
 			direction: 'backward'
     })
 	}
 	
 	componentDidMount(){
+		const { id } = this.props.match.params;
     if(this.props.location.direction === 'backward'){
-      this.setState({ moreData: this.props.location.savedState, pageMode: 'edit'});
+			this.setState({ userId: this.props.location.savedId, pageMode: 'edit'});
+			this.getUserDetails(this.props.location.savedId || id)
     } else if(this.props.location.direction === 'completeOnboarding'){
       this.setState({ pageMode: 'completeOnboarding'});
     }
+	}
+
+	getUserDetails = async(id) => {
+		try{
+			showLoader()
+			const res = await httpGet(`auth/get_onboarding_four/${id}`)
+			console.log(res.data.guarantor)
+			if(res.code === 200){
+				hideLoader();
+				this.setState({
+					moreData: res.data.guarantor
+				})
+			}
+		}catch(error){
+			hideLoader();
+			console.log(error)
+		}
 	}
 
 	getLGA = (state) => {
@@ -532,7 +771,15 @@ class Guarantor extends Component {
     return lga.length ? lga.map(data => (
       <option value={`${data.name}`}>{data.name}</option>
     )) : <option value="">LGA</option>
-  }
+	}
+
+	handleAdd = () => {
+		const { id } = this.props.match.params;
+		this.setState({ userId: id })
+	}
+
+
+
 
   render() {
     return (
@@ -566,7 +813,7 @@ class Guarantor extends Component {
 										}
 
 										<div class="card-header custom-header">
-                      <a class="add-link " data-toggle="modal" data-target="#guarantorModal"><span className="fa fa-plus"></span> Add Guarantor</a>
+                      <a class="add-link " data-toggle="modal" data-target="#guarantorModal" onClick={this.handleAdd}><span className="fa fa-plus"></span> Add Guarantor</a>
 										</div>
 
 
@@ -597,6 +844,7 @@ class Guarantor extends Component {
 					addMore={this.addMore}
 					postData={this.state.postData}
 					getLGA={this.getLGA}
+					userId={this.state.userId}
 					handleCustomSelect={this.handleCustomSelect}
 					customSelect1={this.state.customSelect1}
 					customSelect2={this.state.customSelect2}
@@ -613,6 +861,19 @@ class Guarantor extends Component {
 					errorMessage5={this.state.errorMessage5}
 					errorMessage6={this.state.errorMessage6}
 					errorMessage7={this.state.errorMessage7}
+					customKnownDate={this.state.customKnownDate}
+					customNationality={this.state.customNationality}
+					customPermanentCountry={this.state.customPermanentCountry}
+					getStateOption={this.getStateOption}
+					getLgaOption={this.getLgaOption}
+					getResidentialStateOption={this.getResidentialStateOption}
+					getResidentialLgaOption={this.getResidentialLgaOption}
+					getPermanentStateOption={this.getPermanentStateOption}
+					getPermanentLgaOption={this.getPermanentLgaOption}
+					getLandedPropertyStateOption={this.getLandedPropertyStateOption}
+					getLandedPropertyLgaOption={this.getLandedPropertyLgaOption}
+					getBusinessStateOption={this.getBusinessStateOption}
+					getBusinessLgaOption={this.getBusinessLgaOption}
 					modalMode={this.state.modalMode}
 					closeModal={this.closeModal}
 				/>

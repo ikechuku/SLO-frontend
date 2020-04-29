@@ -488,17 +488,19 @@ class Qualification extends Component {
   }
 
   handleBackButton = () => {
+    const { id } = this.props.match.params;
     return this.props.history.push({
-      pathname: `${this.props.location.backurl}`,
-      savedId: this.props.location.savedId,
+      pathname: `/create_staff/one` ,
+      savedId: this.props.location.savedId || id,
       direction: 'backward'
     })
   }
 
   async componentDidMount(){
+    const { id } = this.props.match.params;
     if(this.props.location.direction === 'backward'){
       this.setState({ userId: this.props.location.savedId, pageMode: 'edit'});
-      await this.getPageDetails(this.props.location.savedId)
+      await this.getPageDetails(this.props.location.savedId || id)
     } else if(this.props.location.direction === 'completeOnboarding'){
       this.setState({ pageMode: 'create'});
     }

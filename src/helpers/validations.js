@@ -569,31 +569,32 @@ const validateData = (postData) => {
 const validateEmploymentInfoForm = (postData) => {
   let error = false;
   const {
-    rankAtEmployment,
+    rank,
     dateOfResumption,
-    branchAtEmployment,
+    branchId,
     jobTitle,
-    unitAtEmployment,
+    unitId,
     salaryAmount,
     employeeNumber,
-    skills
+    employmentDate,
+    departmentId
   } = postData;
 
-  if (rankAtEmployment === '' || rankAtEmployment === null || rankAtEmployment === undefined){
+  if (rank === '' || rank === null || rank === undefined){
     return {
       error,
-      type: 'rankAtEmployment',
+      type: 'rank',
       errorMessage: 'Rank at employment field is required'
     }
   }
 
-  if (unitAtEmployment === '' || unitAtEmployment === null || unitAtEmployment === undefined){
-    return {
-      error,
-      type: 'unitAtEmployment',
-      errorMessage: 'Unit at employment is required'
-    }
-  }
+  // if (unitId === '' || unitId === null || unitId === undefined){
+  //   return {
+  //     error,
+  //     type: 'unitId',
+  //     errorMessage: 'Unit at employment is required'
+  //   }
+  // }
 
   if (dateOfResumption === '' || dateOfResumption === null || dateOfResumption === undefined){
     return {
@@ -611,21 +612,21 @@ const validateEmploymentInfoForm = (postData) => {
     }
   }
 
-  if (branchAtEmployment === '' || branchAtEmployment === null || branchAtEmployment === undefined){
+  if (branchId === '' || branchId === null || branchId === undefined){
     return {
       error,
-      type: 'branchAtEmployment',
+      type: 'branchId',
       errorMessage: 'Branch at employment is required'
     }
   }
 
-  if (employeeNumber === '' || employeeNumber === null || employeeNumber === undefined || employeeNumber.length < 2){
-    return {
-      error,
-      type: 'employeeNumber',
-      errorMessage: 'Employee number is required'
-    }
-  }
+  // if (employeeNumber === '' || employeeNumber === null || employeeNumber === undefined || employeeNumber.length < 2){
+  //   return {
+  //     error,
+  //     type: 'employeeNumber',
+  //     errorMessage: 'Employee number is required'
+  //   }
+  // }
 
   if (jobTitle === '' || jobTitle === null || jobTitle === undefined){
     return {
@@ -635,11 +636,19 @@ const validateEmploymentInfoForm = (postData) => {
     }
   }
 
-  if (!skills.length){
+  if (departmentId === '' || departmentId === null || departmentId === undefined){
     return {
       error,
-      type: 'skills',
-      errorMessage: 'Skills is required'
+      type: 'departmentId',
+      errorMessage: 'Department at employment is required'
+    }
+  }
+
+  if (employmentDate === '' || employmentDate === null || employmentDate === undefined){
+    return {
+      error,
+      type: 'employmentDate',
+      errorMessage: 'Employment Date is required'
     }
   }
 
@@ -650,7 +659,7 @@ const validateEmploymentInfoForm = (postData) => {
 
 const validateEmpoymentFields = (name, value) => {
   let error = false;
-  if(name === 'rankAtEmployment'){
+  if(name === 'rank'){
     if (value === '' || value === null || value === undefined){
       return {
         error,
@@ -676,7 +685,7 @@ const validateEmpoymentFields = (name, value) => {
     }
   }
 
-  if(name === 'branchAtEmployment'){
+  if(name === 'branchId'){
     if (value === '' || value === null || value === undefined){
       return {
         error,
@@ -702,7 +711,7 @@ const validateEmpoymentFields = (name, value) => {
     }
   }
 
-  if(name === 'unitAtEmployment'){
+  if(name === 'unitId'){
     if (value === '' || value === null || value === undefined){
       return {
         error,
@@ -748,11 +757,18 @@ const validateEmpoymentFields = (name, value) => {
     }
   }
 
-  if(name === 'skills'){
+  if(name === 'employmentDate'){
     if (value === '' || value === null || value === undefined){
       return {
         error,
-        errorMessage: 'Skills is required'
+        errorMessage: 'Employment Date is required'
+      }
+    }
+
+    if (new Date(value) > new Date(Date.now())){
+      return {
+        error,
+        errorMessage: 'Employment Date cannot be beyond today'
       }
     }
 
@@ -789,14 +805,14 @@ const validateGuarantorFields = (name, value) => {
     if (value === '' || value === null || value === undefined || !value.length){
       return {
         error,
-        errorMessage: 'Last name cannot be less than 1 character'
+        errorMessage: 'Surname cannot be less than 1 character'
       }
     }
   
     if(!(validation.isNameOnly(value))){
       return {
         error,
-        errorMessage: 'Last name should only contain alphabets'
+        errorMessage: 'Surname should only contain alphabets'
       }
     }
 

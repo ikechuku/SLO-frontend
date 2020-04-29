@@ -1,23 +1,361 @@
-import React from 'react';
+import React, { Component} from 'react';
 import Moment from 'react-moment';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import CreatableSelect from 'react-select/creatable';
+import { httpPostFormData, httpDelete, httpPost } from '../../actions/data.action';
+import validateImage from '../../helpers/validateImage';
+import { hideLoader, showLoader } from '../../helpers/loader';
 import { states, countries, countryLists } from '../Onboarding/Info';
 import { slga, getLga } from '../../helpers/states';
 // import CustomSelect from '../../helpers/Select2';
 import { getAllDialCode, countryCodes } from '../../helpers/dailCodes';
+import { stateLists2 } from '../Onboarding/Info';
 // import { countries, countryLists, stateLists, stateLists2 } from '../Onboarding/Info';
 
-export const GuarantorModal = (props) => {
+export class GuarantorModal extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      fileName: '',
+      postBody: {},
+      documents: []
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  upload = async e => {
+    const { fileName, postBody } = this.state;
+    console.log(fileName)
+    const imageData = e.target.files[0];
+    const validFormat = validateImage(imageData);
+    if (validFormat.valid) {
+      //NotificationManager.success(validFormat.message,'Yippe!',3000);
+      // postBody[fileName] = [...postBody[fileName], e.target.files[0]];
+      postBody[fileName] = e.target.files[0];
+      this.setState({ postBody });
+      await this.saveDoc()
+    } else {
+      //NotificationManager.error(validFormat.message,'Yippe!',3000);
+      e.target.value = '';
+    }
+  };
+
+  saveDoc = async () => {
+    try{
+      const id = this.props.userId;
+      const { fileName, postBody } = this.state;
+      showLoader();
+
+      let formData = new FormData();
+      if(fileName === 'nationalId') formData.append('nationalId', postBody.nationalId);
+      if(fileName === 'votersCard') formData.append('votersCard', postBody.votersCard);
+      if(fileName === 'internationalPassport') formData.append('internationalPassport', postBody.internationalPassport);
+      if(fileName === 'driversLicense') formData.append('driversLicense', postBody.driversLicense);
+      if(fileName === 'ecowasPassport') formData.append('ecowasPassport', postBody.ecowasPassport);
+      if(fileName === 'registeredId') formData.append('registeredId', postBody.registeredId);
+      if(fileName === 'businessCertificate') formData.append('businessCertificate', postBody.businessCertificate);
+
+      const res = await httpPostFormData(`auth/onboarding_five/${id}`, formData);
+      if(res.code === 201){
+        hideLoader();
+        this.setState({ 
+          documents: [...this.state.documents, res.data.upload ],
+          fileName: ''
+      });
+      this.refs.path.value = '';
+      }
+    }catch(error){
+      hideLoader();
+      console.log(error)
+    }
+  }
+
+  deleteDoc = async (id) => {
+    try{
+
+      const res = await httpDelete(`auth/document/${id}`);
+
+      if(res.code === 200){
+        this.setState({ documents: [...this.state.documents.filter(item => item.id !== id )]});
+      }
+    }catch(error){
+      console.log(error)
+    }
+
+  }
+
+
+  getLga = (state) => {
+    const lga = getLga(state) || [];
+    return lga.map(data => (
+      { value: data.name, label: data.name }
+    ))
+  }
+	
+	getStateOption = () => {
+    if((this.props.postData.nationality !== 'Nigeria') || !this.props.postData.nationality){
+      return (
+        <input type="text" 
+        className="form-control"
+        name="state"
+        value={this.props.postData.state}
+        onChange={this.props.handleChange}
+      />
+      )
+    } else {
+      return (
+        <Select
+          className="w-100 pr-0 pl-0 mr-1"
+          options={stateLists2}
+          onChange={e => this.props.handleCustomSelect(e, 'state')}
+          name="state"
+          value={this.state.customState}
+          isSearchable="true"
+          placeholder='Select Your State'
+        />
+      )
+    }
+  }
+
+  getLgaOption = () => {
+    if((this.props.postData.nationality !== 'Nigeria') || !this.props.postData.nationality){
+      return (
+        <input type="text" 
+        className="form-control"
+        name="lga"
+        value={this.props.postData.lga}
+        onChange={this.props.handleChange}
+      />
+      )
+    } else {
+      return (
+        <Select
+        className=" w-100 pr-0 pl-0 mr-1"
+        value={this.state.customLga}
+        onChange={e => this.props.handleCustomSelect(e, 'lga')}
+        options={this.getLga(this.props.postData.state)}
+        isSearchable='true'
+        name="lga"
+        placeholder="Select Your Lga"
+      />
+      )
+    }
+	}
+	
+	getResidentialStateOption = () => {
+    if((this.props.postData.residentialCountry !== 'Nigeria') || !this.props.postData.residentialCountry){
+      return (
+        <input type="text" 
+					className="form-control col-md-3 mr-1"
+					name="state"
+					value={this.props.postData.residentialState}
+					onChange={this.props.handleChange}
+				/>
+      )
+    } else {
+      return (
+        <Select
+          className="w-100 col-md-3 pr-0 pl-0 mr-1"
+          options={stateLists2}
+          onChange={e => this.props.handleCustomSelect(e, 'residentialState')}
+          name="state"
+          value={this.state.customResidentialState}
+          isSearchable="true"
+          placeholder='State'
+        />
+      )
+    }
+  }
+
+  getResidentialLgaOption = () => {
+    if((this.props.postData.residentialCountry !== 'Nigeria') || !this.props.postData.residentialCountry){
+      return (
+        <input type="text" 
+        className="form-control col-md-3 mr-1"
+        name="lga"
+        value={this.props.postData.residentialLga}
+        onChange={this.props.handleChange}
+      />
+      )
+    } else {
+      return (
+        <Select
+        className="w-100 col-md-3 pr-0 pl-0 mr-1"
+        value={this.state.customResidentialLga}
+        onChange={e => this.props.handleCustomSelect(e, 'residentialLga')}
+        options={this.getLga(this.props.postData.residentialState)}
+        isSearchable='true'
+        name="residentialLga"
+        placeholder="Lga"
+      />
+      )
+    }
+	}
+	
+	getPermanentStateOption = () => {
+    if((this.props.postData.permanentCountry !== 'Nigeria') || !this.props.postData.permanentCountry){
+      return (
+        <input type="text" 
+        className="form-control col-md-3 mr-1"
+        name="permenentState"
+        value={this.props.postData.permanentState}
+        onChange={this.props.handleChange}
+      />
+      )
+    } else {
+      return (
+        <Select
+          className="w-100 col-md-3 pr-0 pl-0 mr-1"
+          options={stateLists2}
+          onChange={e => this.props.handleCustomSelect(e, 'permanentState')}
+          name="permenentState"
+          value={this.state.customPermanentState}
+          isSearchable="true"
+          placeholder='State'
+        />
+      )
+    }
+  }
+
+  getPermanentLgaOption = () => {
+		if((this.props.postData.permanentCountry !== 'Nigeria') || !this.props.postData.permanentCountry){
+      return (
+        <input type="text" 
+        className="form-control col-md-3 mr-1"
+        name="permanentLga"
+        value={this.props.postData.permanentLga}
+        onChange={this.props.handleChange}
+      />
+      )
+    } else {
+      return (
+        <Select
+					className="w-100 col-md-3 pr-0 pl-0 mr-1"
+					value={this.state.customPermanentLga}
+					onChange={e => this.props.handleCustomSelect(e, 'permanentLga')}
+					options={this.getLga(this.props.postData.permanentState)}
+					isSearchable='true'
+					name="permenentLga"
+					placeholder="Lga"
+				/>
+      )
+    }
+	}
+	
+	getLandedPropertyStateOption = () => {
+    if((this.props.postData.landedPropertyCountry !== 'Nigeria') || !this.props.postData.landedPropertyCountry){
+      return (
+        <input type="text" 
+        className="form-control col-md-3 mr-1"
+        name="landedPropertyState"
+        value={this.props.postData.landedPropertyState}
+        onChange={this.props.handleChange}
+      />
+      )
+    } else {
+      return (
+        <Select
+          className="w-100 col-md-3 pr-0 pl-0 mr-1"
+          options={stateLists2}
+          onChange={e => this.props.handleCustomSelect(e, 'landedPropertyState')}
+          name="state"
+          value={this.state.customLandedPropertyState}
+          isSearchable="true"
+          placeholder='State'
+        />
+      )
+    }
+  }
+
+  getLandedPropertyLgaOption = () => {
+    if((this.props.postData.landedPropertyCountry !== 'Nigeria') || !this.props.postData.landedPropertyCountry){
+      return (
+        <input type="text" 
+        className="form-control col-md-3 mr-1"
+        name="landedPropertyLga"
+        value={this.props.postData.landedPropertyLga}
+        onChange={this.props.handleChange}
+      />
+      )
+    } else {
+      return (
+        <Select
+        className="w-100 col-md-3 pr-0 pl-0 mr-1"
+        value={this.state.customLandedPropertyLga}
+        onChange={e => this.props.handleCustomSelect(e, 'landedPropertyLga')}
+        options={this.getLga(this.props.postData.landedPropertyState)}
+        isSearchable='true'
+        name="landedPropertyLga"
+        placeholder="Lga"
+      />
+      )
+    }
+	}
+	
+	getBusinessStateOption = () => {
+    if((this.props.postData.businessCountry !== 'Nigeria') || !this.props.postData.businessCountry){
+      return (
+        <input type="text" 
+        className="form-control col-md-3 mr-1"
+        name="businessState"
+        value={this.props.postData.businessState}
+        onChange={this.props.handleChange}
+      />
+      )
+    } else {
+      return (
+        <Select
+          className="w-100 col-md-3 pr-0 pl-0 mr-1"
+          options={stateLists2}
+          onChange={e => this.props.handleCustomSelect(e, 'businessState')}
+          name="businessState"
+          value={this.state.customBusinessState}
+          isSearchable="true"
+          placeholder='State'
+        />
+      )
+    }
+  }
+
+  getBusinessLgaOption = () => {
+    if((this.props.postData.businessCountry !== 'Nigeria') || !this.props.postData.businessCountry){
+      return (
+        <input type="text" 
+        className="form-control col-md-3 mr-1"
+        name="businessLga"
+        value={this.props.postData.businessLga}
+        onChange={this.props.handleChange}
+      />
+      )
+    } else {
+      return (
+        <Select
+        className="w-100 col-md-3 pr-0 pl-0 mr-1"
+        value={this.state.customBusinessLga}
+        onChange={e => this.props.handleCustomSelect(e, 'businessLga')}
+        options={this.getLga(this.props.postData.businessState)}
+        isSearchable='true'
+        name="businessLga"
+        placeholder="Lga"
+      />
+      )
+    }
+  }
+
+  render() {
   return (
     <div>
       <div class="modal fade" id="guarantorModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"  aria-hidden="true" aria-labelledby="exampleModalLongTitle" style={{ overflowY: 'scroll'}}>
 					<div class="modal-dialog modal-lg" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="example-Modal3">{props.modalMode === 'create' ? 'ADD A GUARANTOR' : 'EDIT GUARANTOR DETAILS'}</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={props.closeModal}>
+								<h5 class="modal-title" id="example-Modal3">{this.props.modalMode === 'create' ? 'ADD A GUARANTOR' : 'EDIT GUARANTOR DETAILS'}</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={this.props.closeModal}>
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
@@ -30,26 +368,20 @@ export const GuarantorModal = (props) => {
                     <input type="text" 
                       className="form-control"
                       name="firstName"
-                      onChange={props.handleChange}
-                      value={props.postData.firstName}
+                      onChange={this.props.handleChange}
+                      value={this.props.postData.firstName}
                     />
-                    <span className="text-danger">{props.errorMessage1 !== null ? props.errorMessage1 : ''}</span>
+                    <span className="text-danger">{this.props.errorMessage1 !== null ? this.props.errorMessage1 : ''}</span>
                   </div>
                   <label for="inputName" className="col-md-2 col-form-label">Home Phone</label>
                   <div className="col-md-4">
-                    {/* <input type="text" 
-                      name="homePhone" 
-                      className="form-control"
-                      onChange={props.handleChange}
-                      value={props.postData.homePhone}
-                    /> */}
                     <div class="input-group mb-3">
                       <div class="input-group-prepend select2-padding">
                         <Select
                             className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
-                            // defaultValue={props.postData.homePhoneCode}
-                            value={props.customSelect2}
-                            onChange={e => props.handleCustomSelect(e, 'homePhoneCode')}
+                            // defaultValue={this.props.postData.homePhoneCode}
+                            value={this.props.customSelect2}
+                            onChange={e => this.props.handleCustomSelect(e, 'homePhoneCode')}
                             options={countryCodes}
                             isSearchable="true"
                             name="homePhoneCode"
@@ -60,11 +392,11 @@ export const GuarantorModal = (props) => {
                         class="form-control" 
                         aria-describedby="basic-addon3"
                         name="homePhone"
-                        onChange={props.handleChange}
-                        value={props.postData.homePhone}
+                        onChange={this.props.handleChange}
+                        value={this.props.postData.homePhone}
                       />
                     </div>
-                    <span className="text-danger">{props.errorMessage5 !== null ? props.errorMessage5 : ''}</span>
+                    <span className="text-danger">{this.props.errorMessage5 !== null ? this.props.errorMessage5 : ''}</span>
                   </div>
                 </div>
                 <div className="form-group row">
@@ -73,35 +405,20 @@ export const GuarantorModal = (props) => {
                     <input type="text" 
                       className="form-control"
                       name="middleName"
-                      onChange={props.handleChange}
-                      value={props.postData.middleName}
+                      onChange={this.props.handleChange}
+                      value={this.props.postData.middleName}
                     />
-                    <span className="text-danger">{props.errorMessage3 !== null ? props.errorMessage3 : ''}</span>
+                    <span className="text-danger">{this.props.errorMessage3 !== null ? this.props.errorMessage3 : ''}</span>
                   </div>
                   <label for="inputName" className="col-md-2 col-form-label">Mobile Phone <span className="impt">*</span></label>
                   <div className="col-md-4">
-                    {/* <input type="text" 
-                      className="form-control"
-                      name="mobilePhone"
-                      onChange={props.handleChange}
-                      value={props.postData.mobilePhone}
-                    /> */}
                     <div class="input-group mb-3">
                       <div class="input-group-prepend select2-padding">
-                        {/* <select 
-                          class="input-group-text" 
-                          id="basic-addon"
-                          name="mobilePhoneCode"
-                          value={props.postData.mobilePhoneCode}
-                          onChange={props.handleChange}
-                        >
-                          {getAllDialCode()}
-                        </select> */}
                         <Select
                           className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
-                          // defaultValue={props.postData.mobilePhoneCode}
-                          value={props.customSelect1}
-                          onChange={e => props.handleCustomSelect(e, 'mobilePhoneCode')}
+                          // defaultValue={this.props.postData.mobilePhoneCode}
+                          value={this.props.customSelect1}
+                          onChange={e => this.props.handleCustomSelect(e, 'mobilePhoneCode')}
                           options={countryCodes}
                           isSearchable="true"
                           name="mobilePhoneCode"
@@ -112,11 +429,11 @@ export const GuarantorModal = (props) => {
                         class="form-control" 
                         aria-describedby="basic-addon3"
                         name="mobilePhone"
-                        onChange={props.handleChange}
-                        value={props.postData.mobilePhone}
+                        onChange={this.props.handleChange}
+                        value={this.props.postData.mobilePhone}
                       />
                     </div>
-                    <span className="text-danger">{props.errorMessage4 !== null ? props.errorMessage4 : ''}</span>
+                    <span className="text-danger">{this.props.errorMessage4 !== null ? this.props.errorMessage4 : ''}</span>
                   </div>
                 </div> 
                 <div className="form-group row">
@@ -125,27 +442,21 @@ export const GuarantorModal = (props) => {
                       <input type="text" 
                         className="form-control"
                         name="lastName"
-                        onChange={props.handleChange}
-                        value={props.postData.lastName}
+                        onChange={this.props.handleChange}
+                        value={this.props.postData.lastName}
                       />
-                      <span className="text-danger">{props.errorMessage2 !== null ? props.errorMessage2 : ''}</span>
+                      <span className="text-danger">{this.props.errorMessage2 !== null ? this.props.errorMessage2 : ''}</span>
                     </div>
                   <label for="inputName" className="col-md-2 col-form-label">Business Phone</label>
                   <div className="col-md-4">
-                    {/* <input type="text" 
-                      className="form-control"
-                      name="businessPhone"
-                      onChange={props.handleChange}
-                      value={props.postData.businessPhone}
-                    /> */}
                     <div class="input-group mb-3">
                       <div class="input-group-prepend select2-padding">
                         <Select
                           // isClearable
                           className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
-                          // defaultValue={props.postData.businessPhoneCode}
-                          value={props.customSelect3}
-                          onChange={e => props.handleCustomSelect(e, 'businessPhoneCode')}
+                          // defaultValue={this.props.postData.businessPhoneCode}
+                          value={this.props.customSelect3}
+                          onChange={e => this.props.handleCustomSelect(e, 'businessPhoneCode')}
                           options={countryCodes}
                           isSearchable="true"
                           name="businessPhoneCode"
@@ -156,40 +467,27 @@ export const GuarantorModal = (props) => {
                         class="form-control" 
                         aria-describedby="basic-addon3"
                         name="businessPhone"
-                        onChange={props.handleChange}
-                        value={props.postData.businessPhone}
+                        onChange={this.props.handleChange}
+                        value={this.props.postData.businessPhone}
                       />
                     </div>
-                    <span className="text-danger">{props.errorMessage6 !== null ? props.errorMessage6 : ''}</span>
+                    <span className="text-danger">{this.props.errorMessage6 !== null ? this.props.errorMessage6 : ''}</span>
                   </div>
                 </div>
                 <div className="form-group row">
                 <label for="inputName" className="col-md-3 col-form-label">Relationship <span className="impt">*</span></label>
                   <div className="col-md-3">
-                    {/* <CustomSelect 
-                      optionList={[
-                        { value: 'Family Friend', text: 'Family Friend', id: 1 },
-                        { value: 'Pastor', text: 'Pastor', id: 2 },
-                        { value: 'Spiritual Head', text: 'Spiritual Head' , id: 3 },
-                        { value: 'Relative', text: 'Relative' , id: 4 },
-                        { value: 'Friend', text: 'Friend' , id: 5 }, 
-                      ]}
-                      handleChange={props.handleChange}
-                      name={'relationship'}
-                      value={props.postData.relationship}
-                      placeHolder='Select'
-                    /> */}
                   <CreatableSelect
                     // isClearable
-                    // defaultValue={props.postData.relationship}
-                    value={props.customSelect4}
-                    onChange={e => props.handleCustomSelect(e, 'relationship')}
+                    // defaultValue={this.props.postData.relationship}
+                    value={this.props.customSelect4}
+                    onChange={e => this.props.handleCustomSelect(e, 'relationship')}
                     options={[
                       { value: 'Family Friend', label: 'Family Friend' },
-                      { value: 'Pastor', label: 'Pastor' },
+                      // { value: 'Pastor', label: 'Pastor' },
                       { value: 'Spiritual Head', label: 'Spiritual Head'  },
                       { value: 'Relative', label: 'Relative'  },
-                      { value: 'Friend', label: 'Friend' }, 
+                      // { value: 'Friend', label: 'Friend' }, 
                     ]}
                     name="relationship"
                   />
@@ -198,9 +496,9 @@ export const GuarantorModal = (props) => {
                   <div className="col-md-4">
                   <CreatableSelect
                     // isClearable
-                    // defaultValue={props.postData.occupation}
-                    value={props.customSelect5}
-                    onChange={e => props.handleCustomSelect(e, 'occupation')}
+                    // defaultValue={this.props.postData.occupation}
+                    value={this.props.customSelect5}
+                    onChange={e => this.props.handleCustomSelect(e, 'occupation')}
                     options={[
                       { value: 'Civil Servant', label: 'Civil Servant' },
                       { value: 'Clergy', label: 'Clergy' },
@@ -211,13 +509,49 @@ export const GuarantorModal = (props) => {
                   </div>
                 </div>
                 <div className="form-group row">
+                  <label for="inputName" className="col-md-3 col-form-label">Nationality <span className="impt">*</span></label>
+                    <div className="col-md-3">
+                        <Select
+                          className=" pt-0 pb-0 pr-0 pl-0 border-0"
+                          value={this.props.customNationality}
+                          onChange={e => this.props.handleCustomSelect(e, 'nationality')}
+                          options={countryLists}
+                          isSearchable="true"
+                          name="nationality"
+                        />
+                      <span className="text-danger">{this.props.nationalityErrorMessage !== null ? this.props.nationalityErrorMessage : ''}</span>
+                    </div>
+                  <label for="inputName" className="col-md-2 col-form-label">State of Origin <span className="impt">*</span></label>
+                  <div className="col-md-4">
+                    { this.getStateOption() }
+                    <span className="text-danger">{this.props.stateErrorMessage !== null ? this.props.stateErrorMessage : ''}</span>
+                  </div>
+                </div>
+                <div className="form-group row">
+                  <label for="inputName" className="col-md-3 col-form-label">Local Government <span className="impt">*</span></label>
+                    <div className="col-md-3">
+                      { this.getLgaOption() }
+                      <span className="text-danger">{this.props.lgaErrorMessage !== null ? this.props.lgaErrorMessage : ''}</span>
+                    </div>
+                  <label for="inputName" className="col-md-2 col-form-label">Bvn</label>
+                  <div className="col-md-4">
+                    <input type="text" 
+                      className="form-control"
+                      name="bvn"
+                      value={this.props.postData.bvn}
+                      onChange={this.props.handleChange}
+                    />
+                    <span className="text-danger">{this.props.bvnErrorMessage !== null ? this.props.bvnErrorMessage : ''}</span>
+                  </div>
+                </div>
+                <div className="form-group row">
                   <label for="inputName" className="col-md-3 col-form-label">Residential Address <span className="impt">*</span></label>
                   <div className="col-md-3">
                     <input type="text" 
                       className="form-control"
                       name="residentialAddress"
-                      onChange={props.handleChange}
-                      value={props.postData.residentialAddress}
+                      onChange={this.props.handleChange}
+                      value={this.props.postData.residentialAddress}
                     />
                   </div>
                   <div className="col-md-6">
@@ -225,8 +559,8 @@ export const GuarantorModal = (props) => {
                       {/* <select 
                         name="residentialCountry" 
                         className="form-control w-100 col-md-3 mr-1"
-                        onChange={props.handleChange}
-                        value={props.postData.residentialCountry} 
+                        onChange={this.props.handleChange}
+                        value={this.props.postData.residentialCountry} 
                       >
                         { 
                           countries('Country')
@@ -234,73 +568,60 @@ export const GuarantorModal = (props) => {
                       </select> */}
                       <Select
                         className="w-100 pr-0 pl-0 col-md-3 mr-1"
-                        // defaultValue={props.postData.residentialCountry}
-                        value={props.customSelect6}
-                        onChange={e => props.handleCustomSelect(e, 'residentialCountry')}
+                        // defaultValue={this.props.postData.residentialCountry}
+                        value={this.props.customSelect6}
+                        onChange={e => this.props.handleCustomSelect(e, 'residentialCountry')}
                         options={countryLists}
                         isSearchable="true"
                         name="country"
                         placeholder="Country"
-                        />
-                      <input type="text"  
-                        name="residentialState" 
-                        className="form-control col-md-3 mr-1"
-                        onChange={props.handleChange} 
-                        value={props.postData.residentialState}
-                        style={ (props.postData.residentialCountry === 'Nigeria') || !props.postData.residentialCountry ? { display: 'none' } : { display: 'block' }}
-                        placeholder="State"
                       />
-                      <select 
-                        disabled={props.postData.residentialCountry === '' ? "disabled" : ""}
-                        name="residentialState" 
-                        className="form-control w-100 col-md-3 mr-1"
-                        onChange={props.handleChange}
-                        value={props.postData.residentialState}
-                        style={(props.postData.residentialCountry !== '') && (props.postData.residentialCountry !== null) && (props.postData.residentialCountry !== 'Nigeria') ? { display: 'none'} : {} }
-                      >
-                        {
-                          states('State')
-                        }
-                      </select>
-                      <input type="text" 
-                        name="residentialLga" 
-                        className="form-control col-md-3 mr-1"
-                        onChange={props.handleChange} 
-                        value={props.postData.residentialLga}
-                        style={ (props.postData.residentialCountry === 'Nigeria') || !props.postData.residentialCountry ? { display: 'none' } : { display: 'block' }}
-                        placeholder="Lga"
-                      />
-                      <select 
-                        disabled={props.postData.residentialCountry === '' ? "disabled" : ""}
-                        name="residentialLga" 
-                        className="form-control w-100 col-md-3 mr-1"
-                        onChange={props.handleChange} 
-                        value={props.postData.residentialLGA}
-                        style={(props.postData.residentialCountry !== '') && (props.postData.residentialCountry !== null) && (props.postData.residentialCountry !== 'Nigeria') ? { display: 'none'} : {} }
-                      >
-                        <option value="">LGA</option>
-                        {
-                          props.getLGA(props.postData.residentialState)
-                        }
-                      </select>
+                      { this.getResidentialStateOption() }
+                      { this.getResidentialLgaOption() }
                       <input
                         type="text" 
                         name="residentialCity" 
                         className="form-control w-100 col-md-2"
-                        onChange={props.handleChange}
-                        value={props.postData.residentialCity} 
+                        onChange={this.props.handleChange}
+                        value={this.props.postData.residentialCity} 
                         placeholder="City"
                       />
-                      {/* <select 
-                        name="residentialCity" 
+                    </div>
+                  </div>
+                </div>
+                <div className="form-group row">
+                  <label for="inputName" className="col-md-3 col-form-label">Permanent Address <span className="impt">*</span></label>
+                  <div className="col-md-3">
+                    <input type="text" 
+                      className="form-control"
+                      name="permanentAddress"
+                      onChange={this.props.handleChange}
+                      value={this.props.postData.permanentAddress}
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <div className="row">
+                      <Select
+                        className="w-100 pr-0 pl-0 col-md-3 mr-1"
+                        // defaultValue={this.props.postData.landedPropertyCountry}
+                        value={this.props.customPermanentCountry}
+                        onChange={e => this.props.handleCustomSelect(e, 'permanentCountry')}
+                        options={countryLists}
+                        isSearchable="true"
+                        name="permanentCountry"
+                        placeholder="Country"
+
+                      />
+                      { this.getPermanentStateOption() }
+                      { this.getPermanentLgaOption() }
+                      <input 
+                        type="text"
+                        name="permanentCity" 
                         className="form-control w-100 col-md-2"
-                        onChange={props.handleChange}
-                        value={props.postData.residentialCity} 
-                      >
-                        <option value="">City</option>
-                        <option value="">Nigeria</option>
-                        <option value="">Ghana</option>
-                      </select> */}
+                        onChange={this.props.handleChange}
+                        value={this.props.postData.permanentCity} 
+                        placeholder="City"
+                      />
                     </div>
                   </div>
                 </div>
@@ -310,103 +631,43 @@ export const GuarantorModal = (props) => {
                     <input type="text" 
                       className="form-control"
                       name="landedPropertyAddress"
-                      onChange={props.handleChange}
-                      value={props.postData.landedPropertyAddress}
+                      onChange={this.props.handleChange}
+                      value={this.props.postData.landedPropertyAddress}
                     />
                   </div>
                   <div className="col-md-6">
                     <div className="row">
-                      {/* <select 
-                        name="landedPropertyCountry" 
-                        className="form-control w-100 col-md-3 mr-1"
-                        onChange={props.handleChange}
-                        value={props.postData.landedPropertyCountry} 
-                      >
-                        { 
-                          countries('Country')
-                        }
-                      </select> */}
                       <Select
                         className="w-100 pr-0 pl-0 col-md-3 mr-1"
-                        // defaultValue={props.postData.landedPropertyCountry}
-                        value={props.customSelect7}
-                        onChange={e => props.handleCustomSelect(e, 'landedPropertyCountry')}
+                        value={this.props.customSelect7}
+                        onChange={e => this.props.handleCustomSelect(e, 'landedPropertyCountry')}
                         options={countryLists}
                         isSearchable="true"
                         name="landedPropertyCountry"
                         placeholder="Country"
 
                       />
-                      <input type="text" 
-                        name="landedPropertyState" 
-                        className="form-control col-md-3 mr-1"
-                        onChange={props.handleChange} 
-                        value={props.postData.landedPropertyState}
-                        style={ (props.postData.landedPropertyCountry === 'Nigeria') || !props.postData.landedPropertyCountry ? { display: 'none' } : { display: 'block' }}
-                        placeholder="State"
-                      />
-                      <select
-                        disabled={props.postData.landedPropertyCountry === '' ? "disabled" : ""} 
-                        name="landedPropertyState" 
-                        className="form-control w-100 col-md-3 mr-1"
-                        onChange={props.handleChange}
-                        value={props.postData.landedPropertyState}
-                        style={(props.postData.landedPropertyCountry !== '') && (props.postData.landedPropertyCountry !== null) && (props.postData.landedPropertyCountry !== 'Nigeria') ? { display: 'none'} : {} }
-                      >
-                        {
-                          states('State')
-                        }
-                      </select>
-                      <input type="text" 
-                        name="landedPropertyLga" 
-                        className="form-control col-md-3 mr-1"
-                        onChange={props.handleChange} 
-                        value={props.postData.landedPropertyLga}
-                        style={ (props.postData.landedPropertyCountry === 'Nigeria') || !props.postData.landedPropertyCountry ? { display: 'none' } : { display: 'block' }}
-                        placeholder="Lga"
-                      />
-                      <select
-                        disabled={props.postData.landedPropertyCountry === '' ? "disabled" : ""} 
-                        name="landedPropertyLga" 
-                        className="form-control w-100 col-md-3 mr-1"
-                        onChange={props.handleChange} 
-                        value={props.postData.landedPropertyLga}
-                        style={(props.postData.landedPropertyCountry !== '') && (props.postData.landedPropertyCountry !== null) && (props.postData.landedPropertyCountry !== 'Nigeria') ? { display: 'none'} : {} }
-                      >
-                        <option value="">LGA</option>
-                        {
-                          props.getLGA(props.postData.landedPropertyState)
-                        }
-                      </select>
+                      { this.getLandedPropertyStateOption() }
+                      { this.getLandedPropertyLgaOption() }
                       <input 
                         type="text"
                         name="landedPropertyCity" 
                         className="form-control w-100 col-md-2"
-                        onChange={props.handleChange}
-                        value={props.postData.landedPropertyCity} 
+                        onChange={this.props.handleChange}
+                        value={this.props.postData.landedPropertyCity} 
                         placeholder="City"
                       />
-                      {/* <select 
-                        name="landedPropertyCity" 
-                        className="form-control w-100 col-md-2"
-                        onChange={props.handleChange}
-                        value={props.postData.landedPropertyCity} 
-                      >
-                        <option value="">City</option>
-                        <option value="">Nigeria</option>
-                        <option value="">Ghana</option>
-                      </select> */}
                     </div>
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label for="inputName" className="col-md-3 col-form-label">Business Address</label>
+                  <label for="inputName" className="col-md-3 col-form-label">Occupation Address <span className="impt">*</span></label>
                   <div className="col-md-3">
                     <input type="text" 
                       className="form-control"
                       name="businessAddress"
-                      onChange={props.handleChange}
-                      value={props.postData.businessAddress}
+                      onChange={this.props.handleChange}
+                      value={this.props.postData.businessAddress}
                     />
                   </div>
                   <div className="col-md-6">
@@ -414,8 +675,8 @@ export const GuarantorModal = (props) => {
                       {/* <select 
                         name="businessCountry" 
                         className="form-control w-100 col-md-3 mr-1"
-                        onChange={props.handleChange}
-                        value={props.postData.businessCountry} 
+                        onChange={this.props.handleChange}
+                        value={this.props.postData.businessCountry} 
                       >
                         { 
                           countries('Country')
@@ -423,73 +684,24 @@ export const GuarantorModal = (props) => {
                       </select> */}
                       <Select
                         className="w-100 pr-0 pl-0 col-md-3 mr-1"
-                        // defaultValue={props.postData.businessCountry}
-                        value={props.customSelect8}
-                        onChange={e => props.handleCustomSelect(e, 'businessCountry')}
+                        // defaultValue={this.props.postData.businessCountry}
+                        value={this.props.customSelect8}
+                        onChange={e => this.props.handleCustomSelect(e, 'businessCountry')}
                         options={countryLists}
                         isSearchable="true"
                         name="businessCountry"
                         placeholder="Country"
-                        />
-                      <input type="text" 
-                        name="businessState" 
-                        className="form-control col-md-3 mr-1"
-                        onChange={props.handleChange} 
-                        value={props.postData.businessState}
-                        style={ (props.postData.businessCountry === 'Nigeria') || !props.postData.businessCountry ? { display: 'none' } : { display: 'block' }}
-                        placeholder="State"
                       />
-                      <select
-                        disabled={props.postData.businessCountry === '' ? "disabled" : ""} 
-                        name="businessState" 
-                        className="form-control w-100 col-md-3 mr-1"
-                        onChange={props.handleChange}
-                        value={props.postData.businessState}
-                        style={(props.postData.businessCountry !== '') && (props.postData.businessCountry !== null) && (props.postData.businessCountry !== 'Nigeria') ? { display: 'none'} : {} }
-                      >
-                        {
-                          states('State')
-                        }
-                      </select>
-                      <input type="text" 
-                        name="businessLga" 
-                        className="form-control col-md-3 mr-1"
-                        onChange={props.handleChange} 
-                        value={props.postData.businessLga}
-                        style={ (props.postData.businessCountry === 'Nigeria') || !props.postData.businessCountry ? { display: 'none' } : { display: 'block' }}
-                        placeholder="Lga"
-                      />
-                      <select 
-                        disabled={props.postData.businessCountry === '' ? "disabled" : ""}
-                        name="businessLga" 
-                        className="form-control w-100 col-md-3 mr-1"
-                        onChange={props.handleChange} 
-                        value={props.postData.businessLga}
-                        style={(props.postData.businessCountry !== '') && (props.postData.businessCountry !== null) && (props.postData.businessCountry !== 'Nigeria') ? { display: 'none'} : {} }
-                      >
-                        <option value="">LGA</option>
-                        {
-                          props.getLGA(props.postData.businessState)
-                        }
-                      </select>
+                      { this.getBusinessStateOption() }
+                      { this.getBusinessLgaOption() }
                       <input
                         type="text" 
                         name="businessCity" 
                         className="form-control w-100 col-md-2"
-                        onChange={props.handleChange}
-                        value={props.postData.businessCity}
+                        onChange={this.props.handleChange}
+                        value={this.props.postData.businessCity}
                         placeholder="City" 
                       />
-                      {/* <select 
-                        name="businessCity" 
-                        className="form-control w-100 col-md-2"
-                        onChange={props.handleChange}
-                        value={props.postData.businessCity} 
-                      >
-                        <option value="">City</option>
-                        <option value="">Nigeria</option>
-                        <option value="">Ghana</option>
-                      </select> */}
                     </div>
                   </div>
                 </div>
@@ -499,8 +711,8 @@ export const GuarantorModal = (props) => {
                     <select
                       className="form-control w-100"
                       name="maritalStatus" 
-                      onChange={props.handleChange}
-                      value={props.postData.maritalStatus}
+                      onChange={this.props.handleChange}
+                      value={this.props.postData.maritalStatus}
                     >
                       <option value="" disabled selected>Select</option>	
                       <option value="Single">Single</option>
@@ -516,20 +728,20 @@ export const GuarantorModal = (props) => {
                     {/* <input type="date" 
                       className="form-control"
                       name="employeeKnownDate"
-                      onChange={props.handleChange}
-                      value={props.postData.employeeKnownDate}
+                      onChange={this.props.handleChange}
+                      value={this.props.postData.employeeKnownDate}
                     /> */}
                     <DatePicker
                       className="form-control"
                       placeholderText="Click to select a date"
-                      selected={props.postData.employeeKnownDate}
-                      onChange={(e) => props.handleChange(e, 'employeeKnownDate')}
+                      selected={this.props.customKnownDate}
+                      onChange={(e) => this.props.handleChange(e, 'employeeKnownDate')}
                       dateFormat="yyyy/MM/dd"
                     />
-                    <span className="text-danger">{props.errorMessage7 !== null ? props.errorMessage7 : ''}</span>
+                    <span className="text-danger">{this.props.errorMessage7 !== null ? this.props.errorMessage7 : ''}</span>
                   </div>
-                  <div className="col-md-3 p-2" style={(!props.postData.employeeKnownDate || props.errorMessage7 !== null) ? { display: 'none'} : {}}>
-                    <Moment fromNow ago>{props.postData.employeeKnownDate}</Moment>
+                  <div className="col-md-3 p-2" style={(!this.props.postData.employeeKnownDate || this.props.errorMessage7 !== null) ? { display: 'none'} : {}}>
+                    <Moment fromNow ago>{this.props.postData.employeeKnownDate}</Moment>
                   </div>
                 </div>
                 <div className="form-group row">
@@ -539,9 +751,9 @@ export const GuarantorModal = (props) => {
                       <input type="radio" 
                         name="criminalHistory" 
                         className="minimal mr-2"
-                        onChange={props.handleChange}
+                        onChange={this.props.handleChange}
                         value='true'
-                        checked={props.postData.criminalHistory === true ? true : ''}
+                        checked={this.props.postData.criminalHistory === true ? true : ''}
                       />
                       Yes
                     </label>
@@ -549,37 +761,95 @@ export const GuarantorModal = (props) => {
                       <input type="radio" 
                         name="criminalHistory" 
                         className="minimal mr-2"
-                        onChange={props.handleChange}
+                        onChange={this.props.handleChange}
                         value='false'
-                        checked={props.postData.criminalHistory === false ? true : ''}
+                        checked={this.props.postData.criminalHistory === false ? true : ''}
                       />
                       No
                     </label>
                   </div>
                 </div>
-                <div className="form-group row" style={!props.postData.criminalHistory ? {display: 'none'} : {display: 'flex'}}>
-                  <label for="inputName" className="col-md-2 col-form-label">Give details</label>
-                  <div className="col-md-8">
-                    <input type="text" 
+                <div className="form-group row" style={!this.props.postData.criminalHistory ? {display: 'none'} : {display: 'flex'}}>
+                  <label for="inputName" className="col-md-3 col-form-label">Give details</label>
+                  <div className="col-md-9">
+                    <textarea type="text" 
                       className="form-control"
                       name="details"
-                      onChange={props.handleChange}
-                      value={props.postData.details}
+                      onChange={this.props.handleChange}
+                      value={this.props.postData.details}
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label for="inputName" className="col-md-3 col-form-label">Document Type</label>
+                  <div className="col-md-3">
+                    <select 
+                      className="form-control w-100"
+                      name='fileName'
+                      value={this.state.fileName} 
+                      onChange={this.handleChange}
+                    >
+                      <option value="">Select File</option>
+                      <option value="nationalId">National ID</option>
+                      <option value="votersCard">Voters Card</option>
+                      <option value="driversLicense">Driver's Licence</option>
+                      <option value="internationalPassport">International Passport</option>
+                      <option value="ecowasPassport">ECOWAS Passport</option>
+                      <option value="registeredId">Registered/Valid Work ID</option>
+                      <option value="businessCertificate">Business Certificate</option>
+                    </select>
+                  </div>
+                  <label for="inputName" className="col-md-3 col-form-label">Upload Document</label>
+                  <div className="col-md-3">
+                    <input type="file" 
+                      className="form-control" 
+                      name="path"
+                      onChange={this.upload}
                     />
                   </div>
                 </div>
+
+                <br/>
+
+                  <div className="col col-md-12 pr-0 pl-0" style={!this.state.documents.length ? {display: 'none'} : {}}>
+                    <div class="table-responsive">
+                      <table class="table table-bordered table-hover mb-0 text-nowrap">
+                        <thead>
+                        <tr>
+                          {/* <th className="wd-15p">S/N</th> */}
+                          <th class="wd-15p">File Name</th>
+                          <th class="wd-15p"></th>
+                          <th class="wd-25p"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {
+                              this.state.documents.length ?
+                                this.state.documents.map(data => (
+                                  <tr>
+                                    <td>{data.fileName}</td>
+                                    <td>{<a href={`${data.path}`} target="_blank">View document</a>}</td>
+                                    <td><a className="ml-3 text-danger" onClick={() => this.deleteDoc(data.id)} style={{ cursor: 'pointer' }}>Delete</a></td>
+                                  </tr>
+                                )) : ''
+                            }
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 
                 </div> 
 								</form>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-danger" data-dismiss="modal" onClick={props.closeModal}>Close</button>
-								<button  type="button" class="btn btn-primary" onClick={props.addMore}>{props.modalMode === 'create' ? 'ADD' : 'UPDATE'}</button>
+								<button type="button" class="btn btn-danger" data-dismiss="modal" onClick={this.props.closeModal}>Close</button>
+								<button  type="button" class="btn btn-primary" onClick={this.props.addMore}>{this.props.modalMode === 'create' ? 'ADD' : 'UPDATE'}</button>
 							</div>
 						</div>
 					</div>
 				</div>
 
     </div>
-  )
+  )}
 }
