@@ -150,14 +150,14 @@ const validateD = (name, value) => {
     if (value === '' || value === null || value === undefined || !value.length){
       return {
         error,
-        errorMessage: 'Last name cannot be less than 1 character'
+        errorMessage: 'Surname cannot be less than 1 character'
       }
     }
   
     if(!(validation.isNameOnly(value))){
       return {
         error,
-        errorMessage: 'Last name should only contain alphabets'
+        errorMessage: 'Surname should only contain alphabets'
       }
     }
 
@@ -354,6 +354,7 @@ const validateData = (postData) => {
         currentCountry,
         currentState,
         currentLga,
+        currentCity,
         lga,
         maritalStatus,
         noOfDependants,
@@ -362,10 +363,11 @@ const validateData = (postData) => {
         permanentAddress,
         permanentCountry,
         permanentState,
-        permanentLga
+        permanentLga,
+        permanentCity
       } = postData;
 
-    if (firstName === '' || firstName === null || firstName === undefined || firstName.length < 3){
+    if (firstName === '' || firstName === null || firstName === undefined){
       return {
         error,
         type: 'firstName',
@@ -373,11 +375,11 @@ const validateData = (postData) => {
       }
     }
 
-    if (lastName === '' || lastName === null || lastName === undefined || lastName.length < 3){
+    if (lastName === '' || lastName === null || lastName === undefined){
       return {
         error,
         type: 'lastName',
-        errorMessage: 'Last name is required'
+        errorMessage: 'Surname is required'
       }
     }
 
@@ -437,7 +439,7 @@ const validateData = (postData) => {
       }
     }
 
-    if (currentAddress === '' || currentAddress === null || currentAddress === undefined || currentAddress.length < 3){
+    if (currentAddress === '' || currentAddress === null || currentAddress === undefined){
       return {
         error,
         type: 'currentAddress',
@@ -445,7 +447,7 @@ const validateData = (postData) => {
       }
     }
 
-    if (currentCountry === '' || currentCountry === null || currentCountry === undefined || currentCountry.length < 3){
+    if (currentCountry === '' || currentCountry === null || currentCountry === undefined){
       return {
         error,
         type: 'currentCountry',
@@ -453,7 +455,7 @@ const validateData = (postData) => {
       }
     }
 
-    if (currentState === '' || currentState === null || currentState === undefined || currentState.length < 3){
+    if (currentState === '' || currentState === null || currentState === undefined){
       return {
         error,
         type: 'currentState',
@@ -461,7 +463,7 @@ const validateData = (postData) => {
       }
     }
 
-    if (currentLga === '' || currentLga === null || currentLga === undefined || currentLga.length < 3){
+    if (currentLga === '' || currentLga === null || currentLga === undefined){
       return {
         error,
         type: 'currentLga',
@@ -469,7 +471,15 @@ const validateData = (postData) => {
       }
     }
 
-    if (lga === '' || lga === null || lga === undefined || lga.length < 3){
+    if (currentCity === '' || currentCity === null || currentCity === undefined){
+      return {
+        error,
+        type: 'currentCity',
+        errorMessage: 'Current City is required'
+      }
+    }
+
+    if (lga === '' || lga === null || lga === undefined){
       return {
         error,
         type: 'lga',
@@ -477,7 +487,7 @@ const validateData = (postData) => {
       }
     }
 
-    if (maritalStatus === '' || maritalStatus === null || maritalStatus === undefined || maritalStatus.length < 3){
+    if (maritalStatus === '' || maritalStatus === null || maritalStatus === undefined){
       return {
         error,
         type: 'maritalStatus',
@@ -493,7 +503,7 @@ const validateData = (postData) => {
       }
     }
 
-    if (staffCategory === '' || staffCategory === null || staffCategory === undefined || staffCategory.length < 3){
+    if (staffCategory === '' || staffCategory === null || staffCategory === undefined){
       return {
         error,
         type: 'staffCategory',
@@ -517,7 +527,7 @@ const validateData = (postData) => {
       }
     }
 
-    if (permanentCountry === '' || permanentCountry === null || permanentCountry === undefined || permanentCountry.length < 3){
+    if (permanentCountry === '' || permanentCountry === null || permanentCountry === undefined){
       return {
         error,
         type: 'permanentCountry',
@@ -525,7 +535,7 @@ const validateData = (postData) => {
       }
     }
 
-    if (permanentState === '' || permanentState === null || permanentState === undefined || permanentState.length < 3){
+    if (permanentState === '' || permanentState === null || permanentState === undefined){
       return {
         error,
         type: 'permanentState',
@@ -533,11 +543,19 @@ const validateData = (postData) => {
       }
     }
 
-    if (permanentLga === '' || permanentLga === null || permanentLga === undefined || permanentLga.length < 3){
+    if (permanentLga === '' || permanentLga === null || permanentLga === undefined){
       return {
         error,
         type: 'permanentLga',
         errorMessage: 'Permanent Lga is required'
+      }
+    }
+
+    if (permanentCity === '' || permanentCity === null || permanentCity === undefined){
+      return {
+        error,
+        type: 'permanentCity',
+        errorMessage: 'Permanent City is required'
       }
     }
 

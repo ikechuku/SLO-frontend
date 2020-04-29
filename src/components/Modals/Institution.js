@@ -29,6 +29,7 @@ export const QualificationModal = (props) => {
                         onChange={e => props.handleQualification(e)}
                         value={props.qualification.name} 
                       />
+                      <span style={{ fontSize: '10px'}}>*should be written in full</span>
                     </div>
                   </div>
                   <div className="form-group row">
@@ -41,7 +42,7 @@ export const QualificationModal = (props) => {
                         value={props.qualification.qualification}  
                       >
                         <option value="" disabled selected>Select</option>
-                        <option value="SSCE">SSCE(This covers WAEC,NECO,GCE)</option>
+                        <option value="SSCE">SSCE</option>
                         <option value="OND">OND</option>
                         <option value="NCE">NCE</option>
                         <option value="HND">HND</option>
@@ -62,11 +63,12 @@ export const QualificationModal = (props) => {
                         onChange={props.handleQualification}
                         value={props.qualification.course} 
                       />
+                      <span style={{ fontSize: '10px'}}>*should be written in full</span>
                     </div>
                   </div>
                   <div className="form-group row">
                     <label for="inputName" className="col-md-5 col-form-label">Start Date</label>
-                    <div className="col-md-7">
+                    <div className="col-md-7 c-date-picker">
                       {/* <input type="date" 
                         className="form-control"
                         name="startDate"
@@ -79,6 +81,10 @@ export const QualificationModal = (props) => {
                         onChange={(e) => props.handleQualification(e, 'startDate')}
                         dateFormat="yyyy/MM/dd"
                         placeholderText="Click to select a date"
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
                       />
                       <br/>
                       <span className="text-danger">{props.endDateErrorMssg5 !== null ? props.endDateErrorMssg5 : ''}</span>
@@ -86,7 +92,7 @@ export const QualificationModal = (props) => {
                   </div>
                   <div className="form-group row">
                     <label for="inputName" className="col-md-5 col-form-label">End Date</label>
-                    <div className="col-md-7">
+                    <div className="col-md-7 c-date-picker">
                       {/* <input type="date" 
                         className="form-control"
                         name="endDate"
@@ -99,9 +105,48 @@ export const QualificationModal = (props) => {
                         onChange={(e) => props.handleQualification(e, 'endDate')}
                         dateFormat="yyyy/MM/dd"
                         placeholderText="Click to select a date"
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
                       />
                       <br/>
                       <span className="text-danger">{props.endDateErrorMssg !== null ? props.endDateErrorMssg : ''}</span>
+                    </div>
+                  </div>
+                  <div className="form-group row">
+                    <label for="inputName" className="col-md-5 col-form-label">Upload</label>
+                    <div className="col-md-7">
+                      <input type="file" 
+                        className="form-control" 
+                        name="path"
+                        onChange={e => props.handleUpload(e, 'qualification')}
+                      />
+                    </div>
+                  </div>
+                  <div className="form-group row">
+                    <label for="inputName" className="col-md-5 col-form-label">Highest Education</label>
+                    <div className="col-md-7">
+                      <label>
+                        <input type="radio"
+                          name="highestEducation" 
+                          className="minimal mr-2"
+                          value="Yes"
+                          onChange={props.handleQualification}
+                          // checked={this.state.data.gender === 'Male' ? true : ''}
+                        />
+                        Yes
+                      </label>
+                      <label style={{ paddingLeft: '10px'}}>
+                        <input type="radio"
+                          name="highestEducation" 
+                          className="minimal mr-2"
+                          value="No"
+                          onChange={props.handleQualification}
+                          // checked={this.state.data.gender === 'Female' ? true : ''}
+                        />
+                        No
+                      </label>
                     </div>
                   </div>
 
@@ -114,7 +159,7 @@ export const QualificationModal = (props) => {
                 <button  
                   type="button" 
                   class="btn btn-primary" 
-                  onClick={() => props.addMore('qualification')}
+                  onClick={props.addMoreQualification}
                 >{props.modalMode === 'create' ? 'ADD' : 'UPDATE'}</button>
 							</div>
 						</div>
@@ -175,29 +220,20 @@ export const CertificationModal = (props) => {
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">Category of certification</label>
+                    <label for="inputName" className="col-md-5 col-form-label">Certification Category</label>
                     <div className="col-md-7">
-                      {/* <CustomSelect 
-                        optionList={[
-                          { value: 'Google Certification', text: 'Google Certification', id: 1 },
-                          { value: 'HND', text: 'HND', id: 2 },
-                          { value: 'OND', text: 'OND' , id: 3 },
-                        ]}
-                        handleChange={props.handleCertification}
-                        name={'categoryOfCertification'}
-                        value={props.certification.categoryOfCertification}
-                        placeHolder='Select'
-                      /> */}
                       <CreatableSelect
-                        // className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
-                        // defaultValue={props.certification.categoryOfCertification !== '' ? props.certification.categoryOfCertification : null}
-                        // value={props.certification.categoryOfCertification}
                         value={props.customSelectDefault1}
                         onChange={e => props.handleCustomSelect(e, 'categoryOfCertification')}
                         options={[
-                          { value: 'Google Certification', label: 'Google Certification' },
-                          { value: 'HND', label: 'HND' },
-                          { value: 'OND', label: 'OND' },
+                          { value: 'Legal', label: 'Legal' },
+                          { value: 'Technology', label: 'Technology' },
+                          { value: 'Administration', label: 'Administration' },
+                          { value: 'Finance', label: 'Finance' },
+                          { value: 'Engineering', label: 'Engineering' },
+                          { value: 'Health', label: 'Health' },
+                          { value: 'Agriculture', label: 'Agriculture' },
+                          { value: 'Others', label: 'Others' },
                         ]}
                         isSearchable="true"
                         name="categoryOfCertification"
@@ -221,6 +257,10 @@ export const CertificationModal = (props) => {
                         onChange={(e) => props.handleCertification(e, 'startDate')}
                         dateFormat="yyyy/MM/dd"
                         placeholderText="Click to select a date"
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
                       />
                       <span className="text-danger">{props.endDateErrorMssg6 !== null ? props.endDateErrorMssg6 : ''}</span>
                     </div>
@@ -240,8 +280,23 @@ export const CertificationModal = (props) => {
                         onChange={(e) => props.handleCertification(e, 'endDate')}
                         dateFormat="yyyy/MM/dd"
                         placeholderText="Click to select a date"
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
                       />
                       <span className="text-danger">{props.endDateErrorMssg2 !== null ? props.endDateErrorMssg2 : ''}</span>
+                    </div>
+                  </div>
+
+                  <div className="form-group row">
+                    <label for="inputName" className="col-md-5 col-form-label">Upload</label>
+                    <div className="col-md-7">
+                      <input type="file" 
+                        className="form-control" 
+                        name="path"
+                        onChange={e => props.handleUpload(e, 'certification')}
+                      />
                     </div>
                   </div>
 
@@ -259,7 +314,7 @@ export const CertificationModal = (props) => {
                 <button  
                   type="button" 
                   class="btn btn-primary" 
-                  onClick={() => props.addMore('certification')}
+                  onClick={props.addMoreCertification}
                 >{props.modalMode === 'create' ? 'ADD' : 'UPDATE'}</button>
 							</div>
 						</div>

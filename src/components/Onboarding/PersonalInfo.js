@@ -208,14 +208,26 @@ class PersonalInfo extends Component {
         data,
         homeErrorMessage: null 
       });
+    } else if(details.name === 'currentCity') {
+      data[details.name] = details.value;
+      this.setState({ 
+        data,
+        currentErrorMessage: null 
+      });
+    } else if(details.name === 'permanentCity') {
+      data[details.name] = details.value;
+      this.setState({ 
+        data,
+        permanentErrorMessage: null 
+      });
     } else if(details.name === 'gender') {
-      const isValidate = validateD(e.target.name, e.target.value);
-      if(!isValidate.error){
-        this.setState({ 
-          genderErrorMessage: isValidate.errorMessage,
-        })
-        return;
-      }
+      // const isValidate = validateD(e.target.name, e.target.value);
+      // if(!isValidate.error){
+      //   this.setState({ 
+      //     genderErrorMessage: isValidate.errorMessage,
+      //   })
+      //   return;
+      // }
       data[details.name] = details.value;
       this.setState({ 
         data,
@@ -281,6 +293,7 @@ class PersonalInfo extends Component {
       data[name] = result.value;
       this.setState({ 
         data,
+        currentErrorMessage: null,
         customCurrentCountry: result,
         currentCountry: result.value,
       });
@@ -288,12 +301,14 @@ class PersonalInfo extends Component {
       data[name] = result.value;
       this.setState({ 
         data,
+        currentErrorMessage: null,
         customCurrentState: result
       });
     } else if(name === 'currentLga'){
       data[name] = result.value;
       this.setState({ 
         data,
+        currentErrorMessage: null,
         customCurrentLga: result
       });
     } else if(name === 'permanentCountry'){
@@ -301,18 +316,21 @@ class PersonalInfo extends Component {
       this.setState({ 
         data,
         customPermanentCountry: result,
+        permanentErrorMessage: null,
         permanentCountry: result.value,
       });
     } else if(name === 'permanentState'){
       data[name] = result.value;
       this.setState({ 
         data,
+        permanentErrorMessage: null,
         customPermanentState: result
       });
     } else if(name === 'permanentLga'){
       data[name] = result.value;
       this.setState({ 
         data,
+        permanentErrorMessage: null,
         customPermanentLga: result
       });
     } else if(name === 'religion'){
@@ -434,6 +452,10 @@ class PersonalInfo extends Component {
         this.setState({ 
           currentErrorMessage: isValidate.errorMessage,
         })
+      } else if(isValidate.type === 'currentCity'){
+        this.setState({ 
+          currentErrorMessage: isValidate.errorMessage,
+        })
       } else if(isValidate.type === 'lga'){
         this.setState({ 
           lgaErrorMessage: isValidate.errorMessage,
@@ -467,6 +489,10 @@ class PersonalInfo extends Component {
           permanentErrorMessage: isValidate.errorMessage,
         })
       } else if(isValidate.type === 'permanentLga'){
+        this.setState({ 
+          permanentErrorMessage: isValidate.errorMessage,
+        })
+      } else if(isValidate.type === 'permanentCity'){
         this.setState({ 
           permanentErrorMessage: isValidate.errorMessage,
         })
@@ -967,7 +993,8 @@ class PersonalInfo extends Component {
                               className="minimal mr-2"
                               value="Male"
                               onChange={this.handleChange}
-                              checked={this.state.data.gender === 'Male' ? true : ''}
+                              // onChange={() => this.setState({ data: { gender: 'Male'}, genderErrorMessage: null }) }
+                              // checked={this.state.data.gender === 'Male' ? 'true' : ''}
                             />
                             Male
 													</label>
@@ -977,7 +1004,7 @@ class PersonalInfo extends Component {
                               className="minimal mr-2"
                               value="Female"
                               onChange={this.handleChange}
-                              checked={this.state.data.gender === 'Female' ? true : ''}
+                              // checked={this.state.data.gender === 'Female' ? 'true' : ''}
                             />
 														Female
 													</label>
@@ -992,6 +1019,10 @@ class PersonalInfo extends Component {
                             onChange={e => this.handleCustomSelect(e, 'dob')}
                             dateFormat="yyyy/MM/dd"
                             placeholderText="Click to select a date"
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
                           />
                           <br/>
                           <span className="text-danger">{this.state.dobErrorMessage !== null ? this.state.dobErrorMessage : ''}</span>
@@ -1110,7 +1141,7 @@ class PersonalInfo extends Component {
                             options={[
                               { value: 'Islam', label: 'Islam'},
                               { value: 'Christianity', label: 'Christianity'},
-                              { value: 'Other', label: 'Other'}
+                              { value: 'Others', label: 'Others'}
                             ]}
                             name="religion"
                             placeholder="Select"
