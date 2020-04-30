@@ -23,7 +23,7 @@ export const QualificationModal = (props) => {
                     <label for="inputName" className="col-md-5 col-form-label">Institution Name</label>
                     <div className="col-md-7">
                       <input type="text"
-                        placeholder="University of Ibadan" 
+                        placeholder="Eg. University of Ibadan" 
                         className="form-control"
                         name="name"
                         onChange={e => props.handleQualification(e)}
@@ -57,7 +57,7 @@ export const QualificationModal = (props) => {
                     <label for="inputName" className="col-md-5 col-form-label">Course Studied</label>
                     <div className="col-md-7">
                       <input type="text"
-                        placeholder="Computer Enginering" 
+                        placeholder="Eg. Computer Enginering" 
                         className="form-control"
                         name="course"
                         onChange={props.handleQualification}
@@ -199,7 +199,7 @@ export const CertificationModal = (props) => {
                     <label for="inputName" className="col-md-5 col-form-label">Institution Name</label>
                     <div className="col-md-7">
                       <input type="text"
-                        placeholder="World Certification Institution" 
+                        placeholder="Eg. World Certification Institution" 
                         className="form-control"
                         name="name"
                         onChange={props.handleCertification}
@@ -211,7 +211,7 @@ export const CertificationModal = (props) => {
                     <label for="inputName" className="col-md-5 col-form-label">Certification Name</label>
                     <div className="col-md-7">
                       <input type="text"
-                        placeholder="CCNA" 
+                        placeholder="Eg. CCNA" 
                         className="form-control"
                         name="certification"
                         onChange={props.handleCertification}

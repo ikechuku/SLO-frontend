@@ -113,12 +113,12 @@ const validateD = (name, value) => {
     }
 
     // console.log(validation.isNameOnly(value))
-    if(!(validation.isNameOnly(value))){
-      return {
-        error,
-        errorMessage: 'Employer name should only contain alphabets'
-      };
-    }
+    // if(!(validation.isNameOnly(value))){
+    //   return {
+    //     error,
+    //     errorMessage: 'Employer name should only contain alphabets'
+    //   };
+    // }
 
     return {
       error: true
@@ -134,12 +134,12 @@ const validateD = (name, value) => {
     }
 
     // console.log(validation.isNameOnly(value))
-    if(!(validation.isNameOnly(value))){
-      return {
-        error,
-        errorMessage: 'First name should only contain alphabets'
-      };
-    }
+    // if(!(validation.isNameOnly(value))){
+    //   return {
+    //     error,
+    //     errorMessage: 'First name should only contain alphabets'
+    //   };
+    // }
 
     return {
       error: true
@@ -154,12 +154,12 @@ const validateD = (name, value) => {
       }
     }
   
-    if(!(validation.isNameOnly(value))){
-      return {
-        error,
-        errorMessage: 'Surname should only contain alphabets'
-      }
-    }
+    // if(!(validation.isNameOnly(value))){
+    //   return {
+    //     error,
+    //     errorMessage: 'Surname should only contain alphabets'
+    //   }
+    // }
 
     return {
       error: true
@@ -178,12 +178,14 @@ const validateD = (name, value) => {
       return {
         error: true
       }
-    } else if(!(validation.isNameOnly(value))){
-      return {
-        error,
-        errorMessage: 'Middle name should only contain alphabets'
-      }
     }
+
+    // if(!(validation.isNameOnly(value))){
+    //   return {
+    //     error,
+    //     errorMessage: 'Middle name should only contain alphabets'
+    //   }
+    // }
 
     return {
       error: true

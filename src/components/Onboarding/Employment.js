@@ -141,6 +141,28 @@ class Employment extends Component {
         return;
       }
       postData[nameValue] = e.value;
+      if(e.value === 'PA2'){
+        postData['salaryAmount'] = '64,473';
+      } else if(e.value === 'PA1'){
+        postData['salaryAmount'] = '64,473';
+      } else if(e.value === 'SPO'){
+        postData['salaryAmount'] = '82,024';
+      } else if(e.value === 'PO1'){
+        postData['salaryAmount'] = '80,024';
+      } else if(e.value === 'P02'){
+        postData['salaryAmount'] = '80,024';
+      } else if(e.value === 'PM'){
+        postData['salaryAmount'] = '71,400';
+      } else if(e.value === 'DGM'){
+        postData['salaryAmount'] = '200,000';
+      } else if(e.value === 'Director'){
+        postData['salaryAmount'] = '768,000';
+      } else if(e.value === 'Manager'){
+        postData['salaryAmount'] = '200,000';
+      } else if(e.value === 'Senior Manager'){
+        postData['salaryAmount'] = '350,000';
+      }
+      
       this.setState({ 
         postData,
         customRank: e,
@@ -557,10 +579,10 @@ class Employment extends Component {
                             placeholder="Select"
                             value={this.state.customRank}
                             options={[
-                              { value: "PA 1", label: "PA 1" },
-                              { value: "PA 2", label: "PA 2" },
-                              { value: "PO 1", label: "PO 1" },
-                              { value: "PO 2", label: "PO 2" },
+                              { value: "PA1", label: "PA 1" },
+                              { value: "PA2", label: "PA 2" },
+                              { value: "PO1", label: "PO 1" },
+                              { value: "PO2", label: "PO 2" },
                               { value: "SPO", label: "SPO" },
                               { value: "Manager", label: "Manager" },
                               { value: "Senior Manager", label: "Senior Manager" },
@@ -578,7 +600,8 @@ class Employment extends Component {
 														className="form-control"
 														name="salaryAmount"
                             onChange={this.handleChange}
-														value={this.state.postData.salaryAmount}
+                            value={this.state.postData.salaryAmount}
+                            readOnly
 													/>
 													<span className="text-danger">{this.state.errorMessage6 !== null ? this.state.errorMessage6 : ''}</span>
 												</div>

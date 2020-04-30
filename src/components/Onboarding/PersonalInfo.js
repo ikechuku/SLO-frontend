@@ -517,6 +517,7 @@ class PersonalInfo extends Component {
       lgaErrorMessage,
       maritalErrorMessage,
       permanentErrorMessage,
+      uploadBody
     } = this.state;
 
     if(firstNameErrorMessage !== null ||
@@ -537,7 +538,13 @@ class PersonalInfo extends Component {
       maritalErrorMessage !== null ||
       permanentErrorMessage !== null){
       hideLoader()
-      return NotificationManager.warning('Complete all required fields')
+      return NotificationManager.warning('Complete all required fields');
+    }
+
+    if(uploadBody.identification === undefined && uploadBody.passportPhotograph === undefined){
+      hideLoader();
+      NotificationManager.warning('Passport & Means of Identification are required')
+      return;
     }
 
 
@@ -620,10 +627,6 @@ class PersonalInfo extends Component {
   saveDoc = async () => {
     try{
       const { uploadBody, userId, pageMode } = this.state;
-
-      if(uploadBody.identification === undefined && uploadBody.passportPhotograph === undefined){
-        return;
-      }
 
       if(pageMode === 'create'){
         let formData = new FormData();
@@ -1151,7 +1154,7 @@ class PersonalInfo extends Component {
                       <div className="form-group row">
 												<label for="inputName" className="col-md-2 col-form-label">No of Dependants <span className="impt">*</span></label>
 												<div className="col-md-4">
-                          <input type="text" 
+                          <input type="number" 
                             className="form-control"
                             name="noOfDependant"
                             defaultValue={this.state.data.noOfDependant !== null ? this.state.data.noOfDependant : 0}
@@ -1230,7 +1233,7 @@ class PersonalInfo extends Component {
                       <div className="form-group row">
 												<label for="inputName" className="col-md-2 col-form-label">No of Immediate Family <span className="impt">*</span></label>
 												<div className="col-md-4">
-                          <input type="text" 
+                          <input type="number" 
                             className="form-control"
                             name="noOfImmediateFamily"
                             defaultValue={this.state.data.noOfImmediateFamily !== null ? this.state.data.noOfImmediateFamily : 0}
@@ -1314,7 +1317,7 @@ class PersonalInfo extends Component {
                       </div>
                       
                       <div className="form-group row">
-                        <label for="inputName" className="col-md-2 col-form-label">Passport Photograph</label>
+                        <label for="inputName" className="col-md-2 col-form-label">Passport Photograph <span className="impt">*</span></label>
                         <div className="col-md-4">
                           <input type="file" 
                             className="form-control" 
@@ -1323,7 +1326,7 @@ class PersonalInfo extends Component {
                             onChange={e => this.upload(e, 'passportPhotograph')}
                           />
 												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Means of Identification</label>
+                        <label for="inputName" className="col-md-2 col-form-label">Means of Identification <span className="impt">*</span></label>
                         <div className="col-md-4">
                           <input type="file" 
                             className="form-control" 

@@ -24,7 +24,7 @@ export const PreviousEmploymentModal = (props) => {
                         name="employerName"
                         onChange={props.handlePrevious}
                         value={props.previousEmployment.employerName}
-                        placeholder="eg Union Bank"
+                        placeholder="Eg. Union Bank"
                       />
                       <span className="text-danger">{props.endDateErrorMssg4 !== null ? props.endDateErrorMssg4 : ''}</span>
                     </div>
@@ -37,31 +37,7 @@ export const PreviousEmploymentModal = (props) => {
                         name="address"
                         onChange={props.handlePrevious}
                         value={props.previousEmployment.address}
-                        placeholder="eg Ikeja, Lagos" 
-                      />
-                    </div>
-                  </div>
-                  <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">Employer Phone Number</label>
-                    <div className="col-md-7">
-                      <input type="text" 
-                        className="form-control"
-                        name="phoneNumber"
-                        onChange={props.handlePrevious}
-                        value={props.previousEmployment.phoneNumber}
-                        placeholder="eg Ikeja, Lagos" 
-                      />
-                    </div>
-                  </div>
-                  <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">Employer Email</label>
-                    <div className="col-md-7">
-                      <input type="text" 
-                        className="form-control"
-                        name="email"
-                        onChange={props.handlePrevious}
-                        value={props.previousEmployment.email}
-                        placeholder="eg Ikeja, Lagos" 
+                        placeholder="Eg. Ikeja, Lagos" 
                       />
                     </div>
                   </div>
@@ -73,7 +49,7 @@ export const PreviousEmploymentModal = (props) => {
                         name="role"
                         onChange={props.handlePrevious}
                         value={props.previousEmployment.role}
-                        placeholder="eg Software Engineer"
+                        placeholder="Eg. Software Engineer"
                       />
                     </div>
                   </div>
@@ -148,7 +124,7 @@ export const PreviousEmploymentModal = (props) => {
                           className="minimal mr-2"
                           onChange={props.handlePrevious}
                           value="Yes" 
-                          checked={props.objectReference === 'Yes' ? true : ''}
+                          checked={props.previousEmployment.objectReference === 'Yes' ? true : ''}
                         />
                         Yes
                       </label>
@@ -162,6 +138,30 @@ export const PreviousEmploymentModal = (props) => {
                         />
                         No
                       </label>
+                    </div>
+                  </div>
+                  <div className="form-group row" style={props.previousEmployment.objectReference === 'Yes' ? {display: 'none'} : {}}>
+                    <label for="inputName" className="col-md-5 col-form-label">Employer Email</label>
+                    <div className="col-md-7">
+                      <input type="text" 
+                        className="form-control"
+                        name="email"
+                        onChange={props.handlePrevious}
+                        value={props.previousEmployment.email}
+                        placeholder="Eg. Ikeja, Lagos" 
+                      />
+                    </div>
+                  </div>
+                  <div className="form-group row" style={props.previousEmployment.objectReference === 'Yes' ? {display: 'none'} : {}}>
+                    <label for="inputName" className="col-md-5 col-form-label">Employer Phone Number</label>
+                    <div className="col-md-7">
+                      <input type="text" 
+                        className="form-control"
+                        name="phoneNumber"
+                        onChange={props.handlePrevious}
+                        value={props.previousEmployment.phoneNumber}
+                        placeholder="Eg. Ikeja, Lagos" 
+                      />
                     </div>
                   </div>
 
