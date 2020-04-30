@@ -69,6 +69,12 @@ class PersonalInfo extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  handleRadioChange = (e) => {
+    const { data } = this.state;
+    data[e.target.name] = e.target.value;
+    this.setState({ data })
+  }
+
 
   handleChange = (e, name) => {
     e.preventDefault();
@@ -995,9 +1001,9 @@ class PersonalInfo extends Component {
                               name="gender" 
                               className="minimal mr-2"
                               value="Male"
-                              onChange={this.handleChange}
+                              onChange={this.handleRadioChange}
                               // onChange={() => this.setState({ data: { gender: 'Male'}, genderErrorMessage: null }) }
-                              // checked={this.state.data.gender === 'Male' ? 'true' : ''}
+                              checked={this.state.data.gender === 'Male' ? true : ''}
                             />
                             Male
 													</label>
@@ -1006,8 +1012,8 @@ class PersonalInfo extends Component {
                               name="gender" 
                               className="minimal mr-2"
                               value="Female"
-                              onChange={this.handleChange}
-                              // checked={this.state.data.gender === 'Female' ? 'true' : ''}
+                              onChange={this.handleRadioChange}
+                              checked={this.state.data.gender === 'Female' ? true : ''}
                             />
 														Female
 													</label>

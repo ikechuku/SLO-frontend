@@ -151,7 +151,7 @@ class Qualification extends Component {
   }
 
   addMoreQualification = async () => {
-    if(this.state.qualification.name === undefined  || this.state.qualification.name === ''  || this.state.qualification.qualification === undefined || this.state.qualification.qualification === '' || this.state.qualification.course === undefined || this.state.qualification.course === '' || this.state.qualification.startDate === undefined || this.state.qualification.startDate === '' || this.state.qualification.endDate === undefined || this.state.qualification.endDate === '' ){
+    if(this.state.qualification.name === undefined  || this.state.qualification.name === ''  || this.state.qualification.qualification === undefined || this.state.qualification.qualification === '' || this.state.qualification.course === undefined || this.state.qualification.course === '' || this.state.qualification.startDate === undefined || this.state.qualification.startDate === '' || this.state.qualification.endDate === undefined || this.state.qualification.endDate === ''  || this.state.documents.qualification === '' || this.state.documents.qualification === undefined){
       return NotificationManager.warning('All fields must be filled');
     }
 
@@ -190,12 +190,15 @@ class Qualification extends Component {
       modalMode: 'create',
       editIndex: null,
       date1: undefined,
-      date2: undefined 
+      date2: undefined,
+      documents: {
+        qualification: ''
+      } 
     });
   }
 
   addMoreCertification = async () => {
-    if(this.state.certification.name === undefined || this.state.certification.name === '' || this.state.certification.certification === undefined || this.state.certification.certification === '' || this.state.certification.categoryOfCertification === undefined || this.state.certification.categoryOfCertification === '' || this.state.certification.startDate === undefined || this.state.certification.startDate === '' || this.state.certification.endDate === undefined || this.state.certification.endDate === '' ){
+    if(this.state.certification.name === undefined || this.state.certification.name === '' || this.state.certification.certification === undefined || this.state.certification.certification === '' || this.state.certification.categoryOfCertification === undefined || this.state.certification.categoryOfCertification === '' || this.state.certification.startDate === undefined || this.state.certification.startDate === '' || this.state.certification.endDate === undefined || this.state.certification.endDate === '' || this.state.documents.certification === '' || this.state.documents.certification === undefined){
       return NotificationManager.warning('All fields must be filled');
     }
 
@@ -235,7 +238,10 @@ class Qualification extends Component {
       editIndex: null,
       customSelectDefault1: null,
       date3: undefined,
-      date4: undefined 
+      date4: undefined,
+      documents: {
+        certification: ''
+      } 
     });
     // this.showQualificationCard()
   }
@@ -340,7 +346,7 @@ class Qualification extends Component {
   }
 
   addMorePrevious = async () => {
-    if(this.state.previousEmployment.employerName === undefined || this.state.previousEmployment.address === undefined || this.state.previousEmployment.role === undefined || this.state.previousEmployment.startDate === undefined || this.state.previousEmployment.endDate === undefined ){
+    if(this.state.previousEmployment.employerName === undefined || this.state.previousEmployment.address === undefined || this.state.previousEmployment.role === undefined || this.state.previousEmployment.startDate === undefined || this.state.previousEmployment.endDate === undefined || this.state.documents.previousEmployment === '' || this.state.documents.previousEmployment === undefined || this.state.previousEmployment.objectReference === '' || this.state.previousEmployment.objectReference === undefined){
       return NotificationManager.warning('All fields must be filled');
     }
 
@@ -379,7 +385,10 @@ class Qualification extends Component {
       modalMode: 'create',
       editIndex: null,
       date5: undefined,
-      date6: undefined 
+      date6: undefined,
+      documents: {
+        previousEmployment: undefined
+      } 
     });
   }
 

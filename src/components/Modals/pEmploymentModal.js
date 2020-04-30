@@ -17,7 +17,7 @@ export const PreviousEmploymentModal = (props) => {
 								<form>
                 <div className="col col-md-12">
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">Employer Name</label>
+                    <label for="inputName" className="col-md-5 col-form-label">Employer Name <span className="impt">*</span></label>
                     <div className="col-md-7">
                       <input type="text" 
                         className="form-control"
@@ -30,7 +30,7 @@ export const PreviousEmploymentModal = (props) => {
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">Employer Address</label>
+                    <label for="inputName" className="col-md-5 col-form-label">Employer Address <span className="impt">*</span></label>
                     <div className="col-md-7">
                       <input type="text" 
                         className="form-control"
@@ -42,7 +42,7 @@ export const PreviousEmploymentModal = (props) => {
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">Role</label>
+                    <label for="inputName" className="col-md-5 col-form-label">Role <span className="impt">*</span></label>
                     <div className="col-md-7">
                       <input type="text" 
                         className="form-control"
@@ -54,7 +54,7 @@ export const PreviousEmploymentModal = (props) => {
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">Start Date</label>
+                    <label for="inputName" className="col-md-5 col-form-label">Start Date <span className="impt">*</span></label>
                     <div className="col-md-7">
                       {/* <input type="date" 
                         className="form-control"
@@ -79,14 +79,8 @@ export const PreviousEmploymentModal = (props) => {
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">End Date</label>
+                    <label for="inputName" className="col-md-5 col-form-label">End Date <span className="impt">*</span></label>
                     <div className="col-md-7">
-                      {/* <input type="date"
-                        className="form-control"
-                        name="endDate"
-                        onChange={props.handlePrevious}
-                        value={props.previousEmployment.endDate}
-                      /> */}
                       <DatePicker
                         className="form-control"
                         // selected={props.previousEmployment.endDate}
@@ -105,18 +99,19 @@ export const PreviousEmploymentModal = (props) => {
                   </div>
 
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">Upload</label>
+                    <label for="inputName" className="col-md-5 col-form-label">Upload <span className="impt">*</span></label>
                     <div className="col-md-7">
                       <input type="file" 
                         className="form-control" 
                         name="path"
                         onChange={e => props.handleUpload(e, 'previousEmployment')}
+                        useRef='path'
                       />
                     </div>
                   </div>
 
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 pr-0 col-form-label">Do you object to us seeking any reference from any of your past employer</label>
+                    <label for="inputName" className="col-md-5 pr-0 col-form-label">Do you object to us seeking any reference from any of your past employer <span className="impt">*</span></label>
                     <div className="col-md-7 pt-2">
                       <label>
                         <input type="radio" 

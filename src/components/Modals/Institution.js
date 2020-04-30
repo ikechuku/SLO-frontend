@@ -20,7 +20,7 @@ export const QualificationModal = (props) => {
 								<form>
                 <div className="col col-md-12">
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">Institution Name</label>
+                    <label for="inputName" className="col-md-5 col-form-label">Institution Name <span className="impt">*</span></label>
                     <div className="col-md-7">
                       <input type="text"
                         placeholder="Eg. University of Ibadan" 
@@ -29,11 +29,11 @@ export const QualificationModal = (props) => {
                         onChange={e => props.handleQualification(e)}
                         value={props.qualification.name} 
                       />
-                      <span style={{ fontSize: '10px'}}>*should be written in full</span>
+                      <span style={{ fontSize: '10px', color: 'black' }}>*should be written in full</span>
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">Qualification</label>
+                    <label for="inputName" className="col-md-5 col-form-label">Qualification <span className="impt">*</span></label>
                     <div className="col-md-7">
                       <select type="text" 
                         className="form-control"
@@ -54,7 +54,7 @@ export const QualificationModal = (props) => {
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">Course Studied</label>
+                    <label for="inputName" className="col-md-5 col-form-label">Course Studied <span className="impt">*</span></label>
                     <div className="col-md-7">
                       <input type="text"
                         placeholder="Eg. Computer Enginering" 
@@ -63,11 +63,11 @@ export const QualificationModal = (props) => {
                         onChange={props.handleQualification}
                         value={props.qualification.course} 
                       />
-                      <span style={{ fontSize: '10px'}}>*should be written in full</span>
+                      <span style={{ fontSize: '10px', color: 'black'}}>*should be written in full</span>
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">Start Date</label>
+                    <label for="inputName" className="col-md-5 col-form-label">Start Date <span className="impt">*</span></label>
                     <div className="col-md-7 c-date-picker">
                       {/* <input type="date" 
                         className="form-control"
@@ -91,7 +91,7 @@ export const QualificationModal = (props) => {
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">End Date</label>
+                    <label for="inputName" className="col-md-5 col-form-label">End Date <span className="impt">*</span></label>
                     <div className="col-md-7 c-date-picker">
                       {/* <input type="date" 
                         className="form-control"
@@ -115,7 +115,7 @@ export const QualificationModal = (props) => {
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">Upload</label>
+                    <label for="inputName" className="col-md-5 col-form-label">Upload <span className="impt">*</span></label>
                     <div className="col-md-7">
                       <input type="file" 
                         className="form-control" 
@@ -196,7 +196,7 @@ export const CertificationModal = (props) => {
 								<form>
                 <div className="col col-md-12">
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">Institution Name</label>
+                    <label for="inputName" className="col-md-5 col-form-label">Institution Name <span className="impt">*</span></label>
                     <div className="col-md-7">
                       <input type="text"
                         placeholder="Eg. World Certification Institution" 
@@ -208,7 +208,7 @@ export const CertificationModal = (props) => {
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">Certification Name</label>
+                    <label for="inputName" className="col-md-5 col-form-label">Certification Name <span className="impt">*</span></label>
                     <div className="col-md-7">
                       <input type="text"
                         placeholder="Eg. CCNA" 
@@ -217,6 +217,7 @@ export const CertificationModal = (props) => {
                         onChange={props.handleCertification}
                         value={props.certification.certification} 
                       />
+                      <span style={{ fontSize: '10px', color: 'black' }}>*should be written in full</span>
                     </div>
                   </div>
                   <div className="form-group row">
@@ -241,14 +242,8 @@ export const CertificationModal = (props) => {
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">Start Date</label>
+                    <label for="inputName" className="col-md-5 col-form-label">Start Date <span className="impt">*</span></label>
                     <div className="col-md-7 c-date-picker">
-                      {/* <input type="date" 
-                        className="form-control"
-                        name="startDate"
-                        onChange={props.handleCertification}
-                        value={props.certification.startDate} 
-                      /> */}
                       <DatePicker
                         className="form-control"
                         selected={props.date3}
@@ -266,14 +261,8 @@ export const CertificationModal = (props) => {
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">End Date</label>
+                    <label for="inputName" className="col-md-5 col-form-label">End Date <span className="impt">*</span></label>
                     <div className="col-md-7 c-date-picker">
-                      {/* <input type="date" 
-                        className="form-control"
-                        name="endDate"
-                        onChange={props.handleCertification}
-                        value={props.certification.endDate}
-                      /> */}
                      <DatePicker
                         className="form-control"
                         selected={props.date4}
@@ -290,7 +279,7 @@ export const CertificationModal = (props) => {
                   </div>
 
                   <div className="form-group row">
-                    <label for="inputName" className="col-md-5 col-form-label">Upload</label>
+                    <label for="inputName" className="col-md-5 col-form-label">Upload <span className="impt">*</span></label>
                     <div className="col-md-7">
                       <input type="file" 
                         className="form-control" 
