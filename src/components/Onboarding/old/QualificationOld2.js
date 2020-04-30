@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import Layout from '../layout/index'
-import { httpPost, httpPatch } from '../../actions/data.action';
+import Layout from '../../layout/index'
+import { httpPost, httpPatch } from '../../../actions/data.action';
 import './style.css';
-import InstitutionForm from './InstitutionForm';
-import EmploymentForm from './EmploymentForm';
-import MoreInfoForm from './MoreInfoForm';
+import InstitutionForm from '../InstitutionForm';
+import EmploymentForm from '../EmploymentForm';
+import MoreInfoForm from '../MoreInfoForm';
 import { NotificationManager } from 'react-notifications';
-import { hideLoader, showLoader } from '../../helpers/loader';
-import { validateQualification, validateD } from '../../helpers/validations';
+import { hideLoader, showLoader } from '../../../helpers/loader';
+import { validateQualification, validateD } from '../../../helpers/validations';
 
 class Qualification extends Component {
   constructor(props){

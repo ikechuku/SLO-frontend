@@ -501,13 +501,14 @@ const dailCodes = [
 
 
 export const getDialCode = (country) => {
-  let code;
+  let code, codeName;
   dailCodes.map(data => {
     if(data.name === country){
       code = data.dial_code;
+      codeName = data.code
     }
   });
-  return code;
+  return { value: code, label: code + ' ' + codeName };
 }
 
 export const getAllDialCode = () => {

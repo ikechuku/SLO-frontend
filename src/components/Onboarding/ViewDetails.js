@@ -13,7 +13,8 @@ export default class ViewDetails extends Component {
       educationHistory: null,
       employmentHistory: null,
       institution: [],
-      guarantorInfo: []
+      guarantorInfo: [],
+      employmentInfo: {}
     }
   }
 
@@ -31,10 +32,12 @@ export default class ViewDetails extends Component {
         hideLoader();
         this.setState({
           user: res.data.user,
-          educationHistory: res.data.educationHistory,
+          qualification: res.data.qualification,
+          certification: res.data.certification,
+          employmentInfo: res.data.employmentInfo,
           employmentHistory: res.data.employmentHistory,
           guarantorInfo: res.data.guarantorInfo,
-          institution: [...res.data.educationHistory, ...res.data.employmentHistory]
+          institution: [...res.data.qualification, ...res.data.certification]
         });
       }
 
@@ -67,7 +70,7 @@ export default class ViewDetails extends Component {
 
   render() {
     console.log(this.state)
-    const { user, employmentHistory, educationHistory, guarantorInfo } = this.state;
+    const { user, institution, employmentInfo, employmentHistory, educationHistory, guarantorInfo } = this.state;
     const newEducationHistory = educationHistory !== null ? educationHistory : [];
     const newEmploymentHistory = employmentHistory !== null ? employmentHistory : [];
 
@@ -155,7 +158,7 @@ export default class ViewDetails extends Component {
                               </tr>
                             </thead>
                             <tbody>                                {
-                                newEducationHistory.length ? newEducationHistory.map((data, index) => (
+                                institution.length ? institution.map((data, index) => (
                                   <tr key={index}>
                                     {/* <td>{index + 1}</td> */}
                                     <td>{data.name}</td>
@@ -210,13 +213,13 @@ export default class ViewDetails extends Component {
                       <div className="row">
                         <div className="col-md-6">
                           <p className="row">
-                            <span className="col-md-5 font-bold">Rank at employment:</span> <span className="col-md-7">{user.rankAtEmployment}</span></p>
+                            <span className="col-md-5 font-bold">Rank at employment:</span> <span className="col-md-7">{employmentInfo.rank}</span></p>
                           <p className="row">
-                            <span className="col-md-5 font-bold">Unit at Employment:</span> <span className="col-md-7">{user.unitAtEmployment}</span></p>
+                            <span className="col-md-5 font-bold">Unit at Employment:</span> <span className="col-md-7">{employmentInfo.unit !== undefined ? employmentInfo.unit.name : ''}</span></p>
                           <p className="row">
-                            <span className="col-md-5 font-bold">Salary Amount:</span> <span className="col-md-7">{<NumberFormat value={user.salaryAmount} displayType={'text'} thousandSeparator={true} />}</span></p>
+                            <span className="col-md-5 font-bold">Salary Amount:</span> <span className="col-md-7">{<NumberFormat value={employmentInfo.salaryAmount} displayType={'text'} thousandSeparator={true} />}</span></p>
                           <p className="row">
-                            <span className="col-md-5 font-bold">Employee Number:</span> <span className="col-md-7">{user.employeeNumber}</span></p>
+                            <span className="col-md-5 font-bold">Employee Number:</span> <span className="col-md-7">{employmentInfo.employeeNumber || ''}</span></p>
                           <p className="row">
                             <span className="col-md-5 font-bold">No of dependants:</span> <span className="col-md-7">{user.noOfDependant}</span></p>
                           <p className="row">
@@ -224,11 +227,12 @@ export default class ViewDetails extends Component {
                         </div>
                         <div className="col-md-6 pl-0">
                           <p className="row">
-                            <span className="col-md-5 font-bold">Date of resumption:</span> <span className="col-md-7">{<Moment format='MMM D YYYY' value={user.dateOfResumption} />}</span></p>
+                            <span className="col-md-5 font-bold">Date of resumption:</span> <span className="col-md-7">{<Moment format='MMM D YYYY' value={employmentInfo.dateOfResumption} />}</span></p>
                           <p className="row">
-                            <span className="col-md-5 font-bold">Branch at employment:</span> <span className="col-md-7">{user.branchAtEmployment}</span></p>
+                            <span className="col-md-5 font-bold">Branch at employment:</span> <span className="col-md-7">{employmentInfo.branch !== undefined ? employmentInfo.branch.name : ''}</span></p>
                           <p className="row">
-                            <span className="col-md-5 font-bold">Job title:</span> <span className="col-md-7">{user.jobTitle}</span></p>
+                            <span className="col-md-5 font-bold">Job title:</span> <span className="col-md-7">{employmentInfo.role !== undefined ? employmentInfo.role.title : ''}</span>
+                          </p>
                           <p className="row">
                             <span className="col-md-5 font-bold">Skills:</span> <span className="col-md-7">{user.skills}</span></p>
                           <p className="row">

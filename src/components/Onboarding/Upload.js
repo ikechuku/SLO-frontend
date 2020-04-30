@@ -129,9 +129,11 @@ class Upload extends Component {
   }
 
   handleBackButton = () => {
+    const { id } = this.props.match.params;
     return this.props.history.push({
-      pathname: `${this.props.location.backurl}`,
-      savedState: this.props.location.savedState
+      pathname: `/create_staff/four/${id}`,
+      savedId: this.props.location.savedId,
+      direction: 'backward'
     })
   }
 

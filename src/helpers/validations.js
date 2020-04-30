@@ -22,6 +22,11 @@ var validation = {
     const pattern = /^\d{10}$/;
     return pattern.test(str);
   },
+  isBvnNumber: (str) => {
+    // const pattern = /^[\d+-]{3,15}$/;
+    const pattern = /^\d{11}$/;
+    return pattern.test(str);
+  },
   isLetterOnly: (str) => {
     const pattern = /^[a-z]{2,40}$/i;
     return pattern.test(str);
@@ -108,12 +113,12 @@ const validateD = (name, value) => {
     }
 
     // console.log(validation.isNameOnly(value))
-    if(!(validation.isNameOnly(value))){
-      return {
-        error,
-        errorMessage: 'Employer name should only contain alphabets'
-      };
-    }
+    // if(!(validation.isNameOnly(value))){
+    //   return {
+    //     error,
+    //     errorMessage: 'Employer name should only contain alphabets'
+    //   };
+    // }
 
     return {
       error: true
@@ -129,12 +134,12 @@ const validateD = (name, value) => {
     }
 
     // console.log(validation.isNameOnly(value))
-    if(!(validation.isNameOnly(value))){
-      return {
-        error,
-        errorMessage: 'First name should only contain alphabets'
-      };
-    }
+    // if(!(validation.isNameOnly(value))){
+    //   return {
+    //     error,
+    //     errorMessage: 'First name should only contain alphabets'
+    //   };
+    // }
 
     return {
       error: true
@@ -145,16 +150,16 @@ const validateD = (name, value) => {
     if (value === '' || value === null || value === undefined || !value.length){
       return {
         error,
-        errorMessage: 'Last name cannot be less than 1 character'
+        errorMessage: 'Surname cannot be less than 1 character'
       }
     }
   
-    if(!(validation.isNameOnly(value))){
-      return {
-        error,
-        errorMessage: 'Last name should only contain alphabets'
-      }
-    }
+    // if(!(validation.isNameOnly(value))){
+    //   return {
+    //     error,
+    //     errorMessage: 'Surname should only contain alphabets'
+    //   }
+    // }
 
     return {
       error: true
@@ -173,12 +178,14 @@ const validateD = (name, value) => {
       return {
         error: true
       }
-    } else if(!(validation.isNameOnly(value))){
-      return {
-        error,
-        errorMessage: 'Middle name should only contain alphabets'
-      }
     }
+
+    // if(!(validation.isNameOnly(value))){
+    //   return {
+    //     error,
+    //     errorMessage: 'Middle name should only contain alphabets'
+    //   }
+    // }
 
     return {
       error: true
@@ -193,6 +200,22 @@ const validateD = (name, value) => {
       }
     }
     
+    return {
+      error: true
+    }
+  }
+
+  if(name === 'bvn'){
+    if (value !== ''){
+      console.log(value)
+      if(!(validation.isBvnNumber(value))){
+        return {
+          error,
+          errorMessage: 'Bvn must be valid: 11 characters and only numbers'
+        }
+      }
+    }
+
     return {
       error: true
     }
@@ -280,6 +303,19 @@ const validateD = (name, value) => {
     }
   }
 
+  if(name === 'noOfImmediateFamily'){
+    if(!(validation.isNumber(value))){
+      return {
+        error,
+        errorMessage: 'Number of immediate family can only be positive integers'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
   if(name === 'dob'){
     if (value === '' || value === null || value === undefined ){
       return {
@@ -316,10 +352,24 @@ const validateData = (postData) => {
         nationality,
         dob,
         gender,
-        currentAddress
+        currentAddress,
+        currentCountry,
+        currentState,
+        currentLga,
+        currentCity,
+        lga,
+        maritalStatus,
+        noOfDependants,
+        staffCategory,
+        noOfImmediateFamily,
+        permanentAddress,
+        permanentCountry,
+        permanentState,
+        permanentLga,
+        permanentCity
       } = postData;
 
-    if (firstName === '' || firstName === null || firstName === undefined || firstName.length < 3){
+    if (firstName === '' || firstName === null || firstName === undefined){
       return {
         error,
         type: 'firstName',
@@ -327,11 +377,11 @@ const validateData = (postData) => {
       }
     }
 
-    if (lastName === '' || lastName === null || lastName === undefined || lastName.length < 3){
+    if (lastName === '' || lastName === null || lastName === undefined){
       return {
         error,
         type: 'lastName',
-        errorMessage: 'Last name is required'
+        errorMessage: 'Surname is required'
       }
     }
 
@@ -375,13 +425,13 @@ const validateData = (postData) => {
       }
     }
 
-    // if (homePhone === '' || homePhone === null || homePhone === undefined || homePhone.length < 3){
-    //   return {
-    //     error,
-    //     type: 'homePhone',
-    //     errorMessage: 'Home phone is required'
-    //   }
-    // }
+    if (homePhone === '' || homePhone === null || homePhone === undefined || homePhone.length < 3){
+      return {
+        error,
+        type: 'homePhone',
+        errorMessage: 'Home phone is required'
+      }
+    }
 
     if (nationality === '' || nationality === null || nationality === undefined || nationality.length < 3){
       return {
@@ -391,11 +441,123 @@ const validateData = (postData) => {
       }
     }
 
-    if (currentAddress === '' || currentAddress === null || currentAddress === undefined || currentAddress.length < 3){
+    if (currentAddress === '' || currentAddress === null || currentAddress === undefined){
       return {
         error,
         type: 'currentAddress',
         errorMessage: 'Current Address is required'
+      }
+    }
+
+    if (currentCountry === '' || currentCountry === null || currentCountry === undefined){
+      return {
+        error,
+        type: 'currentCountry',
+        errorMessage: 'Current Country is required'
+      }
+    }
+
+    if (currentState === '' || currentState === null || currentState === undefined){
+      return {
+        error,
+        type: 'currentState',
+        errorMessage: 'Current State is required'
+      }
+    }
+
+    if (currentLga === '' || currentLga === null || currentLga === undefined){
+      return {
+        error,
+        type: 'currentLga',
+        errorMessage: 'Current Lga is required'
+      }
+    }
+
+    if (currentCity === '' || currentCity === null || currentCity === undefined){
+      return {
+        error,
+        type: 'currentCity',
+        errorMessage: 'Current City is required'
+      }
+    }
+
+    if (lga === '' || lga === null || lga === undefined){
+      return {
+        error,
+        type: 'lga',
+        errorMessage: 'Lga is required'
+      }
+    }
+
+    if (maritalStatus === '' || maritalStatus === null || maritalStatus === undefined){
+      return {
+        error,
+        type: 'maritalStatus',
+        errorMessage: 'Marital status is required'
+      }
+    }
+
+    if (noOfDependants === ''){
+      return {
+        error,
+        type: 'noOfDependants',
+        errorMessage: 'No of dependants is required'
+      }
+    }
+
+    if (staffCategory === '' || staffCategory === null || staffCategory === undefined){
+      return {
+        error,
+        type: 'staffCategory',
+        errorMessage: 'Staff category is required'
+      }
+    }
+
+    if (noOfImmediateFamily === ''){
+      return {
+        error,
+        type: 'noOfImmediateFamily',
+        errorMessage: 'No of immediate family is required'
+      }
+    }
+
+    if (permanentAddress === '' || permanentAddress === null || permanentAddress === undefined || permanentAddress.length < 3){
+      return {
+        error,
+        type: 'permanentAddress',
+        errorMessage: 'Permanent Address is required'
+      }
+    }
+
+    if (permanentCountry === '' || permanentCountry === null || permanentCountry === undefined){
+      return {
+        error,
+        type: 'permanentCountry',
+        errorMessage: 'Permanent Country is required'
+      }
+    }
+
+    if (permanentState === '' || permanentState === null || permanentState === undefined){
+      return {
+        error,
+        type: 'permanentState',
+        errorMessage: 'Permanent State is required'
+      }
+    }
+
+    if (permanentLga === '' || permanentLga === null || permanentLga === undefined){
+      return {
+        error,
+        type: 'permanentLga',
+        errorMessage: 'Permanent Lga is required'
+      }
+    }
+
+    if (permanentCity === '' || permanentCity === null || permanentCity === undefined){
+      return {
+        error,
+        type: 'permanentCity',
+        errorMessage: 'Permanent City is required'
       }
     }
 
@@ -409,31 +571,32 @@ const validateData = (postData) => {
 const validateEmploymentInfoForm = (postData) => {
   let error = false;
   const {
-    rankAtEmployment,
+    rank,
     dateOfResumption,
-    branchAtEmployment,
+    branchId,
     jobTitle,
-    unitAtEmployment,
+    unitId,
     salaryAmount,
     employeeNumber,
-    skills
+    employmentDate,
+    departmentId
   } = postData;
 
-  if (rankAtEmployment === '' || rankAtEmployment === null || rankAtEmployment === undefined){
+  if (rank === '' || rank === null || rank === undefined){
     return {
       error,
-      type: 'rankAtEmployment',
+      type: 'rank',
       errorMessage: 'Rank at employment field is required'
     }
   }
 
-  if (unitAtEmployment === '' || unitAtEmployment === null || unitAtEmployment === undefined){
-    return {
-      error,
-      type: 'unitAtEmployment',
-      errorMessage: 'Unit at employment is required'
-    }
-  }
+  // if (unitId === '' || unitId === null || unitId === undefined){
+  //   return {
+  //     error,
+  //     type: 'unitId',
+  //     errorMessage: 'Unit at employment is required'
+  //   }
+  // }
 
   if (dateOfResumption === '' || dateOfResumption === null || dateOfResumption === undefined){
     return {
@@ -451,21 +614,21 @@ const validateEmploymentInfoForm = (postData) => {
     }
   }
 
-  if (branchAtEmployment === '' || branchAtEmployment === null || branchAtEmployment === undefined){
+  if (branchId === '' || branchId === null || branchId === undefined){
     return {
       error,
-      type: 'branchAtEmployment',
+      type: 'branchId',
       errorMessage: 'Branch at employment is required'
     }
   }
 
-  if (employeeNumber === '' || employeeNumber === null || employeeNumber === undefined || employeeNumber.length < 2){
-    return {
-      error,
-      type: 'employeeNumber',
-      errorMessage: 'Employee number is required'
-    }
-  }
+  // if (employeeNumber === '' || employeeNumber === null || employeeNumber === undefined || employeeNumber.length < 2){
+  //   return {
+  //     error,
+  //     type: 'employeeNumber',
+  //     errorMessage: 'Employee number is required'
+  //   }
+  // }
 
   if (jobTitle === '' || jobTitle === null || jobTitle === undefined){
     return {
@@ -475,11 +638,19 @@ const validateEmploymentInfoForm = (postData) => {
     }
   }
 
-  if (!skills.length){
+  if (departmentId === '' || departmentId === null || departmentId === undefined){
     return {
       error,
-      type: 'skills',
-      errorMessage: 'Skills is required'
+      type: 'departmentId',
+      errorMessage: 'Department at employment is required'
+    }
+  }
+
+  if (employmentDate === '' || employmentDate === null || employmentDate === undefined){
+    return {
+      error,
+      type: 'employmentDate',
+      errorMessage: 'Employment Date is required'
     }
   }
 
@@ -490,7 +661,7 @@ const validateEmploymentInfoForm = (postData) => {
 
 const validateEmpoymentFields = (name, value) => {
   let error = false;
-  if(name === 'rankAtEmployment'){
+  if(name === 'rank'){
     if (value === '' || value === null || value === undefined){
       return {
         error,
@@ -516,7 +687,7 @@ const validateEmpoymentFields = (name, value) => {
     }
   }
 
-  if(name === 'branchAtEmployment'){
+  if(name === 'branchId'){
     if (value === '' || value === null || value === undefined){
       return {
         error,
@@ -542,7 +713,7 @@ const validateEmpoymentFields = (name, value) => {
     }
   }
 
-  if(name === 'unitAtEmployment'){
+  if(name === 'unitId'){
     if (value === '' || value === null || value === undefined){
       return {
         error,
@@ -588,11 +759,18 @@ const validateEmpoymentFields = (name, value) => {
     }
   }
 
-  if(name === 'skills'){
+  if(name === 'employmentDate'){
     if (value === '' || value === null || value === undefined){
       return {
         error,
-        errorMessage: 'Skills is required'
+        errorMessage: 'Employment Date is required'
+      }
+    }
+
+    if (new Date(value) > new Date(Date.now())){
+      return {
+        error,
+        errorMessage: 'Employment Date cannot be beyond today'
       }
     }
 
@@ -629,14 +807,14 @@ const validateGuarantorFields = (name, value) => {
     if (value === '' || value === null || value === undefined || !value.length){
       return {
         error,
-        errorMessage: 'Last name cannot be less than 1 character'
+        errorMessage: 'Surname cannot be less than 1 character'
       }
     }
   
     if(!(validation.isNameOnly(value))){
       return {
         error,
-        errorMessage: 'Last name should only contain alphabets'
+        errorMessage: 'Surname should only contain alphabets'
       }
     }
 

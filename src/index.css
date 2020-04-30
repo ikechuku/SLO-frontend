@@ -70,8 +70,12 @@ code {
 }
 
 .css-1hwfws3 {
-  padding: 2px 4px 2px 0px !important;
+  /* padding: 2px 4px 2px 0px !important; */
   width: 65px !important;
+}
+
+.select2-padding .css-yk16xz-control {
+  padding-left: 10px !important;
 }
 
 .c-date-picker .react-datepicker-wrapper{
@@ -93,6 +97,16 @@ input::placeholder {
 
 .add-link:hover {
   font-weight: bold;
+}
+
+.add-delete {
+  text-decoration: underline !important;
+  cursor: pointer;
+  color: blue !important
+}
+
+.add-delete:hover {
+  color: red !important
 }
 
 .font-bold {

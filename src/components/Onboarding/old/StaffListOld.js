@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import Layout from '../layout';
-import { httpGet } from '../../actions/data.action';
-import { hideLoader } from '../../helpers/loader';
+import Layout from '../../layout';
+import { httpGet } from '../../../actions/data.action';
+import { hideLoader } from '../../../helpers/loader';
 
 class StaffList extends Component {
   constructor(props){
