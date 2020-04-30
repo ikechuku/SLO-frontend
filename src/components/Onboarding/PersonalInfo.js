@@ -14,6 +14,8 @@ import { validateData, validateD } from '../../helpers/validations';
 import { showLoader, hideLoader } from '../../helpers/loader';
 import { getDialCode, getAllDialCode, countryCodes } from '../../helpers/dailCodes';
 
+const date_format = 'DD/MM/YYYY';
+
 class PersonalInfo extends Component {
   constructor(props){
     super(props)
@@ -40,7 +42,7 @@ class PersonalInfo extends Component {
       customSkills: null,
       customHobbies: null,
       customReligion: null,
-      customDob: null,
+      customDob: undefined,
       firstNameErrorMessage: null,
       lastNameErrorMessage: null,
       middleNameErrorMessage: null,
@@ -928,6 +930,12 @@ class PersonalInfo extends Component {
     const { data } = this.state;
     const newUploads = data.uploads !== undefined ? data.uploads : [];
 
+    const CustomInput = ({ value, onClick }) => (
+      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')"
+        value={this.state.customDob === undefined ? undefined : moment(this.state.customDob).format(date_format)} onClick={onClick}
+      />
+    );
+
     return (
       <Layout page="staff">
         <div className="app-content">
@@ -1032,6 +1040,7 @@ class PersonalInfo extends Component {
                             showMonthDropdown
                             showYearDropdown
                             dropdownMode="select"
+                            customInput={<CustomInput />}
                           />
                           <br/>
                           <span className="text-danger">{this.state.dobErrorMessage !== null ? this.state.dobErrorMessage : ''}</span>

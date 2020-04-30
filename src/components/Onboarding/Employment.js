@@ -13,6 +13,8 @@ import { validateEmploymentInfoForm, validateEmpoymentFields } from '../../helpe
 import CustomSelect from '../../helpers/Select2';
 import { object } from 'prop-types';
 
+const date_format = 'DD/MM/YYYY';
+
 class Employment extends Component {
 	constructor(props){
 		super(props)
@@ -35,9 +37,9 @@ class Employment extends Component {
       unitOptions: [],
       roleOptions: [],
       customBranchId: null,
-      customDateOfResumption: null,
+      customDateOfResumption: undefined,
       customDepartmentId: null,
-      customEmploymentDate: null,
+      customEmploymentDate: undefined,
       customJobTitle: null,
       customRank: null,
       customUnitId: null,
@@ -547,6 +549,17 @@ class Employment extends Component {
   }
 	
   render() {
+    const CustomInput = ({ value, onClick }) => (
+      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')"
+        value={this.state.customDateOfResumption === undefined ? undefined : moment(this.state.customDateOfResumption).format(date_format)} onClick={onClick}
+      />
+    );
+    const CustomInput2 = ({ value, onClick }) => (
+      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')"
+        value={this.state.customEmploymentDate === undefined ? undefined : moment(this.state.customEmploymentDate).format(date_format)} onClick={onClick}
+      />
+    );
+
     return (
       <Layout>
         <div class="app-content">
@@ -668,6 +681,7 @@ class Employment extends Component {
                             showMonthDropdown
                             showYearDropdown
                             dropdownMode="select"
+                            customInput={<CustomInput />}
                           />
 													<span className="text-danger">{this.state.errorMessage2 !== null ? this.state.errorMessage2 : ''}</span>
 												</div>
@@ -683,6 +697,7 @@ class Employment extends Component {
                             showMonthDropdown
                             showYearDropdown
                             dropdownMode="select"
+                            customInput={<CustomInput2 />}
                           />
 													<span className="text-danger">{this.state.errorMessage9 !== null ? this.state.errorMessage9 : ''}</span>
 												</div>

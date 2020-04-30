@@ -99,6 +99,16 @@ input::placeholder {
   font-weight: bold;
 }
 
+.add-delete {
+  text-decoration: underline !important;
+  cursor: pointer;
+  color: blue !important
+}
+
+.add-delete:hover {
+  color: red !important
+}
+
 .font-bold {
   font-weight: 600!important;
 }
