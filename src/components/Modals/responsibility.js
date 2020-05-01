@@ -1,11 +1,11 @@
 import React from "react";
-
+import Select from "react-select";
 const BranchModal = (props) => {
 	return (
 		<div
 			class="modal fade"
-			id="branchModal"
-			tabindex="-1"
+			id="roleModal"
+			tabIndex="-1"
 			role="dialog"
 			aria-hidden="true"
 		>
@@ -13,7 +13,9 @@ const BranchModal = (props) => {
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="example-Modal3">
-							CREATE NEW Responsibility
+							{props.modalMode === "create"
+								? "CREATE NEW RESPONSIBILITY"
+								: "EDIT RESPONSIBILITY"}
 						</h5>
 						<button
 							type="button"
@@ -29,35 +31,38 @@ const BranchModal = (props) => {
 						<form>
 							<div class="form-group">
 								<label for="recipient-name" class="form-control-label">
-									Responsibility Name
+									Responsibility Title
 								</label>
 								<input
-									onChange={props.handleChange}
-									value={props.responsibility.name}
-									name="name"
 									type="text"
 									class="form-control"
-									id="recipient-name"
+									value={props.responsibility.name}
+									name="name"
+									onChange={props.handleChange}
 								/>
+								<span className="text-danger">
+									{props.errorMessage1 !== null ? props.errorMessage1 : ""}
+								</span>
 							</div>
 
-							<label for="recipient-name" class="form-control-label">
-								Roles
-							</label>
-							<select
-								value={props.responsibility.role}
-								name="role"
-								onChange={props.handleChange}
-								class="form-control sel"
-								id="exampleFormControlSelect1"
-							>
-								<option value="">Select Role</option>
-								<option value="North Central">IT DPT1</option>
-								<option value="North East">IT DPT2</option>
-								<option value="North West">IT DPT3</option>
-								<option value="South East">IT DPT4</option>
-								<option value="South West">IT DPT5</option>
-							</select>
+							<div class="form-group">
+								<label for="recipient-name" class="form-control-label">
+									Select Responsibility
+								</label>
+								<Select
+									className="w-100 pr-0 pl-0 col-md-12 mr-1"
+									// defaultValue={props.postData.businessCountry}
+									value={props.customSelect1}
+									onChange={(e) => props.handleChange(e, "roleId")}
+									options={props.roleOptions}
+									isSearchable="true"
+									name="roleId"
+									placeholder="Select"
+								/>
+								<span className="text-danger">
+									{props.errorMessage2 !== null ? props.errorMessage2 : ""}
+								</span>
+							</div>
 						</form>
 					</div>
 					<div class="modal-footer">
@@ -69,6 +74,11 @@ const BranchModal = (props) => {
 						>
 							Close
 						</button>
+						{/* {
+              props.modalMode === 'create' ?
+                <button type="button" class="btn btn-primary" onClick={props.handleCreate}>Create</button> :
+                <button type="button" class="btn btn-primary" onClick={props.handleUpdate}>Update</button>
+            } */}
 						<button
 							type="button"
 							class="btn btn-primary"

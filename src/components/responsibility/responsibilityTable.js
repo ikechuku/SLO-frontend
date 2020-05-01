@@ -9,16 +9,16 @@ export default class branchTable extends Component {
 	}
 
 	bodyRow = () => {
-		const body = this.props.branches.map((data, index) => ({
-			responsibilityName: data.name,
-			roles: data.roles,
+		const body = this.props.responsibilities.map((data, index) => ({
+			ResponsibilityName: data.name,
+			roles: data.role.title,
 
 			action: (
 				<a>
 					<span
 						class="edit"
 						data-toggle="modal"
-						data-target="#branchModal"
+						data-target="#roleModal"
 						onClick={() => this.props.handleEdit(data.id)}
 					>
 						Edit
@@ -35,12 +35,11 @@ export default class branchTable extends Component {
 	header = () => {
 		const header = [
 			{
-				title: "Responsibility Name (filterable)",
-				prop: "Responsibilities",
+				title: "responsibility Name (filterable)",
+				prop: "ResponsibilityName",
 				sortable: true,
 				filterable: true,
 			},
-
 			{ title: "roles", prop: "roles", sortable: true },
 			{ title: "Actions", prop: "action" },
 		];
