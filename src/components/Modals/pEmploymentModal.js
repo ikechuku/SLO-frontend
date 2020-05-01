@@ -191,6 +191,7 @@ export class PreviousEmploymentModal extends Component {
                           value={this.props.previousEmployment.email}
                           placeholder="Eg. Ikeja, Lagos" 
                         />
+                        <span className="text-danger">{this.props.previousEmploymentErrors.email !== '' ? this.props.previousEmploymentErrors.email : ''}</span>
                       </div>
                     </div>
                     <div className="form-group row" style={this.props.previousEmployment.objectReference === 'Yes' ? {display: 'none'} : {}}>
@@ -203,6 +204,7 @@ export class PreviousEmploymentModal extends Component {
                           value={this.props.previousEmployment.phoneNumber}
                           placeholder="Eg. Ikeja, Lagos" 
                         />
+                        <span className="text-danger">{this.props.previousEmploymentErrors.phoneNumber !== '' ? this.props.previousEmploymentErrors.phoneNumber : ''}</span>
                       </div>
                     </div>
 

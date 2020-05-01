@@ -477,7 +477,43 @@ class Qualification extends Component {
     } else if(details.name === 'objectReference'){
       previousEmployment[details.name] = details.value;
       previousEmploymentErrors[details.name] = '';
+      if(details.value === 'Yes') previousEmploymentErrors['email'] = '';
+      if(details.value === 'No'){
+        const isValidate = await validateD('email', '');
+        if(!isValidate.error){
+          previousEmploymentErrors['email'] = isValidate.errorMessage;
+          this.setState({ previousEmploymentErrors });
+          return;
+        } else {
+          previousEmploymentErrors['email'] = '';
+          this.setState({ previousEmploymentErrors })
+        }
+      }
       this.setState({ previousEmployment, previousEmploymentErrors });
+    } else if(details.name === 'email'){
+      previousEmployment[details.name] = details.value;
+      this.setState({ previousEmployment });
+      const isValidate = await validateD(e.target.name, e.target.value);
+      if(!isValidate.error){
+        previousEmploymentErrors[details.name] = isValidate.errorMessage;
+        this.setState({ previousEmploymentErrors });
+        return;
+      } else {
+        previousEmploymentErrors[details.name] = '';
+        this.setState({ previousEmploymentErrors })
+      }
+    } else if(details.name === 'phoneNumber'){
+      previousEmployment[details.name] = details.value;
+      this.setState({ previousEmployment });
+      const isValidate = await validateD(e.target.name, e.target.value);
+      if(!isValidate.error){
+        previousEmploymentErrors[details.name] = isValidate.errorMessage;
+        this.setState({ previousEmploymentErrors });
+        return;
+      } else {
+        previousEmploymentErrors[details.name] = '';
+        this.setState({ previousEmploymentErrors })
+      }
     } else{
       previousEmployment[details.name] = details.value;
       this.setState({ previousEmployment });
@@ -544,11 +580,16 @@ class Qualification extends Component {
       return false;
     }
 
-    const { 
-      endDateErrorMssg3, endDateErrorMssg4, endDateErrorMssg7
-    } = this.state;
-
-    if(endDateErrorMssg3 !== null || endDateErrorMssg4 !== null, endDateErrorMssg7 !== null){
+    if( previousEmploymentErrors.employerName !== '' || 
+        previousEmploymentErrors.address !== '' || 
+        previousEmploymentErrors.role !== '' || 
+        previousEmploymentErrors.startDate !== '' ||
+        previousEmploymentErrors.endDate !== '' ||
+        previousEmploymentErrors.objectReference !== '' ||
+        previousEmploymentErrors.documentId !== '' ||
+        previousEmploymentErrors.email !== '' ||
+        previousEmploymentErrors.phoneNumber !== ''
+    ){
       hideLoader()
       return NotificationManager.warning('Complete all required fields')
     }
@@ -766,6 +807,7 @@ class Qualification extends Component {
 
   saveDoc = async (uploadType) => {
     try{
+      showLoader();
       const { id } = this.props.match.params;
       const { 
         documents, pageMode, qualification, 
@@ -802,6 +844,33 @@ class Qualification extends Component {
           }
         }
       } else {
+        let formData = new FormData();
+        if(uploadType === 'qualification') formData.append('qualification', documents.qualification);
+        if(uploadType === 'certification') formData.append('certification', documents.certification);
+        if(uploadType === 'previousEmployment') formData.append('previousEmployment', documents.previousEmployment);
+
+        const res = await httpPostFormData(`auth/upload_onboarding_two/${id}`, formData);
+        if(res.code === 201){
+          hideLoader();
+          if(uploadType === 'qualification'){
+            qualification['documentId'] = res.data.upload.id;
+            qualification['path'] = res.data.upload.path;
+            qualificationErrors['documentId'] = '';
+            this.setState({ qualification, qualificationErrors });
+          }
+          if(uploadType === 'certification'){
+            certification['documentId'] = res.data.upload.id;
+            certification['path'] = res.data.upload.path;
+            certificationErrors['documentId'] = '';
+            this.setState({ certification, certificationErrors });
+          }
+          if(uploadType === 'previousEmployment'){
+            previousEmployment['documentId'] = res.data.upload.id;
+            previousEmployment['path'] = res.data.upload.path;
+            previousEmploymentErrors['documentId'] = '';
+            this.setState({ previousEmployment, previousEmploymentErrors });
+          }
+        }
         // let formData = new FormData();
         // formData.append('passportPhotograph', uploadBody.passportPhotograph);
         // formData.append('identification', uploadBody.identification);
@@ -822,32 +891,40 @@ class Qualification extends Component {
 
   deleteDoc = async (id, type) => {
     try{
+      showLoader();
       if(type === 'qualification'){
         const res = await httpDelete(`auth/document/${id}`);
         if(res.code === 200){
+          hideLoader();
           const { qualification } = this.state;
           qualification['documentId'] = '';
           qualification['path'] = ''
           this.setState({ qualification });
         }
+        hideLoader();
       } else if(type === 'certification'){
         const res = await httpDelete(`auth/document/${id}`);
         if(res.code === 200){
+          hideLoader();
           const { certification } = this.state;
           certification['documentId'] = '';
           certification['path'] = ''
           this.setState({ certification });
         }
+        hideLoader();
       } else {
         const res = await httpDelete(`auth/document/${id}`);
         if(res.code === 200){
+          hideLoader();
           const { previousEmployment } = this.state;
           previousEmployment['documentId'] = '';
           previousEmployment['path'] = ''
           this.setState({ previousEmployment });
         }
+        hideLoader();
       }
     }catch(error){
+      hideLoader();
       console.log(error)
     }
   }
@@ -1054,7 +1131,7 @@ class Qualification extends Component {
                           // onClick={() => this.props.history.push('/create_staff/two')}
                           onClick={this.handleSave}
                         ><i class="fa fa-save"></i> SAVE</button>
-                        <button type="submit" class="btn btn-primary" onClick={this.handleSubmit}><i class="fa fa-arrow-right"></i> NEXT</button>
+                        <button type="submit" class="btn btn-primary" onClick={this.handleSubmit}><i class="fa fa-arrow-right"></i> {this.state.pageMode === 'create' ? 'NEXT' : 'UPDATE & CONTINUE'}</button>
                       </div>
                     </div>
 

@@ -549,12 +549,6 @@ class PersonalInfo extends Component {
       return NotificationManager.warning('Complete all required fields');
     }
 
-    if(uploadBody.identification === undefined && uploadBody.passportPhotograph === undefined){
-      hideLoader();
-      NotificationManager.warning('Passport & Means of Identification are required')
-      return;
-    }
-
 
     if(this.state.pageMode === 'edit'){
       try {
@@ -586,6 +580,13 @@ class PersonalInfo extends Component {
         console.log(error)
       }
     } else {
+
+      if(uploadBody.identification === undefined && uploadBody.passportPhotograph === undefined){
+        hideLoader();
+        NotificationManager.warning('Passport & Means of Identification are required')
+        return;
+      }
+      
       try{
         if(btnType === 'submit'){
           const res = await httpPost('auth/create_staff', this.state.data);
@@ -663,11 +664,12 @@ class PersonalInfo extends Component {
 
   deleteDoc = async (id) => {
     try{
-
+      showLoader();
       const res = await httpDelete(`auth/document/${id}`);
 
       if(res.code === 200){
-        this.getUserDetails()
+        hideLoader();
+        this.getUserDetails(this.state.userId)
       }
     }catch(error){
       console.log(error)
@@ -1274,7 +1276,7 @@ class PersonalInfo extends Component {
 
                             <Select
                               className="w-100 pr-0 pl-0 col-md-3 mr-1"
-                              defaultValue={this.state.customCurrentCountry}
+                              value={this.state.customCurrentCountry}
                               onChange={e => this.handleCustomSelect(e, 'currentCountry')}
                               options={countryLists}
                               isSearchable="true"
@@ -1368,6 +1370,7 @@ class PersonalInfo extends Component {
                               newUploads.length ?
                                 newUploads.map(data => (
                                   <tr>
+                                    {console.log(data)}
                                     <td>{data.fileName}</td>
                                     <td>{<a href={`${data.path}`} target="_blank">View document</a>}</td>
                                     <td><a className="ml-3 text-danger" onClick={() => this.deleteDoc(data.id)} style={{ cursor: 'pointer' }}>Delete</a></td>

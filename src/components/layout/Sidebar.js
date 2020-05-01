@@ -62,7 +62,7 @@ export default function Sidebar(props) {
 								<li><Link className="slide-item">Qualification and Experience</Link></li>
                 <li><Link className="slide-item">Employment Information</Link></li>
                 <li><Link className="slide-item">Guarantor Information</Link></li>
-                <li><Link className="slide-item">Upload</Link></li>
+                {/* <li><Link className="slide-item">Upload</Link></li> */}
                 <li><Link to="/staff_list" className="slide-item">Staff List</Link></li>
 							</ul>
 						</li>
