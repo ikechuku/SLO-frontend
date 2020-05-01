@@ -125,6 +125,23 @@ const validateD = (name, value) => {
     }
   }
 
+  if(name === 'phoneNumber'){
+    if (value === '' || value === null || value === undefined || !value.length){
+      return {
+        error: true
+      }
+    } else if(!(validation.isPhoneNumber(value))){
+      return {
+        error,
+        errorMessage: 'Phone number must be valid: 10 characters and only numbers'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
+
   if(name === 'firstName'){
     if (value === '' || value === null || value === undefined || !value.length){
       return {
@@ -659,7 +676,7 @@ const validateEmploymentInfoForm = (postData) => {
   }
 }
 
-const validateEmpoymentFields = (name, value) => {
+const validateEmpoymentFields = (name, value, otherDate) => {
   let error = false;
   if(name === 'rank'){
     if (value === '' || value === null || value === undefined){
@@ -679,6 +696,13 @@ const validateEmpoymentFields = (name, value) => {
       return {
         error,
         errorMessage: 'Date of resumption is required'
+      }
+    }
+
+    if(new Date(value) < new Date(otherDate)){
+      return {
+        error,
+        errorMessage: 'The Date of Resumption should be equal or higher than Employment date'
       }
     }
 

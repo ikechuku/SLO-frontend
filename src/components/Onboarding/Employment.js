@@ -56,7 +56,7 @@ class Employment extends Component {
       // console.log(e, newDate)
       postData[nameValue] = e;
       this.setState({ postData, customDateOfResumption: e });
-      const isValidate = await validateEmpoymentFields(nameValue, this.state.postData.dateOfResumption);
+      const isValidate = await validateEmpoymentFields(nameValue, this.state.postData.dateOfResumption, this.state.postData.employmentDate);
       if(!isValidate.error){
         this.setState({ 
           errorMessage2: isValidate.errorMessage, 
@@ -496,14 +496,15 @@ class Employment extends Component {
           departmentId,
           branch,
           unit,
-          department
+          department,
+          role
         } = res.data.employmentInfo;
         const customRank = { value: rank, label: rank };
         const customUnitId = { value: unitId, label: unit.name };
         const customEmploymentDate = moment(employmentDate).toDate();
         const customDateOfResumption = moment(dateOfResumption).toDate();
         const customBranchId = { value: branchId, label: branch.name }
-        const customJobTitle = { value: jobTitle, label: jobTitle };
+        const customJobTitle = { value: jobTitle, label: role.title };
         const customDepartmentId = { value: departmentId, label: department.name }
 
         this.setState({
@@ -669,6 +670,22 @@ class Employment extends Component {
 												</div>
 											</div>
                       <div className="form-group row">
+                      <label for="inputName" className="col-md-2 col-form-label">Employment Date <span className="impt">*</span></label>
+												<div className="col-md-4 c-date-picker">
+                          <DatePicker
+                            className="form-control"
+                            placeholderText="Click to select a date"
+                            selected={this.state.customEmploymentDate}
+                            onChange={(e) => this.handleChange(e, 'employmentDate')}
+                            dateFormat="yyyy/MM/dd"
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            customInput={<CustomInput2 />}
+                          />
+													<span className="text-danger">{this.state.errorMessage9 !== null ? this.state.errorMessage9 : ''}</span>
+												</div>
                       <label for="inputName" className="col-md-2 col-form-label">Date of Resumption <span className="impt">*</span></label>
 												<div className="col-md-4 c-date-picker">
                           <DatePicker
@@ -684,22 +701,6 @@ class Employment extends Component {
                             customInput={<CustomInput />}
                           />
 													<span className="text-danger">{this.state.errorMessage2 !== null ? this.state.errorMessage2 : ''}</span>
-												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Employment Date <span className="impt">*</span></label>
-												<div className="col-md-4 c-date-picker">
-                          <DatePicker
-                            className="form-control"
-                            placeholderText="Click to select a date"
-                            selected={this.state.customEmploymentDate}
-                            onChange={(e) => this.handleChange(e, 'employmentDate')}
-                            dateFormat="yyyy/MM/dd"
-                            peekNextMonth
-                            showMonthDropdown
-                            showYearDropdown
-                            dropdownMode="select"
-                            customInput={<CustomInput2 />}
-                          />
-													<span className="text-danger">{this.state.errorMessage9 !== null ? this.state.errorMessage9 : ''}</span>
 												</div>
 											</div>
                       <div className="form-group row" style={{display: 'none'}}>
