@@ -20,6 +20,7 @@ export default class branchTable extends Component {
 						data-toggle="modal"
 						data-target="#roleModal"
 						onClick={() => this.props.handleEdit(data.id)}
+						data-backdrop="static"
 					>
 						Edit
 					</span>

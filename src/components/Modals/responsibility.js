@@ -36,7 +36,11 @@ const BranchModal = (props) => {
 								<input
 									type="text"
 									class="form-control"
-									value={props.responsibility.name}
+									value={
+										props.responsibility === null
+											? ""
+											: props.responsibility.name
+									}
 									name="name"
 									onChange={props.handleChange}
 								/>

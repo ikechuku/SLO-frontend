@@ -113,11 +113,16 @@ export default class branch extends Component {
 
 	handleDelete = async (id) => {
 		showLoader();
+		const { responsibilities } = this.state;
 		try {
 			const res = await httpDelete(`responsibility/delete/${id}`);
 			if (res.code === 200) {
 				hideLoader();
-				this.getBranch();
+				this.setState({
+					responsibilities: responsibilities.filter(
+						(responsibility) => responsibility.id !== id
+					),
+				});
 			}
 		} catch (error) {
 			hideLoader();
@@ -187,7 +192,7 @@ export default class branch extends Component {
 			errorMessage1: null,
 			errorMessage2: null,
 
-			// responsibilities: null,
+			responsibility: null,
 		});
 	};
 
@@ -236,6 +241,7 @@ export default class branch extends Component {
 													class="btn "
 													data-toggle="modal"
 													data-target="#roleModal"
+													data-backdrop="static"
 												>
 													CREATE NEW
 												</button>
