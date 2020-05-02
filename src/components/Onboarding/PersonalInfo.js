@@ -933,7 +933,7 @@ class PersonalInfo extends Component {
     const newUploads = data.uploads !== undefined ? data.uploads : [];
 
     const CustomInput = ({ value, onClick }) => (
-      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')"
+      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')" onKeyPress={e => e.preventDefault()}
         value={this.state.customDob === undefined ? undefined : moment(this.state.customDob).format(date_format)} onClick={onClick}
       />
     );
@@ -1042,6 +1042,7 @@ class PersonalInfo extends Component {
                             showMonthDropdown
                             showYearDropdown
                             dropdownMode="select"
+                            popperPlacement='left'
                             customInput={<CustomInput />}
                           />
                           <br/>

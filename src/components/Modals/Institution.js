@@ -29,12 +29,12 @@ export class QualificationModal extends Component {
   render(){
     const CustomInput = ({ value, onClick }) => (
       <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')"
-        value={this.props.date1 === undefined ? undefined : moment(this.props.date1).format(date_format)} onClick={onClick}
+        value={this.props.date1 === undefined ? undefined : moment(this.props.date1).format(date_format)} onClick={onClick} onKeyPress={e => e.preventDefault()}
       />
     );
 
     const CustomInput2 = ({ value, onClick }) => (
-      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')"
+      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')" onKeyPress={e => e.preventDefault()}
       value={this.props.date2 === undefined ? undefined : moment(this.props.date2).format(date_format)} onClick={onClick}
       />
     );
@@ -123,6 +123,7 @@ export class QualificationModal extends Component {
                           showMonthDropdown
                           showYearDropdown
                           dropdownMode="select"
+                          popperPlacement='right'
                           customInput={<CustomInput />}
                         />
                         <br/>
@@ -247,12 +248,12 @@ export class CertificationModal extends Component {
   render(){
     const CustomInput = ({ value, onClick }) => (
       <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')"
-        value={this.props.date3 === undefined ? undefined : moment(this.props.date3).format(date_format)} onClick={onClick}
+        value={this.props.date3 === undefined ? undefined : moment(this.props.date3).format(date_format)} onClick={onClick} onKeyPress={e => e.preventDefault()}
       />
     );
 
     const CustomInput2 = ({ value, onClick }) => (
-      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')"
+      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')" onKeyPress={e => e.preventDefault()}
       value={this.props.date4 === undefined ? undefined : moment(this.props.date4).format(date_format)} onClick={onClick}
       />
     );
@@ -332,6 +333,7 @@ export class CertificationModal extends Component {
                           showMonthDropdown
                           showYearDropdown
                           dropdownMode="select"
+                          popperPlacement='right'
                           customInput={<CustomInput />}
                         />
                         <span className="text-danger">{this.props.endDateErrorMssg6 !== null ? this.props.endDateErrorMssg6 : ''}</span><br/>

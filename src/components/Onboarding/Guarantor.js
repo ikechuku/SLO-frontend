@@ -58,9 +58,11 @@ class Guarantor extends Component {
                 nationality: '',
                 state: '',
                 lga: '',
-                bvn: ''
+                bvn: '',
+                documentId: []
             },
             moreData: [],
+            documents: [],
             pageMode: 'create',
             errorMessage1: null,
             errorMessage2: null,
@@ -104,24 +106,42 @@ class Guarantor extends Component {
 
         if (details.name === 'employeeKnownMonth') {
             console.log(details.value)
-            if (this.state.postData.employeeKnownYear === '' || this.state.postData.employeeKnownYear === null) {
+            if (postData.employeeKnownYear === '' || postData.employeeKnownYear === null) {
                 postData['employeeKnownDate'] = `${details.value} months`;
                 postData['employeeKnownMonth'] = details.value;
                 this.setState({postData, errorMessage6: null})
             } else {
-                postData['employeeKnownDate'] = `${this.state.postData.employeeKnownYear} years and ${details.value} months`;
-                postData['employeeKnownMonth'] = details.value;
-                this.setState({postData, errorMessage6: null})
+                if(postData.employeeKnownYear === 1){
+                  postData['employeeKnownDate'] = `${postData.employeeKnownYear} year and ${details.value} months`;
+                  postData['employeeKnownMonth'] = details.value;
+                  this.setState({postData, errorMessage6: null})
+                } else {
+                  postData['employeeKnownDate'] = `${postData.employeeKnownYear} years and ${details.value} months`;
+                  postData['employeeKnownMonth'] = details.value;
+                  this.setState({postData, errorMessage6: null})
+                }
             }
         } else if (details.name === 'employeeKnownYear') {
-            if (this.state.postData.employeeKnownMonth === '' || this.state.postData.employeeKnownMonth === null) {
+            if (postData.employeeKnownMonth === '' || postData.employeeKnownMonth === null) {
+              if(postData.employeeKnownYear === 1){
+                postData['employeeKnownDate'] = `${details.value} year`;
+                postData['employeeKnownYear'] = details.value;
+                this.setState({postData, errorMessage7: null})
+              } else {
                 postData['employeeKnownDate'] = `${details.value} years`;
                 postData['employeeKnownYear'] = details.value;
                 this.setState({postData, errorMessage7: null})
+              }
             } else {
-                postData['employeeKnownDate'] = `${details.value} years and ${this.state.postData.employeeKnownMonth} months`;
+              if(postData.employeeKnownYear === 1){
+                postData['employeeKnownDate'] = `${details.value} year and ${postData.employeeKnownMonth} months`;
                 postData['employeeKnownYear'] = details.value;
                 this.setState({postData, errorMessage7: null})
+              } else {
+                postData['employeeKnownDate'] = `${details.value} years and ${postData.employeeKnownMonth} months`;
+                postData['employeeKnownYear'] = details.value;
+                this.setState({postData, errorMessage7: null})
+              }
             }
         } else if (details.name === 'criminalHistory') {
             let value;
@@ -372,8 +392,9 @@ class Guarantor extends Component {
             });
         } else if (name === 'state') {
             postData[name] = value;
+            postData['lga'] = '';
             this.setState({
-                postData, customState: result
+                postData, customState: result, customLga: null
             });
         } else if (name === 'lga') {
             postData[name] = value;
@@ -391,6 +412,15 @@ class Guarantor extends Component {
         // this.setState({
         // 	postData
         // });
+    }
+
+    collectDocument = (document, id) => {
+      const { postData } = this.state;
+      postData['documentId'] = [...postData.documentId, id];
+        this.setState({ 
+          documents: [...this.state.documents, document],
+          postData
+        })
     }
 
     addMore = async (event) => {
@@ -428,7 +458,8 @@ class Guarantor extends Component {
             employeeKnownYear,
             employeeKnownMonth,
             criminalHistory,
-            details
+            details,
+            documentId
         } = this.state.postData;
 
         console.log(this.state.postData)
@@ -471,6 +502,10 @@ class Guarantor extends Component {
         //         }
         //     }
         // }
+        
+        if(!documentId.length){
+          return NotificationManager.warning('Upload documents are required');
+        }
 
         if (this.state.modalMode === 'edit') {
             await this.setState({moreData: [...this.state.moreData].filter((data, index) => index !== parseInt(this.state.editIndex))})
@@ -526,7 +561,9 @@ class Guarantor extends Component {
                 employeeKnownYear: '',
                 employeeKnownMonth: '',
                 criminalHistory: '',
+                documentId: []
             },
+            documents: [],
             modalMode: 'create',
             editIndex: null,
             customSelect1: null,
@@ -560,6 +597,14 @@ class Guarantor extends Component {
         $('.modal-backdrop').remove();
     }
 
+    // getDocumentByIds = () => {
+    //   try{
+
+    //   }catch(error){
+    //     console.log(error)
+    //   }
+    // }
+
     handleEdit = async (indexValue) => {
         const {id} = this.props.match.params;
         await this.setState({
@@ -568,12 +613,25 @@ class Guarantor extends Component {
         });
 
         const {
-            mobilePhoneCode, homePhoneCode, businessPhoneCode,
-            relationship, occupation, residentialCountry, landedPropertyCountry,
-            businessCountry, nationality, state, lga, residentialState, residentialLga,
-            permanentCountry, permanentState, permanentLga, landedPropertyState, landedPropertyLga,
-            businessState, businessLga, employeeKnownDate
+          mobilePhoneCode, homePhoneCode, businessPhoneCode,
+          relationship, occupation, residentialCountry, landedPropertyCountry,
+          businessCountry, nationality, state, lga, residentialState, residentialLga,
+          permanentCountry, permanentState, permanentLga, landedPropertyState, landedPropertyLga,
+          businessState, businessLga, employeeKnownDate, documentId
         } = this.state.postData;
+
+        // console.log(documentId);
+        // return;
+        const postDocument = { documentId };
+        try {
+          const res = await httpPost('auth/guarantor_docs', postDocument);
+          if(res.code === 200){
+            this.setState({ documents: res.data.documents });
+          }
+        }catch(error){
+          console.log(error);
+          return;
+        }
 
         const customSelect1 = {value: mobilePhoneCode, label: mobilePhoneCode};
         const customSelect2 = {value: homePhoneCode, label: homePhoneCode};
@@ -685,6 +743,8 @@ class Guarantor extends Component {
                 businessCity: '',
                 maritalStatus: '',
                 employeeKnownDate: '',
+                employeeKnownYear: '',
+                employeeKnownMonth: '',
                 criminalHistory: '',
                 nationality: '',
                 state: '',
@@ -946,7 +1006,9 @@ class Guarantor extends Component {
                     mainCustomState={this.state}
                     handleChange={this.handleChange}
                     addMore={this.addMore}
+                    passDocument={this.collectDocument}
                     postData={this.state.postData}
+                    documents={this.state.documents}
                     getLGA={this.getLGA}
                     userId={this.state.userId}
                     handleCustomSelect={this.handleCustomSelect}

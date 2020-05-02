@@ -31,7 +31,7 @@ export class GuarantorModal extends Component {
     componentDidMount() {
         const all_years = [];
         const all_months = [];
-        for (var i=1; i<=30; i++){
+        for (var i=1; i<=35; i++){
             all_years.push(i)
         }
         for (var k=6; k<=11; k++){
@@ -72,6 +72,7 @@ export class GuarantorModal extends Component {
 
             let formData = new FormData();
             if (fileName === 'nationalId') formData.append('nationalId', postBody.nationalId);
+            if (fileName === 'passportPhoto') formData.append('passportPhoto', postBody.passportPhoto);
             if (fileName === 'votersCard') formData.append('votersCard', postBody.votersCard);
             if (fileName === 'internationalPassport') formData.append('internationalPassport', postBody.internationalPassport);
             if (fileName === 'driversLicense') formData.append('driversLicense', postBody.driversLicense);
@@ -82,8 +83,9 @@ export class GuarantorModal extends Component {
             const res = await httpPostFormData(`auth/onboarding_five/${id}`, formData);
             if (res.code === 201) {
                 hideLoader();
+                this.props.passDocument(res.data.upload, res.data.upload.id);
                 this.setState({
-                    documents: [...this.state.documents, res.data.upload],
+                    // documents: [...this.state.documents, res.data.upload],
                     fileName: ''
                 });
                 this.refs.path.value = '';
@@ -1062,6 +1064,7 @@ export class GuarantorModal extends Component {
                                                 >
                                                     <option value="">Select File</option>
                                                     <option value="nationalId">National ID</option>
+                                                    <option value="passportPhoto">Passport Photograph</option>
                                                     <option value="votersCard">Voters Card</option>
                                                     <option value="driversLicense">Driver's Licence</option>
                                                     <option value="internationalPassport">International Passport
@@ -1074,7 +1077,7 @@ export class GuarantorModal extends Component {
                                             <label for="inputName" className="col-md-3 col-form-label">Upload
                                                 Document</label>
                                             <div className="col-md-3">
-                                                <input required type="file"
+                                                <input type="file"
                                                        className="form-control"
                                                        name="path"
                                                        onChange={this.upload}
@@ -1086,7 +1089,7 @@ export class GuarantorModal extends Component {
                                         <br/>
 
                                         <div className="col col-md-12 pr-0 pl-0"
-                                             style={!this.state.documents.length ? {display: 'none'} : {}}>
+                                             style={!this.props.documents.length ? {display: 'none'} : {}}>
                                             <div class="table-responsive">
                                                 <table class="table table-bordered table-hover mb-0 text-nowrap">
                                                     <thead>
@@ -1099,8 +1102,8 @@ export class GuarantorModal extends Component {
                                                     </thead>
                                                     <tbody>
                                                     {
-                                                        this.state.documents.length ?
-                                                            this.state.documents.map(data => (
+                                                        this.props.documents.length ?
+                                                            this.props.documents.map(data => (
                                                                 <tr>
                                                                     <td>{data.fileName}</td>
                                                                     <td>{<a href={`${data.path}`} target="_blank">View

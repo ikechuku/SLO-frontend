@@ -98,9 +98,11 @@ class Employment extends Component {
 
     } else if(nameValue === 'departmentId'){
       postData['departmentId'] = e.value;
+      postData['unitId'] = '';
       this.setState({ 
         postData,
         customDepartmentId: e,
+        customUnitId: null,
         errorMessage8: null 
       })
       this.getUnits();
@@ -448,7 +450,7 @@ class Employment extends Component {
   getRoleFromDept = () => {
     const { postData, roles } = this.state;
     let newRoles = [];
-    if(postData.departmentId === null || postData.departmentId === undefined){
+    if(postData.departmentId === null || postData.departmentId === undefined || postData.departmentId === ''){
       return null
     }
     newRoles = [...roles].filter(item => item.departmentId === postData.departmentId);
@@ -551,12 +553,12 @@ class Employment extends Component {
 	
   render() {
     const CustomInput = ({ value, onClick }) => (
-      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')"
+      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')" onKeyPress={e => e.preventDefault()}
         value={this.state.customDateOfResumption === undefined ? undefined : moment(this.state.customDateOfResumption).format(date_format)} onClick={onClick}
       />
     );
     const CustomInput2 = ({ value, onClick }) => (
-      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')"
+      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')" onKeyPress={e => e.preventDefault()}
         value={this.state.customEmploymentDate === undefined ? undefined : moment(this.state.customEmploymentDate).format(date_format)} onClick={onClick}
       />
     );
