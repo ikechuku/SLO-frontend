@@ -11,11 +11,11 @@ import {
 	httpPatch,
 } from "../../actions/data.action";
 import { hideLoader, showLoader } from "../../helpers/loader";
-// import "./branchStyle/branch.css";
+// import "./branchStyle/responsibilities.css";
 import ResponsibilityTable from "./responsibilityTable";
 import ResponsibilityModal from "../Modals/responsibility";
 
-export default class branch extends Component {
+export default class responsibilities extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -71,14 +71,14 @@ export default class branch extends Component {
 	};
 
 	componentDidMount() {
-		this.getBranch();
+		this.getResponsibility();
 		this.getRoles();
 	}
 
-	getBranch = async () => {
+	getResponsibility = async () => {
 		try {
 			const res = await httpGet("responsibilities");
-			showLoader();
+
 			console.log(res);
 			if (res.code === 200) {
 				this.setState({ responsibilities: res.data.responsibilities });
@@ -175,7 +175,7 @@ export default class branch extends Component {
 				$(".modal-backdrop").remove();
 			}
 		}
-		this.getBranch();
+		this.getResponsibility();
 		this.clearState();
 		hideLoader();
 	};
@@ -212,7 +212,7 @@ export default class branch extends Component {
 			errorMessage2,
 		} = this.state;
 		return (
-			<Layout page="roles">
+			<Layout page="responsibility">
 				<div class="app-content">
 					<section class="section">
 						<ol class="breadcrumb">
@@ -227,7 +227,7 @@ export default class branch extends Component {
 								</a>
 							</li>
 							<li class="breadcrumb-item active text-" aria-current="page">
-								Role
+								Responsibility
 							</li>
 						</ol>
 						<div class="section-body">

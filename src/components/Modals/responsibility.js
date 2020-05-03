@@ -1,6 +1,6 @@
 import React from "react";
 import Select from "react-select";
-const BranchModal = (props) => {
+const ResponsibilityModal = (props) => {
 	return (
 		<div
 			class="modal fade"
@@ -51,7 +51,7 @@ const BranchModal = (props) => {
 
 							<div class="form-group">
 								<label for="recipient-name" class="form-control-label">
-									Select Responsibility
+									Select Role
 								</label>
 								<Select
 									className="w-100 pr-0 pl-0 col-md-12 mr-1"
@@ -97,4 +97,4 @@ const BranchModal = (props) => {
 	);
 };
 
-export default BranchModal;
+export default ResponsibilityModal;

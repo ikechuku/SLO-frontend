@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ReactTooltip from "react-tooltip";
 import Table from "../../helpers/customTable";
 
-export default class branchTable extends Component {
+export default class responsibilityTable extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
