@@ -32,13 +32,22 @@ export class GuarantorModal extends Component {
         const all_years = [];
         const all_months = [];
         for (var i=1; i<=35; i++){
-            all_years.push(i)
+            if(i === 1){
+                all_years.push(`${i} year`)
+            } else {
+                all_years.push(`${i} years`)
+            }
         }
         for (var k=6; k<=11; k++){
-            all_months.push(k)
+            all_months.push(`${k} months`)
         }
-        this.setState({years: [...all_years], months: [...all_months]})
-    }
+        this.setState({years: [...all_years], months: [...all_months], fileName: '' })
+		}
+		
+		handleClose = () => {
+			this.props.closeModal();
+			this.setState({ fileName: '' });
+		}
 
     handleChange = (e) => {
         this.setState({[e.target.name]: e.target.value});
@@ -88,26 +97,12 @@ export class GuarantorModal extends Component {
                     // documents: [...this.state.documents, res.data.upload],
                     fileName: ''
                 });
-                this.refs.path.value = '';
+                this.refs.fileRef.value = '';
             }
         } catch (error) {
             hideLoader();
             console.log(error)
         }
-    }
-
-    deleteDoc = async (id) => {
-        try {
-
-            const res = await httpDelete(`auth/document/${id}`);
-
-            if (res.code === 200) {
-                this.setState({documents: [...this.state.documents.filter(item => item.id !== id)]});
-            }
-        } catch (error) {
-            console.log(error)
-        }
-
     }
 
 
@@ -481,7 +476,7 @@ export class GuarantorModal extends Component {
                                 <h5 class="modal-title"
                                     id="example-Modal3">{this.props.modalMode === 'create' ? 'ADD A GUARANTOR' : 'EDIT GUARANTOR DETAILS'}</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                                        onClick={this.props.closeModal}>
+                                        onClick={this.handleClose}>
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -990,8 +985,8 @@ export class GuarantorModal extends Component {
                       onChange={this.props.handleChange}
                       value={this.props.postData.employeeKnownDate}
                     /> */}
-                                                <select required={(!this.props.mainCustomState.postData.employeeKnownMonth)} value={this.props.mainCustomState.postData.employeeKnownYear} onChange={this.props.handleChange} className="form-control" name="employeeKnownYear" id="">
-                                                    <option value="">Year</option>
+                                                <select required={(!this.props.mainCustomState.postData.employeeKnownMonth)} value={this.props.mainCustomState.postData.employeeKnownYear} onChange={this.props.handleChange}  className="form-control" name="employeeKnownYear" id="">
+                                                    <option value=""  disabled selected>Select Year</option>
                                                     {this.state.years.map(item=>(
                                                         <option value={item}>{item}</option>
                                                     ))}
@@ -999,7 +994,7 @@ export class GuarantorModal extends Component {
                                             </div>
                                             <div className="col-md-3">
                                                 <select required={(!this.props.mainCustomState.postData.employeeKnownYear)} value={this.props.mainCustomState.postData.employeeKnownMonth} onChange={this.props.handleChange} className="form-control" name="employeeKnownMonth" id="">
-                                                    <option value="">Month</option>
+                                                    <option value=""  disabled selected>Select Month</option>
                                                     {this.state.months.map(item=>(
                                                         <option value={item}>{item}</option>
                                                     ))}
@@ -1047,7 +1042,8 @@ export class GuarantorModal extends Component {
                               className="form-control"
                               name="details"
                               onChange={this.props.handleChange}
-                              value={this.props.postData.details}
+															value={this.props.postData.details}
+															rows="4"
                     ></textarea>
                                             </div>
                                         </div>
@@ -1081,7 +1077,8 @@ export class GuarantorModal extends Component {
                                                        className="form-control"
                                                        name="path"
                                                        onChange={this.upload}
-                                                       id="select-file"
+																											 id="select-file"
+																											 ref='fileRef'
                                                 />
                                             </div>
                                         </div>
@@ -1109,7 +1106,7 @@ export class GuarantorModal extends Component {
                                                                     <td>{<a href={`${data.path}`} target="_blank">View
                                                                         document</a>}</td>
                                                                     <td><a className="ml-3 text-danger"
-                                                                           onClick={() => this.deleteDoc(data.id)}
+                                                                           onClick={() => this.props.deleteDoc(data.id)}
                                                                            style={{cursor: 'pointer'}}>Delete</a></td>
                                                                 </tr>
                                                             )) : ''
@@ -1123,7 +1120,7 @@ export class GuarantorModal extends Component {
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-dismiss="modal"
-                                            onClick={this.props.closeModal}>Close
+                                            onClick={this.handleClose}>Close
                                     </button>
                                     <button type="submit"
                                             class="btn btn-primary">{this.props.modalMode === 'create' ? 'ADD' : 'UPDATE'}</button>

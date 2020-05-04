@@ -29,6 +29,7 @@ class Employment extends Component {
 			errorMessage6: null,
 			errorMessage7: null,
       errorMessage8: null,
+      errorMessage9: null,
       units: [],
       roles: [],
       branches: [],
@@ -337,11 +338,9 @@ class Employment extends Component {
         }
       } else {
         if(btnType === 'submit'){
-          const res = await httpPatch(`auth/edit_onboarding_three/${id}`, data);
-          if(res.code === 201){
+          const res = await httpPost(`auth/edit_onboarding_three/${id}`, data);
+          if(res.code === 200){
             hideLoader();
-            // setState({ userId: res.data.id });
-            // return this.props.history.push(`/create_staff/four/${res.data.id}`)
             return this.props.history.push({
               pathname: `/create_staff/four/${res.data.id}`,
               backurl: `/create_staff/three/${res.data.id}`,
@@ -350,8 +349,8 @@ class Employment extends Component {
             });
           }
         } else {
-          const res = await httpPatch(`auth/edit_onboarding_three/${id}`, data);
-          if(res.code === 201){
+          const res = await httpPost(`auth/edit_onboarding_three/${id}`, data);
+          if(res.code === 200){
             hideLoader();
           }
         }
@@ -728,7 +727,7 @@ class Employment extends Component {
                             class="btn btn-info mr-5"
 														onClick={e => this.handleSave(e,'save')}
                           ><i class="fa fa-save"></i> SAVE</button>
-													<button type="submit" class="btn btn-primary" onClick={e => this.handleSubmit(e,'submit')} ><i class="fa fa-arrow-right"></i> NEXT</button>
+													<button type="submit" class="btn btn-primary" onClick={e => this.handleSubmit(e,'submit')} ><i class="fa fa-arrow-right"></i> {this.state.pageMode === 'create' ? 'NEXT' : 'UPDATE & CONTINUE'}</button>
 												</div>
 											</div>
                     </form>

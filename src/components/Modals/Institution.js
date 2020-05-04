@@ -39,6 +39,8 @@ export class QualificationModal extends Component {
       />
     );
 
+    const filePath = this.props.qualification.upload !== undefined ? this.props.qualification.upload : '';
+
     return (
       <div>
         <div class="modal fade" id="qualificationModal" data-backdrop="static" data-keyboard="false" tabIndex="-1" role="dialog" aria-hidden="true">
@@ -167,7 +169,7 @@ export class QualificationModal extends Component {
                           ref='filepath'
                         />
                         <span className="text-danger">{this.props.qualificationErrors.documentId !== '' ? this.props.qualificationErrors.documentId : ''}</span>
-                        <a style={(this.props.qualification.documentId === undefined || this.props.qualification.documentId === '')  ? { display: 'none' } : {}}><a className="add-more mr-2" href={`${this.props.qualification.path}`} target="_blank">View document</a> <span className="add-delete" onClick={() => this.handleDelete(this.props.qualification.documentId, 'qualification')}>delete</span></a>
+                        <a style={(this.props.qualification.documentId === undefined || this.props.qualification.documentId === '')  ? { display: 'none' } : {}}>{this.props.modalMode === 'create' ? <a className="add-more mr-2" href={`${this.props.qualification.path}`} target="_blank">View document</a> : <a className="add-more mr-2" href={`${filePath.path}`} target="_blank">View document</a>} <span className="add-delete" onClick={() => this.handleDelete(this.props.qualification.documentId, 'qualification')}>delete</span></a>
                       </div>
                     </div>
                     <div className="form-group row">
@@ -257,6 +259,9 @@ export class CertificationModal extends Component {
       value={this.props.date4 === undefined ? undefined : moment(this.props.date4).format(date_format)} onClick={onClick}
       />
     );
+
+    const filePath = this.props.certification.upload !== undefined ? this.props.certification.upload : '';
+    
     return (
       <div>
         <div class="modal fade" id="certificationModal" data-backdrop="static" data-keyboard="false" tabIndex="-1" role="dialog" aria-hidden="true">
@@ -370,7 +375,9 @@ export class CertificationModal extends Component {
                           ref='filepath'
                         />
                         <span className="text-danger">{this.props.certificationErrors.documentId !== '' ? this.props.certificationErrors.documentId : ''}</span>
-                        <a style={(this.props.certification.documentId === undefined || this.props.certification.documentId === '')  ? { display: 'none' } : {}}><a className="add-more mr-2" href={`${this.props.certification.path}`} target="_blank">View document</a> <span className="add-delete" onClick={() => this.handleDelete(this.props.certification.documentId, 'certification')}>delete</span></a>
+                        <a style={(this.props.certification.documentId === undefined || this.props.certification.documentId === '')  ? { display: 'none' } : {}}>
+                        {this.props.modalMode === 'create' ? <a className="add-more mr-2" href={`${this.props.certification.path}`} target="_blank">View document</a> : <a className="add-more mr-2" href={`${filePath.path}`} target="_blank">View document</a> } <span className="add-delete" onClick={() => this.handleDelete(this.props.certification.documentId, 'certification')}>delete</span>
+                        </a>
                       </div>
                     </div>
 

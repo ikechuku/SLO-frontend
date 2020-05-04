@@ -12,7 +12,7 @@ class StaffList extends Component {
   constructor(props){
     super(props)
     this.state = {
-      users: []
+      users: [],
     }
   }
   
@@ -25,7 +25,9 @@ class StaffList extends Component {
       const res = await httpGet('auth/all_staffs', this.state.data);
       if(res.code === 200){
         hideLoader()
-        this.setState({ users: res.data.users });
+        this.setState({ 
+          users: res.data.users
+        });
       }
     } catch (error){
       hideLoader()
@@ -71,16 +73,17 @@ class StaffList extends Component {
   // <span className="ml-3 cursor-pointer" onClick={e => this.navigateToEdit(e, data.id, data.onBoarding)}>Edit</span>
 
   bodyRow = () => {
-    const body = this.state.users.map((data, index) => (
-      {
+    const body = this.state.users.map((data, index) => {
+      const role = data.employmentInfo.length ? data.employmentInfo[0].role : ''
+      return {
         "sn": `${index + 1}`,
         "fullname": <span>{data.lastName} {data.firstName}</span>,
-        "position": data.jobTitle || '',
+        "position": role.title || '',
         "startdate": <Moment format='MMM DD, YYYY'>{data.createdAt}</Moment>,
         "status": data.applicationStatus || '',
         "action": <a><Link to={`/view_details/${data.id}`} className="add-more">View Details</Link></a>
       }
-    ));
+    });
     return body;
   }
 

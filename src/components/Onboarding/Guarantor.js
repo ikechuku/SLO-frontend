@@ -101,47 +101,30 @@ class Guarantor extends Component {
     }
 
     handleChange = async (e, nameValue) => {
-        const {postData} = this.state;
+				const {postData} = this.state;
         let details = e !== null ? e.target : '';
 
         if (details.name === 'employeeKnownMonth') {
-            console.log(details.value)
             if (postData.employeeKnownYear === '' || postData.employeeKnownYear === null) {
                 postData['employeeKnownDate'] = `${details.value} months`;
                 postData['employeeKnownMonth'] = details.value;
                 this.setState({postData, errorMessage6: null})
             } else {
-                if(postData.employeeKnownYear === 1){
-                  postData['employeeKnownDate'] = `${postData.employeeKnownYear} year and ${details.value} months`;
-                  postData['employeeKnownMonth'] = details.value;
-                  this.setState({postData, errorMessage6: null})
-                } else {
-                  postData['employeeKnownDate'] = `${postData.employeeKnownYear} years and ${details.value} months`;
-                  postData['employeeKnownMonth'] = details.value;
-                  this.setState({postData, errorMessage6: null})
-                }
+                postData['employeeKnownDate'] = `${postData.employeeKnownYear} and ${details.value}`;
+                postData['employeeKnownMonth'] = details.value;
+                this.setState({postData, errorMessage6: null})
             }
         } else if (details.name === 'employeeKnownYear') {
             if (postData.employeeKnownMonth === '' || postData.employeeKnownMonth === null) {
-              if(postData.employeeKnownYear === 1){
-                postData['employeeKnownDate'] = `${details.value} year`;
-                postData['employeeKnownYear'] = details.value;
-                this.setState({postData, errorMessage7: null})
-              } else {
-                postData['employeeKnownDate'] = `${details.value} years`;
+              {
+                postData['employeeKnownDate'] = details.value;
                 postData['employeeKnownYear'] = details.value;
                 this.setState({postData, errorMessage7: null})
               }
             } else {
-              if(postData.employeeKnownYear === 1){
-                postData['employeeKnownDate'] = `${details.value} year and ${postData.employeeKnownMonth} months`;
+                postData['employeeKnownDate'] = `${details.value} and ${postData.employeeKnownMonth}`;
                 postData['employeeKnownYear'] = details.value;
                 this.setState({postData, errorMessage7: null})
-              } else {
-                postData['employeeKnownDate'] = `${details.value} years and ${postData.employeeKnownMonth} months`;
-                postData['employeeKnownYear'] = details.value;
-                this.setState({postData, errorMessage7: null})
-              }
             }
         } else if (details.name === 'criminalHistory') {
             let value;
@@ -228,7 +211,6 @@ class Guarantor extends Component {
                 if (item.homePhone === details.value) {
                     test = true;
                 }
-                console.log(item, details.value)
             })
             const isValidate = await validateGuarantorFields(e.target.name, e.target.value);
             if (!isValidate.error) {
@@ -287,7 +269,7 @@ class Guarantor extends Component {
     }
 
     handleCustomSelect = (result, name) => {
-        const {postData} = this.state;
+				const {postData} = this.state;
         const value = result !== null ? result.value : ''
         if (name === 'mobilePhoneCode') {
             postData[name] = value;
@@ -328,7 +310,8 @@ class Guarantor extends Component {
         } else if (name === 'residentialState') {
             postData[name] = value;
             this.setState({
-                postData, customResidentialState: result
+                postData, customResidentialState: result,
+                customResidentialLga: null
             });
         } else if (name === 'residentialLga') {
             postData[name] = value;
@@ -343,7 +326,8 @@ class Guarantor extends Component {
         } else if (name === 'permanentState') {
             postData[name] = value;
             this.setState({
-                postData, customPermanentState: result
+                postData, customPermanentState: result,
+                customPermanentLga: null
             });
         } else if (name === 'permanentLga') {
             postData[name] = value;
@@ -358,7 +342,8 @@ class Guarantor extends Component {
         } else if (name === 'landedPropertyState') {
             postData[name] = value;
             this.setState({
-                postData, customLandedPropertyState: result
+                postData, customLandedPropertyState: result,
+                customLandedPropertyLga: null
             });
         } else if (name === 'landedPropertyLga') {
             postData[name] = value;
@@ -373,7 +358,8 @@ class Guarantor extends Component {
         } else if (name === 'businessState') {
             postData[name] = value;
             this.setState({
-                postData, customBusinessState: result
+                postData, customBusinessState: result,
+                customBusinessLga: null
             });
         } else if (name === 'businessLga') {
             postData[name] = value;
@@ -415,13 +401,29 @@ class Guarantor extends Component {
     }
 
     collectDocument = (document, id) => {
-      const { postData } = this.state;
+			const { postData } = this.state;
       postData['documentId'] = [...postData.documentId, id];
         this.setState({ 
           documents: [...this.state.documents, document],
           postData
         })
-    }
+		}
+		
+		deleteDoc = async (id) => {
+			try {
+				const { postData } = this.state;
+				const res = await httpDelete(`auth/document/${id}`);
+				if (res.code === 200) {
+					postData['documentId'] = [...this.state.postData.documentId].filter(item => item !== id);
+					this.setState({
+						documents: [...this.state.documents].filter(item => item.id !== id),
+						postData
+					});
+				}
+			} catch (error) {
+				console.log(error)
+			}
+		}
 
     addMore = async (event) => {
         event.preventDefault();
@@ -561,7 +563,8 @@ class Guarantor extends Component {
                 employeeKnownYear: '',
                 employeeKnownMonth: '',
                 criminalHistory: '',
-                documentId: []
+                documentId: [],
+                details: ''
             },
             documents: [],
             modalMode: 'create',
@@ -749,8 +752,11 @@ class Guarantor extends Component {
                 nationality: '',
                 state: '',
                 lga: '',
-                bvn: '',
-            },
+								bvn: '',
+								details: '',
+								documentId: []
+						},
+						documents: [],
             modalMode: 'create',
             editIndex: null,
             customSelect1: null,
@@ -1043,7 +1049,8 @@ class Guarantor extends Component {
                     getBusinessLgaOption={this.getBusinessLgaOption}
                     modalMode={this.state.modalMode}
                     closeModal={this.closeModal}
-                    bvnErrorMessage={this.state.bvnErrorMessage}
+										bvnErrorMessage={this.state.bvnErrorMessage}
+										deleteDoc={this.deleteDoc}
                 />
             </Layout>
         )

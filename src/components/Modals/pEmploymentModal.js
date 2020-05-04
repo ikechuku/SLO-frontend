@@ -44,6 +44,8 @@ export class PreviousEmploymentModal extends Component {
       />
     );
 
+    const filePath = this.props.previousEmployment.upload !== undefined ? this.props.previousEmployment.upload : '';
+
     return (
       <div>
         <div class="modal fade" id="employmentModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style={{ overflowY: 'scroll'}}>
@@ -159,7 +161,9 @@ export class PreviousEmploymentModal extends Component {
                           ref='filepath'
                         />
                         <span className="text-danger">{this.props.previousEmploymentErrors.documentId !== '' ? this.props.previousEmploymentErrors.documentId : ''}</span>
-                        <a style={(this.props.previousEmployment.documentId === undefined || this.props.previousEmployment.documentId === '')  ? { display: 'none' } : {}}><a className="add-more mr-2" href={`${this.props.previousEmployment.path}`} target="_blank">View document</a> <span className="add-delete" onClick={() => this.handleDelete(this.props.previousEmployment.documentId, 'previousEmployment')}>delete</span></a>
+                        <a style={(this.props.previousEmployment.documentId === undefined || this.props.previousEmployment.documentId === '')  ? { display: 'none' } : {}}>
+                      {this.props.modalMode === 'create' ? <a className="add-more mr-2" href={`${this.props.previousEmployment.path}`} target="_blank">View document</a> : <a className="add-more mr-2" href={`${filePath.path}`} target="_blank">View document</a> } <span className="add-delete" onClick={() => this.handleDelete(this.props.previousEmployment.documentId, 'previousEmployment')}>delete</span>
+                        </a>
                       </div>
                     </div>
 
