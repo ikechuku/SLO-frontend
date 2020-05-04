@@ -1,7 +1,6 @@
 import React from "react";
 import Select from "react-select";
-
-export function RoleModal(props) {
+const ResponsibilityModal = (props) => {
 	return (
 		<div
 			class="modal fade"
@@ -15,8 +14,8 @@ export function RoleModal(props) {
 					<div class="modal-header">
 						<h5 class="modal-title" id="example-Modal3">
 							{props.modalMode === "create"
-								? "CREATE NEW JOB TITLE"
-								: "EDIT JOB TITLE"}
+								? "CREATE NEW RESPONSIBILITY"
+								: "EDIT RESPONSIBILITY"}
 						</h5>
 						<button
 							type="button"
@@ -32,13 +31,17 @@ export function RoleModal(props) {
 						<form>
 							<div class="form-group">
 								<label for="recipient-name" class="form-control-label">
-									Job Title
+									Responsibility Title
 								</label>
 								<input
 									type="text"
 									class="form-control"
-									value={props.role.title}
-									name="title"
+									value={
+										props.responsibility === null
+											? ""
+											: props.responsibility.name
+									}
+									name="name"
 									onChange={props.handleChange}
 								/>
 								<span className="text-danger">
@@ -48,37 +51,21 @@ export function RoleModal(props) {
 
 							<div class="form-group">
 								<label for="recipient-name" class="form-control-label">
-									Departments
+									Select Role
 								</label>
 								<Select
 									className="w-100 pr-0 pl-0 col-md-12 mr-1"
 									// defaultValue={props.postData.businessCountry}
 									value={props.customSelect1}
-									onChange={(e) => props.handleChange(e, "departmentId")}
-									options={props.departmentOptions}
+									onChange={(e) => props.handleChange(e, "roleId")}
+									options={props.roleOptions}
 									isSearchable="true"
-									name="departmentId"
+									name="roleId"
 									placeholder="Select"
 								/>
 								<span className="text-danger">
 									{props.errorMessage2 !== null ? props.errorMessage2 : ""}
 								</span>
-							</div>
-
-							<div class="form-group">
-								<label for="recipient-name" class="form-control-label">
-									Units
-								</label>
-								<Select
-									className="w-100 pr-0 pl-0 col-md-12 mr-1"
-									// defaultValue={props.postData.businessCountry}
-									value={props.customSelect2}
-									onChange={(e) => props.handleChange(e, "unitId")}
-									options={props.unitOptions}
-									isSearchable="true"
-									name="UnitId"
-									placeholder="Select"
-								/>
 							</div>
 						</form>
 					</div>
@@ -108,4 +95,6 @@ export function RoleModal(props) {
 			</div>
 		</div>
 	);
-}
+};
+
+export default ResponsibilityModal;

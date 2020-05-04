@@ -5,6 +5,7 @@ import PersonalInfo from "./components/Onboarding/PersonalInfo";
 import Qualification from "./components/Onboarding/Qualification2";
 import Employment from "./components/Onboarding/Employment";
 import Guarantor from "./components/Onboarding/Guarantor";
+// gurantor refer to personalInfo
 import Upload from "./components/Onboarding/Upload";
 import PendingApplication from "./components/Onboarding/Pending";
 import StaffList from "./components/Onboarding/StaffList";

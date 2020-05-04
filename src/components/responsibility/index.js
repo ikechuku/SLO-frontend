@@ -1,85 +1,283 @@
+import React, { Component } from "react";
+import $ from "jquery";
+import { NotificationManager } from "react-notifications";
+import axios from "axios";
+import { modal } from "bootstrap";
+import Layout from "../layout/index";
+import {
+	httpPost,
+	httpGet,
+	httpDelete,
+	httpPatch,
+} from "../../actions/data.action";
+import { hideLoader, showLoader } from "../../helpers/loader";
+// import "./branchStyle/responsibilities.css";
+import ResponsibilityTable from "./responsibilityTable";
+import ResponsibilityModal from "../Modals/responsibility";
 
-import React, { Component } from 'react'
-import Layout from '../layout/index'
-import ResponsibilityTable from './responsibilityTable'
-import  './responsibility.css'
+export default class responsibilities extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			responsibility: {},
+			responsibilities: [],
 
-export default class responsibilty extends Component {
+			roles: [],
+			modalMode: "create",
+			role: {},
+			currentEditId: null,
+			roleOptions: [],
+			customSelect1: null,
+
+			errorMessage1: null,
+			errorMessage2: null,
+		};
+	}
+	getRoles = async () => {
+		try {
+			const res = await httpGet("roles");
+			showLoader();
+			if (res.code === 200) {
+				let optionList = [];
+				await [...res.data.roles].map((data) =>
+					optionList.push({ value: data.id, label: data.title })
+				);
+
+				this.setState({
+					roles: res.data.roles,
+					roleOptions: optionList,
+				});
+				console.log(this.state.roleOptions);
+				hideLoader();
+			}
+		} catch (error) {
+			hideLoader();
+			console.log(error);
+		}
+	};
+	handleChange = async (e, name) => {
+		const { responsibility } = this.state;
+		if (name === "roleId") {
+			responsibility[name] = e.value;
+			await this.setState({
+				responsibility,
+				customSelect1: e,
+				errorMessage2: null,
+			});
+		} else {
+			responsibility[e.target.name] = e.target.value;
+			this.setState({ responsibility, errorMessage1: null });
+		}
+	};
+
+	componentDidMount() {
+		this.getResponsibility();
+		this.getRoles();
+	}
+
+	getResponsibility = async () => {
+		try {
+			const res = await httpGet("responsibilities");
+
+			console.log(res);
+			if (res.code === 200) {
+				this.setState({ responsibilities: res.data.responsibilities });
+				hideLoader();
+			}
+		} catch (error) {
+			hideLoader();
+			console.log(error);
+		}
+	};
+
+	handleEdit = async (id) => {
+		showLoader();
+		const res = await httpGet(`/responsibility/${id}`);
+		console.log(res.data);
+		hideLoader();
+		if (res.code === 200) {
+			const customSelect1 = {
+				value: res.data.responsibility.role.title,
+				label: res.data.responsibility.role.title,
+			};
+
+			this.setState({
+				responsibility: res.data.responsibility,
+				currentEditId: id,
+				customSelect1: customSelect1,
+				modalMode: "edit",
+			});
+			console.log(this.state.responsibility);
+		}
+	};
+
+	handleDelete = async (id) => {
+		showLoader();
+		const { responsibilities } = this.state;
+		try {
+			const res = await httpDelete(`responsibility/delete/${id}`);
+			if (res.code === 200) {
+				hideLoader();
+				this.setState({
+					responsibilities: responsibilities.filter(
+						(responsibility) => responsibility.id !== id
+					),
+				});
+			}
+		} catch (error) {
+			hideLoader();
+			console.log(error);
+		}
+	};
+
+	handleSubmit = async (btnType) => {
+		showLoader();
+		const {
+			responsibility,
+			currentEditId,
+			modalMode,
+			errorMessage1,
+			errorMessage2,
+		} = this.state;
+
+		if (responsibility.name === undefined || responsibility.name === "") {
+			hideLoader();
+			this.setState({ errorMessage1: "Responsibility name is required" });
+			return;
+		}
+
+		if (responsibility.roleId === undefined || responsibility.roleId === "") {
+			hideLoader();
+			this.setState({ errorMessage2: "Role is required" });
+			return;
+		}
+
+		if (errorMessage1 !== null || errorMessage2 !== null) {
+			hideLoader();
+			return NotificationManager.warning("Complete all required fields");
+		}
+
+		if (modalMode === "create") {
+			const res = await httpPost(`responsibility/create`, responsibility);
+			if (res.code === 201) {
+				$(".modal").modal("hide");
+				$(document.body).removeClass("modal-open");
+				$(".modal-backdrop").remove();
+			}
+		} else {
+			const res = await httpPatch(
+				`responsibility/update/${currentEditId}`,
+				responsibility
+			);
+			if (res.code === 200) {
+				$(".modal").modal("hide");
+				$(document.body).removeClass("modal-open");
+				$(".modal-backdrop").remove();
+			}
+		}
+		this.getResponsibility();
+		this.clearState();
+		hideLoader();
+	};
+
+	clearState = () => {
+		this.setState({
+			role: {
+				title: "",
+			},
+			modalMode: "create",
+			currentEditId: null,
+			customSelect1: null,
+			customSelect2: null,
+			errorMessage1: null,
+			errorMessage2: null,
+
+			responsibility: null,
+		});
+	};
+
+	closeModal = () => {
+		this.clearState();
+	};
+
 	render() {
+		const {
+			responsibility,
+			modalMode,
+			role,
+			roleOptions,
+			customSelect1,
+			customSelect2,
+			errorMessage1,
+			errorMessage2,
+		} = this.state;
 		return (
 			<Layout page="responsibility">
-			<div class="app-content">
-			<section class="section">
-			<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="#" class="text-muted">Home</a></li>
-			<li class="breadcrumb-item"><a href="#" class="text-muted">Performance</a></li>
-			<li class="breadcrumb-item active text-" aria-current="page">Branch</li>
-			</ol>
-			<div class="section-body">
-			<div class="row">
+				<div class="app-content">
+					<section class="section">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item">
+								<a href="#" class="text-muted">
+									Home
+								</a>
+							</li>
+							<li class="breadcrumb-item">
+								<a href="#" class="text-muted">
+									Performance
+								</a>
+							</li>
+							<li class="breadcrumb-item active text-" aria-current="page">
+								Responsibility
+							</li>
+						</ol>
+						<div class="section-body">
+							<div class="row">
+								<div class="col-md-7">
+									<div class="card">
+										<div class="card-header custom-header">
+											<div className="col col-md-12">
+												<button
+													type="button"
+													class="btn "
+													data-toggle="modal"
+													data-target="#roleModal"
+													data-backdrop="static"
+												>
+													CREATE NEW
+												</button>
+												{/* <div class="inputf">
+														<input placeholder="Input a Branch Name"/><button className="search-bt">Search</button>
+												</div> */}
+											</div>
+										</div>
 
-			<div class="col-lg-12">
-					
-			<div class="card department-table-card">
-
-			<div class="card-body department-table">
-				<div class="card-header custom-header">
-				<button type="button" class="btn " data-toggle="modal" data-target="#exampleModal3">CREATE NEW</button>
-				{/* <div class="inputf">
-								<input placeholder="Input a Branch Name"/><button className="search-bt">Search</button>
-						</div> */}
-							</div>
-
-							<ResponsibilityTable/>
-
+										<div class="card-body">
+											<ResponsibilityTable
+												responsibilities={this.state.responsibilities}
+												modalMode={modalMode}
+												handleEdit={this.handleEdit}
+												handleDelete={this.handleDelete}
+											/>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
-				</div>
+					</section>
 				</div>
 
-
-
-				</section>
-				</div>
-				<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog"  aria-hidden="true">
-				<div class="modal-dialog" role="document">
-				<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="example-Modal3">CREATE NEW RESPONSIBILITY</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<form>
-					<div class="form-group">
-					<label for="recipient-name" class="form-control-label">Responsibility Name</label>
-						<input type="text" class="form-control" id="recipient-name"/>
-					</div>
-
-				
-
-					<label for="recipient-name" class="form-control-label">Avalable Roles</label>
-					<select    class="form-control sel" id="exampleFormControlSelect1">
-																			
-						<option value="nonex">Select Roles</option>
-						<option value="RegionA">Region A</option>
-						<option value="RegionB">Region B</option>
-						<option value="RegionC">Region C</option>
-						<option value="RegionD">Region D</option>
-					</select>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Create Now</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</Layout>
-		)
+				<ResponsibilityModal
+					responsibility={responsibility}
+					roleOptions={roleOptions}
+					customSelect1={customSelect1}
+					handleChange={this.handleChange}
+					handleSubmit={this.handleSubmit}
+					closeModal={this.closeModal}
+					modalMode={modalMode}
+					errorMessage1={errorMessage1}
+					errorMessage2={errorMessage2}
+				/>
+			</Layout>
+		);
 	}
 }
-
