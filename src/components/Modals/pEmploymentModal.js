@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import DatePicker from "react-datepicker";
+import Select from 'react-select';
 import moment from 'moment';
+import { countryCodes } from '../../helpers/dailCodes';
 
 const date_format = 'DD/MM/YYYY';
 
@@ -24,18 +26,25 @@ export class PreviousEmploymentModal extends Component {
     this.refs.filepath.value = '';
   }
 
+  onKey = (e) => {
+    // console.log('here!!!')
+    return e.preventDefault();
+  }
+
   render() {
     const CustomInput = ({ value, onClick }) => (
-      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')"
-        value={this.props.date5 === undefined ? undefined : moment(this.props.date5).format(date_format)} onClick={onClick}
+      <input className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')"
+        value={this.props.date5 === undefined ? undefined : moment(this.props.date5).format(date_format)} onClick={onClick} onKeyPress={e => this.onKey(e)}
       />
     );
 
     const CustomInput2 = ({ value, onClick }) => (
-      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')"
+      <input className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')" onKeyPress={e => this.onKey(e)}
       value={this.props.date6 === undefined ? undefined : moment(this.props.date6).format(date_format)} onClick={onClick}
       />
     );
+
+    const filePath = this.props.previousEmployment.upload !== undefined ? this.props.previousEmployment.upload : '';
 
     return (
       <div>
@@ -109,6 +118,7 @@ export class PreviousEmploymentModal extends Component {
                           placeholderText="Click to select a date"
                           peekNextMonth
                           showMonthDropdown
+                          popperPlacement='right'
                           showYearDropdown
                           dropdownMode="select"
                           customInput={<CustomInput />}
@@ -132,6 +142,7 @@ export class PreviousEmploymentModal extends Component {
                           showMonthDropdown
                           showYearDropdown
                           dropdownMode="select"
+                          popperPlacement='right'
                           customInput={<CustomInput2 />}
                         />
                         <br/>
@@ -150,7 +161,9 @@ export class PreviousEmploymentModal extends Component {
                           ref='filepath'
                         />
                         <span className="text-danger">{this.props.previousEmploymentErrors.documentId !== '' ? this.props.previousEmploymentErrors.documentId : ''}</span>
-                        <a style={(this.props.previousEmployment.documentId === undefined || this.props.previousEmployment.documentId === '')  ? { display: 'none' } : {}}><a className="add-more mr-2" href={`${this.props.previousEmployment.path}`} target="_blank">View document</a> <span className="add-delete" onClick={() => this.handleDelete(this.props.previousEmployment.documentId, 'previousEmployment')}>delete</span></a>
+                        <a style={(this.props.previousEmployment.documentId === undefined || this.props.previousEmployment.documentId === '')  ? { display: 'none' } : {}}>
+                      {this.props.modalMode === 'create' ? <a className="add-more mr-2" href={`${this.props.previousEmployment.path}`} target="_blank">View document</a> : <a className="add-more mr-2" href={`${filePath.path}`} target="_blank">View document</a> } <span className="add-delete" onClick={() => this.handleDelete(this.props.previousEmployment.documentId, 'previousEmployment')}>delete</span>
+                        </a>
                       </div>
                     </div>
 
@@ -173,7 +186,7 @@ export class PreviousEmploymentModal extends Component {
                             className="minimal mr-2"
                             onChange={this.props.handlePrevious}
                             value='No'
-                            checked={(this.props.previousEmployment.objectReference === 'No' || this.props.previousEmployment.objectReference === undefined) ? true : ''} 
+                            checked={(this.props.previousEmployment.objectReference === 'No' || this.props.previousEmployment.objectReference === undefined || this.props.previousEmployment.objectReference === false) ? true : ''} 
                           />
                           No
                         </label>
@@ -197,6 +210,19 @@ export class PreviousEmploymentModal extends Component {
                     <div className="form-group row" style={this.props.previousEmployment.objectReference === 'Yes' ? {display: 'none'} : {}}>
                       <label for="inputName" className="col-md-5 col-form-label">Employer Phone Number</label>
                       <div className="col-md-7">
+                      <div class="input-group mb-3">
+                          <div class="input-group-prepend select2-padding">
+                            <Select
+                              className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
+                              value={this.props.customPhoneNumberCode}
+                              onChange={e => this.props.handlePrevious(e, 'phoneNumberCode')}
+                              options={countryCodes}
+                              isSearchable="true"
+                              name="phoneNumberCode"
+                              placeholder="Select"
+                            />
+                            <span className="text-danger">{this.props.previousEmploymentErrors.phoneNumberCode !== '' ? this.props.previousEmploymentErrors.phoneNumberCode : ''}</span>
+                          </div>
                         <input type="text" 
                           className="form-control"
                           name="phoneNumber"
@@ -204,6 +230,7 @@ export class PreviousEmploymentModal extends Component {
                           value={this.props.previousEmployment.phoneNumber}
                           placeholder="Eg. Ikeja, Lagos" 
                         />
+                        </div>
                         <span className="text-danger">{this.props.previousEmploymentErrors.phoneNumber !== '' ? this.props.previousEmploymentErrors.phoneNumber : ''}</span>
                       </div>
                     </div>

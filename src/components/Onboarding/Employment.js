@@ -29,6 +29,7 @@ class Employment extends Component {
 			errorMessage6: null,
 			errorMessage7: null,
       errorMessage8: null,
+      errorMessage9: null,
       units: [],
       roles: [],
       branches: [],
@@ -98,9 +99,11 @@ class Employment extends Component {
 
     } else if(nameValue === 'departmentId'){
       postData['departmentId'] = e.value;
+      postData['unitId'] = '';
       this.setState({ 
         postData,
         customDepartmentId: e,
+        customUnitId: null,
         errorMessage8: null 
       })
       this.getUnits();
@@ -335,11 +338,9 @@ class Employment extends Component {
         }
       } else {
         if(btnType === 'submit'){
-          const res = await httpPatch(`auth/edit_onboarding_three/${id}`, data);
-          if(res.code === 201){
+          const res = await httpPost(`auth/edit_onboarding_three/${id}`, data);
+          if(res.code === 200){
             hideLoader();
-            // setState({ userId: res.data.id });
-            // return this.props.history.push(`/create_staff/four/${res.data.id}`)
             return this.props.history.push({
               pathname: `/create_staff/four/${res.data.id}`,
               backurl: `/create_staff/three/${res.data.id}`,
@@ -348,8 +349,8 @@ class Employment extends Component {
             });
           }
         } else {
-          const res = await httpPatch(`auth/edit_onboarding_three/${id}`, data);
-          if(res.code === 201){
+          const res = await httpPost(`auth/edit_onboarding_three/${id}`, data);
+          if(res.code === 200){
             hideLoader();
           }
         }
@@ -448,7 +449,7 @@ class Employment extends Component {
   getRoleFromDept = () => {
     const { postData, roles } = this.state;
     let newRoles = [];
-    if(postData.departmentId === null || postData.departmentId === undefined){
+    if(postData.departmentId === null || postData.departmentId === undefined || postData.departmentId === ''){
       return null
     }
     newRoles = [...roles].filter(item => item.departmentId === postData.departmentId);
@@ -551,12 +552,12 @@ class Employment extends Component {
 	
   render() {
     const CustomInput = ({ value, onClick }) => (
-      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')"
+      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')" onKeyPress={e => e.preventDefault()}
         value={this.state.customDateOfResumption === undefined ? undefined : moment(this.state.customDateOfResumption).format(date_format)} onClick={onClick}
       />
     );
     const CustomInput2 = ({ value, onClick }) => (
-      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')"
+      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')" onKeyPress={e => e.preventDefault()}
         value={this.state.customEmploymentDate === undefined ? undefined : moment(this.state.customEmploymentDate).format(date_format)} onClick={onClick}
       />
     );
@@ -726,7 +727,7 @@ class Employment extends Component {
                             class="btn btn-info mr-5"
 														onClick={e => this.handleSave(e,'save')}
                           ><i class="fa fa-save"></i> SAVE</button>
-													<button type="submit" class="btn btn-primary" onClick={e => this.handleSubmit(e,'submit')} ><i class="fa fa-arrow-right"></i> NEXT</button>
+													<button type="submit" class="btn btn-primary" onClick={e => this.handleSubmit(e,'submit')} ><i class="fa fa-arrow-right"></i> {this.state.pageMode === 'create' ? 'NEXT' : 'UPDATE & CONTINUE'}</button>
 												</div>
 											</div>
                     </form>

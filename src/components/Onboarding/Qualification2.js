@@ -39,6 +39,7 @@ class Qualification extends Component {
       endDateErrorMssg7: null,
       pageMode: 'create',
       customSelectDefault1: null,
+      customPhoneNumberCode: null,
       date1: undefined,
       date2: undefined,
       date3: undefined,
@@ -433,7 +434,7 @@ class Qualification extends Component {
         })
         return;
       } else {
-        previousEmploymentErrors[nameValue] = ''
+        previousEmploymentErrors[nameValue] = undefined
         this.setState({ previousEmploymentErrors })
       }
     } else if(nameValue === 'startDate'){
@@ -449,9 +450,13 @@ class Qualification extends Component {
         })
         return;
       } else {
-        previousEmploymentErrors[nameValue] = '';
+        previousEmploymentErrors[nameValue] = undefined;
         this.setState({ previousEmploymentErrors })
       }
+    } else if(nameValue === 'phoneNumberCode') {
+      previousEmployment[nameValue] = e.value;
+      previousEmploymentErrors[nameValue] = undefined;
+      this.setState({ previousEmployment, customPhoneNumberCode: e, previousEmploymentErrors });
     } else if(details.name === 'employerName'){
       previousEmployment[details.name] = details.value;
       this.setState({ 
@@ -463,32 +468,37 @@ class Qualification extends Component {
         this.setState({ previousEmploymentErrors });
         return;
       } else {
-        previousEmploymentErrors[details.name] = '';
+        previousEmploymentErrors[details.name] = undefined;
         this.setState({ previousEmploymentErrors })
       }
     } else if(details.name === 'address'){
       previousEmployment[details.name] = details.value;
-      previousEmploymentErrors[details.name] = '';
+      previousEmploymentErrors[details.name] = undefined;
       this.setState({ previousEmployment, previousEmploymentErrors });
     } else if(details.name === 'role'){
       previousEmployment[details.name] = details.value;
-      previousEmploymentErrors[details.name] = '';
+      previousEmploymentErrors[details.name] = undefined;
       this.setState({ previousEmployment, previousEmploymentErrors });
     } else if(details.name === 'objectReference'){
       previousEmployment[details.name] = details.value;
-      previousEmploymentErrors[details.name] = '';
-      if(details.value === 'Yes') previousEmploymentErrors['email'] = '';
-      if(details.value === 'No'){
-        const isValidate = await validateD('email', '');
-        if(!isValidate.error){
-          previousEmploymentErrors['email'] = isValidate.errorMessage;
-          this.setState({ previousEmploymentErrors });
-          return;
-        } else {
-          previousEmploymentErrors['email'] = '';
-          this.setState({ previousEmploymentErrors })
-        }
+      previousEmploymentErrors[details.name] = undefined;
+      if(details.value === 'Yes') {
+        previousEmploymentErrors['email'] = undefined;
+        previousEmploymentErrors['phoneNumber'] = undefined;
+        previousEmployment['email'] = '';
+        previousEmployment['phoneNumber'] = '';
       }
+      // if(details.value === 'No'){
+      //   const isValidate = await validateD('email', '');
+      //   if(!isValidate.error){
+      //     previousEmploymentErrors['email'] = isValidate.errorMessage;
+      //     this.setState({ previousEmploymentErrors });
+      //     return;
+      //   } else {
+      //     previousEmploymentErrors['email'] = undefined;
+      //     this.setState({ previousEmploymentErrors })
+      //   }
+      // }
       this.setState({ previousEmployment, previousEmploymentErrors });
     } else if(details.name === 'email'){
       previousEmployment[details.name] = details.value;
@@ -499,7 +509,7 @@ class Qualification extends Component {
         this.setState({ previousEmploymentErrors });
         return;
       } else {
-        previousEmploymentErrors[details.name] = '';
+        previousEmploymentErrors[details.name] = undefined;
         this.setState({ previousEmploymentErrors })
       }
     } else if(details.name === 'phoneNumber'){
@@ -511,7 +521,7 @@ class Qualification extends Component {
         this.setState({ previousEmploymentErrors });
         return;
       } else {
-        previousEmploymentErrors[details.name] = '';
+        previousEmploymentErrors[details.name] = undefined;
         this.setState({ previousEmploymentErrors })
       }
     } else{
@@ -525,7 +535,7 @@ class Qualification extends Component {
     // if(this.state.previousEmployment.employerName === undefined || this.state.previousEmployment.address === undefined || this.state.previousEmployment.role === undefined || this.state.previousEmployment.startDate === undefined || this.state.previousEmployment.endDate === undefined || this.state.documents.previousEmployment === '' || this.state.documents.previousEmployment === undefined || this.state.previousEmployment.objectReference === '' || this.state.previousEmployment.objectReference === undefined){
     //   return NotificationManager.warning('All fields must be filled');
     // }
-
+    console.log(this.state.previousEmployment)
     const {
       employerName,
       address,
@@ -533,7 +543,10 @@ class Qualification extends Component {
       startDate,
       endDate,
       objectReference,
-      documentId
+      documentId,
+      email,
+      phoneNumber,
+      phoneNumberCode
     } = this.state.previousEmployment;
 
     const { previousEmploymentErrors } = this.state;
@@ -544,8 +557,8 @@ class Qualification extends Component {
       role,
       startDate,
       endDate,
-      objectReference: objectReference || 'No',
-      documentId
+      objectReference: objectReference === undefined ? 'No' : objectReference,
+      documentId,
     };
     let count = 0;
     for(let i in postData){
@@ -580,15 +593,29 @@ class Qualification extends Component {
       return false;
     }
 
-    if( previousEmploymentErrors.employerName !== '' || 
-        previousEmploymentErrors.address !== '' || 
-        previousEmploymentErrors.role !== '' || 
-        previousEmploymentErrors.startDate !== '' ||
-        previousEmploymentErrors.endDate !== '' ||
-        previousEmploymentErrors.objectReference !== '' ||
-        previousEmploymentErrors.documentId !== '' ||
-        previousEmploymentErrors.email !== '' ||
-        previousEmploymentErrors.phoneNumber !== ''
+    if(postData.objectReference !== 'Yes'){
+      if(email === undefined || email === ''){
+        previousEmploymentErrors['email'] = 'Email is required';
+        this.setState({ previousEmploymentErrors });
+      } else if(phoneNumberCode === '' || phoneNumberCode === undefined){
+        previousEmploymentErrors['phoneNumberCode'] = 'Country code is required';
+        this.setState({ previousEmploymentErrors });
+      } else if(phoneNumber === '' || phoneNumber === undefined){
+        previousEmploymentErrors['phoneNumber'] = 'Phone number is required';
+        this.setState({ previousEmploymentErrors });
+      }
+    }
+
+    if( previousEmploymentErrors.employerName !== undefined || 
+        previousEmploymentErrors.address !== undefined || 
+        previousEmploymentErrors.role !== undefined || 
+        previousEmploymentErrors.startDate !== undefined ||
+        previousEmploymentErrors.endDate !== undefined ||
+        previousEmploymentErrors.objectReference !== undefined ||
+        previousEmploymentErrors.documentId !== undefined ||
+        previousEmploymentErrors.email !== undefined ||
+        previousEmploymentErrors.phoneNumber !== undefined ||
+        previousEmploymentErrors.phoneNumberCode !== undefined
     ){
       hideLoader()
       return NotificationManager.warning('Complete all required fields')
@@ -615,12 +642,16 @@ class Qualification extends Component {
         address: '',
         role: '',
         startDate: '',
-        endDate: ''
+        endDate: '',
+        email: '',
+        phoneNumber: '',
+        phoneNumberCode: ''
       },
       modalMode: 'create',
       editIndex: null,
       date5: undefined,
       date6: undefined,
+      customPhoneNumberCode: null,
       documents: {
         previousEmployment: undefined
       } 
@@ -686,9 +717,10 @@ class Qualification extends Component {
         previousEmployment: [...this.state.morePrevious].filter((data,index) => index === parseInt(indexValue))[0],
         editIndex: indexValue, modalMode: 'edit'
       })
+      const customPhoneNumberCode = { value: this.state.previousEmployment.phoneNumberCode, label: this.state.previousEmployment.phoneNumberCode};
       const date5 = moment(this.state.previousEmployment.startDate).toDate();
       const date6 = moment(this.state.previousEmployment.endDate).toDate();
-      this.setState({ date5, date6 });
+      this.setState({ date5, date6, customPhoneNumberCode });
     }
   }
 
@@ -713,12 +745,16 @@ class Qualification extends Component {
         address: '',
         role: '',
         startDate: '',
-        endDate: ''
+        endDate: '',
+        email: '',
+        phoneNumber: '',
+        phoneNumberCode: ''
       },
       qualificationErrors: {},
       certificationErrors: {},
       previousEmploymentErrors: {},
       customSelectDefault1: null,
+      customPhoneNumberCode: null,
       modalMode: 'create',
       editIndex: null,
       date1: undefined,
@@ -839,7 +875,7 @@ class Qualification extends Component {
           if(uploadType === 'previousEmployment'){
             previousEmployment['documentId'] = res.data.upload.id;
             previousEmployment['path'] = res.data.upload.path;
-            previousEmploymentErrors['documentId'] = '';
+            previousEmploymentErrors['documentId'] = undefined;
             this.setState({ previousEmployment, previousEmploymentErrors });
           }
         }
@@ -1202,6 +1238,7 @@ class Qualification extends Component {
           handleUpload={this.handleUpload}
           deleteDoc={this.deleteDoc}
           previousEmploymentErrors={this.state.previousEmploymentErrors}
+          customPhoneNumberCode={this.state.customPhoneNumberCode}
         />
       </Layout>
     )

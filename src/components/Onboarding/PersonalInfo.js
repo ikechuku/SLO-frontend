@@ -310,7 +310,8 @@ class PersonalInfo extends Component {
       this.setState({ 
         data,
         currentErrorMessage: null,
-        customCurrentState: result
+        customCurrentState: result,
+        customCurrentLga: null
       });
     } else if(name === 'currentLga'){
       data[name] = result.value;
@@ -332,7 +333,8 @@ class PersonalInfo extends Component {
       this.setState({ 
         data,
         permanentErrorMessage: null,
-        customPermanentState: result
+        customPermanentState: result,
+        customPermanentLga: null
       });
     } else if(name === 'permanentLga'){
       data[name] = result.value;
@@ -387,6 +389,7 @@ class PersonalInfo extends Component {
       this.setState({ 
         data,
         customState: result,
+        customLga: null,
         originErrorMessage: null 
       });
     } else if(name === 'lga') {
@@ -591,9 +594,9 @@ class PersonalInfo extends Component {
         if(btnType === 'submit'){
           const res = await httpPost('auth/create_staff', this.state.data);
           if(res.code === 201){
-            hideLoader();
             await this.setState({ userId: res.data.id });
-            await this.saveDoc()
+            await this.saveDoc();
+            hideLoader();
             // return this.props.history.push(`/create_staff/two/${res.data.id}`)
             return this.props.history.push({
               pathname: `/create_staff/two/${res.data.id}`,
@@ -918,7 +921,7 @@ class PersonalInfo extends Component {
       return (
         <Select
           className=" w-100 col-md-3 pr-0 pl-0 mr-1"
-          defaultValue={this.state.customPermanentLga}
+          value={this.state.customPermanentLga}
           onChange={e => this.handleCustomSelect(e, 'permanentLga')}
           options={this.getLGA(this.state.data.permanentState)}
           isSearchable="true"
@@ -933,7 +936,7 @@ class PersonalInfo extends Component {
     const newUploads = data.uploads !== undefined ? data.uploads : [];
 
     const CustomInput = ({ value, onClick }) => (
-      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')"
+      <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')" onKeyPress={e => e.preventDefault()}
         value={this.state.customDob === undefined ? undefined : moment(this.state.customDob).format(date_format)} onClick={onClick}
       />
     );
@@ -1042,6 +1045,7 @@ class PersonalInfo extends Component {
                             showMonthDropdown
                             showYearDropdown
                             dropdownMode="select"
+                            popperPlacement='left'
                             customInput={<CustomInput />}
                           />
                           <br/>
@@ -1369,12 +1373,13 @@ class PersonalInfo extends Component {
                             {
                               newUploads.length ?
                                 newUploads.map(data => (
+                                  data.from === 'personalInfo' ?
                                   <tr>
                                     {console.log(data)}
                                     <td>{data.fileName}</td>
                                     <td>{<a href={`${data.path}`} target="_blank">View document</a>}</td>
                                     <td><a className="ml-3 text-danger" onClick={() => this.deleteDoc(data.id)} style={{ cursor: 'pointer' }}>Delete</a></td>
-                                  </tr>
+                                  </tr> : ''
                                 )) : 'No document found'
                               }
                           </tbody>
