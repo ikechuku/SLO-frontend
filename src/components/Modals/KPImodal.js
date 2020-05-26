@@ -52,10 +52,10 @@ export function KpiModal(props) {
 									className="w-100 pr-0 pl-0 col-md-12 mr-1"
 									// defaultValue={props.postData.businessCountry}
 									value={props.customSelect1}
-									onChange={(e) => props.handleChange(e, "responsibilityId")}
-									options={props.departmentOptions}
+									onChange={(e) => props.handleChange(e, "roleId")}
+									options={props.roleOptions}
 									isSearchable="true"
-									name="responsibilityId"
+									name="roleId"
 									placeholder="Select"
 								/>
 								<span className="text-danger">
@@ -71,10 +71,10 @@ export function KpiModal(props) {
 									className="w-100 pr-0 pl-0 col-md-12 mr-1"
 									// defaultValue={props.postData.businessCountry}
 									value={props.customSelect2}
-									onChange={(e) => props.handleChange(e, "roleId")}
-									options={props.unitOptions}
+									onChange={(e) => props.handleChange(e, "responsibilityId")}
+									options={props.responsibilityOptions}
 									isSearchable="true"
-									name="roleId"
+									name="responsibilityId"
 									placeholder="Select"
 								/>
 							</div>

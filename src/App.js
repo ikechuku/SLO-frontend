@@ -30,6 +30,9 @@ import Login from "./components/Login";
 import Logout from './components/Logout';
 import ProtectedRoute from './helpers/ProtectedRoute';
 
+// NEW CHANGES
+import UserInfo from "./components/personalinfo/info";
+
 // import "bootstrap/dist/css/bootstrap.css";
 
 function App() {
@@ -40,6 +43,7 @@ function App() {
 			<Switch>
 				{/* <Route exact path="/" component={Homepage}/> */}
 				<Route exact path="/" component={Login} />
+				<Route exact path="/login" component={Login} />
 				{/* <Route path="/create_staff/one" component={PersonalInfo} /> */}
 				<ProtectedRoute exact path="/pending_actions" component={PendingActions} />
 				<ProtectedRoute exact path="/create_staff" component={CreateStaff} />
@@ -60,8 +64,9 @@ function App() {
 				<ProtectedRoute path="/leave_setup" component={CreateLeave} />
 				<ProtectedRoute path="/leave_management" component={LeaveMangement} />
 				<ProtectedRoute path="/leave_history" component={LeaveHistory} />
-				<Route path="/testing" component={Testing} />
 				<Route path="/logout" component={Logout} />
+				<Route path="/user_info" component={UserInfo} />
+				{/* <Route path="/testing" component={Testing} /> */}
 			</Switch>
 		</Router>
 	);

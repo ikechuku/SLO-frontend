@@ -9,12 +9,15 @@ class RoleTable extends Component {
 		const body = this.props.roles.map((data, index) => ({
 			KPI: data.name,
 			Weight: data.weightMark,
+			Responsibility: data.responsibility.name,
+			JobRoles: data.responsibility.role.title,
 			action: (
 				<a>
 					<span
 						class="edit"
 						data-toggle="modal"
-						data-target="#roleModal"
+						data-target="#kpiModal"
+						data-backdrop="static"
 						onClick={() => this.props.handleEdit(data.id)}
 					>
 						Edit
