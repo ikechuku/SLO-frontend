@@ -37,8 +37,8 @@
 	padding: 25px 0 25px 0;
 }
 
-input[type="text"],
-input[type="password"] {
+.logInInput9[type="text"],
+.logInInput9[type="password"] {
 	width: 100%;
 	padding: 12px 20px;
 	margin: 8px 0;
@@ -49,19 +49,19 @@ input[type="password"] {
 	background-color: #e8f0fe;
 }
 
-.logInInput9[type="text"]:focus {
+.loginForm99 .logInInput99[type="text"]:focus {
 	border: 1px solid rgba(7, 7, 114, 0.623);
 }
 
-.logInInput9[type="password"]:focus {
+.loginForm99 .logInInput99[type="password"]:focus {
 	border: 1px solid rgba(7, 7, 114, 0.623);
 }
 
-.logInInput9::placeholder {
+.loginForm99 .logInInput99::placeholder {
 	color: rgb(0, 0, 0);
 }
 
-.logInInput9button {
+.loginForm99 .logInInput9button {
 	background-color: #4caf50;
 	color: white;
 	padding: 10px 15px;
@@ -74,11 +74,11 @@ input[type="password"] {
 	font-weight: 700;
 }
 
-.logInInput9button:hover {
+.loginForm99 .logInInput99button:hover {
 	opacity: 0.8;
 }
 
-.container {
+.containerlogin {
 	padding: 10px;
 }
 
@@ -89,8 +89,8 @@ input[type="password"] {
 		padding: 5px;
 	}
 
-	.logInInput9[type="text"],
-	.logInInput9[type="password"] {
+	.loginForm99 .logInInput99[type="text"],
+	.loginForm99 .logInInput99[type="password"] {
 		width: 80vw;
 	}
 	.cancelbtn {

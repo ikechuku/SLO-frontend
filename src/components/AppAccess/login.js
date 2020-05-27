@@ -8,7 +8,7 @@ export default class form extends Component {
 				<h1 className="appName">SLO </h1>
 
 				<form className="loginForm99">
-					<div class="container">
+					<div class="containerlogin">
 						<div className="formHeader">
 							<h1>LOGIN</h1>
 						</div>
