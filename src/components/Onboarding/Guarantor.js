@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Moment from 'react-moment';
+import SweetAlert from 'react-bootstrap-sweetalert'
 import moment from 'moment';
 import $ from 'jquery';
 import Select from 'react-select';
@@ -96,7 +97,8 @@ class Guarantor extends Component {
             customBusinessState: null,
             customBusinessLga: null,
             bvnErrorMessage: null,
-            taken_occupation: []
+						taken_occupation: [],
+						alert: null
         }
     }
 
@@ -684,9 +686,10 @@ class Guarantor extends Component {
 
     removeMore = (value, id) => {
         if (this.state.pageMode === 'create') {
-            this.setState({
-                moreData: this.state.moreData.filter((interest, index) => index !== parseInt(value))
-            });
+            // this.setState({
+            //     moreData: this.state.moreData.filter((interest, index) => index !== parseInt(value))
+            // });
+          this.handleDelete(id, value)
         } else {
             this.handleDelete(id, value)
         }
@@ -700,6 +703,9 @@ class Guarantor extends Component {
                     moreData: this.state.moreData.filter((interest, index) => index !== parseInt(indexValue))
                 })
             }
+            this.setState({
+              moreData: this.state.moreData.filter((interest, index) => index !== parseInt(indexValue))
+          })
         } catch (error) {
             console.log(error)
         }
@@ -801,36 +807,45 @@ class Guarantor extends Component {
 
             if (this.state.pageMode === 'edit') {
                 showLoader();
-                const res = await httpPatch(`auth/edit_onboarding_four/${id}`, this.state.moreData);
-                if (res.code === 201) {
+                const res = await httpPatch(`auth/edit_onboarding_three/${id}`, this.state.moreData);
+                if (res.code === 200) {
                     hideLoader();
                     // this.setState({ moreData: res.data.guarantor });
 
-                    NotificationManager.success('Completed Successfully', 'Onboarding Status')
-                    return this.props.history.push('/staff_list');
-                    // return this.props.history.push({
-                    // 	pathname: `/create_staff/five/${res.data.id}`,
-                    // 	backurl: `/create_staff/four/${res.data.id}`,
-                    // 	savedState: this.state.moreData,
-                    // 	direction: 'forward'
-                    // });
+                    // NotificationManager.success('Completed Successfully', 'Onboarding Status')
+                    const getAlert = () => (
+											<SweetAlert 
+												success 
+												title="Onboarding Status" 
+												onConfirm={() => this.hideAlert()}
+											>
+												Completed Successfully
+											</SweetAlert>
+										);
+								
+										this.setState({
+											alert: getAlert()
+										});
                 }
             } else {
                 showLoader();
-                const res = await httpPost(`auth/onboarding_four/${id}`, this.state.moreData);
-                if (res.code === 201) {
-                    hideLoader();
-                    // this.setState({ moreData: res.data.guarantor });
-
-                    NotificationManager.success('Completed Successfully', 'Onboarding Status')
-                    return this.props.history.push('/staff_list');
-                    // return this.props.history.push(`/create_staff/five/${res.data.id}`)
-                    // return this.props.history.push({
-                    // 	pathname: `/create_staff/five/${res.data.id}`,
-                    // 	backurl: `/create_staff/four/${res.data.id}`,
-                    // 	savedState: this.state.moreData,
-                    // 	direction: 'forward'
-                    // });
+                const res = await httpPost(`auth/onboarding_three/${id}`, this.state.moreData);
+                if (res.code === 200) {
+										hideLoader();
+										const getAlert = () => (
+											<SweetAlert 
+												success 
+												title="Onboarding Status" 
+												onConfirm={() => this.hideAlert()}
+											>
+												Completed Successfully
+											</SweetAlert>
+										);
+								
+										this.setState({
+											alert: getAlert()
+										});
+                    // NotificationManager.success('Completed Successfully', 'Onboarding Status')
                 }
             }
 
@@ -838,61 +853,94 @@ class Guarantor extends Component {
             hideLoader()
             console.log(error)
         }
-    }
+		}
+		
+		hideAlert() {
+			this.setState({
+				alert: null
+			});
+		}
 
-    handleSave = async (e) => {
-        e.preventDefault()
-        try {
-            const {id} = this.props.match.params;
+    // handleSave = async (e) => {
+    //     e.preventDefault()
+    //     try {
+    //         const {id} = this.props.match.params;
 
-            if (this.state.moreData.length < 3) {
-                return NotificationManager.warning('A minimum of 3 Guarantors is required')
-            }
+    //         if (this.state.moreData.length < 2) {
+    //             return NotificationManager.warning('A minimum of 3 Guarantors is required')
+    //         }
 
-            if (this.state.pageMode === 'edit') {
-                showLoader();
-                const res = await httpPatch(`auth/edit_onboarding_four/${id}`, this.state.moreData);
-                if (res.code === 201) {
-                    hideLoader();
-                    this.setState({moreData: res.data.guarantor});
-                }
-            } else {
-                showLoader();
-                const res = await httpPost(`auth/onboarding_four/${id}`, this.state.moreData);
-                if (res.code === 201) {
-                    hideLoader();
-                    this.setState({moreData: res.data.guarantor});
-                }
-            }
-        } catch (error) {
-            hideLoader();
-            console.log(error)
-        }
-    }
+    //         if (this.state.pageMode === 'edit') {
+    //             showLoader();
+    //             const res = await httpPatch(`auth/edit_onboarding_three/${id}`, this.state.moreData);
+    //             if (res.code === 201) {
+		// 								hideLoader();
+		// 								const getAlert = () => (
+		// 									<SweetAlert 
+		// 										success 
+		// 										title="Onboarding Status" 
+		// 										onConfirm={() => this.hideAlert()}
+		// 									>
+		// 										Completed Successfully
+		// 									</SweetAlert>
+		// 								);
+								
+		// 								this.setState({
+		// 									alert: getAlert()
+		// 								});
+    //                 this.setState({moreData: res.data.guarantor});
+    //             }
+    //         } else {
+    //             showLoader();
+    //             const res = await httpPost(`auth/onboarding_three/${id}`, this.state.moreData);
+    //             if (res.code === 201) {
+		// 								hideLoader();
+		// 								const getAlert = () => (
+		// 									<SweetAlert 
+		// 										success 
+		// 										title="Onboarding Status" 
+		// 										onConfirm={() => this.hideAlert()}
+		// 									>
+		// 										Completed Successfully
+		// 									</SweetAlert>
+		// 								);
+								
+		// 								this.setState({
+		// 									alert: getAlert()
+		// 								});
+    //                 this.setState({moreData: res.data.guarantor});
+    //             }
+    //         }
+    //     } catch (error) {
+    //         hideLoader();
+    //         console.log(error)
+    //     }
+    // }
 
     handleBackButton = () => {
         const {id} = this.props.match.params;
         return this.props.history.push({
-            pathname: `/create_staff/three/${id}`,
+            pathname: `/create_staff/two/${id}`,
             savedId: this.props.location.savedId,
             direction: 'backward'
         })
     }
 
     componentDidMount() {
-        const {id} = this.props.match.params;
-        if (this.props.location.direction === 'backward') {
-            this.setState({userId: this.props.location.savedId, pageMode: 'edit'});
-            this.getUserDetails(this.props.location.savedId || id)
-        } else if (this.props.location.direction === 'completeOnboarding') {
-            this.setState({pageMode: 'completeOnboarding'});
-        }
+      const {id} = this.props.match.params;
+      if (this.props.location.direction === 'backward') {
+          this.setState({userId: this.props.location.savedId, pageMode: 'edit'});
+          this.getUserDetails(this.props.location.savedId || id)
+      } else if (this.props.location.direction === 'completeOnboarding') {
+          this.setState({pageMode: 'completeOnboarding'});
+      }
+      this.getUserDetails(id)
     }
 
     getUserDetails = async (id) => {
         try {
             showLoader()
-            const res = await httpGet(`auth/get_onboarding_four/${id}`)
+            const res = await httpGet(`auth/get_onboarding_three/${id}`)
             if (res.code === 200) {
                 hideLoader();
                 this.setState({
@@ -940,6 +988,7 @@ class Guarantor extends Component {
     render() {
         return (
             <Layout>
+							{this.state.alert}
                 <div class="app-content">
                     <section class="section">
                         <ol class="breadcrumb">
@@ -988,16 +1037,16 @@ class Guarantor extends Component {
                                             <div class="col-md-12">
                                                 <button
                                                     type="submit"
-                                                    class="btn btn-info mr-5"
-                                                    onClick={this.handleSave}
-                                                ><i class="fa fa-save"></i> SAVE
+                                                    class="btn btn-primary"
+                                                    onClick={this.handleSubmit}
+                                                ><i class="fa fa-save"></i> SUBMIT
                                                 </button>
-                                                <button
+                                                {/* <button
                                                     type="submit"
                                                     class="btn btn-primary"
                                                     onClick={this.handleSubmit}
                                                 ><i class="fa fa-arrow-right"></i> NEXT
-                                                </button>
+                                                </button> */}
                                             </div>
                                         </div>
                                     </div>

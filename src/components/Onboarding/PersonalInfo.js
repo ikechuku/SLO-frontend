@@ -592,7 +592,8 @@ class PersonalInfo extends Component {
       
       try{
         if(btnType === 'submit'){
-          const res = await httpPost('auth/create_staff', this.state.data);
+          const { id } = this.props.match.params;
+          const res = await httpPost(`auth/onboarding_one/${id}`, this.state.data);
           if(res.code === 201){
             await this.setState({ userId: res.data.id });
             await this.saveDoc();
@@ -607,7 +608,8 @@ class PersonalInfo extends Component {
             });
           }
         } else {
-          const res = await httpPost('auth/create_staff', this.state.data);
+          const { id } = this.props.match.params;
+          const res = await httpPost(`auth/onboarding_one/${id}`, this.state.data);
           if(res.code === 201){
             await this.saveDoc()
             hideLoader();
@@ -639,13 +641,14 @@ class PersonalInfo extends Component {
   saveDoc = async () => {
     try{
       const { uploadBody, userId, pageMode } = this.state;
+      const { id } = this.props.match.params;
 
       if(pageMode === 'create'){
         let formData = new FormData();
         formData.append('passportPhotograph', uploadBody.passportPhotograph);
         formData.append('identification', uploadBody.identification);
 
-        const res = await httpPostFormData(`auth/onboarding_one_uploads/${userId}`, formData);
+        const res = await httpPostFormData(`auth/onboarding_one_uploads/${id}`, formData);
         if(res.code === 201){
           hideLoader();
         }
@@ -654,7 +657,7 @@ class PersonalInfo extends Component {
         formData.append('passportPhotograph', uploadBody.passportPhotograph);
         formData.append('identification', uploadBody.identification);
 
-        const res = await httpPostFormData(`auth/edit_onboarding_one_uploads/${userId}`, formData);
+        const res = await httpPostFormData(`auth/edit_onboarding_one_uploads/${id}`, formData);
         if(res.code === 201){
           hideLoader();
         }
@@ -681,12 +684,15 @@ class PersonalInfo extends Component {
   }
 
   async componentDidMount(){
+    console.log(this.props)
+    const { id } = this.props.match.params;
     if(this.props.location.direction === 'backward'){
       // get User details and save to state
       const { savedId } = this.props.location;
       await this.getUserDetails(savedId);
       this.setState({ userId: savedId, pageMode: 'edit' });
     }
+    this.getUserDetails(id);
     // if(this.state.pageMode === 'edit'){
     //   // get User details and save to state
     //   const id = 'f657d590-a27f-4f3c-b9a1-6f61a686bb4b';
@@ -954,9 +960,13 @@ class PersonalInfo extends Component {
 						<div className="row">
 							<div className="col-10">
 								<div className="card">
-									<div className="card-header">
-                    <div className="col-md-12">
-										  <h4>Personal Information</h4>
+									<div className="card-header custom-header">
+                    <div className="row col-12">
+										  <h4 className="col col-md-6">Personal Information</h4>
+                      <div className="col col-md-6 text-right">
+                      <button className="cursor-pointer btn btn-primary" onClick={() => this.props.history.push(`/create_staff/two/${this.props.match.params.id}`)}>
+                        Back <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                    </div>
                     </div>
 									</div>
 									<div className="card-body">
@@ -1358,7 +1368,7 @@ class PersonalInfo extends Component {
 												</div>
 											</div>
 
-                      <div className="col col-md-12 pr-0 pl-0" style={this.state.pageMode !== 'edit' ? {display: 'none'} : {}}>
+                      <div className="col col-md-12 pr-0 pl-0" style={!newUploads.length ? {display: 'none'} : {}}>
                       <div class="table-responsive">
                         <table class="table table-bordered table-hover mb-0 text-nowrap">
                           <thead>
@@ -1375,7 +1385,6 @@ class PersonalInfo extends Component {
                                 newUploads.map(data => (
                                   data.from === 'personalInfo' ?
                                   <tr>
-                                    {console.log(data)}
                                     <td>{data.fileName}</td>
                                     <td>{<a href={`${data.path}`} target="_blank">View document</a>}</td>
                                     <td><a className="ml-3 text-danger" onClick={() => this.deleteDoc(data.id)} style={{ cursor: 'pointer' }}>Delete</a></td>

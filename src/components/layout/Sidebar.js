@@ -58,7 +58,8 @@ export default function Sidebar(props) {
                 <span className="side-menu__label" style={{paddingLeft: '25px', fontSize: '12px'}}>Staff</span><i className="angle fa fa-angle-right"></i>
               </a>
 							<ul className="second-slide-menu">
-								<li className="active"><Link to="/create_staff/one" className="slide-item active">Personal Information</Link></li>
+                <li className="active"><Link to="/create_staff" className="slide-item active">Personal Information</Link></li>
+								<li><Link className="slide-item">Personal Information</Link></li>
 								<li><Link className="slide-item">Qualification and Experience</Link></li>
                 <li><Link className="slide-item">Employment Information</Link></li>
                 <li><Link className="slide-item">Guarantor Information</Link></li>

@@ -20,11 +20,14 @@ import PendingActions from "./components/Leave/pendingAction/pendingActions";
 import CreateLeave from "./components/Leave/createLeave/createLeave";
 import LeaveMangement from "./components/Leave/LeaveManagement/leaveManagement";
 import LeaveHistory from "./components/Leave/leaveHistory/leaveHistory";
-// import Testing from './components/testing3';
+import Testing from './components/testing';
 
 import "react-notifications/lib/notifications.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-tooltip/dist/index.js";
+import CreateStaff from "./components/Onboarding/createStaff";
+import Login from "./components/Login";
+import Logout from './components/Logout'
 
 // import "bootstrap/dist/css/bootstrap.css";
 
@@ -35,15 +38,16 @@ function App() {
 			{/* <ToastContainer /> */}
 			<Switch>
 				{/* <Route exact path="/" component={Homepage}/> */}
-				{/* <Route exact path="/login" component={Login} /> */}
+				<Route exact path="/login" component={Login} />
 				{/* <Route path="/create_staff/one" component={PersonalInfo} /> */}
 				<Route exact path="/" component={PendingActions} />
-				<Route exact path="/create_staff/one" component={PersonalInfo} />
+				<Route exact path="/create_staff" component={CreateStaff} />
+				<Route exact path="/create_staff/one/:id" component={PersonalInfo} />
 				<Route path="/create_staff/two/:id" component={Qualification} />
-				<Route path="/create_staff/three/:id" component={Employment} />
-				<Route path="/create_staff/four/:id" component={Guarantor} />
-				<Route path="/create_staff/five/:id" component={Upload} />
-				<Route path="/create_staff/six" component={PendingApplication} />
+				<Route path="/create_staff/three/:id" component={Guarantor} />
+				<Route path="/create_staff/four/:id" component={Employment} />
+				{/* <Route path="/create_staff/five/:id" component={Upload} /> */}
+				{/* <Route path="/create_staff/six" component={PendingApplication} /> */}
 				<Route path="/staff_list" component={StaffList} />
 				<Route path="/view_details/:id" component={ViewDetails} />
 				<Route path="/branches" component={Branch} />
@@ -55,7 +59,8 @@ function App() {
 				<Route path="/leave_setup" component={CreateLeave} />
 				<Route path="/leave_management" component={LeaveMangement} />
 				<Route path="/leave_history" component={LeaveHistory} />
-				{/* <Route path="/testing" component={Testing} /> */}
+				<Route path="/testing" component={Testing} />
+				<Route path="/logout" component={Logout} />
 			</Switch>
 		</Router>
 	);

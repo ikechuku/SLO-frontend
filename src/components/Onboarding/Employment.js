@@ -321,14 +321,7 @@ class Employment extends Component {
           const res = await httpPost(`auth/onboarding_three/${id}`, data);
           if(res.code === 201){
             hideLoader();
-            // setState({ userId: res.data.id });
-            // return this.props.history.push(`/create_staff/four/${res.data.id}`)
-            return this.props.history.push({
-              pathname: `/create_staff/four/${res.data.id}`,
-              backurl: `/create_staff/three/${res.data.id}`,
-              savedId: res.data.id,
-              direction: 'forward'
-            });
+            // return this.props.history.push(`/create_staff/five/${res.data.id}`)
           }
         } else {
           const res = await httpPost(`auth/onboarding_three/${id}`, data);
@@ -341,12 +334,6 @@ class Employment extends Component {
           const res = await httpPost(`auth/edit_onboarding_three/${id}`, data);
           if(res.code === 200){
             hideLoader();
-            return this.props.history.push({
-              pathname: `/create_staff/four/${res.data.id}`,
-              backurl: `/create_staff/three/${res.data.id}`,
-              savedId: res.data.id,
-              direction: 'forward'
-            });
           }
         } else {
           const res = await httpPost(`auth/edit_onboarding_three/${id}`, data);
@@ -544,7 +531,7 @@ class Employment extends Component {
     // console.log(this.props.location.savedState)
     const { id } = this.props.match.params;
     return this.props.history.push({
-      pathname: `/create_staff/two/${id}`,
+      pathname: `/create_staff/three/${id}`,
       savedId: this.props.location.savedId,
       direction: 'backward'
     })
