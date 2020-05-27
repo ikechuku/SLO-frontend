@@ -41,6 +41,8 @@ class Login extends Component {
             console.log('User has either approved or rejected')
           }
         } else {
+          localStorage.setItem('token', data.data.token);
+          this.props.history.push(`/create_staff`);
           this.setState({ email: '', password: '' });
         }
       }
