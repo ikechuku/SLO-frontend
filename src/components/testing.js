@@ -97,42 +97,51 @@ class App extends React.Component {
         { value: "bar", label: "Bar" },
         { value: "bat", label: "Bat" }
       ],
-      list: []
+      list: [],
+      alert: null
     };
 
-    this.handleMultiChange = this.handleMultiChange.bind(this);
+    this.hideAlert = this.hideAlert.bind(this)
+    // this.handleMultiChange = this.handleMultiChange.bind(this);
   }
 
-  handleMultiChange(option) {
-    const { data } = this.state;
-    this.setState(state => {
-      return {
-        multiValue: option
-      };
+  hideAlert() {
+    console.log('Hiding alert...');
+    this.setState({
+      alert: null
     });
-    data['check'] = this.state.multiValue
-    this.setState({ data })
-    //console.log(this.state.multiValue);
   }
 
-  handleClick = () => {
-    console.log(this.state.multiValue, this.state.data)
-  }
+  // handleMultiChange(option) {
+  //   const { data } = this.state;
+  //   this.setState(state => {
+  //     return {
+  //       multiValue: option
+  //     };
+  //   });
+  //   data['check'] = this.state.multiValue
+  //   this.setState({ data })
+  //   //console.log(this.state.multiValue);
+  // }
 
-  async componentDidMount(){
-    // console.log(stateLists)
-    let optionList = [];
-    stateLists.map(data => {
-      optionList.push({ value: data, label: data });
-    })
+  // handleClick = () => {
+  //   console.log(this.state.multiValue, this.state.data)
+  // }
 
-    console.log(optionList)
-  }
+  // async componentDidMount(){
+  //   // console.log(stateLists)
+  //   let optionList = [];
+  //   stateLists.map(data => {
+  //     optionList.push({ value: data, label: data });
+  //   })
+
+  //   console.log(optionList)
+  // }
 
   render() {
     return (
       <div>
-        <label>Multi (now working)</label>
+        {/* <label>Multi (now working)</label>
         <Select
           name="filters"
           placeholder="Filters"
@@ -141,17 +150,17 @@ class App extends React.Component {
           onChange={this.handleMultiChange}
           // isMulti
         />
-        <button onClick={this.handleClick}>Click</button>
+        <button onClick={this.handleClick}>Click</button> */}
         {/* <button onClick={() => this.setState({ show: true })}>Alert</button> */}
-        {/* <SweetAlert
+        <SweetAlert
           success
           // show={this.state.show}
           // title="Demo"
           text="SweetAlert in React"
           // onConfirm={() => this.setState({ show: false })}
           // onCancel={() => this.setState({ show: false })}
-          onConfirm={this.onConfirm} onCancel={this.onCancel}
-        >You clicked the button</SweetAlert> */}
+          onConfirm={this.hideAlert}
+        >You clicked the button</SweetAlert>
       </div>
     );
   }

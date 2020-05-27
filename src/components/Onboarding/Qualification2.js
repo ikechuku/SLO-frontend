@@ -773,7 +773,7 @@ class Qualification extends Component {
   handleBackButton = () => {
     const { id } = this.props.match.params;
     return this.props.history.push({
-      pathname: `/create_staff/one` ,
+      pathname: `/create_staff/one/${id}` ,
       savedId: this.props.location.savedId || id,
       direction: 'backward'
     })
@@ -787,6 +787,7 @@ class Qualification extends Component {
     } else if(this.props.location.direction === 'completeOnboarding'){
       this.setState({ pageMode: 'create'});
     }
+    this.getPageDetails(id);
   }
   
   getPageDetails = async (id) => {
@@ -1110,6 +1111,8 @@ class Qualification extends Component {
                     <div className="col col-md-6 text-right" style={ this.state.pageMode === 'completeOnboarding' ? {display: 'none'} : {}}>
                       <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}>
                         <i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button>
+                      <button className="cursor-pointer btn btn-primary" onClick={() => this.props.history.push(`/create_staff/three/${this.props.match.params.id}`)}>
+                      Forward <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
                     </div>
                     </div>
 									</div>
