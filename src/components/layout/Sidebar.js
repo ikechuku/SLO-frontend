@@ -110,6 +110,9 @@ export default function Sidebar(props) {
         <li>
           <a className="side-menu__item" href="#"><i className="side-menu__icon fa fa-user"></i><span className="side-menu__label">Profile</span></a>
         </li>
+        <li>
+          <Link className="side-menu__item" to="/logout"><i className="side-menu__icon fa fa-sign-out"></i><span className="side-menu__label">Logout</span></Link>
+        </li>
       </ul>
     </aside>
   )

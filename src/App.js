@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Provider } from "react-redux";
 import { NotificationContainer } from "react-notifications";
+import store from "./store";
 import PersonalInfo from "./components/Onboarding/PersonalInfo";
 import Qualification from "./components/Onboarding/Qualification2";
 import Employment from "./components/Onboarding/Employment";
@@ -37,38 +39,40 @@ import UserInfo from "./components/personalinfo/info";
 
 function App() {
 	return (
-		<Router>
-			<NotificationContainer />
-			{/* <ToastContainer /> */}
-			<Switch>
-				{/* <Route exact path="/" component={Homepage}/> */}
-				<Route exact path="/" component={Login} />
-				<Route exact path="/login" component={Login} />
-				{/* <Route path="/create_staff/one" component={PersonalInfo} /> */}
-				<ProtectedRoute exact path="/pending_actions" component={PendingActions} />
-				<ProtectedRoute exact path="/create_staff" component={CreateStaff} />
-				<ProtectedRoute exact path="/create_staff/one/:id" component={PersonalInfo} />
-				<ProtectedRoute path="/create_staff/two/:id" component={Qualification} />
-				<ProtectedRoute path="/create_staff/three/:id" component={Guarantor} />
-				<ProtectedRoute path="/create_staff/four/:id" component={Employment} />
-				{/* <Route path="/create_staff/five/:id" component={Upload} /> */}
-				{/* <Route path="/create_staff/six" component={PendingApplication} /> */}
-				<ProtectedRoute path="/staff_list" component={StaffList} />
-				<ProtectedRoute path="/view_details/:id" component={ViewDetails} />
-				<ProtectedRoute path="/branches" component={Branch} />
-				<ProtectedRoute path="/departments" component={Department} />
-				<ProtectedRoute path="/units" component={Unit} />
-				<ProtectedRoute path="/roles" component={Role} />
-				<ProtectedRoute path="/kpi" component={Kpi} />
-				<ProtectedRoute path="/responsibility" component={Responsibility} />
-				<ProtectedRoute path="/leave_setup" component={CreateLeave} />
-				<ProtectedRoute path="/leave_management" component={LeaveMangement} />
-				<ProtectedRoute path="/leave_history" component={LeaveHistory} />
-				<Route path="/logout" component={Logout} />
-				<Route path="/user_info/:id" component={UserInfo} />
-				{/* <Route path="/testing" component={Testing} /> */}
-			</Switch>
-		</Router>
+		<Provider store={store}>
+			<Router>
+				<NotificationContainer />
+				{/* <ToastContainer /> */}
+				<Switch>
+					{/* <Route exact path="/" component={Homepage}/> */}
+					<Route exact path="/" component={Login} />
+					<Route exact path="/login" component={Login} />
+					{/* <Route path="/create_staff/one" component={PersonalInfo} /> */}
+					<ProtectedRoute exact path="/pending_actions" component={PendingActions} />
+					<ProtectedRoute exact path="/create_staff" component={CreateStaff} />
+					<ProtectedRoute exact path="/create_staff/one/:id" component={PersonalInfo} />
+					<ProtectedRoute path="/create_staff/two/:id" component={Qualification} />
+					<ProtectedRoute path="/create_staff/three/:id" component={Guarantor} />
+					<ProtectedRoute path="/create_staff/four/:id" component={Employment} />
+					{/* <Route path="/create_staff/five/:id" component={Upload} /> */}
+					{/* <Route path="/create_staff/six" component={PendingApplication} /> */}
+					<ProtectedRoute path="/staff_list" component={StaffList} />
+					<ProtectedRoute path="/view_details/:id" component={ViewDetails} />
+					<ProtectedRoute path="/branches" component={Branch} />
+					<ProtectedRoute path="/departments" component={Department} />
+					<ProtectedRoute path="/units" component={Unit} />
+					<ProtectedRoute path="/roles" component={Role} />
+					<ProtectedRoute path="/kpi" component={Kpi} />
+					<ProtectedRoute path="/responsibility" component={Responsibility} />
+					<ProtectedRoute path="/leave_setup" component={CreateLeave} />
+					<ProtectedRoute path="/leave_management" component={LeaveMangement} />
+					<ProtectedRoute path="/leave_history" component={LeaveHistory} />
+					<Route path="/user_info/:id" component={UserInfo} />
+					{/* <Route path="/testing" component={Testing} /> */}
+					<Route path="/logout" component={Logout} />
+				</Switch>
+			</Router>
+		</Provider>
 	);
 }
 

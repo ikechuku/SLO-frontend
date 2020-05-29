@@ -2,9 +2,9 @@ import axios from "axios";
 import { NotificationManager } from "react-notifications";
 import { showLoader, hideLoader } from "../helpers/loader";
 
-let baseUrl = "https://slo-server.herokuapp.com/api/";
+export let baseUrl = "https://slo-server.herokuapp.com/api/";
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.REACT_APP_NODE_ENV === "development") {
 	baseUrl = 'http://127.0.0.1:8080/api/'
 }
 

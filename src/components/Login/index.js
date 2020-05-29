@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { NotificationManager } from 'react-notifications';
+import { connect } from "react-redux";
 import { httpPost } from '../../actions/data.action';
 import { showLoader, hideLoader } from '../../helpers/loader';
+import { logUserIn } from "../../actions/auth.action";
 
 
 class Login extends Component {
@@ -28,24 +30,42 @@ class Login extends Component {
         password: this.state.password
       };
 
-      const data = await httpPost('auth/login', body)
-      if(data.code === 200){
+      const res = await this.props.logUserIn(body);
+      if (res) {
         hideLoader();
-        console.log(data)
-        NotificationManager.success('You are logged in','Success!',3000);
-        if(data.data.role === 'staff') {
-          if(data.data.onBoarding < 4 && data.data.applicationStatus === 'pending'){
-            localStorage.setItem('token', data.data.token);
-            this.props.history.push(`/create_staff/one/${data.data.id}`);
+        // console.log(res.payload);
+        if(res.payload.role === 'staff') {
+          if(res.payload.user.onBoarding < 4 && res.payload.user.applicationStatus === 'pending'){
+            localStorage.setItem('token', res.payload.token);
+            this.props.history.push(`/create_staff/one/${res.payload.user.id}`);
           } else {
-            console.log('User has either approved or rejected')
+            console.log('User has either been approved or rejected')
           }
         } else {
-          localStorage.setItem('token', data.data.token);
+          localStorage.setItem('token', res.payload.token);
           this.props.history.push(`/create_staff`);
           this.setState({ email: '', password: '' });
         }
       }
+
+      // const data = await httpPost('auth/login', body)
+      // if(data.code === 200){
+      //   hideLoader();
+      //   console.log(data)
+      //   NotificationManager.success('You are logged in','Success!',3000);
+      //   if(data.data.role === 'staff') {
+      //     if(data.data.onBoarding < 4 && data.data.applicationStatus === 'pending'){
+      //       localStorage.setItem('token', data.data.token);
+      //       this.props.history.push(`/create_staff/one/${data.data.id}`);
+      //     } else {
+      //       console.log('User has either approved or rejected')
+      //     }
+      //   } else {
+      //     localStorage.setItem('token', data.data.token);
+      //     this.props.history.push(`/create_staff`);
+      //     this.setState({ email: '', password: '' });
+      //   }
+      // }
     }catch(error){
       hideLoader()
       console.log(error)
@@ -106,4 +126,10 @@ class Login extends Component {
   }
 }
 
-export default Login;
+//export default Login;
+
+const mapStateToProps = ({ user }) => ({
+	user,
+});
+
+export default connect(mapStateToProps, { logUserIn })(Login);

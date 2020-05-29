@@ -705,6 +705,9 @@ class PersonalInfo extends Component {
     try {
       const res = await httpGet(`auth/get_onboarding_one/${id}`);
       if(res.code === 200){
+        if(res.data.user.onBoarding === 0){
+          return;
+        }
         const { 
           nationality, 
           mobilePhoneCode, 
@@ -948,7 +951,7 @@ class PersonalInfo extends Component {
     );
 
     return (
-      <Layout page="staff">
+      <Layout page="personalInfo">
         <div className="app-content">
           <section className="section">
             <ol className="breadcrumb">
