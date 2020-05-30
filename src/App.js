@@ -65,7 +65,7 @@ function App() {
 				<ProtectedRoute path="/leave_management" component={LeaveMangement} />
 				<ProtectedRoute path="/leave_history" component={LeaveHistory} />
 				<Route path="/logout" component={Logout} />
-				<Route path="/user_info" component={UserInfo} />
+				<Route path="/user_info/:id" component={UserInfo} />
 				{/* <Route path="/testing" component={Testing} /> */}
 			</Switch>
 		</Router>

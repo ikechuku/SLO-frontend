@@ -73,6 +73,7 @@ export const httpGet = async (url) => {
 			"Oops!",
 			3000
 		);
+		return error;
 	}
 };
 
