@@ -91,6 +91,7 @@ export default class Role extends Component {
 		newRole = [...departments].filter(
 			(item) => item.id === role.departmentId
 		)[0];
+		console.log(role.departmentId);
 		let optionList = [];
 		await newRole.units.map((data) =>
 			optionList.push({ value: data.id, label: data.name })

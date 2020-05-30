@@ -1,126 +1,123 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+		"Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+		sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+		monospace;
 }
 
-
 .cursor-pointer {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .impt {
-  color: red
+	color: red;
 }
 
 .dropdown-div {
-  background: #fff;
-  border: 1px solid rgb(131, 138, 182);
-  position: absolute;
-  z-index: 999;
-  width: 90%;
+	background: #fff;
+	border: 1px solid rgb(131, 138, 182);
+	position: absolute;
+	z-index: 999;
+	width: 90%;
 }
 
 .select2-container {
-  width: 100% !important;
+	width: 100% !important;
 }
 
-.select2-container--default .select2-selection--single{
-  height: calc(2.25rem + 2px) !important;
-  color: #777ab2 !important;
-  border: 1px solid #ced4da !important;
+.select2-container--default .select2-selection--single {
+	height: calc(2.25rem + 2px) !important;
+	color: #777ab2 !important;
+	border: 1px solid #ced4da !important;
 }
 
-.select2-container--default .select2-selection--single:focus{
-  border-color: #5458b3 !important;
+.select2-container--default .select2-selection--single:focus {
+	border-color: #5458b3 !important;
 }
 
-.select2-container--default .select2-selection__rendered{
-  height: calc(2.25rem + 2px) !important;
-  padding-top: 4px;
+.select2-container--default .select2-selection__rendered {
+	height: calc(2.25rem + 2px) !important;
+	padding-top: 4px;
 }
 
 .select2-container:focus {
-  border-color: #5458b3 !important;
+	border-color: #5458b3 !important;
 }
 
 .dropdown-btn {
-  padding: 10px;
-  margin: 0;
+	padding: 10px;
+	margin: 0;
 }
 
 .dropdown-btn:hover {
-  background: #838ab6;
-  color: white !important;
+	background: #838ab6;
+	color: white !important;
 }
 
-
 .select2-padding .css-g1d714-ValueContainer {
-  /* padding: 2px 59px 2px 8px !important; */
-  padding: 2px 4px 2px 0px !important;
-  width: 65px !important;
+	/* padding: 2px 59px 2px 8px !important; */
+	padding: 2px 4px 2px 0px !important;
+	width: 65px !important;
 }
 
 .css-1hwfws3 {
-  /* padding: 2px 4px 2px 0px !important; */
-  width: 65px !important;
+	/* padding: 2px 4px 2px 0px !important; */
+	width: 65px !important;
 }
 
 .select2-padding .css-yk16xz-control {
-  padding-left: 10px !important;
+	padding-left: 10px !important;
 }
 
-.c-date-picker .react-datepicker-wrapper{
-  width: 100% !important
+.c-date-picker .react-datepicker-wrapper {
+	width: 100% !important;
 }
 
 input::placeholder {
-  opacity: 0.3 !important;
+	opacity: 0.3 !important;
 }
 
 .form-control::placeholder {
-  opacity: 0.3 !important;
+	opacity: 0.3 !important;
 }
 
 .add-link {
-  text-decoration: underline !important;
-  cursor: pointer;
+	text-decoration: underline !important;
+	cursor: pointer;
 }
 
 .add-link:hover {
-  font-weight: bold;
+	font-weight: bold;
 }
 
 .add-delete {
-  text-decoration: underline !important;
-  cursor: pointer;
-  color: blue !important
+	text-decoration: underline !important;
+	cursor: pointer;
+	color: blue !important;
 }
 
 .add-delete:hover {
-  color: red !important
+	color: red !important;
 }
 
 .font-bold {
-  font-weight: 600!important;
+	font-weight: 600 !important;
 }
 
 thead .thead-th {
-  font-weight: 600 !important;
-  background-color: #f6f6f9 !important;
+	font-weight: 600 !important;
+	background-color: #f6f6f9 !important;
 }
 
-
 @media (min-width: 992px) {
-  .modal-lg {
-    max-width: 850px !important;
-  }
+	.modal-lg {
+		max-width: 850px !important;
+	}
 }

@@ -3,7 +3,6 @@
 }
 
 .wrap {
-	background-color: whitesmoke;
 	display: flex;
 	align-items: flex-start;
 	width: 100vw;
@@ -458,7 +457,8 @@ tbody .table-tr-chat:hover {
 	text-align: start;
 	margin: 0;
 	max-width: 500px;
-	box-shadow: 0px 4px 8px rgba(50, 50, 71, 0.06), 0px 4px 4px rgba(50, 50, 71, 0.08);
+	box-shadow: 0px 4px 8px rgba(50, 50, 71, 0.06),
+		0px 4px 4px rgba(50, 50, 71, 0.08);
 	border-radius: 20px 20px 20px 2px;
 	margin: 20px;
 }
@@ -475,7 +475,8 @@ tbody .table-tr-chat:hover {
 	text-align: start;
 	margin: 0;
 	max-width: 500px;
-	box-shadow: 0px 4px 8px rgba(50, 50, 71, 0.06), 0px 4px 4px rgba(50, 50, 71, 0.08);
+	box-shadow: 0px 4px 8px rgba(50, 50, 71, 0.06),
+		0px 4px 4px rgba(50, 50, 71, 0.08);
 	border-radius: 20px 2px 20px 20px;
 	margin-right: 20px;
 	margin-left: 9px;
@@ -543,9 +544,10 @@ tbody .table-tr-chat:hover {
 @media (max-width: 969px) {
 	.table-responsivee {
 		width: 100%;
-		overflow-X: scroll;
+		overflow-x: scroll;
 	}
-	TaBle-chat {}
+	TaBle-chat {
+	}
 	.chatCon {
 		/* width: 100vw;
     white-space: normal;
@@ -565,7 +567,8 @@ tbody .table-tr-chat:hover {
 		margin: auto;
 		margin-left: 20px;
 	}
-	.responsive-chat, .chatBox {
+	.responsive-chat,
+	.chatBox {
 		width: 60vw;
 		margin-bottom: 50px;
 	}
@@ -579,7 +582,8 @@ tbody .table-tr-chat:hover {
 		margin: auto;
 		margin-left: 20px;
 	}
-	.responsive-chat, .chatBox {
+	.responsive-chat,
+	.chatBox {
 		width: 90vw;
 		margin-bottom: 50px;
 	}
@@ -592,7 +596,8 @@ tbody .table-tr-chat:hover {
 		align-items: flex-start;
 		margin-left: 20px;
 	}
-	.responsive-chat, .chatBox {
+	.responsive-chat,
+	.chatBox {
 		width: 90vw;
 		margin-bottom: 50px;
 	}
@@ -636,14 +641,14 @@ tbody .table-tr-chat:hover {
 	border: 2px solid white;
 }
 
-.checkbox-label input:checked~.checkbox-custom {
-	background-color: #FFFFFF;
+.checkbox-label input:checked ~ .checkbox-custom {
+	background-color: #ffffff;
 	border-radius: 5px;
 	-webkit-transform: rotate(0deg) scale(1);
 	-ms-transform: rotate(0deg) scale(1);
 	transform: rotate(0deg) scale(1);
 	opacity: 1;
-	border: 2px solid #0069D9;
+	border: 2px solid #0069d9;
 }
 
 .checkbox-label .checkbox-custom::after {
@@ -654,7 +659,7 @@ tbody .table-tr-chat:hover {
 	height: 0px;
 	width: 0px;
 	border-radius: 5px;
-	border: solid #009BFF;
+	border: solid #009bff;
 	border-width: 0 3px 3px 0;
 	-webkit-transform: rotate(0deg) scale(0);
 	-ms-transform: rotate(0deg) scale(0);
@@ -667,7 +672,7 @@ tbody .table-tr-chat:hover {
 	-o-transition: all 0.3s ease-out;
 }
 
-.checkbox-label input:checked~.checkbox-custom::after {
+.checkbox-label input:checked ~ .checkbox-custom::after {
 	-webkit-transform: rotate(45deg) scale(1);
 	-ms-transform: rotate(45deg) scale(1);
 	transform: rotate(45deg) scale(1);
@@ -676,7 +681,7 @@ tbody .table-tr-chat:hover {
 	top: 2px;
 	width: 6px;
 	height: 8px;
-	border: solid #0069D9;
+	border: solid #0069d9;
 	border-width: 0 2px 2px 0;
 	background-color: transparent;
 	border-radius: 0;
@@ -696,7 +701,7 @@ tbody .table-tr-chat:hover {
 	transform: scale(0);
 }
 
-.checkbox-label input:checked~.checkbox-custom::before {
+.checkbox-label input:checked ~ .checkbox-custom::before {
 	left: -3px;
 	top: -3px;
 	width: 17px;

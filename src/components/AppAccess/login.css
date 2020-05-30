@@ -1,0 +1,99 @@
+.loginForm99 {
+	background-color: white;
+	width: 450px;
+	padding: 30px;
+	border-radius: 10px;
+	margin-bottom: 150px;
+}
+
+.container-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	background-color: #0d2944;
+	flex-direction: column;
+}
+.container-center .appName {
+	color: white;
+	padding-top: 0;
+	margin-top: 0;
+	margin-bottom: 40px;
+	font-size: 26px;
+	font-weight: 700;
+}
+.formHeader {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.formHeader h1 {
+	text-transform: uppercase;
+	font-size: 14px;
+	letter-spacing: 1px;
+	padding: 25px 0 25px 0;
+}
+
+.logInInput9[type="text"],
+.logInInput9[type="password"] {
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid rgba(204, 204, 204, 0.863);
+	box-sizing: border-box;
+	outline: none;
+	background-color: #e8f0fe;
+}
+
+.loginForm99 .logInInput99[type="text"]:focus {
+	border: 1px solid rgba(7, 7, 114, 0.623);
+}
+
+.loginForm99 .logInInput99[type="password"]:focus {
+	border: 1px solid rgba(7, 7, 114, 0.623);
+}
+
+.loginForm99 .logInInput99::placeholder {
+	color: rgb(0, 0, 0);
+}
+
+.loginForm99 .logInInput9button {
+	background-color: #4caf50;
+	color: white;
+	padding: 10px 15px;
+	margin: 8px 0;
+	border: none;
+	cursor: pointer;
+	width: 100%;
+	border-radius: 5px;
+	font-size: 17px;
+	font-weight: 700;
+}
+
+.loginForm99 .logInInput99button:hover {
+	opacity: 0.8;
+}
+
+.containerlogin {
+	padding: 10px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 524px) {
+	.loginForm99 {
+		width: 90vw;
+		padding: 5px;
+	}
+
+	.loginForm99 .logInInput99[type="text"],
+	.loginForm99 .logInInput99[type="password"] {
+		width: 80vw;
+	}
+	.cancelbtn {
+		width: 100%;
+	}
+}
