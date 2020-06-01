@@ -67,12 +67,12 @@ export const httpGet = async (url) => {
 		return data;
 	} catch (error) {
 		hideLoader();
-		// return error;
-		NotificationManager.error(
-			error.response.data.message || "Something went wrong. Please retry.",
-			"Oops!",
-			3000
-		);
+		return error;
+		// NotificationManager.error(
+		// 	error.response.data.message || "Something went wrong. Please retry.",
+		// 	"Oops!",
+		// 	3000
+		// );
 		return error;
 	}
 };

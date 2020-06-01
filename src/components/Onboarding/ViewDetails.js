@@ -85,7 +85,7 @@ export default class ViewDetails extends Component {
             </ol>
 
             <div className="row">
-              <div className="col-10">
+              <div className="col-md-10 col-sm-12">
                 <div className="card">
                   <div className="card-header">
                     <div className="row col-12">
@@ -213,13 +213,13 @@ export default class ViewDetails extends Component {
                       <div className="row">
                         <div className="col-md-6">
                           <p className="row">
-                            <span className="col-md-5 font-bold">Rank at employment:</span> <span className="col-md-7">{employmentInfo.rank}</span></p>
+                            <span className="col-md-5 font-bold">Rank at employment:</span> <span className="col-md-7">{!employmentInfo ? '' : employmentInfo.rank}</span></p>
                           <p className="row">
-                            <span className="col-md-5 font-bold">Unit at Employment:</span> <span className="col-md-7">{employmentInfo.unit !== undefined ? employmentInfo.unit.name : ''}</span></p>
+                            <span className="col-md-5 font-bold">Unit at Employment:</span> <span className="col-md-7">{!employmentInfo ? '' : !employmentInfo.unit ? '' : employmentInfo.unit.name}</span></p>
                           <p className="row">
-                            <span className="col-md-5 font-bold">Salary Amount:</span> <span className="col-md-7">{<NumberFormat value={employmentInfo.salaryAmount} displayType={'text'} thousandSeparator={true} />}</span></p>
+                            <span className="col-md-5 font-bold">Salary Amount:</span> <span className="col-md-7">{<NumberFormat value={!employmentInfo ? '' : employmentInfo.salaryAmount} displayType={'text'} thousandSeparator={true} />}</span></p>
                           <p className="row">
-                            <span className="col-md-5 font-bold">Employee Number:</span> <span className="col-md-7">{employmentInfo.employeeNumber || ''}</span></p>
+                            <span className="col-md-5 font-bold">Employee Number:</span> <span className="col-md-7">{!employmentInfo ? '' : employmentInfo.employeeNumber}</span></p>
                           <p className="row">
                             <span className="col-md-5 font-bold">No of dependants:</span> <span className="col-md-7">{user.noOfDependant}</span></p>
                           <p className="row">
@@ -227,11 +227,11 @@ export default class ViewDetails extends Component {
                         </div>
                         <div className="col-md-6 pl-0">
                           <p className="row">
-                            <span className="col-md-5 font-bold">Date of resumption:</span> <span className="col-md-7">{<Moment format='MMM D YYYY' value={employmentInfo.dateOfResumption} />}</span></p>
+                            <span className="col-md-5 font-bold">Date of resumption:</span> <span className="col-md-7">{<Moment format='MMM D YYYY' value={!employmentInfo ? '' : employmentInfo.dateOfResumption} />}</span></p>
                           <p className="row">
-                            <span className="col-md-5 font-bold">Branch at employment:</span> <span className="col-md-7">{employmentInfo.branch !== undefined ? employmentInfo.branch.name : ''}</span></p>
+                            <span className="col-md-5 font-bold">Branch at employment:</span> <span className="col-md-7">{!employmentInfo ? '' : employmentInfo.branch !== undefined ? employmentInfo.branch.name : ''}</span></p>
                           <p className="row">
-                            <span className="col-md-5 font-bold">Job title:</span> <span className="col-md-7">{employmentInfo.role !== undefined ? employmentInfo.role.title : ''}</span>
+                            <span className="col-md-5 font-bold">Job title:</span> <span className="col-md-7">{!employmentInfo ? '' : employmentInfo.role !== undefined ? employmentInfo.role.title : ''}</span>
                           </p>
                           <p className="row">
                             <span className="col-md-5 font-bold">Skills:</span> <span className="col-md-7">{user.skills}</span></p>
@@ -296,7 +296,7 @@ export default class ViewDetails extends Component {
                                   <td>{data.mobilePhoneCode + data.mobilePhone}</td>
                                   <td>{data.maritalStatus}</td>
                                   <td>{!data.criminalHistory ? 'No' : 'Yes'}</td>
-                                  <td>{<Moment fromNow ago>{data.employeeKnownDate}</Moment>}</td>
+                                  <td>{data.employeeKnownDate}</td>
                                   <td>{data.residentialAddress}
                                     <span style={!data.residentialCity && !data.currentLga && !data.residentialState && !data.residentialCountry  ? {display: 'none'} : {}}>(<span style={!data.residentialCity ? {display: 'none'} : {}}>{data.residentialCity}, </span>
                                     <span style={!data.residentialLga ? {display: 'none'} : {}}>{data.residentialLga}, </span>

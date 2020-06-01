@@ -57,7 +57,7 @@ function App() {
 					{/* <Route path="/create_staff/five/:id" component={Upload} /> */}
 					{/* <Route path="/create_staff/six" component={PendingApplication} /> */}
 					<ProtectedRoute path="/staff_list" component={StaffList} />
-					<ProtectedRoute path="/view_details/:id" component={ViewDetails} />
+					<ProtectedRoute path="/user_info/:id" component={ViewDetails} />
 					<ProtectedRoute path="/branches" component={Branch} />
 					<ProtectedRoute path="/departments" component={Department} />
 					<ProtectedRoute path="/units" component={Unit} />
@@ -67,7 +67,7 @@ function App() {
 					<ProtectedRoute path="/leave_setup" component={CreateLeave} />
 					<ProtectedRoute path="/leave_management" component={LeaveMangement} />
 					<ProtectedRoute path="/leave_history" component={LeaveHistory} />
-					<Route path="/user_info/:id" component={UserInfo} />
+					<Route path="/view_details/:id" component={UserInfo} />
 					{/* <Route path="/testing" component={Testing} /> */}
 					<Route path="/logout" component={Logout} />
 				</Switch>

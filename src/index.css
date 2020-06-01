@@ -88,6 +88,10 @@ input::placeholder {
 	opacity: 0.3 !important;
 }
 
+.add-cursor {
+	cursor: pointer;
+}
+
 .add-link {
 	text-decoration: underline !important;
 	cursor: pointer;

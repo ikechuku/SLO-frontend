@@ -1,6 +1,10 @@
 import React, { Component } from "react";
+import Moment from 'react-moment';
 
 export default class educationQulification extends Component {
+	constructor(props){
+		super(props)
+	}
 	render() {
 		return (
 			<div>
@@ -8,33 +12,30 @@ export default class educationQulification extends Component {
 					<h1>Education Qualification</h1>
 				</section>
 
-				<div className="qualifiactionGrid">
-					<div className="listQ">
-						<h1>Name</h1>
-						<h3>Community Secondry School</h3>
-						<h3>University of Benin</h3>
-					</div>
-					<div className="listQ">
-						<h1>Qulification</h1>
-						<h3>SSCE</h3>
-						<h3>OND</h3>
-					</div>
-					<div className="listQ">
-						<h1>Date</h1>
-						<h3>May, 2003 - Jan, 2021</h3>
-						<h3>May, 2003 - Jan, 2021</h3>
-					</div>
-					<div className="listQ">
-						<h1>Document</h1>
-						<h3>
-							{" "}
-							<i class="fas fa-link"></i> Certificate
-						</h3>
-						<h3>
-							{" "}
-							<i class="fas fa-link"></i> Certificate
-						</h3>
-					</div>
+				<div class="table-responsive">
+					<table id="example1" class="col col-md-12 table table-hover table-bordered border-t0 text-nowrap w-100" >
+						<thead>
+							<tr>
+								{/* <th className="wd-15p">S/N</th> */}
+								<th class="wd-15p">Name</th>
+								<th class="wd-15p">Qualification/Certification</th>
+								<th className="wd-15p">Date</th>
+								<th>Documents</th>
+							</tr>
+						</thead>
+						<tbody>                                {
+								this.props.institution.length ? this.props.institution.map((data, index) => (
+									<tr key={index}>
+										{/* <td>{index + 1}</td> */}
+										<td>{data.name}</td>
+										<td>{data.qualification || data.certification}</td>
+										<td>{<Moment format='MMM, YYYY'>{data.startDate}</Moment>} - {<Moment format='MMM, YYYY'>{data.endDate}</Moment>}</td>
+										<td><a className="add-cursor" href={data.upload.path} target="_blank"><span className="fa fa-link"> View</span></a></td>
+									</tr>
+								)) : ''
+							}
+						</tbody>
+					</table>
 				</div>
 			</div>
 		);

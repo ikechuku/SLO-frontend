@@ -8,6 +8,7 @@ import moment from 'moment';
 import Layout from '../layout/index';
 import { httpPost, httpPatch, httpGet, httpPostFormData, httpDelete } from '../../actions/data.action';
 import validateImage from '../../helpers/validateImage';
+import { validateImageOnly } from '../../helpers/validateImage';
 import { states, countries, countryLists, stateLists, stateLists2 } from './Info';
 import { slga, getLga } from '../../helpers/states';
 import { validateData, validateD } from '../../helpers/validations';
@@ -229,17 +230,34 @@ class PersonalInfo extends Component {
         permanentErrorMessage: null 
       });
     } else if(details.name === 'gender') {
-      // const isValidate = validateD(e.target.name, e.target.value);
-      // if(!isValidate.error){
-      //   this.setState({ 
-      //     genderErrorMessage: isValidate.errorMessage,
-      //   })
-      //   return;
-      // }
       data[details.name] = details.value;
       this.setState({ 
         data,
         genderErrorMessage: null 
+      });
+    } else if(details.name === 'currentLandmark') {
+      data[details.name] = details.value;
+      this.setState({ 
+        data,
+        currentLandmarkErrorMessage: null 
+      });
+    } else if(details.name === 'permanentLandmark') {
+      data[details.name] = details.value;
+      this.setState({ 
+        data,
+        permanentLandmarkErrorMessage: null 
+      });
+    } else if(details.name === 'bankName') {
+      data[details.name] = details.value;
+      this.setState({ 
+        data,
+        bankNameErrorMessage: null 
+      });
+    } else if(details.name === 'accountNumber') {
+      data[details.name] = details.value;
+      this.setState({ 
+        data,
+        accountNumberErrorMessage: null 
       });
     } else {
       data[details.name] = details.value;
@@ -624,8 +642,13 @@ class PersonalInfo extends Component {
 
   upload = async (e, fileName) => {
     let { uploadBody } = this.state;
-    const imageData = e.target.files[0];
-    const validFormat = validateImage(imageData);
+    const imageData = e.target.files;
+    let validFormat;
+    if(fileName === 'passportPhotograph'){
+      validFormat = validateImageOnly(imageData);
+    } else {
+      validFormat = validateImage(imageData);
+    }
     if (validFormat.valid) {
       //NotificationManager.success(validFormat.message,'Yippe!',3000);
       // postBody[fileName] = [...postBody[fileName], e.target.files[0]];
@@ -633,7 +656,7 @@ class PersonalInfo extends Component {
       uploadBody[fileName] = e.target.files[0];
       this.setState({ uploadBody });
     } else {
-      //NotificationManager.error(validFormat.message,'Yippe!',3000);
+      NotificationManager.error(validFormat.message,'Yippe!',3000);
       e.target.value = '';
     }
   };
@@ -968,7 +991,7 @@ class PersonalInfo extends Component {
 										  <h4 className="col col-md-6">Personal Information</h4>
                       <div className="col col-md-6 text-right">
                       <button className="cursor-pointer btn btn-primary" onClick={() => this.props.history.push(`/create_staff/two/${this.props.match.params.id}`)}>
-                        Back <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                         <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
                     </div>
                     </div>
 									</div>
@@ -1099,6 +1122,51 @@ class PersonalInfo extends Component {
                             onChange={this.handleChange}
                           />
                           <span className="text-danger">{this.state.bvnErrorMessage !== null ? this.state.bvnErrorMessage : ''}</span>
+												</div>
+                      </div>
+                      <div className="form-group row">
+                        <label for="inputName" className="col-md-2 col-form-label">Bank Name <span className="impt">*</span></label>
+                        <div className="col-md-4">
+                          <select class="form-control"
+                            name="bankName" 
+                            className="form-control"
+                            onChange={this.handleChange}
+                            value={this.state.data.bankName}
+                          >
+                            <option selected disabled>Select</option>
+                            <option value="access">Access Bank</option>
+                            <option value="citibank">Citibank</option>
+                            <option value="diamond">Diamond Bank</option>
+                            <option value="ecobank">Ecobank</option>
+                            <option value="fidelity">Fidelity Bank</option>
+                            <option value="firstbank">First Bank</option>
+                            <option value="fcmb">First City Monument Bank (FCMB)</option>
+                            <option value="gtb">Guaranty Trust Bank (GTB)</option>
+                            <option value="heritage">Heritage Bank</option>
+                            <option value="keystone">Keystone Bank</option>
+                            <option value="polaris">Polaris Bank</option>
+                            <option value="providus">Providus Bank</option>
+                            <option value="stanbic">Stanbic IBTC Bank</option>
+                            <option value="standard">Standard Chartered Bank</option>
+                            <option value="sterling">Sterling Bank</option>
+                            <option value="suntrust">Suntrust Bank</option>
+                            <option value="union">Union Bank</option>
+                            <option value="uba">United Bank for Africa (UBA)</option>
+                            <option value="unity">Unity Bank</option>
+                            <option value="wema">Wema Bank</option>
+                            <option value="zenith">Zenith Bank</option>
+                          </select>
+                          <span className="text-danger">{this.state.bankNameErrorMessage !== null ? this.state.bankNameErrorMessage : ''}</span>
+												</div>
+                        <label for="inputName" className="col-md-2 col-form-label">Account No <span className="impt">*</span></label>
+												<div className="col-md-4">
+                          <input type="text" 
+                            className="form-control"
+                            name="accountNumber"
+                            value={this.state.data.accountNumber}
+                            onChange={this.handleChange}
+                          />
+                          <span className="text-danger">{this.state.accountNumberErrorMessage !== null ? this.state.accountNumberErrorMessage : ''}</span>
 												</div>
                       </div>
                       <div className="form-group row">
@@ -1315,6 +1383,18 @@ class PersonalInfo extends Component {
                         </div>
                       </div>
                       <div className="form-group row">
+                        <label htmlFor="currentLandmark" className="col-md-2 col-form-label">Landmark <span className="impt">*</span></label>
+                        <div className="col-md-4">
+                          <input type="text" 
+                            name="currentLandmark" 
+                            className="form-control"
+                            onChange={this.handleChange}
+                            value={this.state.data.currentLandmark}
+                          />
+                          <span className="text-danger">{this.state.currentLandmarkErrorMessage !== null ? this.state.currentLandmarkErrorMessage : ''}</span>
+                        </div>
+                      </div>
+                      <div className="form-group row">
 												<label for="inputName" className="col-md-2 col-form-label">Permanent Address <span className="impt">*</span></label>
 												<div className="col-md-4">
                           <input type="text" 
@@ -1349,7 +1429,18 @@ class PersonalInfo extends Component {
                           </div>
                         </div>
                       </div>
-                      
+                      <div className="form-group row">
+                        <label htmlFor="permanentLandmark" className="col-md-2 col-form-label">Landmark <span className="impt">*</span></label>
+                        <div className="col-md-4">
+                          <input type="text" 
+                            name="permanentLandmark" 
+                            className="form-control"
+                            onChange={this.handleChange}
+                            value={this.state.data.permanentLandmark}
+                          />
+                          <span className="text-danger">{this.state.permanentLandmarkErrorMessage !== null ? this.state.permanentLandmarkErrorMessage : ''}</span>
+                        </div>
+                      </div>
                       <div className="form-group row">
                         <label for="inputName" className="col-md-2 col-form-label">Passport Photograph <span className="impt">*</span></label>
                         <div className="col-md-4">

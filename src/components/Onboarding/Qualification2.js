@@ -1091,7 +1091,7 @@ class Qualification extends Component {
 
   render() {
     return (
-      <Layout>
+      <Layout page='qualification'>
         <div class="app-content">
           <section class="section">
             <ol class="breadcrumb">

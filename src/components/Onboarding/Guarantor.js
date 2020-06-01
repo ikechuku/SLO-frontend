@@ -987,7 +987,7 @@ class Guarantor extends Component {
 
     render() {
         return (
-            <Layout>
+            <Layout page='guarantor'>
 							{this.state.alert}
                 <div class="app-content">
                     <section class="section">
