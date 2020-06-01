@@ -36,7 +36,9 @@ export default class info extends Component {
   }
 
   async componentDidMount() {
-    await this.getDetails();
+		showLoader();
+		await this.getDetails();
+		hideLoader();
   }
 
   getDetails = async () => {
@@ -241,12 +243,12 @@ export default class info extends Component {
 							<p className="row">
 								<span className="col-md-5 font-bold">Religion:</span> <span className="col-md-7">{user.religion}</span></p>
 							{/* <p className="row">
-								<span className="col-md-5 font-bold">Region:</span> <span className="col-md-7">{user.region}</span></p> */}
+								<span className="col-md-5 font-bold">Region:</span> <span className="col-md-7">{!employmentInfo ? '' : employmentInfo.region ? employmentInfo.region.name : ''}</span></p> */}
 						</div>
 						<div className="col-md-6 col-sm-6 pl-md-0">
+							{/* <p className="row">
+								<span className="col-md-5 font-bold">Area:</span> <span className="col-md-7">{!employmentInfo ? '' : employmentInfo.area ? employmentInfo.area.name : ''}</span></p> */}
 							<p className="row">
-								{/* <span className="col-md-5 font-bold">Area:</span> <span className="col-md-7">{user.area}</span></p>
-							<p className="row"> */}
 								<span className="col-md-5 font-bold">Date of resumption:</span> <span className="col-md-7">{<Moment format='MMM D YYYY' value={!employmentInfo ? '' : employmentInfo.dateOfResumption} />}</span></p>
 							<p className="row">
 								<span className="col-md-5 font-bold">Branch at employment:</span> <span className="col-md-7">{!employmentInfo ? '' : employmentInfo.branch !== undefined ? employmentInfo.branch.name : ''}</span></p>

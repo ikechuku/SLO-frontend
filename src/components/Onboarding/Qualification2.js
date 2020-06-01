@@ -802,7 +802,8 @@ class Qualification extends Component {
           moreCertification: res.data.certification,
           morePrevious: res.data.employmentHistory,
           reasonForLeaving: res.data.reasonForLeaving,
-          moreInfo: res.data.moreInfo
+          moreInfo: res.data.moreInfo,
+          pageMode: 'edit'
         })
       }
 

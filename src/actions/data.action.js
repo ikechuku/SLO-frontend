@@ -44,7 +44,7 @@ export const httpPatch = async (url, postBody) => {
 
 export const httpDelete = async (url, postBody) => {
 	try {
-		const { data } = await axios.delete(`${baseUrl}${url}`, postBody, {
+		const { data } = await axios.delete(`${baseUrl}${url}`, {
 			headers: { Authorization: localStorage.token },
 		});
 		return data;

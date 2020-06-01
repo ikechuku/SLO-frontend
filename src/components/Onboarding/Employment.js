@@ -119,6 +119,12 @@ class Employment extends Component {
         customRegionId: e,
       })
       console.log(this.getArea())
+    } else if(nameValue === 'areaId'){
+      postData['areaId'] = e.value;
+      this.setState({ 
+        postData,
+        customAreaId: e,
+      })
     } else if(nameValue === 'jobTitle'){
       const isValidate = await validateEmpoymentFields('jobTitle', e.value);
       if(!isValidate.error){
@@ -248,7 +254,9 @@ class Employment extends Component {
       branchId,
       employeeNumber,
       jobTitle,
-      departmentId
+      departmentId,
+      regionId,
+      areaId
     } = this.state.postData;
 
     const data = {
@@ -260,7 +268,9 @@ class Employment extends Component {
       branchId,
       employeeNumber,
       jobTitle,
-      departmentId
+      departmentId,
+      regionId,
+      areaId
     }
 
     console.log(data);
@@ -528,7 +538,11 @@ class Employment extends Component {
           branch,
           unit,
           department,
-          role
+          role,
+          regionId,
+          region,
+          areaId,
+          area
         } = res.data.employmentInfo;
         const customRank = { value: rank, label: rank };
         const customUnitId = unit === null ? null : { value: unitId, label: unit.name };
@@ -536,8 +550,9 @@ class Employment extends Component {
         const customDateOfResumption = moment(dateOfResumption).toDate();
         const customBranchId = { value: branchId, label: branch.name }
         const customJobTitle = { value: jobTitle, label: role.title };
-        const customDepartmentId = { value: departmentId, label: department.name }
-        console.log('gets here::')
+        const customDepartmentId = { value: departmentId, label: department.name };
+        const customRegionId = regionId === null ? null : { value: regionId, label: region.name };
+        const customAreaId = areaId === null ? null : { value: areaId, label: area.name };
         this.setState({
           postData: res.data.employmentInfo,
           customBranchId,
@@ -547,6 +562,8 @@ class Employment extends Component {
           customJobTitle,
           customRank,
           customUnitId,
+          customAreaId,
+          customRegionId,
           pageMode: 'edit' 
         });
       }
@@ -783,7 +800,7 @@ class Employment extends Component {
                           type="submit"
                           class="btn btn-primary"
                           onClick={e => this.handleSubmit(e, 'submit')}
-                        ><i class="fa fa-save"></i> SUBMIT
+                        ><i class="fa fa-save"></i> {this.state.pageMode === 'create' ? 'SUBMIT' : 'UPDATE & CONTINUE'}
                         </button>
 													{/* <button type="submit" class="btn btn-primary" onClick={e => this.handleSubmit(e,'submit')} ><i class="fa fa-arrow-right"></i> {this.state.pageMode === 'create' ? 'NEXT' : 'UPDATE & CONTINUE'}</button> */}
 												</div>

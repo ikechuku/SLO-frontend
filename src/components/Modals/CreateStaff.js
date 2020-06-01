@@ -47,6 +47,7 @@ export default function UnitModal(props) {
                     onChange={props.handleChange}
                   />
                 </div>
+                <span className="text-danger">{props.mobilePhoneCodeError !== null ? props.mobilePhoneCodeError : ''}</span>
                 <span className="text-danger">{props.errorMessage1 !== null ? props.errorMessage1 : ''}</span>
               </div>
             

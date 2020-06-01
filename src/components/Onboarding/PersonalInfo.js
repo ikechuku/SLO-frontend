@@ -793,7 +793,8 @@ class PersonalInfo extends Component {
           customSkills,
           customHobbies,
           customReligion,
-          customDob
+          customDob,
+          pageMode: 'edit'
         });
       }
     }catch(error){

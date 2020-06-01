@@ -5,6 +5,7 @@ import { httpPost } from '../../actions/data.action';
 import { showLoader, hideLoader } from '../../helpers/loader';
 import { logUserIn } from "../../actions/auth.action";
 
+import "./login.css";
 
 class Login extends Component {
   constructor(){
@@ -76,51 +77,39 @@ class Login extends Component {
   render() {
     return (
       <div id="app">
-        <section class="section section-2">
-          <div class="row">
-            <div class="single-page single-pageimage construction-bg cover-image" style={{ background: `url(/assets/image.png)`}}>
-              <div class="row">
+        <div class="container-center">
+          <h1 className="appName">SLO </h1>
 
-                <div class="col-lg-6">
-                  {/* <img src="/assets/image.png" alt="" /> */}
-                  {/* <div class="log-wrapper text-center">
-                    
-                    <img src="assets/img/logo-white.png" width="50%" class="mb-2 mt-4 mt-lg-0 mb-5" alt="logo" />
-                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have
-                      suffered alteration in some form, by injected humour, or randomised words which
-                      don't look even slightly believable. If you are going to use a passage of Lorem
-                      Ipsum, you need to be sure</p>
-                  </div> */}
-                </div>
-                <div class="col-lg-6">
-                  <div class="wrapper wrapper2" style={{height: "100vh"}}>
-                    <form id="login" class="card-body form-body" tabindex="500">
-                      <h3>Login</h3>
-                      <div class="mail">
-                        <input type="text" name="username"
-                          onChange={this.handleChange}
-                        />
-                        <label>Username</label>
-                      </div>
-                      <div class="passwd">
-                        <input type="password" name="password"
-                          name="password"
-                          onChange={this.handleChange}
-                        />
-                        <label>Password</label>
-                      </div>
-                      <div class="submit">
-                        <a class="btn btn-primary btn-block" onClick={this.handleSubmit}>Login</a>
-                      </div>
-                      <p class="mb-2"><a href="forgot.html">Forgot Password</a></p>
-                    </form>
-                  </div>
-                </div>
-
+          <form className="loginForm99" onSubmit={this.handleSubmit}>
+            <div class="containerlogin">
+              <div className="formHeader">
+                <h1>LOGIN</h1>
               </div>
+
+              <input
+                className="logInInput9"
+                type="text"
+                placeholder="Enter Email"
+                name="username"
+                onChange={this.handleChange}
+                required
+              />
+
+              <input
+                className="logInInput9"
+                type="password"
+                placeholder="Enter Password"
+                name="password"
+                onChange={this.handleChange}
+                required
+              />
+
+              <button className="logInInput9button" type="submit" onSubmit={this.handleSubmit}>
+                Login To Your Account
+              </button>
             </div>
-          </div>
-        </section>
+          </form>
+        </div>
       </div>
     )
   }

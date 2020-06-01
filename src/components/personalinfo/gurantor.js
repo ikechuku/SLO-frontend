@@ -20,11 +20,12 @@ export default class gurantor extends Component {
 	}
 
 	getG = async (info) => {
-		console.log('com', info)
-		await this.setState({ 
-			info: info !== undefined ? info[0] : {}
-		})
-		this.getDocuments();
+		if(info.length){
+			await this.setState({ 
+				info: info !== undefined ? info[0] : {}
+			})
+			this.getDocuments()
+		} 
 	}
 
 	getDocuments = async () => {
@@ -52,6 +53,18 @@ export default class gurantor extends Component {
 	render() {
 		let { guarantorInfo } = this.props;
 		const { info, documents } = this.state;
+		if(!guarantorInfo.length){
+			return (
+				<div>
+					<section className="appheaderr5 reduceMargin">
+						<h1>Guarantor Information</h1>
+					</section>
+					<section className="gurantor-names mb-3">
+						<p>No guarantor infomation created yet</p>
+					</section>
+				</div>
+			)
+		} else {
 		return (
 			<div>
 				<section className="appheaderr5 reduceMargin">
@@ -134,5 +147,6 @@ export default class gurantor extends Component {
 
 			</div>
 		);
+		}
 	}
 }
