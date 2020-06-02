@@ -7,6 +7,7 @@ import {httpPost, httpGet, httpDelete, httpPatch } from '../../../actions/data.a
 import { hideLoader, showLoader } from '../../../helpers/loader';
 import CreateStaffModal from '../../Modals/CreateStaff';
 import { countryCodes } from '../../../helpers/dailCodes';
+import { validateD } from '../../../helpers/validations';
 
 export default class CreateStaff extends Component {
 	constructor(){
@@ -17,7 +18,8 @@ export default class CreateStaff extends Component {
 			modalMode: 'create',
 			currentEditId: null,
 			errorMessage1: null,
-      customMobile: null,
+			customMobile: null,
+			mobilePhoneCodeError: null
 		}
 	}
 
@@ -47,11 +49,22 @@ export default class CreateStaff extends Component {
       staff[name] = e.value;
       this.setState({ 
         staff,
-        customMobile: e,
+				customMobile: e,
+				mobilePhoneCodeError: null
       });
     } else {
-      staff[e.target.name] = e.target.value;
-      this.setState({ staff, errorMessage1: null });
+			staff[e.target.name] = e.target.value;
+			this.setState({ staff, errorMessage1: null });
+
+			const isValidate = validateD('mobilePhone', e.target.value);
+      if(!isValidate.error){
+        this.setState({ 
+          errorMessage1: isValidate.errorMessage, 
+        })
+        return;
+      } else {
+				this.setState({ errorMessage1: null });
+			}
     }
 	}
 
@@ -70,7 +83,7 @@ export default class CreateStaff extends Component {
 
 	handleDelete = async(id) => {
 		showLoader();
-		const res = await httpDelete(`unit/delete/${id}`);
+		const res = await httpDelete(`auth/delete_staff/${id}`);
 		if(res.code === 200){
 			this.getStaffs();
 			hideLoader();
@@ -84,7 +97,14 @@ export default class CreateStaff extends Component {
 			currentEditId, 
 			modalMode,
 			errorMessage1,
+			mobilePhoneCodeError
 		} = this.state;
+
+		if(staff.mobilePhoneCode === undefined || staff.mobilePhoneCode === ''){
+			hideLoader();
+			this.setState({ mobilePhoneCodeError: 'Country code is required'});
+			return;
+		}
 
 		if(staff.username === undefined || staff.username === ''){
 			hideLoader();
@@ -92,7 +112,7 @@ export default class CreateStaff extends Component {
 			return;
 		}
 
-		if(errorMessage1 !== null){
+		if(errorMessage1 !== null || mobilePhoneCodeError !== null){
 			hideLoader();
 			return NotificationManager.warning('Complete all required fields')
 		}
@@ -129,6 +149,7 @@ export default class CreateStaff extends Component {
 			modalMode: 'create',
 			currentEditId: null,
 			errorMessage1: null,
+			mobilePhoneCodeError: null
 		})
 	}
 
@@ -142,6 +163,7 @@ export default class CreateStaff extends Component {
 		const { 
 			errorMessage1, 
 			modalMode, 
+			mobilePhoneCodeError,
 			staff } = this.state;
 
 		return (
@@ -188,7 +210,8 @@ export default class CreateStaff extends Component {
 				  handleSubmit={this.handleSubmit}
 				  closeModal={this.closeModal}
 				  modalMode={modalMode}
-          errorMessage1={errorMessage1}
+					errorMessage1={errorMessage1}
+					mobilePhoneCodeError={mobilePhoneCodeError}
           countryCodes={countryCodes}
 				/>			
 			</Layout>				

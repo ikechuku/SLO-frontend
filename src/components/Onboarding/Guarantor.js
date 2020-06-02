@@ -944,7 +944,8 @@ class Guarantor extends Component {
             if (res.code === 200) {
                 hideLoader();
                 this.setState({
-                    moreData: res.data.guarantor
+                    moreData: res.data.guarantor,
+                    pageMode: 'edit'
                 })
             }
         } catch (error) {
@@ -987,7 +988,7 @@ class Guarantor extends Component {
 
     render() {
         return (
-            <Layout>
+            <Layout page='guarantor'>
 							{this.state.alert}
                 <div class="app-content">
                     <section class="section">
@@ -1039,7 +1040,7 @@ class Guarantor extends Component {
                                                     type="submit"
                                                     class="btn btn-primary"
                                                     onClick={this.handleSubmit}
-                                                ><i class="fa fa-save"></i> SUBMIT
+                                                ><i class="fa fa-save"></i> {this.state.pageMode === 'create' ? 'SUBMIT' : 'UPDATE & CONTINUE'}
                                                 </button>
                                                 {/* <button
                                                     type="submit"

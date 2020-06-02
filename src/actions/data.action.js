@@ -2,9 +2,9 @@ import axios from "axios";
 import { NotificationManager } from "react-notifications";
 import { showLoader, hideLoader } from "../helpers/loader";
 
-let baseUrl = "https://slo-server.herokuapp.com/api/";
+export let baseUrl = "https://slo-server.herokuapp.com/api/";
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.REACT_APP_NODE_ENV === "development") {
 	baseUrl = 'http://127.0.0.1:8080/api/'
 }
 
@@ -44,7 +44,7 @@ export const httpPatch = async (url, postBody) => {
 
 export const httpDelete = async (url, postBody) => {
 	try {
-		const { data } = await axios.delete(`${baseUrl}${url}`, postBody, {
+		const { data } = await axios.delete(`${baseUrl}${url}`, {
 			headers: { Authorization: localStorage.token },
 		});
 		return data;
@@ -67,12 +67,12 @@ export const httpGet = async (url) => {
 		return data;
 	} catch (error) {
 		hideLoader();
-		// return error;
-		NotificationManager.error(
-			error.response.data.message || "Something went wrong. Please retry.",
-			"Oops!",
-			3000
-		);
+		return error;
+		// NotificationManager.error(
+		// 	error.response.data.message || "Something went wrong. Please retry.",
+		// 	"Oops!",
+		// 	3000
+		// );
 		return error;
 	}
 };

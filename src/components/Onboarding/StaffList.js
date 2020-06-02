@@ -81,7 +81,10 @@ class StaffList extends Component {
         "position": role.title || '',
         "startdate": <Moment format='MMM DD, YYYY'>{data.createdAt}</Moment>,
         "status": data.applicationStatus || '',
-        "action": <a><Link to={`/view_details/${data.id}`} className="add-more">View Details</Link></a>
+        "employmentInfo": <Link to={`/create_staff/four/${data.id}`} className="add-more ml-3">Edit</Link>,
+        "action": <a>
+          <Link to={`/view_details/${data.id}`} className="add-more">View Details</Link>
+          </a>
       }
     });
     return body;
@@ -99,6 +102,7 @@ class StaffList extends Component {
       { title: 'Position', prop: 'position', sortable: true },
       { title: 'Start Date', prop: 'startdate', sortable: true },
       { title: 'Status', prop: 'status', sortable: true },
+      { title: 'Employment Info', prop: 'employmentInfo', sortable: true },
       { title: ' ', prop: 'action' },
     ];
     return header;

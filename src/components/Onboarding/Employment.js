@@ -37,6 +37,9 @@ class Employment extends Component {
       departments: [],
       unitOptions: [],
       roleOptions: [],
+      regionOptions: [],
+      areaOptions: [],
+      areas: [],
       customBranchId: null,
       customDateOfResumption: undefined,
       customDepartmentId: null,
@@ -44,6 +47,8 @@ class Employment extends Component {
       customJobTitle: null,
       customRank: null,
       customUnitId: null,
+      customRegionId: null,
+      customAreaId: null,
       pageMode: 'create'
 		}
 	}
@@ -107,6 +112,19 @@ class Employment extends Component {
         errorMessage8: null 
       })
       this.getUnits();
+    } else if(nameValue === 'regionId'){
+      postData['regionId'] = e.value;
+      this.setState({ 
+        postData,
+        customRegionId: e,
+      })
+      console.log(this.getArea())
+    } else if(nameValue === 'areaId'){
+      postData['areaId'] = e.value;
+      this.setState({ 
+        postData,
+        customAreaId: e,
+      })
     } else if(nameValue === 'jobTitle'){
       const isValidate = await validateEmpoymentFields('jobTitle', e.value);
       if(!isValidate.error){
@@ -236,7 +254,9 @@ class Employment extends Component {
       branchId,
       employeeNumber,
       jobTitle,
-      departmentId
+      departmentId,
+      regionId,
+      areaId
     } = this.state.postData;
 
     const data = {
@@ -248,7 +268,9 @@ class Employment extends Component {
       branchId,
       employeeNumber,
       jobTitle,
-      departmentId
+      departmentId,
+      regionId,
+      areaId
     }
 
     console.log(data);
@@ -318,27 +340,31 @@ class Employment extends Component {
 
       if(this.state.pageMode === 'create'){
         if(btnType === 'submit'){
-          const res = await httpPost(`auth/onboarding_three/${id}`, data);
+          const res = await httpPost(`auth/onboarding_four/${id}`, data);
           if(res.code === 201){
             hideLoader();
+            NotificationManager.success('Successfully updated user information')
             // return this.props.history.push(`/create_staff/five/${res.data.id}`)
           }
         } else {
-          const res = await httpPost(`auth/onboarding_three/${id}`, data);
+          const res = await httpPost(`auth/onboarding_four/${id}`, data);
           if(res.code === 201){
             hideLoader();
+            NotificationManager.success('Successfully updated user information')
           }
         }
       } else {
         if(btnType === 'submit'){
-          const res = await httpPost(`auth/edit_onboarding_three/${id}`, data);
+          const res = await httpPost(`auth/edit_onboarding_four/${id}`, data);
           if(res.code === 200){
             hideLoader();
+            NotificationManager.success('Successfully updated user information')
           }
         } else {
-          const res = await httpPost(`auth/edit_onboarding_three/${id}`, data);
+          const res = await httpPost(`auth/edit_onboarding_four/${id}`, data);
           if(res.code === 200){
             hideLoader();
+            NotificationManager.success('Successfully updated user information')
           }
         }
       }
@@ -372,12 +398,15 @@ class Employment extends Component {
       const res = await httpGet('units');
       const data = await httpGet('roles');
       const resData = await httpGet('all_branch');
+      const regionData = await httpGet('all_region');
+      const areaData = await httpGet('all_area');
+
       if(res.code === 200){
         hideLoader()
 
-        let optionList = [];
+        let branchList = [];
         [...resData.data.branches].map(data => {
-          optionList.push({ value: data.id, label: data.name });
+          branchList.push({ value: data.id, label: data.name });
         });
 
         // let unitOptions = [];
@@ -395,12 +424,19 @@ class Employment extends Component {
           roleOptions.push({ value: data.title, label: data.title });
         });
 
+        let regionList = [];
+        [...regionData.data.regions].map(data => {
+          regionList.push({ value: data.id, label: data.name });
+        });
+
         this.setState({ 
           // units: unitOptions, 
           roles: data.data.roles,
-          branches: optionList,
+          branches: branchList,
           departmentOptions: departmentList,
           departments: data.data.departmentUnit, 
+          regionOptions: regionList,
+          areas: areaData.data.areas
         });
       }
 
@@ -408,6 +444,23 @@ class Employment extends Component {
       hideLoader()
       console.log(error)
     }
+  }
+
+  getArea = async () => {
+    const { areas, postData } = this.state;
+    console.log('>>>',areas, postData.regionId)
+    if(postData.regionId === undefined){
+      const areaOptions = [];
+      this.setState({ areaOptions })
+    }
+		let newpostData = [];
+		newpostData = [...areas].filter(item => item.regionId === postData.regionId);
+		let optionList = [];
+		await newpostData.map(data => (
+		  optionList.push({ value: data.id, label: data.name })
+		));
+		console.log(optionList, newpostData)
+    this.setState({ areaOptions: optionList })
   }
 
   getUnits = async () => {
@@ -469,7 +522,7 @@ class Employment extends Component {
 
   getUserDetails = async (id) => {
     try{
-      const res = await httpGet(`auth/get_onboarding_three/${id}`);
+      const res = await httpGet(`auth/get_onboarding_four/${id}`);
       console.log(res.data.employmentInfo)
       if(res.code === 200){
         const {
@@ -485,16 +538,21 @@ class Employment extends Component {
           branch,
           unit,
           department,
-          role
+          role,
+          regionId,
+          region,
+          areaId,
+          area
         } = res.data.employmentInfo;
         const customRank = { value: rank, label: rank };
-        const customUnitId = { value: unitId, label: unit.name };
+        const customUnitId = unit === null ? null : { value: unitId, label: unit.name };
         const customEmploymentDate = moment(employmentDate).toDate();
         const customDateOfResumption = moment(dateOfResumption).toDate();
         const customBranchId = { value: branchId, label: branch.name }
         const customJobTitle = { value: jobTitle, label: role.title };
-        const customDepartmentId = { value: departmentId, label: department.name }
-
+        const customDepartmentId = { value: departmentId, label: department.name };
+        const customRegionId = regionId === null ? null : { value: regionId, label: region.name };
+        const customAreaId = areaId === null ? null : { value: areaId, label: area.name };
         this.setState({
           postData: res.data.employmentInfo,
           customBranchId,
@@ -503,8 +561,14 @@ class Employment extends Component {
           customEmploymentDate,
           customJobTitle,
           customRank,
-          customUnitId
+          customUnitId,
+          customAreaId,
+          customRegionId,
+          pageMode: 'edit' 
         });
+      }
+      if(res.code === 400){
+        this.setState({ pageMode: 'create' })
       }
     }catch(error){
       hideLoader()
@@ -512,30 +576,23 @@ class Employment extends Component {
     }
   }
 
-	componentDidMount(){
+	async componentDidMount(){
     const { id } = this.props.match.params;
-    if(this.props.location.direction === 'backward'){
-      this.getFieldDetails();
-      this.getUserDetails(this.props.location.savedId || id);
-      this.setState({ userId: this.props.location.savedId || id, pageMode: 'edit' });
-    }else if(this.props.location.direction === 'completeOnboarding'){
-      this.setState({ pageMode: 'completeOnboarding'});
-      this.getFieldDetails()
-    } else {
-      this.getFieldDetails()
-    }
+    this.getFieldDetails();
+    await this.getUserDetails(id);
+    this.setState({ userId: id});
   }
   
 	
-	handleBackButton = () => {
-    // console.log(this.props.location.savedState)
-    const { id } = this.props.match.params;
-    return this.props.history.push({
-      pathname: `/create_staff/three/${id}`,
-      savedId: this.props.location.savedId,
-      direction: 'backward'
-    })
-  }
+	// handleBackButton = () => {
+  //   // console.log(this.props.location.savedState)
+  //   const { id } = this.props.match.params;
+  //   return this.props.history.push({
+  //     pathname: `/create_staff/three/${id}`,
+  //     savedId: this.props.location.savedId,
+  //     direction: 'backward'
+  //   })
+  // }
 	
   render() {
     const CustomInput = ({ value, onClick }) => (
@@ -566,7 +623,7 @@ class Employment extends Component {
 									<div className="row col-12">
                     <h4 className="col col-md-6">Employment Information</h4>
                     <div className="col col-md-6 text-right pr-0" style={ this.state.pageMode === 'completeOnboarding' ? {display: 'none'} : {}}>
-                      <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button>
+                      {/* <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button> */}
                     </div>
                     </div>
 									</div>
@@ -645,6 +702,20 @@ class Employment extends Component {
 													<span className="text-danger">{this.state.errorMessage5 !== null ? this.state.errorMessage5 : ''}</span>
                           
 												</div>
+                        <label for="inputName" className="col-md-2 col-form-label">Region <span className="impt">*</span></label>
+												<div className="col-md-4">
+                          <Select
+                            name="regionId"
+                            placeholder="Select"
+                            value={this.state.customRegionId}
+                            options={this.state.regionOptions}
+                            onChange={(e) => this.handleChange(e, 'regionId')}
+                          />
+													<span className="text-danger">{this.state.errorMessage5 !== null ? this.state.errorMessage5 : ''}</span>
+                          
+												</div>
+											</div>
+                      <div className="form-group row">
                         <label for="inputName" className="col-md-2 col-form-label">Job Title <span className="impt">*</span></label>
                         <div className="col-md-4">
                           <Select
@@ -656,7 +727,18 @@ class Employment extends Component {
                           />
 													<span className="text-danger">{this.state.errorMessage4 !== null ? this.state.errorMessage4 : ''}</span>
 												</div>
-											</div>
+                        <label for="inputName" className="col-md-2 col-form-label">Area <span className="impt">*</span></label>
+                        <div className="col-md-4">
+                          <Select
+                            name="areaId"
+                            placeholder="Select"
+                            value={this.state.customAreaId}
+                            options={this.state.areaOptions}
+                            onChange={(e) => this.handleChange(e, 'areaId')}
+                          />
+													<span className="text-danger">{this.state.errorMessage4 !== null ? this.state.errorMessage4 : ''}</span>
+												</div>
+                      </div>
                       <div className="form-group row">
                       <label for="inputName" className="col-md-2 col-form-label">Employment Date <span className="impt">*</span></label>
 												<div className="col-md-4 c-date-picker">
@@ -709,12 +791,18 @@ class Employment extends Component {
 
                       <div class="form-group mb-0 row text-right" style={{ marginTop: '60px'}}>
 												<div class="col-md-12">
-                          <button 
-                            type="submit"
-                            class="btn btn-info mr-5"
-														onClick={e => this.handleSave(e,'save')}
-                          ><i class="fa fa-save"></i> SAVE</button>
-													<button type="submit" class="btn btn-primary" onClick={e => this.handleSubmit(e,'submit')} ><i class="fa fa-arrow-right"></i> {this.state.pageMode === 'create' ? 'NEXT' : 'UPDATE & CONTINUE'}</button>
+                          <button className="btn btn-info mr-3"
+                            onClick={() => this.props.history.push('/staff_list')}
+                          >
+                            Back
+                          </button>
+                        <button
+                          type="submit"
+                          class="btn btn-primary"
+                          onClick={e => this.handleSubmit(e, 'submit')}
+                        ><i class="fa fa-save"></i> {this.state.pageMode === 'create' ? 'SUBMIT' : 'UPDATE & CONTINUE'}
+                        </button>
+													{/* <button type="submit" class="btn btn-primary" onClick={e => this.handleSubmit(e,'submit')} ><i class="fa fa-arrow-right"></i> {this.state.pageMode === 'create' ? 'NEXT' : 'UPDATE & CONTINUE'}</button> */}
 												</div>
 											</div>
                     </form>

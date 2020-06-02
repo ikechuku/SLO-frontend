@@ -383,7 +383,11 @@ const validateData = (postData) => {
         permanentCountry,
         permanentState,
         permanentLga,
-        permanentCity
+        permanentCity,
+        currentLandmark,
+        permanentLandmark,
+        bankName,
+        accountNumber
       } = postData;
 
     if (firstName === '' || firstName === null || firstName === undefined){
@@ -575,6 +579,38 @@ const validateData = (postData) => {
         error,
         type: 'permanentCity',
         errorMessage: 'Permanent City is required'
+      }
+    }
+
+    if (currentLandmark === '' || currentLandmark === null || currentLandmark === undefined){
+      return {
+        error,
+        type: 'currentLandmark',
+        errorMessage: 'Current Landmark is required'
+      }
+    }
+
+    if (permanentLandmark === '' || permanentLandmark === null || permanentLandmark === undefined){
+      return {
+        error,
+        type: 'permanentLandmark',
+        errorMessage: 'Permanent Landmark is required'
+      }
+    }
+
+    if (bankName === '' || bankName === null || bankName === undefined){
+      return {
+        error,
+        type: 'bankName',
+        errorMessage: 'Bank Name is required'
+      }
+    }
+
+    if (accountNumber === '' || accountNumber === null || accountNumber === undefined){
+      return {
+        error,
+        type: 'accountNumber',
+        errorMessage: 'Account Number is required'
       }
     }
 

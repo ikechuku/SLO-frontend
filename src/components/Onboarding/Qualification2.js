@@ -802,7 +802,8 @@ class Qualification extends Component {
           moreCertification: res.data.certification,
           morePrevious: res.data.employmentHistory,
           reasonForLeaving: res.data.reasonForLeaving,
-          moreInfo: res.data.moreInfo
+          moreInfo: res.data.moreInfo,
+          pageMode: 'edit'
         })
       }
 
@@ -1091,7 +1092,7 @@ class Qualification extends Component {
 
   render() {
     return (
-      <Layout>
+      <Layout page='qualification'>
         <div class="app-content">
           <section class="section">
             <ol class="breadcrumb">

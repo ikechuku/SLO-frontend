@@ -1,108 +1,58 @@
 import React, { Component } from "react";
+import Moment from 'react-moment'
 import UserLogo from "./Img/userLogo.jpg";
 
 export default class employmentHistory extends Component {
+	constructor(props){
+		super(props)
+	}
 	render() {
-		return (
-			<div>
-				<section className="appheaderr5 reduceMargin">
-					<h1>Employment History</h1>
-				</section>
-
-				<div className="qualifiactionGrid">
-					<div className="listQ">
-						<h1>Name</h1>
-						<h3>Magoro Data </h3>
-					</div>
-					<div className="listQ">
-						<h1>Role</h1>
-						<h3>SSCE</h3>
-					</div>
-					<div className="listQ">
-						<h1>Adddress</h1>
-						<h3>19 Opegide Close</h3>
-					</div>
-					<div className="listQ">
-						<h1>Date</h1>
-						<h3>21 21 2020</h3>
-					</div>
+		if(!this.props.newEmploymentHistory.length){
+			return (
+				<div>
+					<section className="appheaderr5 reduceMargin">
+						<h1>Employment History</h1>
+					</section>
+					<section className="gurantor-names mb-3">
+						<p>No employment history created yet</p>
+					</section>
 				</div>
+			)
+		} else {
+			return (
+				<div>
+					<section className="appheaderr5 reduceMargin">
+						<h1>Employment History</h1>
+					</section>
 
-				<section className="appheaderr5 reduceMargin">
-					<h1>Employment Information</h1>
-				</section>
-				<div className="personalInfoEmploymentInfomation">
-					<div className="infoGrid1EmploymentInfomation">
-						<span className="files675">Files</span>
-						<span>
-							<i class="fas fa-link"></i> Employment Contract{" "}
-						</span>
-					</div>
-
-					<div className="infoGrid2EmploymentInfomation">
-						<div className="userDetailsEmploymentInfomation">
-							<span>Rank at employment</span>
-							<span> DGM </span>
-						</div>
-
-						<div className="userDetailsEmploymentInfomation">
-							<span>Unit at Employment</span>
-							<span> Quality Assurance </span>
-						</div>
-
-						<div className="userDetailsEmploymentInfomation">
-							<span>Salary Amount</span>
-							<span>200,000</span>
-						</div>
-
-						<div className="userDetailsEmploymentInfomation">
-							<span>Employee Number</span>
-							<span>0907547975</span>
-						</div>
-
-						<div className="userDetailsEmploymentInfomation">
-							<span>No of dependants</span>
-							<span>2</span>
-						</div>
-
-						<div className="userDetailsEmploymentInfomation">
-							<span>Religion </span>
-							<span>Christainity</span>
-						</div>
-					</div>
-					<div className="infoGrid3EmploymentInfomation">
-						<div className="userDetailsEmploymentInfomation">
-							<span>Date of resumption</span>
-							<span>21 20 2923</span>
-						</div>
-
-						<div className="userDetailsEmploymentInfomation">
-							<span>Branch at employment</span>
-							<span> 5 Mild </span>
-						</div>
-
-						<div className="userDetailsEmploymentInfomation">
-							<span>Job Title</span>
-							<span> System Administration Staff</span>
-						</div>
-
-						<div className="userDetailsEmploymentInfomation">
-							<span>Skills</span>
-							<span>teamwork, problem solving</span>
-						</div>
-
-						<div className="userDetailsEmploymentInfomation">
-							<span>Seek Reference</span>
-							<span>No</span>
-						</div>
-
-						<div className="userDetailsEmploymentInfomation">
-							<span>Reason for leaving last employment</span>
-							<span> System Administration Staff</span>
-						</div>
-					</div>
+					<div class="table-responsive">
+						<table id="example1" class="col col-md-12 table table-hover table-bordered border-t0 text-nowrap w-100" >
+							<thead>
+								<tr>
+									{/* <th className="wd-15p">S/N</th> */}
+									<th class="wd-15p">Employer Name</th>
+									<th class="wd-15p">Role</th>
+									<th className="wd-15p">Address</th>
+									<th className="wd-15p">Date</th>
+								</tr>
+							</thead>
+							<tbody>                                {
+									this.props.newEmploymentHistory.length ? this.props.newEmploymentHistory.map((data, index) => (
+										<tr key={index}>
+											{/* <td>{index + 1}</td> */}
+											<td>{data.employerName}</td>
+											<td>{data.role}</td>
+											<td>{data.address}</td>
+											<td>{<Moment format='MMM, YYYY'>{data.startDate}</Moment>} - {<Moment format='MMM, YYYY'>{data.endDate}</Moment>}</td>
+										</tr>
+									)) : ''
+								}
+							</tbody>
+						</table>
 				</div>
-			</div>
-		);
+				
+				</div>
+			);
+		}
 	}
 }
