@@ -803,8 +803,10 @@ class Qualification extends Component {
           morePrevious: res.data.employmentHistory,
           reasonForLeaving: res.data.reasonForLeaving,
           moreInfo: res.data.moreInfo,
-          pageMode: 'edit'
         })
+        if(res.data.qualification.length || res.data.certification.length){
+          this.setState({ pageMode: 'edit' })
+        }
       }
 
     }catch(error){
