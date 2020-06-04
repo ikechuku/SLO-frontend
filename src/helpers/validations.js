@@ -103,6 +103,23 @@ const validatePreviousExperience = (name, value, otherValue) => {
 
 const validateD = (name, value) => {
   let error = false;
+
+  if(name === 'accountNumber'){
+    if (value === '' || value === null || value === undefined || !value.length){
+      return {
+        error: true
+      }
+    } else if(!(validation.isPhoneNumber(value))){
+      return {
+        error,
+        errorMessage: 'Account number must be valid: 10 characters and only numbers'
+      }
+    }
+
+    return {
+      error: true
+    }
+  }
   
   if(name === 'employerName'){
     if (value === '' || value === null || value === undefined || !value.length){

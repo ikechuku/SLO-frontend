@@ -257,6 +257,15 @@ class PersonalInfo extends Component {
       data[details.name] = details.value;
       this.setState({ 
         data,
+      });
+      const isValidate = validateD(e.target.name, e.target.value);
+      if(!isValidate.error){
+        this.setState({ 
+          accountNumberErrorMessage: isValidate.errorMessage,
+        })
+        return;
+      }
+      this.setState({ 
         accountNumberErrorMessage: null 
       });
     } else {
@@ -573,9 +582,9 @@ class PersonalInfo extends Component {
 
     if(this.state.pageMode === 'edit'){
       try {
-        const { userId } = this.state;
+        const { id } = this.props.match.params;
         if(btnType === 'submit'){
-          const res = await httpPatch(`auth/edit_staff/${userId}`, this.state.data);
+          const res = await httpPatch(`auth/edit_staff/${id}`, this.state.data);
           if(res.code === 200){
             await this.saveDoc();
             hideLoader();
@@ -589,8 +598,8 @@ class PersonalInfo extends Component {
             });
           }
         } else {
-          const { userId } = this.state;
-          const res = await httpPatch(`auth/edit_staff/${userId}`, this.state.data);
+          const { id } = this.props.match.params;
+          const res = await httpPatch(`auth/edit_staff/${id}`, this.state.data);
           if(res.code === 200){
             await this.saveDoc()
             hideLoader();
@@ -656,7 +665,7 @@ class PersonalInfo extends Component {
       uploadBody[fileName] = e.target.files[0];
       this.setState({ uploadBody });
     } else {
-      NotificationManager.error(validFormat.message,'Yippe!',3000);
+      NotificationManager.error(validFormat.message,'Oops!',3000);
       e.target.value = '';
     }
   };
@@ -677,6 +686,9 @@ class PersonalInfo extends Component {
         }
       } else {
         let formData = new FormData();
+        if(!uploadBody.passportPhotograph && !uploadBody.identification){
+          return;
+        }
         formData.append('passportPhotograph', uploadBody.passportPhotograph);
         formData.append('identification', uploadBody.identification);
 
@@ -763,7 +775,7 @@ class PersonalInfo extends Component {
         const customHome = { value: homePhoneCode, label: homePhoneCode };
         const customMaritalStatus = { value: maritalStatus, label: maritalStatus };
         const customReligion = { value: religion, label: religion };
-        const customDob = moment(dob).toDate();
+        const customDob = !dob ? undefined : moment(dob).toDate();
         const customStaffCategory = { value: staffCategory, label: staffCategory }
         let customSkills = [], customHobbies = [];
         const newSkills = skills !== null ? skills.split(',') : [];
@@ -1449,6 +1461,7 @@ class PersonalInfo extends Component {
                             className="form-control" 
                             name="path"
                             ref='path'
+                            accept="image/jpeg,image/gif,image/png"
                             onChange={e => this.upload(e, 'passportPhotograph')}
                           />
 												</div>
@@ -1458,6 +1471,7 @@ class PersonalInfo extends Component {
                             className="form-control" 
                             name="path"
                             ref='iPath'
+                            accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"
                             onChange={e => this.upload(e, 'identification')}
                           />
 												</div>
@@ -1479,7 +1493,7 @@ class PersonalInfo extends Component {
                               newUploads.length ?
                                 newUploads.map(data => (
                                   data.from === 'personalInfo' ?
-                                  <tr>
+                                  <tr key={data.id}>
                                     <td>{data.fileName}</td>
                                     <td>{<a href={`${data.path}`} target="_blank">View document</a>}</td>
                                     <td><a className="ml-3 text-danger" onClick={() => this.deleteDoc(data.id)} style={{ cursor: 'pointer' }}>Delete</a></td>

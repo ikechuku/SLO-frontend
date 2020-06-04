@@ -277,10 +277,6 @@ class Qualification extends Component {
   }
 
   addMoreCertification = async () => {
-    // if(this.state.certification.name === undefined || this.state.certification.name === '' || this.state.certification.certification === undefined || this.state.certification.certification === '' || this.state.certification.categoryOfCertification === undefined || this.state.certification.categoryOfCertification === '' || this.state.certification.startDate === undefined || this.state.certification.startDate === '' || this.state.certification.endDate === undefined || this.state.certification.endDate === '' || this.state.documents.certification === '' || this.state.documents.certification === undefined){
-    //   return NotificationManager.warning('All fields must be filled');
-    // }
-
     const {
       name,
       certification,
@@ -786,8 +782,10 @@ class Qualification extends Component {
       await this.getPageDetails(this.props.location.savedId || id)
     } else if(this.props.location.direction === 'completeOnboarding'){
       this.setState({ pageMode: 'create'});
+    } else {
+      this.getPageDetails(id);
     }
-    this.getPageDetails(id);
+    
   }
   
   getPageDetails = async (id) => {
@@ -972,7 +970,6 @@ class Qualification extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     showLoader();
-    // (!this.state.moreInstitution.length) ? console.log(this.state.institution) : console.log([...this.state.moreInstitution, this.state.institution]);
     try{
       const { id } = this.props.match.params;
       const data = {
@@ -1013,6 +1010,24 @@ class Qualification extends Component {
         if(!isCompleted.includes(1)){
           hideLoader()
           NotificationManager.warning("Fill in at least one completed qualification")
+          return;
+        }
+
+      }
+
+      if(moreQualification.length) {
+        let isHeighest = [];
+        moreQualification.map(data => {
+          if(!data.highestEducation || data.highestEducation === 'No'){
+            isHeighest.push(0)
+          } else {
+            isHeighest.push(1)
+          }
+        })
+
+        if(!isHeighest.includes(1)){
+          hideLoader()
+          NotificationManager.warning("Fill in at least one highest education")
           return;
         }
 
