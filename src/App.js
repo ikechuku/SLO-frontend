@@ -22,14 +22,17 @@ import PendingActions from "./components/Leave/pendingAction/pendingActions";
 import CreateLeave from "./components/Leave/createLeave/createLeave";
 import LeaveMangement from "./components/Leave/LeaveManagement/leaveManagement";
 import LeaveHistory from "./components/Leave/leaveHistory/leaveHistory";
+import CreateStaff from "./components/Onboarding/createStaff";
+import Login from "./components/Login";
+import UnderReview from './components/Onboarding/UnderReview';
+import StaffDashboard from './components/Dashboard/Staff';
+import Logout from './components/Logout';
 import Testing from './components/testing';
 
 import "react-notifications/lib/notifications.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-tooltip/dist/index.js";
-import CreateStaff from "./components/Onboarding/createStaff";
-import Login from "./components/Login";
-import Logout from './components/Logout';
+
 import ProtectedRoute from './helpers/ProtectedRoute';
 
 // NEW CHANGES
@@ -48,6 +51,7 @@ function App() {
 					<Route exact path="/" component={Login} />
 					<Route exact path="/login" component={Login} />
 					{/* <Route path="/create_staff/one" component={PersonalInfo} /> */}
+					<Route exact path="/staff_dashboard" component={StaffDashboard} />
 					<ProtectedRoute exact path="/pending_actions" component={PendingActions} />
 					<ProtectedRoute exact path="/create_staff" component={CreateStaff} />
 					<ProtectedRoute exact path="/create_staff/one/:id" component={PersonalInfo} />
@@ -67,7 +71,8 @@ function App() {
 					<ProtectedRoute path="/leave_setup" component={CreateLeave} />
 					<ProtectedRoute path="/leave_management" component={LeaveMangement} />
 					<ProtectedRoute path="/leave_history" component={LeaveHistory} />
-					<Route path="/view_details/:id" component={UserInfo} />
+					<ProtectedRoute path="/view_details/:id" component={UserInfo} />
+					<Route path="/application_status" component={UnderReview} />
 					{/* <Route path="/testing" component={Testing} /> */}
 					<Route path="/logout" component={Logout} />
 				</Switch>

@@ -859,6 +859,7 @@ class Guarantor extends Component {
 			this.setState({
 				alert: null
 			});
+			this.props.history.push('/logout');
 		}
 
     // handleSave = async (e) => {

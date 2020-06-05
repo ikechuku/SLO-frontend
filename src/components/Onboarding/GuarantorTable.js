@@ -10,7 +10,7 @@ export default function GuarantorTable(props) {
             {/* <th className="wd-15p">S/N</th> */}
             <th class="wd-15p">Name</th>
             <th class="wd-15p">Relationship with employee</th>
-            <th class="wd-15p">How long have you know the employee</th>
+            <th class="wd-15p">How long have you known the employee</th>
             <th class="wd-25p"></th>
           </tr>
         </thead>

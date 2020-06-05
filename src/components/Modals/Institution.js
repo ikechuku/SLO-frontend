@@ -173,7 +173,7 @@ export class QualificationModal extends Component {
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label for="inputName" className="col-md-5 col-form-label">Highest Education</label>
+                      <label for="inputName" className="col-md-5 col-form-label">Highest Education <span className="impt">*</span></label>
                       <div className="col-md-7">
                         <label>
                           <input type="radio"

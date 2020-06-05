@@ -56,11 +56,13 @@ class PersonalInfo extends Component {
       genderErrorMessage: null,
       dependantsErrorMessage: null,
       currentErrorMessage: null,
+      currentLandmarkErrorMessage: null,
       staffCategoryErrorMessage: null,
       immediateFamilyErrorMessage: null,
       lgaErrorMessage: null,
       maritalErrorMessage: null,
       permanentErrorMessage: null,
+      permanentLandmarkErrorMessage: null,
       pageMode: 'create',
       documents: [],
       fileName: '',
@@ -494,6 +496,10 @@ class PersonalInfo extends Component {
         this.setState({ 
           currentErrorMessage: isValidate.errorMessage,
         })
+      } else if(isValidate.type === 'currentLandmark'){
+        this.setState({ 
+          currentLandmarkErrorMessage: isValidate.errorMessage,
+        })
       } else if(isValidate.type === 'lga'){
         this.setState({ 
           lgaErrorMessage: isValidate.errorMessage,
@@ -533,6 +539,10 @@ class PersonalInfo extends Component {
       } else if(isValidate.type === 'permanentCity'){
         this.setState({ 
           permanentErrorMessage: isValidate.errorMessage,
+        })
+      } else if(isValidate.type === 'permanentLandmark'){
+        this.setState({ 
+          permanentLandmarkErrorMessage: isValidate.errorMessage,
         })
       }
     }

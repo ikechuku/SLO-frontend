@@ -272,8 +272,11 @@ export default class info extends Component {
 								type="submit"
 								class="btn btn-info mr-5"
 								onClick={e => this.handleStatus(e, 'rejected')}
+								disabled={this.state.user.onBoarding !== 4 ? true : ''}
 							><span className="fa fa-ban"></span> DECLINE</button>
-						<button type="submit" class="btn btn-primary" onClick={e => this.handleStatus(e, 'approved')}><span className="fa fa-check-square-o"></span> APPROVE</button>
+						<button type="submit" class="btn btn-primary" 
+						disabled={this.state.user.onBoarding !== 4 ? true : ''}
+						onClick={e => this.handleStatus(e, 'approved')}><span className="fa fa-check-square-o"></span> APPROVE</button>
 					</div>
 
 
