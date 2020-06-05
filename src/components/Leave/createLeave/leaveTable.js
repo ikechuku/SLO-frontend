@@ -6,8 +6,8 @@ export default class LeaveTable extends Component {
 	render() {
 		return (
 			<div>
-				<div class="table-responsive">
-					<table class="table table-bordered table-hover mb-0 text-nowrap">
+				<div className="table-responsive">
+					<table className="table table-bordered table-hover mb-0 text-nowrap">
 						<thead>
 							<tr>
 								<th>Leave Type</th>
@@ -48,14 +48,14 @@ export default class LeaveTable extends Component {
 									<span
 										data-toggle="modal"
 										data-target="#exampleModal45"
-										class="view"
+										className="view"
 									>
 										View
 									</span>
 									<span
 										data-toggle="modal"
 										data-target="#exampleModal45"
-										class="edit"
+										className="edit"
 									>
 										Edit
 									</span>
@@ -90,14 +90,14 @@ export default class LeaveTable extends Component {
 									<span
 										data-toggle="modal"
 										data-target="#exampleModal45"
-										class="view"
+										className="view"
 									>
 										View
 									</span>
 									<span
 										data-toggle="modal"
 										data-target="#exampleModal45"
-										class="edit"
+										className="edit"
 									>
 										Edit
 									</span>
@@ -132,14 +132,14 @@ export default class LeaveTable extends Component {
 									<span
 										data-toggle="modal"
 										data-target="#exampleModal45"
-										class="view"
+										className="view"
 									>
 										View
 									</span>
 									<span
 										data-toggle="modal"
 										data-target="#exampleModal45"
-										class="edit"
+										className="edit"
 									>
 										Edit
 									</span>
@@ -174,14 +174,14 @@ export default class LeaveTable extends Component {
 									<span
 										data-toggle="modal"
 										data-target="#exampleModal45"
-										class="view"
+										className="view"
 									>
 										View
 									</span>
 									<span
 										data-toggle="modal"
 										data-target="#exampleModal45"
-										class="edit"
+										className="edit"
 									>
 										Edit
 									</span>
@@ -216,14 +216,14 @@ export default class LeaveTable extends Component {
 									<span
 										data-toggle="modal"
 										data-target="#exampleModal45"
-										class="view"
+										className="view"
 									>
 										View
 									</span>
 									<span
 										data-toggle="modal"
 										data-target="#exampleModal45"
-										class="edit"
+										className="edit"
 									>
 										Edit
 									</span>

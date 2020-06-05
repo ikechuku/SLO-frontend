@@ -8,28 +8,28 @@ export default class LeaveManagement extends Component {
 		return (
 			<div>
 				<Layout>
-					<div class="app-content">
-						<section class="section">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item">
-									<a href="#" class="text-muted">
+					<div className="app-content">
+						<section className="section">
+							<ol className="breadcrumb">
+								<li className="breadcrumb-item">
+									<a href="#" className="text-muted">
 										Home
 									</a>
 								</li>
-								<li class="breadcrumb-item">
-									<a href="#" class="text-muted">
+								<li className="breadcrumb-item">
+									<a href="#" className="text-muted">
 										Performance
 									</a>
 								</li>
-								<li class="breadcrumb-item active text-" aria-current="page">
+								<li className="breadcrumb-item active text-" aria-current="page">
 									KPI
 								</li>
 							</ol>
-							<div class="section-body">
-								<div class="row">
-									<div class="col-lg-12">
-										<div class="card">
-											<div class="card-body">
+							<div className="section-body">
+								<div className="row">
+									<div className="col-lg-12">
+										<div className="card">
+											<div className="card-body">
 												<LeaveManagementTable />
 											</div>
 										</div>
@@ -40,38 +40,38 @@ export default class LeaveManagement extends Component {
 					</div>
 
 					<div
-						class="modal fade"
+						className="modal fade"
 						id="exampleModal2"
 						tabindex="-1"
 						role="dialog"
 						aria-labelledby="exampleModal2"
 						aria-hidden="true"
 					>
-						<div class="modal-dialog" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="example-Modal2">
+						<div className="modal-dialog" role="document">
+							<div className="modal-content">
+								<div className="modal-header">
+									<h5 className="modal-title" id="example-Modal2">
 										Application Details
 									</h5>
 									<button
 										type="button"
-										class="close"
+										className="close"
 										data-dismiss="modal"
 										aria-label="Close"
 									>
 										<span aria-hidden="true">×</span>
 									</button>
 								</div>
-								<div class="modal-body">
-									<div class="row">
-										<div class="col-md-6 addi">
+								<div className="modal-body">
+									<div className="row">
+										<div className="col-md-6 addi">
 											<p>Staff Name: Okeke Andrew</p>
 											<p>Staff Branch: Aguda Branch</p>
 											<p>Leave Type: Casual Leave</p>
 											<p>Leave Start Date: 14th April 2020</p>
 											<p>Leave End Date: 14th April 2020</p>
 										</div>
-										<div class="col-md-6 addi">
+										<div className="col-md-6 addi">
 											<p>Staff Position: Manager</p>
 											<p>Staff Region: Benin Town</p>
 											<p>Number of days for leave: 10 days</p>
@@ -79,8 +79,8 @@ export default class LeaveManagement extends Component {
 											<p>Number of leave days left: 4 days</p>
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-md-12 checkBoxTabP">
+									<div className="row">
+										<div className="col-md-12 checkBoxTabP">
 											<div className="checkBoxTa">
 												<label for="vehicle1">HR Approval</label>
 												<input
@@ -123,8 +123,8 @@ export default class LeaveManagement extends Component {
 										</div>
 									</div>
 
-									<div class="row">
-										<div class="col-md-12 checkBoxTabP">
+									<div className="row">
+										<div className="col-md-12 checkBoxTabP">
 											<div className="checkBoxTa">
 												<label for="vehicle1">HR Rejection</label>
 												<input
@@ -167,8 +167,8 @@ export default class LeaveManagement extends Component {
 										</div>
 									</div>
 
-									<div class="row">
-										<div class="col-md-12 reason">
+									<div className="row">
+										<div className="col-md-12 reason">
 											<h1>REASON</h1>
 											<p>
 												rovide a valid href, but still need the element to
@@ -178,8 +178,8 @@ export default class LeaveManagement extends Component {
 										</div>
 									</div>
 
-									<div class="row">
-										<div class="col-md-12 leavepay">
+									<div className="row">
+										<div className="col-md-12 leavepay">
 											<label for="vehicle1">PAID LEAVE</label>
 											<input
 												type="checkbox"
@@ -190,10 +190,10 @@ export default class LeaveManagement extends Component {
 										</div>
 									</div>
 								</div>
-								<div class="modal-footer">
+								<div className="modal-footer">
 									<button
 										type="button"
-										class="btn btn-danger"
+										className="btn btn-danger"
 										data-dismiss="modal"
 									>
 										Close

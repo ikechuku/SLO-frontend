@@ -36,12 +36,12 @@ class Employment extends Component {
   render() {
     return (
       <Layout>
-        <div class="app-content">
-          <section class="section">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="#" class="text-muted">Home</a></li>
-              <li class="breadcrumb-item"><a href="#" class="text-muted">Staff</a></li>
-              <li class="breadcrumb-item active text-" aria-current="page">New Staff</li>
+        <div className="app-content">
+          <section className="section">
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item"><a href="#" className="text-muted">Home</a></li>
+              <li className="breadcrumb-item"><a href="#" className="text-muted">Staff</a></li>
+              <li className="breadcrumb-item active text-" aria-current="page">New Staff</li>
             </ol>
 
             <div className="row">
@@ -130,15 +130,15 @@ class Employment extends Component {
 											</div>
 
 
-                      <div class="form-group mb-0 mt-5 row justify-content-end">
-												<div class="col-md-9">
+                      <div className="form-group mb-0 mt-5 row justify-content-end">
+												<div className="col-md-9">
                           <button 
                             type="submit"
-                            class="btn btn-info mr-5"
+                            className="btn btn-info mr-5"
 														// onClick={() => this.props.history.push('/create_staff/four')}
 														onClick={this.handleSubmit}
                           >NEXT</button>
-													<button type="submit" class="btn btn-primary">SAVE</button>
+													<button type="submit" className="btn btn-primary">SAVE</button>
 												</div>
 											</div>
                     </form>

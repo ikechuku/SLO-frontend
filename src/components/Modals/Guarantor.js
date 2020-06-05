@@ -467,21 +467,21 @@ export class GuarantorModal extends Component {
     render() {
         return (
             <div>
-                <div class="modal fade" id="guarantorModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+                <div className="modal fade" id="guarantorModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
                      role="dialog" aria-hidden="true" aria-labelledby="exampleModalLongTitle"
                      style={{overflowY: 'scroll'}}>
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title"
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title"
                                     id="example-Modal3">{this.props.modalMode === 'create' ? 'ADD A GUARANTOR' : 'EDIT GUARANTOR DETAILS'}</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close"
                                         onClick={this.handleClose}>
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <form onSubmit={event => this.props.addMore(event)}>
-                                <div class="modal-body">
+                                <div className="modal-body">
                                     <div className="col col-md-12">
                                         <div className="form-group row">
                                             <label for="inputName" className="col-md-3 col-form-label">First Name <span
@@ -499,8 +499,8 @@ export class GuarantorModal extends Component {
                                             <label for="inputName" className="col-md-2 col-form-label">Home
                                                 Phone</label>
                                             <div className="col-md-4">
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend select2-padding">
+                                                <div className="input-group mb-3">
+                                                    <div className="input-group-prepend select2-padding">
                                                         <Select
                                                             className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
                                                             // defaultValue={this.props.postData.homePhoneCode}
@@ -527,7 +527,7 @@ export class GuarantorModal extends Component {
                                                     </div>
                                                     <input 
                                                            type="text"
-                                                           class="form-control"
+                                                           className="form-control"
                                                            aria-describedby="basic-addon3"
                                                            name="homePhone"
                                                            onChange={this.props.handleChange}
@@ -554,8 +554,8 @@ export class GuarantorModal extends Component {
                                             <label for="inputName" className="col-md-2 col-form-label">Mobile
                                                 Phone <span className="impt">*</span></label>
                                             <div className="col-md-4">
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend select2-padding">
+                                                <div className="input-group mb-3">
+                                                    <div className="input-group-prepend select2-padding">
                                                         <Select
                                                             className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
                                                             // defaultValue={this.props.postData.mobilePhoneCode}
@@ -582,7 +582,7 @@ export class GuarantorModal extends Component {
                                                     </div>
                                                     <input required
                                                            type="text"
-                                                           class="form-control"
+                                                           className="form-control"
                                                            aria-describedby="basic-addon3"
                                                            name="mobilePhone"
                                                            onChange={this.props.handleChange}
@@ -609,8 +609,8 @@ export class GuarantorModal extends Component {
                                             <label for="inputName" className="col-md-2 col-form-label">Business
                                                 Phone</label>
                                             <div className="col-md-4">
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend select2-padding">
+                                                <div className="input-group mb-3">
+                                                    <div className="input-group-prepend select2-padding">
                                                         <Select
                                                             // isClearable
                                                             className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
@@ -638,7 +638,7 @@ export class GuarantorModal extends Component {
                                                     </div>
                                                     <input
                                                         type="text"
-                                                        class="form-control"
+                                                        className="form-control"
                                                         aria-describedby="basic-addon3"
                                                         name="businessPhone"
                                                         onChange={this.props.handleChange}
@@ -1087,14 +1087,14 @@ export class GuarantorModal extends Component {
 
                                         <div className="col col-md-12 pr-0 pl-0"
                                              style={!this.props.documents.length ? {display: 'none'} : {}}>
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered table-hover mb-0 text-nowrap">
+                                            <div className="table-responsive">
+                                                <table className="table table-bordered table-hover mb-0 text-nowrap">
                                                     <thead>
                                                     <tr>
                                                         {/* <th className="wd-15p">S/N</th> */}
-                                                        <th class="wd-15p">File Name</th>
-                                                        <th class="wd-15p"></th>
-                                                        <th class="wd-25p"></th>
+                                                        <th className="wd-15p">File Name</th>
+                                                        <th className="wd-15p"></th>
+                                                        <th className="wd-25p"></th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -1118,12 +1118,12 @@ export class GuarantorModal extends Component {
 
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal"
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-danger" data-dismiss="modal"
                                             onClick={this.handleClose}>Close
                                     </button>
                                     <button type="submit"
-                                            class="btn btn-primary">{this.props.modalMode === 'create' ? 'ADD' : 'UPDATE'}</button>
+                                            className="btn btn-primary">{this.props.modalMode === 'create' ? 'ADD' : 'UPDATE'}</button>
                                 </div>
                             </form>
                         </div>

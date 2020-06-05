@@ -608,12 +608,12 @@ class Employment extends Component {
 
     return (
       <Layout>
-        <div class="app-content">
-          <section class="section">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="#" class="text-muted">Home</a></li>
-              <li class="breadcrumb-item"><a href="#" class="text-muted">Staff</a></li>
-              <li class="breadcrumb-item active text-" aria-current="page">New Staff</li>
+        <div className="app-content">
+          <section className="section">
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item"><a href="#" className="text-muted">Home</a></li>
+              <li className="breadcrumb-item"><a href="#" className="text-muted">Staff</a></li>
+              <li className="breadcrumb-item active text-" aria-current="page">New Staff</li>
             </ol>
 
             <div className="row">
@@ -623,7 +623,7 @@ class Employment extends Component {
 									<div className="row col-12">
                     <h4 className="col col-md-6">Employment Information</h4>
                     <div className="col col-md-6 text-right pr-0" style={ this.state.pageMode === 'completeOnboarding' ? {display: 'none'} : {}}>
-                      {/* <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button> */}
+                      {/* <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i className="fa fa-arrow-left" aria-hidden="true"></i> Back</button> */}
                     </div>
                     </div>
 									</div>
@@ -789,8 +789,8 @@ class Employment extends Component {
                       
 
 
-                      <div class="form-group mb-0 row text-right" style={{ marginTop: '60px'}}>
-												<div class="col-md-12">
+                      <div className="form-group mb-0 row text-right" style={{ marginTop: '60px'}}>
+												<div className="col-md-12">
                           <button className="btn btn-info mr-3"
                             onClick={() => this.props.history.push('/staff_list')}
                           >
@@ -798,11 +798,11 @@ class Employment extends Component {
                           </button>
                         <button
                           type="submit"
-                          class="btn btn-primary"
+                          className="btn btn-primary"
                           onClick={e => this.handleSubmit(e, 'submit')}
-                        ><i class="fa fa-save"></i> {this.state.pageMode === 'create' ? 'SUBMIT' : 'UPDATE & CONTINUE'}
+                        ><i className="fa fa-save"></i> {this.state.pageMode === 'create' ? 'SUBMIT' : 'UPDATE & CONTINUE'}
                         </button>
-													{/* <button type="submit" class="btn btn-primary" onClick={e => this.handleSubmit(e,'submit')} ><i class="fa fa-arrow-right"></i> {this.state.pageMode === 'create' ? 'NEXT' : 'UPDATE & CONTINUE'}</button> */}
+													{/* <button type="submit" className="btn btn-primary" onClick={e => this.handleSubmit(e,'submit')} ><i className="fa fa-arrow-right"></i> {this.state.pageMode === 'create' ? 'NEXT' : 'UPDATE & CONTINUE'}</button> */}
 												</div>
 											</div>
                     </form>

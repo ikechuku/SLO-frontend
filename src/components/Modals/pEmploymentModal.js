@@ -48,16 +48,16 @@ export class PreviousEmploymentModal extends Component {
 
     return (
       <div>
-        <div class="modal fade" id="employmentModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style={{ overflowY: 'scroll'}}>
-            <div class="modal-dialog modal-md" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="example-Modal3">{this.props.modalMode === 'create' ? 'ADD NEW WORK EXPERIENCE' : 'EDIT WORK EXPERIENCE'}</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={this.handleClose}>
+        <div className="modal fade" id="employmentModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style={{ overflowY: 'scroll'}}>
+            <div className="modal-dialog modal-md" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="example-Modal3">{this.props.modalMode === 'create' ? 'ADD NEW WORK EXPERIENCE' : 'EDIT WORK EXPERIENCE'}</h5>
+                  <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.handleClose}>
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div class="modal-body">
+                <div className="modal-body">
                   <form>
                   <div className="col col-md-12">
                     <div className="form-group row">
@@ -210,8 +210,8 @@ export class PreviousEmploymentModal extends Component {
                     <div className="form-group row" style={this.props.previousEmployment.objectReference === 'Yes' ? {display: 'none'} : {}}>
                       <label for="inputName" className="col-md-5 col-form-label">Employer Phone Number</label>
                       <div className="col-md-7">
-                      <div class="input-group mb-3">
-                          <div class="input-group-prepend select2-padding">
+                      <div className="input-group mb-3">
+                          <div className="input-group-prepend select2-padding">
                             <Select
                               className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
                               value={this.props.customPhoneNumberCode}
@@ -238,11 +238,11 @@ export class PreviousEmploymentModal extends Component {
                   </div> 
                   </form>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={this.handleClose}>Close</button>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-danger" data-dismiss="modal" onClick={this.handleClose}>Close</button>
                   <button  
                     type="button" 
-                    class="btn btn-primary" 
+                    className="btn btn-primary" 
                     onClick={this.handleAdd}
                   >{this.props.modalMode === 'create' ? 'ADD' : 'UPDATE'}</button>
                 </div>

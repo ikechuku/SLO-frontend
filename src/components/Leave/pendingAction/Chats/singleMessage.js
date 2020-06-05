@@ -64,9 +64,9 @@ export default class singleMessage extends Component {
 						</div>
 					</div>
 					<div style={{ position: "absolute", height: "50px" }}></div>
-					<div class="bottom-bar">
-						<i class="fa fa-paperclip"></i>
-						<i class="fa fa-microphone"></i>
+					<div className="bottom-bar">
+						<i className="fa fa-paperclip"></i>
+						<i className="fa fa-microphone"></i>
 
 						<input
 							className="inputchat"
@@ -74,7 +74,7 @@ export default class singleMessage extends Component {
 							placeholder="Type a message..."
 						/>
 
-						<i class="fa fa-smile-o"></i>
+						<i className="fa fa-smile-o"></i>
 					</div>
 				</div>
 			</div>

@@ -41,33 +41,33 @@ class StaffList extends Component {
             </ol>
 
 
-            <div class="row">
-							<div class="col-lg-12">
-								<div class="card">
-									<div class="header-card">
+            <div className="row">
+							<div className="col-lg-12">
+								<div className="card">
+									<div className="header-card">
                     <div className="row">
                       <h4 className="col-md-6">Staff List</h4>
                       <div className="col-md-6 btn-group">
                         {/* <button className="btn btn-md btn-primary" style={{ borderRadius: '0px' }}>All</button>
                         <button className="btn btn-md">Pending</button>
                         <button className="btn btn-md">Declined</button> */}
-                          <button type="button" class="btn btn-secondary ml-auto">All</button>
-                          <button type="button" class="btn btn-secondary">Pending</button>
-                          <button type="button" class="btn btn-secondary">Declined</button>
+                          <button type="button" className="btn btn-secondary ml-auto">All</button>
+                          <button type="button" className="btn btn-secondary">Pending</button>
+                          <button type="button" className="btn btn-secondary">Declined</button>
                       </div>
                     </div>
 									</div>
-									<div class="card-body">
-										<div class="table-responsive">
-										<table id="example" class="table table-striped table-bordered border-t0 text-nowrap w-100" >
+									<div className="card-body">
+										<div className="table-responsive">
+										<table id="example" className="table table-striped table-bordered border-t0 text-nowrap w-100" >
 											<thead>
 												<tr>
                           <th className="wd-15p">S/N</th>
-													<th class="wd-15p">Full Name</th>
-													<th class="wd-20p">Position</th>
-													<th class="wd-15p">Start date</th>
-													<th class="wd-10p">Status</th>
-													<th class="wd-25p"></th>
+													<th className="wd-15p">Full Name</th>
+													<th className="wd-20p">Position</th>
+													<th className="wd-15p">Start date</th>
+													<th className="wd-10p">Status</th>
+													<th className="wd-25p"></th>
 												</tr>
 											</thead>
 											<tbody>

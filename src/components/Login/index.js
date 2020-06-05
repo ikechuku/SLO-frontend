@@ -86,11 +86,11 @@ class Login extends Component {
   render() {
     return (
       <div id="app">
-        <div class="container-center">
+        <div className="container-center">
           <h1 className="appName">SLO </h1>
 
           <form className="loginForm99" onSubmit={this.handleSubmit}>
-            <div class="containerlogin">
+            <div className="containerlogin">
               <div className="formHeader">
                 <h1>LOGIN</h1>
               </div>

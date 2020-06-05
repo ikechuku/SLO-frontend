@@ -4,23 +4,23 @@ import Select from "react-select";
 export function RoleModal(props) {
 	return (
 		<div
-			class="modal fade"
+			className="modal fade"
 			id="roleModal"
 			tabIndex="-1"
 			role="dialog"
 			aria-hidden="true"
 		>
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="example-Modal3">
+			<div className="modal-dialog" role="document">
+				<div className="modal-content">
+					<div className="modal-header">
+						<h5 className="modal-title" id="example-Modal3">
 							{props.modalMode === "create"
 								? "CREATE NEW JOB TITLE"
 								: "EDIT JOB TITLE"}
 						</h5>
 						<button
 							type="button"
-							class="close"
+							className="close"
 							data-dismiss="modal"
 							aria-label="Close"
 							onClick={props.closeModal}
@@ -28,15 +28,15 @@ export function RoleModal(props) {
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body">
+					<div className="modal-body">
 						<form>
-							<div class="form-group">
-								<label for="recipient-name" class="form-control-label">
+							<div className="form-group">
+								<label for="recipient-name" className="form-control-label">
 									Job Title
 								</label>
 								<input
 									type="text"
-									class="form-control"
+									className="form-control"
 									value={props.role.title}
 									name="title"
 									onChange={props.handleChange}
@@ -46,8 +46,8 @@ export function RoleModal(props) {
 								</span>
 							</div>
 
-							<div class="form-group">
-								<label for="recipient-name" class="form-control-label">
+							<div className="form-group">
+								<label for="recipient-name" className="form-control-label">
 									Departments
 								</label>
 								<Select
@@ -65,8 +65,8 @@ export function RoleModal(props) {
 								</span>
 							</div>
 
-							<div class="form-group">
-								<label for="recipient-name" class="form-control-label">
+							<div className="form-group">
+								<label for="recipient-name" className="form-control-label">
 									Units
 								</label>
 								<Select
@@ -82,10 +82,10 @@ export function RoleModal(props) {
 							</div>
 						</form>
 					</div>
-					<div class="modal-footer">
+					<div className="modal-footer">
 						<button
 							type="button"
-							class="btn btn-danger"
+							className="btn btn-danger"
 							data-dismiss="modal"
 							onClick={props.closeModal}
 						>
@@ -93,12 +93,12 @@ export function RoleModal(props) {
 						</button>
 						{/* {
               props.modalMode === 'create' ?
-                <button type="button" class="btn btn-primary" onClick={props.handleCreate}>Create</button> :
-                <button type="button" class="btn btn-primary" onClick={props.handleUpdate}>Update</button>
+                <button type="button" className="btn btn-primary" onClick={props.handleCreate}>Create</button> :
+                <button type="button" className="btn btn-primary" onClick={props.handleUpdate}>Update</button>
             } */}
 						<button
 							type="button"
-							class="btn btn-primary"
+							className="btn btn-primary"
 							onClick={props.handleSubmit}
 						>
 							{props.modalMode === "create" ? "Create" : "Update"}

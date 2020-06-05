@@ -7,14 +7,14 @@ export default class Chat extends Component {
 		return (
 			<div>
 				<div>
-					<div class="animation section-o">
-						<div class="">
-							<div class="">
+					<div className="animation section-o">
+						<div className="">
+							<div className="">
 								<div className="chatCon">
 									<span className="inbox-head-chat">
 										<span className="headActions1">
 											<span>
-												<i class="fa fa-comments inbox-head-fa"></i>
+												<i className="fa fa-comments inbox-head-fa"></i>
 											</span>
 
 											<span className="overal">
@@ -27,7 +27,7 @@ export default class Chat extends Component {
 										</span>
 										<span className="headActions1">
 											<span>
-												<i class="fa fa-arrow-right inbox-head-fa"></i>
+												<i className="fa fa-arrow-right inbox-head-fa"></i>
 											</span>
 
 											<span className="overal">
@@ -40,7 +40,7 @@ export default class Chat extends Component {
 										</span>
 										<span className="headActions1">
 											<span>
-												<i class="fa fa-download inbox-head-fa"></i>
+												<i className="fa fa-download inbox-head-fa"></i>
 											</span>
 
 											<span className="overal">
@@ -57,17 +57,17 @@ export default class Chat extends Component {
 										<span className="head-section-two-input">
 											<input placeholder="Search" type="text" />
 											<span>
-												<i class="fa fa-search search-Icon-Chat"></i>
+												<i className="fa fa-search search-Icon-Chat"></i>
 											</span>
 										</span>
 
 										<span className="nextChatBlock">
 											<span>
-												<i class="fa fa-arrow-left"></i>
+												<i className="fa fa-arrow-left"></i>
 											</span>
 											<span className="nextChatcount">10-50 Pages</span>
 											<span>
-												<i class="fa fa-arrow-right"></i>
+												<i className="fa fa-arrow-right"></i>
 											</span>
 										</span>
 
@@ -88,17 +88,17 @@ export default class Chat extends Component {
 										onClick={() => this.props.AddnewChat()}
 										className="openChat"
 									>
-										<i class="fa fa-plus"></i>
+										<i className="fa fa-plus"></i>
 									</div>
-									<table class="nowrap TaBle-chat table text-nowrap">
+									<table className="nowrap TaBle-chat table text-nowrap">
 										<tbody>
 											<tr
 												onClick={() => this.props.OpenChat()}
-												class="table-tr-chat tr"
+												className="table-tr-chat tr"
 											>
 												<td>
 													{" "}
-													<div class="checkbox-container">
+													<div className="checkbox-container">
 														<label className="checkbox-label">
 															<input type="checkbox" />
 															<span className="checkbox-custom rectangular"></span>
@@ -116,13 +116,13 @@ export default class Chat extends Component {
 												<td className="td-chat">We need more hands on the </td>
 												<td className="td-chat">15-10-2018 </td>
 												<td className="td-chat">
-													<i class="fa fa-ellipsis-v"></i>
+													<i className="fa fa-ellipsis-v"></i>
 												</td>
 											</tr>
-											<tr class="table-tr-chat tr">
+											<tr className="table-tr-chat tr">
 												<td>
 													{" "}
-													<div class="checkbox-container">
+													<div className="checkbox-container">
 														<label className="checkbox-label">
 															<input type="checkbox" />
 															<span className="checkbox-custom rectangular"></span>
@@ -141,13 +141,13 @@ export default class Chat extends Component {
 												<td className="td-chat">We need more hands on the</td>
 												<td className="td-chat">15-10-2018 </td>
 												<td className="td-chat">
-													<i class="fa fa-ellipsis-v"></i>
+													<i className="fa fa-ellipsis-v"></i>
 												</td>
 											</tr>
-											<tr class="table-tr-chat tr">
+											<tr className="table-tr-chat tr">
 												<td>
 													{" "}
-													<div class="checkbox-container">
+													<div className="checkbox-container">
 														<label className="checkbox-label">
 															<input type="checkbox" />
 															<span className="checkbox-custom rectangular"></span>
@@ -166,13 +166,13 @@ export default class Chat extends Component {
 												<td className="td-chat">We need more hands on the</td>
 												<td className="td-chat">15-10-2018</td>
 												<td className="td-chat">
-													<i class="fa fa-ellipsis-v"></i>
+													<i className="fa fa-ellipsis-v"></i>
 												</td>
 											</tr>
-											<tr class="table-tr-chat tr">
+											<tr className="table-tr-chat tr">
 												<td>
 													{" "}
-													<div class="checkbox-container">
+													<div className="checkbox-container">
 														<label className="checkbox-label">
 															<input type="checkbox" />
 															<span className="checkbox-custom rectangular"></span>
@@ -190,13 +190,13 @@ export default class Chat extends Component {
 												<td className="td-chat">We need more hands on the</td>
 												<td className="td-chat">15-10-2018</td>
 												<td className="td-chat">
-													<i class="fa fa-ellipsis-v"></i>
+													<i className="fa fa-ellipsis-v"></i>
 												</td>
 											</tr>
-											<tr class="table-tr-chat tr">
+											<tr className="table-tr-chat tr">
 												<td>
 													{" "}
-													<div class="checkbox-container">
+													<div className="checkbox-container">
 														<label className="checkbox-label">
 															<input type="checkbox" />
 															<span className="checkbox-custom rectangular"></span>
@@ -215,13 +215,13 @@ export default class Chat extends Component {
 
 												<td className="td-chat">15-10-2018</td>
 												<td className="td-chat">
-													<i class="fa fa-ellipsis-v"></i>
+													<i className="fa fa-ellipsis-v"></i>
 												</td>
 											</tr>
-											<tr class="table-tr-chat tr">
+											<tr className="table-tr-chat tr">
 												<td>
 													{" "}
-													<div class="checkbox-container">
+													<div className="checkbox-container">
 														<label className="checkbox-label">
 															<input type="checkbox" />
 															<span className="checkbox-custom rectangular"></span>
@@ -239,13 +239,13 @@ export default class Chat extends Component {
 												<td className="td-chat">We need more hands on the</td>
 												<td className="td-chat">15-10-2018</td>
 												<td className="td-chat">
-													<i class="fa fa-ellipsis-v"></i>
+													<i className="fa fa-ellipsis-v"></i>
 												</td>
 											</tr>
-											<tr class="table-tr-chat tr">
+											<tr className="table-tr-chat tr">
 												<td>
 													{" "}
-													<div class="checkbox-container">
+													<div className="checkbox-container">
 														<label className="checkbox-label">
 															<input type="checkbox" />
 															<span className="checkbox-custom rectangular"></span>
@@ -263,13 +263,13 @@ export default class Chat extends Component {
 												<td className="td-chat">We need more hands on the</td>
 												<td className="td-chat">15-10-2018</td>
 												<td className="td-chat">
-													<i class="fa fa-ellipsis-v"></i>
+													<i className="fa fa-ellipsis-v"></i>
 												</td>
 											</tr>
-											<tr class="table-tr-chat tr">
+											<tr className="table-tr-chat tr">
 												<td>
 													{" "}
-													<div class="checkbox-container">
+													<div className="checkbox-container">
 														<label className="checkbox-label">
 															<input type="checkbox" />
 															<span className="checkbox-custom rectangular"></span>
@@ -287,7 +287,7 @@ export default class Chat extends Component {
 												<td className="td-chat">We need more hands on the</td>
 												<td className="td-chat">15-10-2018 </td>
 												<td className="td-chat">
-													<i class="fa fa-ellipsis-v"></i>
+													<i className="fa fa-ellipsis-v"></i>
 												</td>
 											</tr>
 										</tbody>

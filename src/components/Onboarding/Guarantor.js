@@ -988,124 +988,124 @@ class Guarantor extends Component {
 
 
     render() {
-        return (
-            <Layout page='guarantor'>
-							{this.state.alert}
-                <div class="app-content">
-                    <section class="section">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#" class="text-muted">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#" class="text-muted">Staff</a></li>
-                            <li class="breadcrumb-item active text-" aria-current="page">New Staff</li>
-                        </ol>
+      return (
+        <Layout page='guarantor'>
+          {this.state.alert}
+            <div className="app-content">
+                <section className="section">
+                    <ol className="breadcrumb">
+                        <li className="breadcrumb-item"><a href="#" className="text-muted">Home</a></li>
+                        <li className="breadcrumb-item"><a href="#" className="text-muted">Staff</a></li>
+                        <li className="breadcrumb-item active text-" aria-current="page">New Staff</li>
+                    </ol>
 
-                        <div className="row">
-                            <div className="col-10">
-                                <div className="card">
-                                    <div className="card-header custom-header">
-                                        <div className="row col-12">
-                                            <h4 className="col col-md-6">Guarantor Information</h4>
-                                            <div className="col col-md-6 text-right pr-0"
-                                                 style={this.state.pageMode === 'completeOnboarding' ? {display: 'none'} : {}}>
-                                                <button className="cursor-pointer btn btn-primary"
-                                                        onClick={this.handleBackButton}><i class="fa fa-arrow-left"
-                                                                                           aria-hidden="true"></i> Back
-                                                </button>
-                                            </div>
+                    <div className="row">
+                        <div className="col-10">
+                            <div className="card">
+                                <div className="card-header custom-header">
+                                    <div className="row col-12">
+                                        <h4 className="col col-md-6">Guarantor Information</h4>
+                                        <div className="col col-md-6 text-right pr-0"
+                                              style={this.state.pageMode === 'completeOnboarding' ? {display: 'none'} : {}}>
+                                            <button className="cursor-pointer btn btn-primary"
+                                                    onClick={this.handleBackButton}><i className="fa fa-arrow-left"
+                                                                                        aria-hidden="true"></i> Back
+                                            </button>
                                         </div>
                                     </div>
-                                    <div className="card-body">
-                                        {
-                                            <GuarantorTable
-                                                moreData={this.state.moreData}
-                                                removeMore={this.removeMore}
-                                                handleEdit={this.handleEdit}
-                                            />
-                                        }
+                                </div>
+                                <div className="card-body">
+                                    {
+                                        <GuarantorTable
+                                            moreData={this.state.moreData}
+                                            removeMore={this.removeMore}
+                                            handleEdit={this.handleEdit}
+                                        />
+                                    }
 
-                                        {(this.state.moreData.length === 3) ? (
-                                            ''
-                                        ) : (
-                                            <div className="card-header custom-header">
-                                                <a className="add-link " data-toggle="modal"
-                                                   data-target="#guarantorModal"
-                                                   onClick={this.handleAdd}><span className="fa fa-plus"></span> Add
-                                                    Guarantor</a>
-                                            </div>
-                                        )}
+                                    {(this.state.moreData.length === 3) ? (
+                                        ''
+                                    ) : (
+                                        <div className="card-header custom-header">
+                                            <a className="add-link " data-toggle="modal"
+                                                data-target="#guarantorModal"
+                                                onClick={this.handleAdd}><span className="fa fa-plus"></span> Add
+                                                Guarantor</a>
+                                        </div>
+                                    )}
 
 
-                                        <div class="form-group mb-0 mt-5 row text-right">
-                                            <div class="col-md-12">
-                                                <button
-                                                    type="submit"
-                                                    class="btn btn-primary"
-                                                    onClick={this.handleSubmit}
-                                                ><i class="fa fa-save"></i> {this.state.pageMode === 'create' ? 'SUBMIT' : 'UPDATE & CONTINUE'}
-                                                </button>
-                                                {/* <button
-                                                    type="submit"
-                                                    class="btn btn-primary"
-                                                    onClick={this.handleSubmit}
-                                                ><i class="fa fa-arrow-right"></i> NEXT
-                                                </button> */}
-                                            </div>
+                                    <div className="form-group mb-0 mt-5 row text-right">
+                                        <div className="col-md-12">
+                                            <button
+                                                type="submit"
+                                                className="btn btn-primary"
+                                                onClick={this.handleSubmit}
+                                            ><i className="fa fa-save"></i> {this.state.pageMode === 'create' ? 'SUBMIT' : 'UPDATE & CONTINUE'}
+                                            </button>
+                                            {/* <button
+                                                type="submit"
+                                                className="btn btn-primary"
+                                                onClick={this.handleSubmit}
+                                            ><i className="fa fa-arrow-right"></i> NEXT
+                                            </button> */}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
 
-                    </section>
-                </div>
-                <GuarantorModal
-                    mainCustomState={this.state}
-                    handleChange={this.handleChange}
-                    addMore={this.addMore}
-                    passDocument={this.collectDocument}
-                    postData={this.state.postData}
-                    documents={this.state.documents}
-                    getLGA={this.getLGA}
-                    userId={this.state.userId}
-                    handleCustomSelect={this.handleCustomSelect}
-                    customSelect1={this.state.customSelect1}
-                    customSelect2={this.state.customSelect2}
-                    customSelect3={this.state.customSelect3}
-                    customSelect4={this.state.customSelect4}
-                    customSelect5={this.state.customSelect5}
-                    customSelect5Values={this.occupationOptions()}
-                    customSelect6={this.state.customSelect6}
-                    customSelect7={this.state.customSelect7}
-                    customSelect8={this.state.customSelect8}
-                    errorMessage1={this.state.errorMessage1}
-                    errorMessage2={this.state.errorMessage2}
-                    errorMessage3={this.state.errorMessage3}
-                    errorMessage4={this.state.errorMessage4}
-                    errorMessage5={this.state.errorMessage5}
-                    errorMessage6={this.state.errorMessage6}
-                    errorMessage7={this.state.errorMessage7}
-                    customKnownDate={this.state.customKnownDate}
-                    customNationality={this.state.customNationality}
-                    customPermanentCountry={this.state.customPermanentCountry}
-                    getStateOption={this.getStateOption}
-                    getLgaOption={this.getLgaOption}
-                    getResidentialStateOption={this.getResidentialStateOption}
-                    getResidentialLgaOption={this.getResidentialLgaOption}
-                    getPermanentStateOption={this.getPermanentStateOption}
-                    getPermanentLgaOption={this.getPermanentLgaOption}
-                    getLandedPropertyStateOption={this.getLandedPropertyStateOption}
-                    getLandedPropertyLgaOption={this.getLandedPropertyLgaOption}
-                    getBusinessStateOption={this.getBusinessStateOption}
-                    getBusinessLgaOption={this.getBusinessLgaOption}
-                    modalMode={this.state.modalMode}
-                    closeModal={this.closeModal}
-										bvnErrorMessage={this.state.bvnErrorMessage}
-										deleteDoc={this.deleteDoc}
-                />
-            </Layout>
-        )
-    }
+            </section>
+        </div>
+      <GuarantorModal
+          mainCustomState={this.state}
+          handleChange={this.handleChange}
+          addMore={this.addMore}
+          passDocument={this.collectDocument}
+          postData={this.state.postData}
+          documents={this.state.documents}
+          getLGA={this.getLGA}
+          userId={this.state.userId}
+          handleCustomSelect={this.handleCustomSelect}
+          customSelect1={this.state.customSelect1}
+          customSelect2={this.state.customSelect2}
+          customSelect3={this.state.customSelect3}
+          customSelect4={this.state.customSelect4}
+          customSelect5={this.state.customSelect5}
+          customSelect5Values={this.occupationOptions()}
+          customSelect6={this.state.customSelect6}
+          customSelect7={this.state.customSelect7}
+          customSelect8={this.state.customSelect8}
+          errorMessage1={this.state.errorMessage1}
+          errorMessage2={this.state.errorMessage2}
+          errorMessage3={this.state.errorMessage3}
+          errorMessage4={this.state.errorMessage4}
+          errorMessage5={this.state.errorMessage5}
+          errorMessage6={this.state.errorMessage6}
+          errorMessage7={this.state.errorMessage7}
+          customKnownDate={this.state.customKnownDate}
+          customNationality={this.state.customNationality}
+          customPermanentCountry={this.state.customPermanentCountry}
+          getStateOption={this.getStateOption}
+          getLgaOption={this.getLgaOption}
+          getResidentialStateOption={this.getResidentialStateOption}
+          getResidentialLgaOption={this.getResidentialLgaOption}
+          getPermanentStateOption={this.getPermanentStateOption}
+          getPermanentLgaOption={this.getPermanentLgaOption}
+          getLandedPropertyStateOption={this.getLandedPropertyStateOption}
+          getLandedPropertyLgaOption={this.getLandedPropertyLgaOption}
+          getBusinessStateOption={this.getBusinessStateOption}
+          getBusinessLgaOption={this.getBusinessLgaOption}
+          modalMode={this.state.modalMode}
+          closeModal={this.closeModal}
+          bvnErrorMessage={this.state.bvnErrorMessage}
+          deleteDoc={this.deleteDoc}
+        />
+      </Layout>
+    )
+  }
 }
 
 export default Guarantor;

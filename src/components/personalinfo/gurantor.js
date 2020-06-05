@@ -86,7 +86,7 @@ export default class gurantor extends Component {
 								{
 									documents.length ? documents.map(item => (
 										<a href={item.path} target="_blank">
-											<i class="fa fa-link"></i> {item.fileName}{" "}
+											<i className="fa fa-link"></i> {item.fileName}{" "}
 										</a>
 									)) : ''
 								}

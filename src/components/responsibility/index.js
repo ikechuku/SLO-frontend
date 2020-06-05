@@ -213,45 +213,45 @@ export default class responsibilities extends Component {
 		} = this.state;
 		return (
 			<Layout page="responsibility">
-				<div class="app-content">
-					<section class="section">
-						<ol class="breadcrumb">
-							<li class="breadcrumb-item">
-								<a href="#" class="text-muted">
+				<div className="app-content">
+					<section className="section">
+						<ol className="breadcrumb">
+							<li className="breadcrumb-item">
+								<a href="#" className="text-muted">
 									Home
 								</a>
 							</li>
-							<li class="breadcrumb-item">
-								<a href="#" class="text-muted">
+							<li className="breadcrumb-item">
+								<a href="#" className="text-muted">
 									Performance
 								</a>
 							</li>
-							<li class="breadcrumb-item active text-" aria-current="page">
+							<li className="breadcrumb-item active text-" aria-current="page">
 								Responsibility
 							</li>
 						</ol>
-						<div class="section-body">
-							<div class="row">
-								<div class="col-md-7">
-									<div class="card">
-										<div class="card-header custom-header">
+						<div className="section-body">
+							<div className="row">
+								<div className="col-md-7">
+									<div className="card">
+										<div className="card-header custom-header">
 											<div className="col col-md-12">
 												<button
 													type="button"
-													class="btn "
+													className="btn "
 													data-toggle="modal"
 													data-target="#roleModal"
 													data-backdrop="static"
 												>
 													CREATE NEW
 												</button>
-												{/* <div class="inputf">
+												{/* <div className="inputf">
 														<input placeholder="Input a Branch Name"/><button className="search-bt">Search</button>
 												</div> */}
 											</div>
 										</div>
 
-										<div class="card-body">
+										<div className="card-body">
 											<ResponsibilityTable
 												responsibilities={this.state.responsibilities}
 												modalMode={modalMode}

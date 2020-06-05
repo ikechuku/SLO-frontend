@@ -178,14 +178,14 @@ class Upload extends Component {
                   <br/>
 
                   <div className="col col-md-12 pr-0 pl-0">
-                    <div class="table-responsive">
-                      <table class="table table-bordered table-hover mb-0 text-nowrap">
+                    <div className="table-responsive">
+                      <table className="table table-bordered table-hover mb-0 text-nowrap">
                         <thead>
                         <tr>
                           {/* <th className="wd-15p">S/N</th> */}
-                          <th class="wd-15p">File Name</th>
-                          <th class="wd-15p"></th>
-                          <th class="wd-25p"></th>
+                          <th className="wd-15p">File Name</th>
+                          <th className="wd-15p"></th>
+                          <th className="wd-25p"></th>
                         </tr>
                         </thead>
                         <tbody>

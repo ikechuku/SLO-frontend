@@ -25,7 +25,7 @@ export default class pendingRequet extends Component {
 	};
 	render() {
 		return (
-			<div class="animation par">
+			<div className="animation par">
 				<div className="pendingHeader">
 					<div className="data1">
 						<h1>Saturday, 1 june 2029</h1>
@@ -38,10 +38,10 @@ export default class pendingRequet extends Component {
 
 				<div className="pendingss">
 					<div className="checkx">
-						<div class="checkbox-container circular-container">
-							<label class="checkbox-label">
+						<div className="checkbox-container circular-container">
+							<label className="checkbox-label">
 								<input type="checkbox" />
-								<span class="checkbox-custom circular"></span>
+								<span className="checkbox-custom circular"></span>
 							</label>
 						</div>
 					</div>
@@ -68,10 +68,10 @@ export default class pendingRequet extends Component {
 
 					<div>
 						<span className="">
-							<i class="fa fa-trash re-trash"></i>
+							<i className="fa fa-trash re-trash"></i>
 							<i
 								onClick={this.showActionsForMobile}
-								class="fa fa-caret-down re-drop"
+								className="fa fa-caret-down re-drop"
 							></i>
 							{this.state.showActions ? (
 								<span className="show_btns_mobile">
@@ -90,7 +90,7 @@ export default class pendingRequet extends Component {
 
 										<span className="delREQ">
 											<p>Delect Request</p>
-											<i class="fa fa-trash "></i>
+											<i className="fa fa-trash "></i>
 										</span>
 									</span>
 								</span>
@@ -101,10 +101,10 @@ export default class pendingRequet extends Component {
 
 				<div className="pendingss">
 					<div className="checkx">
-						<div class="checkbox-container circular-container">
-							<label class="checkbox-label">
+						<div className="checkbox-container circular-container">
+							<label className="checkbox-label">
 								<input type="checkbox" />
-								<span class="checkbox-custom circular"></span>
+								<span className="checkbox-custom circular"></span>
 							</label>
 						</div>
 					</div>
@@ -131,10 +131,10 @@ export default class pendingRequet extends Component {
 
 					<div>
 						<span className="">
-							<i class="fa fa-trash re-trash"></i>
+							<i className="fa fa-trash re-trash"></i>
 							<i
 								onClick={this.showActionsForMobile}
-								class="fa fa-caret-down re-drop"
+								className="fa fa-caret-down re-drop"
 							></i>
 							{/* {this.state.showActions ? (
 								<span className="show_btns_mobile">
@@ -153,7 +153,7 @@ export default class pendingRequet extends Component {
 
 										<span className="delREQ">
 											<p>Delect Request</p>
-											<i class="fa fa-trash "></i>
+											<i className="fa fa-trash "></i>
 										</span>
 									</span>
 								</span>
@@ -164,10 +164,10 @@ export default class pendingRequet extends Component {
 
 				<div className="pendingss">
 					<div className="checkx">
-						<div class="checkbox-container circular-container">
-							<label class="checkbox-label">
+						<div className="checkbox-container circular-container">
+							<label className="checkbox-label">
 								<input type="checkbox" />
-								<span class="checkbox-custom circular"></span>
+								<span className="checkbox-custom circular"></span>
 							</label>
 						</div>
 					</div>
@@ -194,10 +194,10 @@ export default class pendingRequet extends Component {
 
 					<div>
 						<span className="">
-							<i class="fa fa-trash re-trash"></i>
+							<i className="fa fa-trash re-trash"></i>
 							<i
 								onClick={this.showActionsForMobile}
-								class="fa fa-caret-down re-drop"
+								className="fa fa-caret-down re-drop"
 							></i>
 							{/* {this.state.showActions ? (
 								<span className="show_btns_mobile">
@@ -216,7 +216,7 @@ export default class pendingRequet extends Component {
 
 										<span className="delREQ">
 											<p>Delect Request</p>
-											<i class="fa fa-trash "></i>
+											<i className="fa fa-trash "></i>
 										</span>
 									</span>
 								</span>
@@ -227,10 +227,10 @@ export default class pendingRequet extends Component {
 
 				<div className="pendingss">
 					<div className="checkx">
-						<div class="checkbox-container circular-container">
-							<label class="checkbox-label">
+						<div className="checkbox-container circular-container">
+							<label className="checkbox-label">
 								<input type="checkbox" />
-								<span class="checkbox-custom circular"></span>
+								<span className="checkbox-custom circular"></span>
 							</label>
 						</div>
 					</div>
@@ -257,10 +257,10 @@ export default class pendingRequet extends Component {
 
 					<div>
 						<span className="">
-							<i class="fa fa-trash re-trash"></i>
+							<i className="fa fa-trash re-trash"></i>
 							<i
 								onClick={this.showActionsForMobile}
-								class="fa fa-caret-down re-drop"
+								className="fa fa-caret-down re-drop"
 							></i>
 							{/* {this.state.showActions ? (
 								<span className="show_btns_mobile">
@@ -279,7 +279,7 @@ export default class pendingRequet extends Component {
 
 										<span className="delREQ">
 											<p>Delect Request</p>
-											<i class="fa fa-trash "></i>
+											<i className="fa fa-trash "></i>
 										</span>
 									</span>
 								</span>

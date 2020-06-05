@@ -771,10 +771,10 @@ class PersonalInfo extends Component {
                       <div className="form-group row">
 												<label for="inputName" className="col-md-2 col-form-label">Mobile Phone <span className="impt">*</span></label>
 												<div className="col-md-4">
-                        <div class="input-group mb-3">
-                          <div class="input-group-prepend select2-padding">
+                        <div className="input-group mb-3">
+                          <div className="input-group-prepend select2-padding">
                             {/* <select 
-                              class="input-group-text" 
+                              className="input-group-text" 
                               id="basic-addon"
                               name="mobilePhoneCode"
                               value={this.state.data.mobilePhoneCode}
@@ -794,7 +794,7 @@ class PersonalInfo extends Component {
                           </div>
                           <input 
                             type="text" 
-                            class="form-control" 
+                            className="form-control" 
                             aria-describedby="basic-addon3"
                             name="mobilePhone"
                             onChange={this.handleChange}
@@ -805,10 +805,10 @@ class PersonalInfo extends Component {
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Home Phone</label>
                         <div className="col-md-4">
-                        <div class="input-group mb-3">
-                          <div class="input-group-prepend select2-padding">
+                        <div className="input-group mb-3">
+                          <div className="input-group-prepend select2-padding">
                             {/* <select 
-                              class="input-group-text" 
+                              className="input-group-text" 
                               id="basic-addon3"
                               name="homePhoneCode"
                               value={this.state.data.homePhoneCode}

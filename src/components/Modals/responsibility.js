@@ -3,23 +3,23 @@ import Select from "react-select";
 const ResponsibilityModal = (props) => {
 	return (
 		<div
-			class="modal fade"
+			className="modal fade"
 			id="roleModal"
 			tabIndex="-1"
 			role="dialog"
 			aria-hidden="true"
 		>
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="example-Modal3">
+			<div className="modal-dialog" role="document">
+				<div className="modal-content">
+					<div className="modal-header">
+						<h5 className="modal-title" id="example-Modal3">
 							{props.modalMode === "create"
 								? "CREATE NEW RESPONSIBILITY"
 								: "EDIT RESPONSIBILITY"}
 						</h5>
 						<button
 							type="button"
-							class="close"
+							className="close"
 							data-dismiss="modal"
 							aria-label="Close"
 							onClick={props.closeModal}
@@ -27,15 +27,15 @@ const ResponsibilityModal = (props) => {
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body">
+					<div className="modal-body">
 						<form>
-							<div class="form-group">
-								<label for="recipient-name" class="form-control-label">
+							<div className="form-group">
+								<label for="recipient-name" className="form-control-label">
 									Responsibility Title
 								</label>
 								<input
 									type="text"
-									class="form-control"
+									className="form-control"
 									value={
 										props.responsibility === null
 											? ""
@@ -49,8 +49,8 @@ const ResponsibilityModal = (props) => {
 								</span>
 							</div>
 
-							<div class="form-group">
-								<label for="recipient-name" class="form-control-label">
+							<div className="form-group">
+								<label for="recipient-name" className="form-control-label">
 									Select Role
 								</label>
 								<Select
@@ -69,10 +69,10 @@ const ResponsibilityModal = (props) => {
 							</div>
 						</form>
 					</div>
-					<div class="modal-footer">
+					<div className="modal-footer">
 						<button
 							type="button"
-							class="btn btn-danger"
+							className="btn btn-danger"
 							data-dismiss="modal"
 							onClick={props.closeModal}
 						>
@@ -80,12 +80,12 @@ const ResponsibilityModal = (props) => {
 						</button>
 						{/* {
               props.modalMode === 'create' ?
-                <button type="button" class="btn btn-primary" onClick={props.handleCreate}>Create</button> :
-                <button type="button" class="btn btn-primary" onClick={props.handleUpdate}>Update</button>
+                <button type="button" className="btn btn-primary" onClick={props.handleCreate}>Create</button> :
+                <button type="button" className="btn btn-primary" onClick={props.handleUpdate}>Update</button>
             } */}
 						<button
 							type="button"
-							class="btn btn-primary"
+							className="btn btn-primary"
 							onClick={props.handleSubmit}
 						>
 							{props.modalMode === "create" ? "Create" : "Update"}

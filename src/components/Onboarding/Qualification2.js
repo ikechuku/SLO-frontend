@@ -1110,12 +1110,12 @@ class Qualification extends Component {
   render() {
     return (
       <Layout page='qualification'>
-        <div class="app-content">
-          <section class="section">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="#" class="text-muted">Home</a></li>
-              <li class="breadcrumb-item"><a href="#" class="text-muted">Staff</a></li>
-              <li class="breadcrumb-item active text-" aria-current="page">New Staff</li>
+        <div className="app-content">
+          <section className="section">
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item"><a href="#" className="text-muted">Home</a></li>
+              <li className="breadcrumb-item"><a href="#" className="text-muted">Staff</a></li>
+              <li className="breadcrumb-item active text-" aria-current="page">New Staff</li>
             </ol>
 
 
@@ -1128,9 +1128,9 @@ class Qualification extends Component {
                     <h4 className="col col-md-6">Qualification and Experience</h4>
                     <div className="col col-md-6 text-right" style={ this.state.pageMode === 'completeOnboarding' ? {display: 'none'} : {}}>
                       <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}>
-                        <i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button>
+                        <i className="fa fa-arrow-left" aria-hidden="true"></i> Back</button>
                       <button className="cursor-pointer btn btn-primary" onClick={() => this.props.history.push(`/create_staff/three/${this.props.match.params.id}`)}>
-                      Forward <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                      Forward <i className="fa fa-arrow-right" aria-hidden="true"></i></button>
                     </div>
                     </div>
 									</div>
@@ -1142,8 +1142,8 @@ class Qualification extends Component {
                       handleEdit={this.handleEdit}
                     />
 
-                    <div class="card-header custom-header" style={{ borderBottom: 'hidden'}}>
-                      <a class="add-link mr-3" data-toggle="modal" data-target="#qualificationModal" onClick={this.handleAdd}><span className="fa fa-plus"></span> Add Qualification</a>
+                    <div className="card-header custom-header" style={{ borderBottom: 'hidden'}}>
+                      <a className="add-link mr-3" data-toggle="modal" data-target="#qualificationModal" onClick={this.handleAdd}><span className="fa fa-plus"></span> Add Qualification</a>
 										</div>
 
                     <br/>
@@ -1154,8 +1154,8 @@ class Qualification extends Component {
                       handleEdit={this.handleEdit}
                     />
 
-                    <div class="card-header custom-header">
-                      <a  class="add-link" data-toggle="modal" data-target="#certificationModal"><span className="fa fa-plus"></span> Add Certification</a>
+                    <div className="card-header custom-header">
+                      <a  className="add-link" data-toggle="modal" data-target="#certificationModal"><span className="fa fa-plus"></span> Add Certification</a>
 										</div>
 
 
@@ -1167,8 +1167,8 @@ class Qualification extends Component {
                       handleEdit={this.handleEdit}
                     />
 
-                    <div class="card-header custom-header">
-                      <a class="add-link" data-toggle="modal" data-target="#employmentModal"><span className="fa fa-plus"></span> Add Experience</a>
+                    <div className="card-header custom-header">
+                      <a className="add-link" data-toggle="modal" data-target="#employmentModal"><span className="fa fa-plus"></span> Add Experience</a>
 										</div>
 
 
@@ -1180,15 +1180,15 @@ class Qualification extends Component {
                         erro
                       />
 
-                    <div class="form-group mb-0 mt-2 text-right">
-                      <div class="col-md-12">
+                    <div className="form-group mb-0 mt-2 text-right">
+                      <div className="col-md-12">
                         <button 
                           type="submit"
-                          class="btn btn-info mr-5"
+                          className="btn btn-info mr-5"
                           // onClick={() => this.props.history.push('/create_staff/two')}
                           onClick={this.handleSave}
-                        ><i class="fa fa-save"></i> SAVE</button>
-                        <button type="submit" class="btn btn-primary" onClick={this.handleSubmit}><i class="fa fa-arrow-right"></i> {this.state.pageMode === 'create' ? 'NEXT' : 'UPDATE & CONTINUE'}</button>
+                        ><i className="fa fa-save"></i> SAVE</button>
+                        <button type="submit" className="btn btn-primary" onClick={this.handleSubmit}><i className="fa fa-arrow-right"></i> {this.state.pageMode === 'create' ? 'NEXT' : 'UPDATE & CONTINUE'}</button>
                       </div>
                     </div>
 

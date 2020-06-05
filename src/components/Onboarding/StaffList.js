@@ -120,24 +120,24 @@ class StaffList extends Component {
             </ol>
 
 
-            <div class="row">
-							<div class="col-lg-12">
-								<div class="card">
-									<div class="header-card">
+            <div className="row">
+							<div className="col-lg-12">
+								<div className="card">
+									<div className="header-card">
                     <div className="row">
                       <h4 className="col-md-6">Staff List</h4>
                       <div className="col-md-6 btn-group">
                         {/* <button className="btn btn-md btn-primary" style={{ borderRadius: '0px' }}>All</button>
                         <button className="btn btn-md">Pending</button>
                         <button className="btn btn-md">Declined</button> */}
-                          <button type="button" class="btn btn-primary ml-auto">All</button>
-                          <button type="button" class="btn btn-primary">Pending</button>
-                          <button type="button" class="btn btn-primary">Declined</button>
+                          <button type="button" className="btn btn-primary ml-auto">All</button>
+                          <button type="button" className="btn btn-primary">Pending</button>
+                          <button type="button" className="btn btn-primary">Declined</button>
                       </div>
                     </div>
 									</div>
-									<div class="card-body">
-										<div class="table-responsive">
+									<div className="card-body">
+										<div className="table-responsive">
                        <Table 
                         body={this.bodyRow}
                         head={this.header}
