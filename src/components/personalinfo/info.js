@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Moment from 'react-moment';
 import NumberFormat from 'react-number-format';
 import { NotificationManager } from "react-notifications";
+import { Link } from "react-router-dom";
+import SweetAlert from 'react-bootstrap-sweetalert'
 import axios from "axios";
 import { modal } from "bootstrap";
 import Layout from "../layout/index";
@@ -31,7 +33,8 @@ export default class info extends Component {
       guarantorInfo: [],
 			employmentInfo: {},
 			avatar: null,
-			identification: ''
+			identification: '',
+			alert: null
     }
   }
 
@@ -54,7 +57,6 @@ export default class info extends Component {
 				const identificationObj = [...res.data.user.uploads].filter(item => item.fileName === 'Identification')[0];
 				const identification = identificationObj !== undefined ? identificationObj.path : null;
 
-        hideLoader();
         this.setState({
           user: res.data.user,
           qualification: res.data.qualification,
@@ -65,7 +67,8 @@ export default class info extends Component {
 					institution: [...res.data.qualification, ...res.data.certification],
 					avatar,
 					identification
-        });
+				});
+				hideLoader();
       }
 
     }catch(error){
@@ -86,13 +89,32 @@ export default class info extends Component {
       const res = await httpPatch(`auth/staff_application_status/${id}`, data);
 
       if(res.code === 200){
-        hideLoader();
+				hideLoader();
+				const getAlert = () => (
+					<SweetAlert 
+						success 
+						title="Application Status" 
+						onConfirm={() => this.hideAlert()}
+					>
+						Approved
+					</SweetAlert>
+				);
+		
+				this.setState({
+					alert: getAlert()
+				});
         this.getDetails();
       }
     }catch(error){
       hideLoader();
       console.log(error)
     }
+	}
+
+	hideAlert() {
+		this.setState({
+			alert: null
+		});
 	}
 	
 	getFiles = (list, type) => {
@@ -120,6 +142,7 @@ export default class info extends Component {
 		
 		return (
 			<Layout>
+				{this.state.alert}
         <div className="app-content">
           <section className="section">
             <ol className="breadcrumb">
@@ -133,7 +156,10 @@ export default class info extends Component {
                 <div className="card">
                   <div className="card-header">
                     <div className="row col-12">
-                      <h4 className="col col-md-6"></h4>
+                      <h4 className="col col-md-6" >
+												<Link to={`/create_staff/one/${this.props.match.params.id}`}
+													style={this.state.user.onBoarding < 4 ? {display: 'none'} : {textDecorationLine: 'underline'}}
+												>Edit</Link></h4>
                       <div className="col col-md-6 text-right pr-0">
                         <h4 className="">APPLICATION STATUS: <span className="text-warning">{user.applicationStatus === 'pending' ? 'Pending' : user.applicationStatus === 'approved' ? 'Approved' : 'Rejected'}</span></h4>
                       </div>
@@ -148,7 +174,7 @@ export default class info extends Component {
 							<img src={this.state.avatar || UserLogo} alt="Profile Pic" />
 							<span className="files675">Files</span>
 							<a href={this.state.identification} target="_blank">
-								<i class="fa fa-link"></i> Identification{" "}
+								<i className="fa fa-link"></i> Identification{" "}
 							</a>
 						</div>
 
@@ -266,14 +292,17 @@ export default class info extends Component {
 
 					<Garantor guarantorInfo={guarantorInfo} />
 
-					<div class="row mt-3 text-right">					
-						<div class="col-md-12">
+					<div className="row mt-3 text-right">					
+						<div className="col-md-12">
 							<button 
 								type="submit"
-								class="btn btn-info mr-5"
+								className="btn btn-info mr-5"
 								onClick={e => this.handleStatus(e, 'rejected')}
+								disabled={this.state.user.onBoarding !== 4 ? true : ''}
 							><span className="fa fa-ban"></span> DECLINE</button>
-						<button type="submit" class="btn btn-primary" onClick={e => this.handleStatus(e, 'approved')}><span className="fa fa-check-square-o"></span> APPROVE</button>
+						<button type="submit" className="btn btn-primary" 
+						disabled={this.state.user.onBoarding !== 4 ? true : ''}
+						onClick={e => this.handleStatus(e, 'approved')}><span className="fa fa-check-square-o"></span> APPROVE</button>
 					</div>
 
 

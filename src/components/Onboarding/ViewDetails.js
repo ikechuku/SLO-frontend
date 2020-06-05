@@ -147,13 +147,13 @@ export default class ViewDetails extends Component {
 
                         }
                         </div> */}
-                        <div class="table-responsive">
-                          <table id="example1" class="col col-md-12 table table-hover table-bordered border-t0 text-nowrap w-100" >
+                        <div className="table-responsive">
+                          <table id="example1" className="col col-md-12 table table-hover table-bordered border-t0 text-nowrap w-100" >
                             <thead>
                               <tr>
                                 {/* <th className="wd-15p">S/N</th> */}
-                                <th class="wd-15p">Name</th>
-                                <th class="wd-15p">Qualification/Certification</th>
+                                <th className="wd-15p">Name</th>
+                                <th className="wd-15p">Qualification/Certification</th>
                                 <th className="wd-15p">Date</th>
                               </tr>
                             </thead>
@@ -182,13 +182,13 @@ export default class ViewDetails extends Component {
                           <a className="add-more">View More</a>
                         </div>
                       </div> */}
-                        <div class="table-responsive">
-                          <table id="example1" class="col col-md-12 table table-hover table-bordered border-t0 text-nowrap w-100" >
+                        <div className="table-responsive">
+                          <table id="example1" className="col col-md-12 table table-hover table-bordered border-t0 text-nowrap w-100" >
                             <thead>
                               <tr>
                                 {/* <th className="wd-15p">S/N</th> */}
-                                <th class="wd-15p">Employer Name</th>
-                                <th class="wd-15p">Role</th>
+                                <th className="wd-15p">Employer Name</th>
+                                <th className="wd-15p">Role</th>
                                 <th className="wd-15p">Address</th>
                                 <th className="wd-15p">Date</th>
                               </tr>
@@ -266,13 +266,13 @@ export default class ViewDetails extends Component {
                       </div>
                       <a className="add-more">View More</a> */}
 
-                      <div class="table-responsive">
-                        <table id="example1" class="col col-md-8 table table-hover table-bordered border-t0 text-nowrap w-100" >
+                      <div className="table-responsive">
+                        <table id="example1" className="col col-md-8 table table-hover table-bordered border-t0 text-nowrap w-100" >
                           <thead>
                             <tr>
                               {/* <th className="wd-15p">S/N</th> */}
-                              <th class="wd-15p">Name of Guarantor</th>
-                              <th class="wd-15p">Occupation</th>
+                              <th className="wd-15p">Name of Guarantor</th>
+                              <th className="wd-15p">Occupation</th>
                               <th className="wd-15p">Relationship</th>
                               <th className="wd-15p">Home No</th>
                               <th className="wd-15p">Mobile No</th>
@@ -327,15 +327,15 @@ export default class ViewDetails extends Component {
 
                       
 
-                      <div class="row mt-3 text-right">
+                      <div className="row mt-3 text-right">
 													
-                          <div class="col-md-12">
+                          <div className="col-md-12">
                           <button 
                             type="submit"
-                            class="btn btn-info mr-5"
+                            className="btn btn-info mr-5"
 														onClick={e => this.handleStatus(e, 'rejected')}
                           ><span className="fa fa-ban"></span> DECLINE</button>
-													<button type="submit" class="btn btn-primary" onClick={e => this.handleStatus(e, 'approved')}><span className="fa fa-check-square-o"></span> APPROVE</button>
+													<button type="submit" className="btn btn-primary" onClick={e => this.handleStatus(e, 'approved')}><span className="fa fa-check-square-o"></span> APPROVE</button>
 												</div>
 
 

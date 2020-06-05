@@ -4,8 +4,8 @@ export default class LeaveMngementTable extends Component {
 	render() {
 		return (
 			<div>
-				<div class="table-responsive">
-					<table class="table table-bordered table-hover mb-0 text-nowrap">
+				<div className="table-responsive">
+					<table className="table table-bordered table-hover mb-0 text-nowrap">
 						<thead>
 							<tr>
 								<th>User ID</th>
@@ -32,7 +32,7 @@ export default class LeaveMngementTable extends Component {
 									<span
 										data-toggle="modal"
 										data-target="#exampleModal2"
-										class="edit"
+										className="edit"
 									>
 										View Application
 									</span>
@@ -51,7 +51,7 @@ export default class LeaveMngementTable extends Component {
 									<span
 										data-toggle="modal"
 										data-target="#exampleModal2"
-										class="edit"
+										className="edit"
 									>
 										View Application
 									</span>
@@ -70,7 +70,7 @@ export default class LeaveMngementTable extends Component {
 									<span
 										data-toggle="modal"
 										data-target="#exampleModal2"
-										class="edit"
+										className="edit"
 									>
 										View Application
 									</span>
@@ -89,7 +89,7 @@ export default class LeaveMngementTable extends Component {
 									<span
 										data-toggle="modal"
 										data-target="#exampleModal2"
-										class="edit"
+										className="edit"
 									>
 										View Application
 									</span>
@@ -108,7 +108,7 @@ export default class LeaveMngementTable extends Component {
 									<span
 										data-toggle="modal"
 										data-target="#exampleModal2"
-										class="edit"
+										className="edit"
 									>
 										View Application
 									</span>

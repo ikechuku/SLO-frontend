@@ -145,32 +145,32 @@ export default class branch extends Component {
 		const { modalMode, errorMessage1, branch } = this.state;
 		return (
 			<Layout page="branch">
-				<div class="app-content">
-					<section class="section">
-						<ol class="breadcrumb">
-							<li class="breadcrumb-item">
-								<a href="#" class="text-muted">
+				<div className="app-content">
+					<section className="section">
+						<ol className="breadcrumb">
+							<li className="breadcrumb-item">
+								<a href="#" className="text-muted">
 									Home
 								</a>
 							</li>
-							<li class="breadcrumb-item">
-								<a href="#" class="text-muted">
+							<li className="breadcrumb-item">
+								<a href="#" className="text-muted">
 									Performance
 								</a>
 							</li>
-							<li class="breadcrumb-item active text-" aria-current="page">
+							<li className="breadcrumb-item active text-" aria-current="page">
 								Performance
 							</li>
 						</ol>
-						<div class="section-body">
-							<div class="row">
-								<div class="col-md-10">
-									<div class="card">
-										<div class="card-header custom-header">
-											<div class="col-md-12">
+						<div className="section-body">
+							<div className="row">
+								<div className="col-md-10">
+									<div className="card">
+										<div className="card-header custom-header">
+											<div className="col-md-12">
 												<button
 													type="button"
-													class="btn "
+													className="btn "
 													data-toggle="modal"
 													data-target="#branchModal"
 												>
@@ -179,7 +179,7 @@ export default class branch extends Component {
 											</div>
 										</div>
 
-										<div class="card-body">
+										<div className="card-body">
 											<BranchTable
 												branches={this.state.branches}
 												handleDelete={this.deleteBranch}

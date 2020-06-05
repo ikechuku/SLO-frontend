@@ -17,7 +17,7 @@ export default class branchTable extends Component {
 				"branchName": data.name,
 				"region": data.region,
 				"address": data.address,
-				"action": <a><span class='edit' data-toggle="modal" data-target="#branchModal" onClick={() => this.props.handleEdit(data.id)}>Edit</span><span class='del' onClick={() => this.props.handleDelete(data.id)}>Delete</span></a>
+				"action": <a><span className='edit' data-toggle="modal" data-target="#branchModal" onClick={() => this.props.handleEdit(data.id)}>Edit</span><span className='del' onClick={() => this.props.handleDelete(data.id)}>Delete</span></a>
 			}
 		));
 		return body;
@@ -40,7 +40,7 @@ export default class branchTable extends Component {
 
 	render() {
 		return (
-			<div class="table-responsive" style={{overflow: 'hidden'}}>
+			<div className="table-responsive" style={{overflow: 'hidden'}}>
 				<Table 
           body={this.bodyRow}
 					head={this.header}

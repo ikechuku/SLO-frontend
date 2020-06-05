@@ -5,7 +5,7 @@ import "./todo.css";
 export default class Todo extends Component {
 	render() {
 		return (
-			<div class="animation par">
+			<div className="animation par">
 				<div className="todoHeader">
 					<div className="data1">
 						<h1>Saturday, 1 june 2029</h1>
@@ -24,10 +24,10 @@ export default class Todo extends Component {
 
 				<div className="todoss">
 					<div className="checkx">
-						<div class="checkbox-container circular-container">
-							<label class="checkbox-label">
+						<div className="checkbox-container circular-container">
+							<label className="checkbox-label">
 								<input type="checkbox" />
-								<span class="checkbox-custom circular"></span>
+								<span className="checkbox-custom circular"></span>
 							</label>
 						</div>
 					</div>
@@ -36,15 +36,15 @@ export default class Todo extends Component {
 
 					<div className="flex2">
 						<span className="date">10-12-2098</span>
-						<i class="fa fa-trash"></i>
+						<i className="fa fa-trash"></i>
 					</div>
 				</div>
 				<div className="todoss">
 					<div className="checkx">
-						<div class="checkbox-container circular-container">
-							<label class="checkbox-label">
+						<div className="checkbox-container circular-container">
+							<label className="checkbox-label">
 								<input type="checkbox" />
-								<span class="checkbox-custom circular"></span>
+								<span className="checkbox-custom circular"></span>
 							</label>
 						</div>
 					</div>
@@ -53,34 +53,16 @@ export default class Todo extends Component {
 
 					<div className="flex2">
 						<span className="date">10-12-2098</span>
-						<i class="fa fa-trash"></i>
-					</div>
-				</div>
-
-				<div className="todoss">
-					<div className="checkx">
-						<div class="checkbox-container circular-container">
-							<label class="checkbox-label">
-								<input type="checkbox" />
-								<span class="checkbox-custom circular"></span>
-							</label>
-						</div>
-					</div>
-
-					<span className="infooo">Client Meeting at 2:30</span>
-
-					<div className="flex2">
-						<span className="date">10-12-2098</span>
-						<i class="fa fa-trash"></i>
+						<i className="fa fa-trash"></i>
 					</div>
 				</div>
 
 				<div className="todoss">
 					<div className="checkx">
-						<div class="checkbox-container circular-container">
-							<label class="checkbox-label">
+						<div className="checkbox-container circular-container">
+							<label className="checkbox-label">
 								<input type="checkbox" />
-								<span class="checkbox-custom circular"></span>
+								<span className="checkbox-custom circular"></span>
 							</label>
 						</div>
 					</div>
@@ -89,7 +71,25 @@ export default class Todo extends Component {
 
 					<div className="flex2">
 						<span className="date">10-12-2098</span>
-						<i class="fa fa-trash"></i>
+						<i className="fa fa-trash"></i>
+					</div>
+				</div>
+
+				<div className="todoss">
+					<div className="checkx">
+						<div className="checkbox-container circular-container">
+							<label className="checkbox-label">
+								<input type="checkbox" />
+								<span className="checkbox-custom circular"></span>
+							</label>
+						</div>
+					</div>
+
+					<span className="infooo">Client Meeting at 2:30</span>
+
+					<div className="flex2">
+						<span className="date">10-12-2098</span>
+						<i className="fa fa-trash"></i>
 					</div>
 				</div>
 			</div>

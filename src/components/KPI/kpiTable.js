@@ -14,7 +14,7 @@ class RoleTable extends Component {
 			action: (
 				<a>
 					<span
-						class="edit"
+						className="edit"
 						data-toggle="modal"
 						data-target="#kpiModal"
 						data-backdrop="static"
@@ -22,7 +22,7 @@ class RoleTable extends Component {
 					>
 						Edit
 					</span>
-					<span class="del" onClick={() => this.props.handleDelete(data.id)}>
+					<span className="del" onClick={() => this.props.handleDelete(data.id)}>
 						Delete
 					</span>
 				</a>
@@ -47,7 +47,7 @@ class RoleTable extends Component {
 	};
 	render() {
 		return (
-			<div class="table-responsive" style={{ overflow: "hidden" }}>
+			<div className="table-responsive" style={{ overflow: "hidden" }}>
 				<Table
 					body={this.bodyRow}
 					head={this.header}

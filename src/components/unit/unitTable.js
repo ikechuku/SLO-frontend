@@ -11,7 +11,7 @@ export default class unitTable extends Component {
 			{
 				"unitName": data.name,
 				"departments": data.department.name,
-				"action": <a><span class='edit' data-toggle="modal" data-target="#unitModal" onClick={() => this.props.handleEdit(data.id)}>Edit</span><span class='del' onClick={() => this.props.handleDelete(data.id)}>Delete</span></a>
+				"action": <a><span className='edit' data-toggle="modal" data-target="#unitModal" onClick={() => this.props.handleEdit(data.id)}>Edit</span><span className='del' onClick={() => this.props.handleDelete(data.id)}>Delete</span></a>
 			}
 		));
 		return body;
@@ -34,14 +34,14 @@ export default class unitTable extends Component {
 	render() {
 		return (
 			<div>
-				<div class="table-responsive" style={{overflow: 'hidden'}}>
+				<div className="table-responsive" style={{overflow: 'hidden'}}>
 				<Table 
           body={this.bodyRow}
 				  head={this.header}
 				  rowsPerPage={10}
 				  rowsPerPageOption={[10, 15, 20, 25]}
         />
-					{/* <table class="table table-bordered table-hover mb-0 text-nowrap">
+					{/* <table className="table table-bordered table-hover mb-0 text-nowrap">
 						<tr>
 							<th>UNIT NAME</th>
 							<th>DEPARTMENT</th>
@@ -55,8 +55,8 @@ export default class unitTable extends Component {
 										<td>{data.department.name}</td>
 			
 										<td>
-											<span class='edit'>Edit</span>
-											<span class='del'>Delete</span>
+											<span className='edit'>Edit</span>
+											<span className='del'>Delete</span>
 										</td>
 									</tr>
 								)) : ''

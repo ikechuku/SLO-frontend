@@ -169,25 +169,25 @@ export default class CreateStaff extends Component {
 		return (
 			<Layout page="createStaff">
 
-				<div class="app-content">
-					<section class="section">
-					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a href="#" class="text-muted">Home</a></li>
-						<li class="breadcrumb-item"><a href="#" class="text-muted">Performance</a></li>
-						<li class="breadcrumb-item active text-" aria-current="page">Branch</li>
+				<div className="app-content">
+					<section className="section">
+					<ol className="breadcrumb">
+						<li className="breadcrumb-item"><a href="#" className="text-muted">Home</a></li>
+						<li className="breadcrumb-item"><a href="#" className="text-muted">Performance</a></li>
+						<li className="breadcrumb-item active text-" aria-current="page">Branch</li>
 					</ol>
-						<div class="section-body">
-							<div class="row">
+						<div className="section-body">
+							<div className="row">
 								
-							<div class="col-lg-8">
+							<div className="col-lg-8">
 																	
-								<div class="card">
-								<div class="card-header custom-header">
+								<div className="card">
+								<div className="card-header custom-header">
 								<div className="col col-md-12">
-										<button type="button" class="btn " data-toggle="modal" data-target="#createStaffModal">CREATE NEW</button>
+										<button type="button" className="btn " data-toggle="modal" data-target="#createStaffModal">CREATE NEW</button>
 									</div>
 								</div>
-									<div class="card-body">
+									<div className="card-body">
 										
 										<StaffTable
 											staffs={this.state.staffs}

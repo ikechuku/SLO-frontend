@@ -16,7 +16,7 @@ export default class responsibilityTable extends Component {
 			action: (
 				<a>
 					<span
-						class="edit"
+						className="edit"
 						data-toggle="modal"
 						data-target="#roleModal"
 						onClick={() => this.props.handleEdit(data.id)}
@@ -24,7 +24,7 @@ export default class responsibilityTable extends Component {
 					>
 						Edit
 					</span>
-					<span class="del" onClick={() => this.props.handleDelete(data.id)}>
+					<span className="del" onClick={() => this.props.handleDelete(data.id)}>
 						Delete
 					</span>
 				</a>
@@ -49,7 +49,7 @@ export default class responsibilityTable extends Component {
 
 	render() {
 		return (
-			<div class="table-responsive" style={{ overflow: "hidden" }}>
+			<div className="table-responsive" style={{ overflow: "hidden" }}>
 				<Table
 					body={this.bodyRow}
 					head={this.header}

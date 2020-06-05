@@ -141,12 +141,12 @@ class Upload extends Component {
   render() {
     return (
       <Layout>
-        <div class="app-content">
-          <section class="section">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="#" class="text-muted">Home</a></li>
-              <li class="breadcrumb-item"><a href="#" class="text-muted">Staff</a></li>
-              <li class="breadcrumb-item active text-" aria-current="page">New Staff</li>
+        <div className="app-content">
+          <section className="section">
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item"><a href="#" className="text-muted">Home</a></li>
+              <li className="breadcrumb-item"><a href="#" className="text-muted">Staff</a></li>
+              <li className="breadcrumb-item active text-" aria-current="page">New Staff</li>
             </ol>
 
             <div className="row">
@@ -156,7 +156,7 @@ class Upload extends Component {
                   <div className="row col-12">
                     <h4 className="col col-md-6">Upload</h4>
                     <div className="col col-md-6 text-right pr-0">
-                      <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button>
+                      <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}><i className="fa fa-arrow-left" aria-hidden="true"></i> Back</button>
                     </div>
                     </div>
 									</div>
@@ -197,14 +197,14 @@ class Upload extends Component {
                     <br/>
 
                     <div className="col col-md-12 pr-0 pl-0">
-                      <div class="table-responsive">
-                        <table class="table table-bordered table-hover mb-0 text-nowrap">
+                      <div className="table-responsive">
+                        <table className="table table-bordered table-hover mb-0 text-nowrap">
                           <thead>
                           <tr>
                             {/* <th className="wd-15p">S/N</th> */}
-                            <th class="wd-15p">File Name</th>
-                            <th class="wd-15p"></th>
-                            <th class="wd-25p"></th>
+                            <th className="wd-15p">File Name</th>
+                            <th className="wd-15p"></th>
+                            <th className="wd-25p"></th>
                           </tr>
                           </thead>
                           <tbody>
@@ -249,18 +249,18 @@ class Upload extends Component {
                     </div> */}
 
 
-                    <div class="form-group mb-0 mt-5 row text-right">
-												<div class="col-md-12">
+                    <div className="form-group mb-0 mt-5 row text-right">
+												<div className="col-md-12">
                           <button 
                             type="submit"
-                            class="btn btn-info mr-5"
+                            className="btn btn-info mr-5"
                             onClick={this.handleSave}
-                          ><i class="fa fa-save"></i> SAVE</button>
+                          ><i className="fa fa-save"></i> SAVE</button>
                           <button 
                             type="submit" 
-                            class="btn btn-primary" 
+                            className="btn btn-primary" 
                             onClick={this.handleSubmit}
-                          ><i class="fa fa-arrow-right"></i> NEXT</button>
+                          ><i className="fa fa-arrow-right"></i> NEXT</button>
 												</div>
 											</div>
 

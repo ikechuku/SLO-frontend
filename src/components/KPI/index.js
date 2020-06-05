@@ -244,45 +244,45 @@ export default class Role extends Component {
 
 		return (
 			<Layout page="kpi">
-				<div class="app-content">
-					<section class="section">
-						<ol class="breadcrumb">
-							<li class="breadcrumb-item">
-								<a href="#" class="text-muted">
+				<div className="app-content">
+					<section className="section">
+						<ol className="breadcrumb">
+							<li className="breadcrumb-item">
+								<a href="#" className="text-muted">
 									Home
 								</a>
 							</li>
-							<li class="breadcrumb-item">
-								<a href="#" class="text-muted">
+							<li className="breadcrumb-item">
+								<a href="#" className="text-muted">
 									Performance
 								</a>
 							</li>
-							<li class="breadcrumb-item active text-" aria-current="page">
+							<li className="breadcrumb-item active text-" aria-current="page">
 								KPI
 							</li>
 						</ol>
-						<div class="section-body">
-							<div class="row">
-								<div class="col-md-7">
-									<div class="card">
-										<div class="card-header custom-header">
+						<div className="section-body">
+							<div className="row">
+								<div className="col-md-7">
+									<div className="card">
+										<div className="card-header custom-header">
 											<div className="col col-md-12">
 												<button
 													type="button"
 													data-backdrop="static"
-													class="btn "
+													className="btn "
 													data-toggle="modal"
 													data-target="#kpiModal"
 												>
 													CREATE NEW
 												</button>
-												{/* <div class="inputf">
+												{/* <div className="inputf">
 														<input placeholder="Input a Branch Name"/><button className="search-bt">Search</button>
 												</div> */}
 											</div>
 										</div>
 
-										<div class="card-body">
+										<div className="card-body">
 											<div className="base-score">
 												<span>Base Score:</span>
 												<span>50</span>

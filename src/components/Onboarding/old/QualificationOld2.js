@@ -408,12 +408,12 @@ class Qualification extends Component {
   render() {
     return (
       <Layout>
-        <div class="app-content">
-          <section class="section">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="#" class="text-muted">Home</a></li>
-              <li class="breadcrumb-item"><a href="#" class="text-muted">Staff</a></li>
-              <li class="breadcrumb-item active text-" aria-current="page">New Staff</li>
+        <div className="app-content">
+          <section className="section">
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item"><a href="#" className="text-muted">Home</a></li>
+              <li className="breadcrumb-item"><a href="#" className="text-muted">Staff</a></li>
+              <li className="breadcrumb-item active text-" aria-current="page">New Staff</li>
             </ol>
 
             <div className="row">
@@ -424,7 +424,7 @@ class Qualification extends Component {
                     <h4 className="col col-md-6">Qualification and Experience</h4>
                     <div className="col col-md-6 text-right" style={ this.state.pageMode === 'completeOnboarding' ? {display: 'none'} : {}}>
                       <button className="cursor-pointer btn btn-primary" onClick={this.handleBackButton}>
-                        <i class="fa fa-arrow-left" aria-hidden="true"></i>Back</button>
+                        <i className="fa fa-arrow-left" aria-hidden="true"></i>Back</button>
                     </div>
                     </div>
 									</div>
@@ -447,14 +447,14 @@ class Qualification extends Component {
                           endDateErrorMssg5={this.state.endDateErrorMssg5}
                           endDateErrorMssg6={this.state.endDateErrorMssg6}
                         />
-                        <div class="table-responsive" style={!this.state.moreInstitution.length ? { display: "none"} : {}}>
-                          <table id="example1" class="col col-md-8 offset-md-2 table table-striped table-bordered border-t0 text-nowrap w-100" >
+                        <div className="table-responsive" style={!this.state.moreInstitution.length ? { display: "none"} : {}}>
+                          <table id="example1" className="col col-md-8 offset-md-2 table table-striped table-bordered border-t0 text-nowrap w-100" >
                             <thead>
                               <tr>
                                 {/* <th className="wd-15p">S/N</th> */}
-                                <th class="wd-15p">Name</th>
-                                <th class="wd-15p">Qualification/Certification</th>
-                                <th class="wd-25p"></th>
+                                <th className="wd-15p">Name</th>
+                                <th className="wd-15p">Qualification/Certification</th>
+                                <th className="wd-25p"></th>
                               </tr>
                             </thead>
                             <tbody>                                {
@@ -493,13 +493,13 @@ class Qualification extends Component {
                           endDateErrorMssg7={this.state.endDateErrorMssg7}
                         />
                         <div className="col-md-6" style={!this.state.morePrevious.length ? { display: "none"} : {}}>
-                        <table id="example1" class="table table-striped table-bordered border-t0 text-nowrap w-100" >
+                        <table id="example1" className="table table-striped table-bordered border-t0 text-nowrap w-100" >
                             <thead>
                               <tr>
                                 {/* <th className="wd-15p">S/N</th> */}
-                                <th class="wd-15p">Employer name</th>
-                                <th class="wd-15p">Role</th>
-                                <th class="wd-25p"></th>
+                                <th className="wd-15p">Employer name</th>
+                                <th className="wd-15p">Role</th>
+                                <th className="wd-25p"></th>
                               </tr>
                             </thead>
                             <tbody>                                {
@@ -529,15 +529,15 @@ class Qualification extends Component {
                         />
                       </div>
 
-                      <div class="form-group mb-0 mt-2 row justify-content-end">
-												<div class="col-md-9">
+                      <div className="form-group mb-0 mt-2 row justify-content-end">
+												<div className="col-md-9">
                           <button 
                             type="submit"
-                            class="btn btn-info mr-5"
+                            className="btn btn-info mr-5"
                             // onClick={() => this.props.history.push('/create_staff/two')}
                             onClick={this.handleSubmit}
                           >NEXT</button>
-													<button type="submit" class="btn btn-primary" onClick={this.handleSave}>SAVE</button>
+													<button type="submit" className="btn btn-primary" onClick={this.handleSave}>SAVE</button>
 												</div>
 											</div>
 										</form>

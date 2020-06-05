@@ -101,7 +101,7 @@ class App extends React.Component {
     // } else {
       // console.log(this.state.items);
       return (
-        <div class="container">
+        <div className="container">
           <Datatable
             tableHeader={this.header}
             tableBody={body}

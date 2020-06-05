@@ -24,13 +24,13 @@ export default class educationQulification extends Component {
 						<h1>Education Qualification</h1>
 					</section>
 
-					<div class="table-responsive">
-						<table id="example1" class="col col-md-12 table table-hover table-bordered border-t0 text-nowrap w-100" >
+					<div className="table-responsive">
+						<table id="example1" className="col col-md-12 table table-hover table-bordered border-t0 text-nowrap w-100" >
 							<thead>
 								<tr>
 									{/* <th className="wd-15p">S/N</th> */}
-									<th class="wd-15p">Name</th>
-									<th class="wd-15p">Qualification/Certification</th>
+									<th className="wd-15p">Name</th>
+									<th className="wd-15p">Qualification/Certification</th>
 									<th className="wd-15p">Date</th>
 									<th>Documents</th>
 								</tr>

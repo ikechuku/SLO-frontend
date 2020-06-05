@@ -43,16 +43,16 @@ export class QualificationModal extends Component {
 
     return (
       <div>
-        <div class="modal fade" id="qualificationModal" data-backdrop="static" data-keyboard="false" tabIndex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="example-Modal3">{this.props.modalMode === 'create' ? 'ADD NEW QUALIFICATION' : 'EDIT QUALIFICATION'}</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={this.handleClose}>
+        <div className="modal fade" id="qualificationModal" data-backdrop="static" data-keyboard="false" tabIndex="-1" role="dialog" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="example-Modal3">{this.props.modalMode === 'create' ? 'ADD NEW QUALIFICATION' : 'EDIT QUALIFICATION'}</h5>
+                  <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.handleClose}>
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div class="modal-body">
+                <div className="modal-body">
                   <form>
                   <div className="col col-md-12">
                     <div className="form-group row">
@@ -173,7 +173,7 @@ export class QualificationModal extends Component {
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label for="inputName" className="col-md-5 col-form-label">Highest Education</label>
+                      <label for="inputName" className="col-md-5 col-form-label">Highest Education <span className="impt">*</span></label>
                       <div className="col-md-7">
                         <label>
                           <input type="radio"
@@ -200,11 +200,11 @@ export class QualificationModal extends Component {
 
                   </div>
   
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={this.handleClose}>Close</button>
+                    <div className="modal-footer">
+                      <button type="button" className="btn btn-danger" data-dismiss="modal" onClick={this.handleClose}>Close</button>
                       <button  
                         type="button" 
-                        class="btn btn-primary" 
+                        className="btn btn-primary" 
                         onClick={this.handleAdd}
                       >{this.props.modalMode === 'create' ? 'ADD' : 'UPDATE'}</button>
                     </div>
@@ -264,16 +264,16 @@ export class CertificationModal extends Component {
     
     return (
       <div>
-        <div class="modal fade" id="certificationModal" data-backdrop="static" data-keyboard="false" tabIndex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="example-Modal3">{this.props.modalMode === 'create' ? 'ADD NEW CERTIFICATION' : 'EDIT CERTIFICATION'}</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={this.handleClose}>
+        <div className="modal fade" id="certificationModal" data-backdrop="static" data-keyboard="false" tabIndex="-1" role="dialog" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="example-Modal3">{this.props.modalMode === 'create' ? 'ADD NEW CERTIFICATION' : 'EDIT CERTIFICATION'}</h5>
+                  <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.handleClose}>
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div class="modal-body">
+                <div className="modal-body">
                   <form>
                   <div className="col col-md-12">
                     <div className="form-group row">
@@ -385,16 +385,16 @@ export class CertificationModal extends Component {
   
                   </form>
                 </div>
-                <div class="modal-footer">
+                <div className="modal-footer">
                   <button 
                     type="button" 
-                    class="btn btn-danger" 
+                    className="btn btn-danger" 
                     data-dismiss="modal"
                     onClick={this.handleClose}
                   >Close</button>
                   <button  
                     type="button" 
-                    class="btn btn-primary" 
+                    className="btn btn-primary" 
                     onClick={this.handleAdd}
                   >{this.props.modalMode === 'create' ? 'ADD' : 'UPDATE'}</button>
                 </div>

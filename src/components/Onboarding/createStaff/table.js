@@ -10,7 +10,7 @@ export default class StaffTable extends Component {
 		const body = this.props.staffs.map((data, index) => (
 			{
 				"username": data.username,
-				"action": <a><span class='edit' data-toggle="modal" data-target="#createStaffModal" onClick={() => this.props.handleEdit(data.id)}>Edit</span><span class='del' onClick={() => this.props.handleDelete(data.id)}>Delete</span></a>
+				"action": <a><span className='edit' data-toggle="modal" data-target="#createStaffModal" onClick={() => this.props.handleEdit(data.id)}>Edit</span><span className='del' onClick={() => this.props.handleDelete(data.id)}>Delete</span></a>
 			}
 		));
 		return body;
@@ -32,7 +32,7 @@ export default class StaffTable extends Component {
 	render() {
 		return (
 			<div>
-				<div class="table-responsive" style={{overflow: 'hidden'}}>
+				<div className="table-responsive" style={{overflow: 'hidden'}}>
 				<Table 
           body={this.bodyRow}
 				  head={this.header}

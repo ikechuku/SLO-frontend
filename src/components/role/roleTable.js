@@ -14,14 +14,14 @@ class RoleTable extends Component {
 			action: (
 				<a>
 					<span
-						class="edit"
+						className="edit"
 						data-toggle="modal"
 						data-target="#roleModal"
 						onClick={() => this.props.handleEdit(data.id)}
 					>
 						Edit
 					</span>
-					<span class="del" onClick={() => this.props.handleDelete(data.id)}>
+					<span className="del" onClick={() => this.props.handleDelete(data.id)}>
 						Delete
 					</span>
 				</a>
@@ -47,7 +47,7 @@ class RoleTable extends Component {
 	render() {
 		return (
 			<div>
-				<div class="table-responsive" style={{ overflow: "hidden" }}>
+				<div className="table-responsive" style={{ overflow: "hidden" }}>
 					<Table
 						body={this.bodyRow}
 						head={this.header}
@@ -55,7 +55,7 @@ class RoleTable extends Component {
 						rowsPerPageOption={[10, 15, 20, 25]}
 					/>
 
-					{/* <table class="table table-bordered table-hover mb-0 text-nowrap">
+					{/* <table className="table table-bordered table-hover mb-0 text-nowrap">
                     <tr>
                         <th>Job Title</th>
                         <th>Department/Unit</th>
@@ -73,8 +73,8 @@ class RoleTable extends Component {
 													</td>
 													
 													<td>
-															<span class='edit' data-toggle="modal" data-target="#roleModal" onClick={() => props.handleEdit(data.id)}>Edit</span>
-															<span class='del' onClick={() => props.handleDelete(data.id)}>Delete</span>
+															<span className='edit' data-toggle="modal" data-target="#roleModal" onClick={() => props.handleEdit(data.id)}>Edit</span>
+															<span className='del' onClick={() => props.handleDelete(data.id)}>Delete</span>
 													</td>
 												</tr>
 											)) : ''

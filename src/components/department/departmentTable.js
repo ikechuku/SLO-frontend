@@ -4,8 +4,8 @@ const DepartmentTable = (props) => {
 
 	return (
 		<div>
-			<div class="table-responsive">
-				<table class="table table-bordered table-hover mb-0 text-nowrap">
+			<div className="table-responsive">
+				<table className="table table-bordered table-hover mb-0 text-nowrap">
 					<thead>
 						<tr>
 							<th>Department Nam</th>
@@ -19,8 +19,8 @@ const DepartmentTable = (props) => {
 								<tr>
 									<td>{data.name}</td>
 									<td>
-										<span class='edit' data-toggle="modal" data-target="#departmentModal" onClick={() => props.getSingleDepartment(data.id)}>Edit</span>
-										<span class='del' onClick={() => props.handleDelete(data.id)}>Delete</span>
+										<span className='edit' data-toggle="modal" data-target="#departmentModal" onClick={() => props.getSingleDepartment(data.id)}>Edit</span>
+										<span className='del' onClick={() => props.handleDelete(data.id)}>Delete</span>
 									</td>
 								</tr>
 							)) : ''

@@ -518,15 +518,15 @@ export const getAllDialCode = () => {
 }
 
 
-{/* <div class="input-group mb-3">
-  <div class="input-group-prepend">
-    <select class="input-group-text" id="basic-addon3">
+{/* <div className="input-group mb-3">
+  <div className="input-group-prepend">
+    <select className="input-group-text" id="basic-addon3">
       <option value="+234">+234 NG</option>
     </select>
   </div>
   <input 
     type="text" 
-    class="form-control" 
+    className="form-control" 
     aria-describedby="basic-addon3"
     name="mobilePhone"
     onChange={this.handleChange}

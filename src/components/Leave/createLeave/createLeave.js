@@ -9,38 +9,38 @@ export default class CreateLeave extends Component {
 		return (
 			<div>
 				<Layout>
-					<div class="app-content">
-						<section class="section">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item">
-									<a href="#" class="text-muted">
+					<div className="app-content">
+						<section className="section">
+							<ol className="breadcrumb">
+								<li className="breadcrumb-item">
+									<a href="#" className="text-muted">
 										Home
 									</a>
 								</li>
-								<li class="breadcrumb-item">
-									<a href="#" class="text-muted">
+								<li className="breadcrumb-item">
+									<a href="#" className="text-muted">
 										Performance
 									</a>
 								</li>
-								<li class="breadcrumb-item active text-" aria-current="page">
+								<li className="breadcrumb-item active text-" aria-current="page">
 									KPI
 								</li>
 							</ol>
-							<div class="section-body">
-								<div class="row">
-									<div class="col-lg-12">
-										<div class="card">
-											<div class="card-body">
-												<div class="card-header remove-border custom-header">
+							<div className="section-body">
+								<div className="row">
+									<div className="col-lg-12">
+										<div className="card">
+											<div className="card-body">
+												<div className="card-header remove-border custom-header">
 													<button
 														type="button"
-														class="btn "
+														className="btn "
 														data-toggle="modal"
 														data-target="#exampleModal3"
 													>
 														CREATE NEW
 													</button>
-													<div class="inputf">
+													<div className="inputf">
 														<input placeholder="Input a Branch Name" />
 														<button className="search-bt">Search</button>
 													</div>
@@ -55,57 +55,57 @@ export default class CreateLeave extends Component {
 						</section>
 					</div>
 					<div
-						class="modal fade"
+						className="modal fade"
 						id="exampleModal3"
 						tabindex="-1"
 						role="dialog"
 						aria-hidden="true"
 					>
-						<div class="modal-dialog" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="example-Modal3">
+						<div className="modal-dialog" role="document">
+							<div className="modal-content">
+								<div className="modal-header">
+									<h5 className="modal-title" id="example-Modal3">
 										CREATE LEAVE
 									</h5>
 									<button
 										type="button"
-										class="close"
+										className="close"
 										data-dismiss="modal"
 										aria-label="Close"
 									>
 										<span aria-hidden="true">&times;</span>
 									</button>
 								</div>
-								<div class="modal-body">
+								<div className="modal-body">
 									<form>
-										<div class="form-group">
-											<label for="recipient-name" class="form-control-label">
+										<div className="form-group">
+											<label for="recipient-name" className="form-control-label">
 												Leave Type
 											</label>
 											<input
 												type="text"
-												class="form-control"
+												className="form-control"
 												id="recipient-name"
 											/>
 										</div>
 
-										<div class="form-group">
-											<label for="recipient-name" class="form-control-label">
+										<div className="form-group">
+											<label for="recipient-name" className="form-control-label">
 												Leave Duration
 											</label>
 											<input
 												type="text"
-												class="form-control"
+												className="form-control"
 												id="recipient-name"
 											/>
 										</div>
 
-										<div class="form-group">
-											<label for="recipient-name" class="form-control-label">
+										<div className="form-group">
+											<label for="recipient-name" className="form-control-label">
 												Approval Level
 											</label>
 											<select
-												class="form-control sel"
+												className="form-control sel"
 												id="exampleFormControlSelect1"
 											>
 												<option value="nonex">Select</option>
@@ -116,16 +116,16 @@ export default class CreateLeave extends Component {
 											</select>
 										</div>
 
-										<div class="form-group leave_cheack_box">
+										<div className="form-group leave_cheack_box">
 											<div>
-												<label for="recipient-name" class="form-control-label">
+												<label for="recipient-name" className="form-control-label">
 													Paid Leave
 												</label>
 												<input type="checkbox" />
 											</div>
 
 											<div>
-												<label for="recipient-name" class="form-control-label">
+												<label for="recipient-name" className="form-control-label">
 													Active Leave
 												</label>
 												<input type="checkbox" />
@@ -140,7 +140,7 @@ export default class CreateLeave extends Component {
 											<span>
 												<label
 													for="recipient-name"
-													class="form-control-label rules-labels"
+													className="form-control-label rules-labels"
 												>
 													Allow for negative balance
 												</label>
@@ -150,7 +150,7 @@ export default class CreateLeave extends Component {
 											<span>
 												<label
 													for="recipient-name"
-													class="form-control-label rules-labels"
+													className="form-control-label rules-labels"
 												>
 													Leave applicable to male or female
 												</label>
@@ -160,7 +160,7 @@ export default class CreateLeave extends Component {
 											<span>
 												<label
 													for="recipient-name"
-													class="form-control-label rules-labels"
+													className="form-control-label rules-labels"
 												>
 													Leave dependent on how long staff have spent in
 													organisatio
@@ -171,12 +171,12 @@ export default class CreateLeave extends Component {
 											<span className="leave_sel_span">
 												<label
 													for="recipient-name"
-													class="form-control-label rules-labels"
+													className="form-control-label rules-labels"
 												>
 													If Yes, How many days
 												</label>
 												<select
-													class="form-control leave_sel"
+													className="form-control leave_sel"
 													id="exampleFormControlSelect1"
 												>
 													<option value="nonex">Select</option>
@@ -189,15 +189,15 @@ export default class CreateLeave extends Component {
 										</div>
 									</form>
 								</div>
-								<div class="modal-footer">
+								<div className="modal-footer">
 									<button
 										type="button"
-										class="btn btn-danger"
+										className="btn btn-danger"
 										data-dismiss="modal"
 									>
 										Close
 									</button>
-									<button type="button" class="btn btn-primary">
+									<button type="button" className="btn btn-primary">
 										Create Now
 									</button>
 								</div>
@@ -206,52 +206,52 @@ export default class CreateLeave extends Component {
 					</div>
 
 					<div
-						class="modal fade"
+						className="modal fade"
 						id="exampleModal45"
 						tabindex="-1"
 						role="dialog"
 						aria-hidden="true"
 					>
-						<div class="modal-dialog" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="example-Modal3">
+						<div className="modal-dialog" role="document">
+							<div className="modal-content">
+								<div className="modal-header">
+									<h5 className="modal-title" id="example-Modal3">
 										CREATE EDIT BRANCH
 									</h5>
 									<button
 										type="button"
-										class="close"
+										className="close"
 										data-dismiss="modal"
 										aria-label="Close"
 									>
 										<span aria-hidden="true">&times;</span>
 									</button>
 								</div>
-								<div class="modal-body">
+								<div className="modal-body">
 									<form>
-										<div class="form-group">
-											<label class="form-control-label">Branch Name</label>
+										<div className="form-group">
+											<label className="form-control-label">Branch Name</label>
 											<input
 												type="text"
-												class="form-control"
+												className="form-control"
 												id="recipient-name"
 											/>
 										</div>
 
-										<div class="form-group">
-											<label class="form-control-label">Address</label>
+										<div className="form-group">
+											<label className="form-control-label">Address</label>
 											<input
 												type="text"
-												class="form-control"
+												className="form-control"
 												id="recipient-name"
 											/>
 										</div>
 
-										<label for="recipient-name" class="form-control-label">
+										<label for="recipient-name" className="form-control-label">
 											Region
 										</label>
 										<select
-											class="form-control sel"
+											className="form-control sel"
 											id="exampleFormControlSelect1"
 										>
 											<option value="">Select Region</option>
@@ -262,15 +262,15 @@ export default class CreateLeave extends Component {
 										</select>
 									</form>
 								</div>
-								<div class="modal-footer">
+								<div className="modal-footer">
 									<button
 										type="button"
-										class="btn btn-danger"
+										className="btn btn-danger"
 										data-dismiss="modal"
 									>
 										Close
 									</button>
-									<button type="button" class="btn btn-primary">
+									<button type="button" className="btn btn-primary">
 										Create Now
 									</button>
 								</div>

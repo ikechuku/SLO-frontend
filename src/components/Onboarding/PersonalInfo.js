@@ -56,11 +56,13 @@ class PersonalInfo extends Component {
       genderErrorMessage: null,
       dependantsErrorMessage: null,
       currentErrorMessage: null,
+      currentLandmarkErrorMessage: null,
       staffCategoryErrorMessage: null,
       immediateFamilyErrorMessage: null,
       lgaErrorMessage: null,
       maritalErrorMessage: null,
       permanentErrorMessage: null,
+      permanentLandmarkErrorMessage: null,
       pageMode: 'create',
       documents: [],
       fileName: '',
@@ -257,6 +259,15 @@ class PersonalInfo extends Component {
       data[details.name] = details.value;
       this.setState({ 
         data,
+      });
+      const isValidate = validateD(e.target.name, e.target.value);
+      if(!isValidate.error){
+        this.setState({ 
+          accountNumberErrorMessage: isValidate.errorMessage,
+        })
+        return;
+      }
+      this.setState({ 
         accountNumberErrorMessage: null 
       });
     } else {
@@ -485,6 +496,10 @@ class PersonalInfo extends Component {
         this.setState({ 
           currentErrorMessage: isValidate.errorMessage,
         })
+      } else if(isValidate.type === 'currentLandmark'){
+        this.setState({ 
+          currentLandmarkErrorMessage: isValidate.errorMessage,
+        })
       } else if(isValidate.type === 'lga'){
         this.setState({ 
           lgaErrorMessage: isValidate.errorMessage,
@@ -524,6 +539,10 @@ class PersonalInfo extends Component {
       } else if(isValidate.type === 'permanentCity'){
         this.setState({ 
           permanentErrorMessage: isValidate.errorMessage,
+        })
+      } else if(isValidate.type === 'permanentLandmark'){
+        this.setState({ 
+          permanentLandmarkErrorMessage: isValidate.errorMessage,
         })
       }
     }
@@ -573,9 +592,9 @@ class PersonalInfo extends Component {
 
     if(this.state.pageMode === 'edit'){
       try {
-        const { userId } = this.state;
+        const { id } = this.props.match.params;
         if(btnType === 'submit'){
-          const res = await httpPatch(`auth/edit_staff/${userId}`, this.state.data);
+          const res = await httpPatch(`auth/edit_staff/${id}`, this.state.data);
           if(res.code === 200){
             await this.saveDoc();
             hideLoader();
@@ -589,8 +608,8 @@ class PersonalInfo extends Component {
             });
           }
         } else {
-          const { userId } = this.state;
-          const res = await httpPatch(`auth/edit_staff/${userId}`, this.state.data);
+          const { id } = this.props.match.params;
+          const res = await httpPatch(`auth/edit_staff/${id}`, this.state.data);
           if(res.code === 200){
             await this.saveDoc()
             hideLoader();
@@ -656,7 +675,7 @@ class PersonalInfo extends Component {
       uploadBody[fileName] = e.target.files[0];
       this.setState({ uploadBody });
     } else {
-      NotificationManager.error(validFormat.message,'Yippe!',3000);
+      NotificationManager.error(validFormat.message,'Oops!',3000);
       e.target.value = '';
     }
   };
@@ -677,6 +696,9 @@ class PersonalInfo extends Component {
         }
       } else {
         let formData = new FormData();
+        if(!uploadBody.passportPhotograph && !uploadBody.identification){
+          return;
+        }
         formData.append('passportPhotograph', uploadBody.passportPhotograph);
         formData.append('identification', uploadBody.identification);
 
@@ -763,7 +785,7 @@ class PersonalInfo extends Component {
         const customHome = { value: homePhoneCode, label: homePhoneCode };
         const customMaritalStatus = { value: maritalStatus, label: maritalStatus };
         const customReligion = { value: religion, label: religion };
-        const customDob = moment(dob).toDate();
+        const customDob = !dob ? undefined : moment(dob).toDate();
         const customStaffCategory = { value: staffCategory, label: staffCategory }
         let customSkills = [], customHobbies = [];
         const newSkills = skills !== null ? skills.split(',') : [];
@@ -992,7 +1014,7 @@ class PersonalInfo extends Component {
 										  <h4 className="col col-md-6">Personal Information</h4>
                       <div className="col col-md-6 text-right">
                       <button className="cursor-pointer btn btn-primary" onClick={() => this.props.history.push(`/create_staff/two/${this.props.match.params.id}`)}>
-                         <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                         <i className="fa fa-arrow-right" aria-hidden="true"></i></button>
                     </div>
                     </div>
 									</div>
@@ -1128,7 +1150,7 @@ class PersonalInfo extends Component {
                       <div className="form-group row">
                         <label for="inputName" className="col-md-2 col-form-label">Bank Name <span className="impt">*</span></label>
                         <div className="col-md-4">
-                          <select class="form-control"
+                          <select className="form-control"
                             name="bankName" 
                             className="form-control"
                             onChange={this.handleChange}
@@ -1173,8 +1195,8 @@ class PersonalInfo extends Component {
                       <div className="form-group row">
 												<label for="inputName" className="col-md-2 col-form-label">Mobile Phone <span className="impt">*</span></label>
 												<div className="col-md-4">
-                        <div class="input-group mb-3">
-                          <div class="input-group-prepend select2-padding">
+                        <div className="input-group mb-3">
+                          <div className="input-group-prepend select2-padding">
                             <Select
                               className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
                               value={this.state.customMobile}
@@ -1187,7 +1209,7 @@ class PersonalInfo extends Component {
                           </div>
                           <input 
                             type="text" 
-                            class="form-control" 
+                            className="form-control" 
                             aria-describedby="basic-addon3"
                             name="mobilePhone"
                             onChange={this.handleChange}
@@ -1198,8 +1220,8 @@ class PersonalInfo extends Component {
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Home Phone <span className="impt">*</span></label>
                         <div className="col-md-4">
-                        <div class="input-group mb-3">
-                          <div class="input-group-prepend select2-padding">
+                        <div className="input-group mb-3">
+                          <div className="input-group-prepend select2-padding">
                             <Select
                               className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
                               value={this.state.customHome}
@@ -1449,6 +1471,7 @@ class PersonalInfo extends Component {
                             className="form-control" 
                             name="path"
                             ref='path'
+                            accept="image/jpeg,image/gif,image/png"
                             onChange={e => this.upload(e, 'passportPhotograph')}
                           />
 												</div>
@@ -1458,20 +1481,21 @@ class PersonalInfo extends Component {
                             className="form-control" 
                             name="path"
                             ref='iPath'
+                            accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"
                             onChange={e => this.upload(e, 'identification')}
                           />
 												</div>
 											</div>
 
                       <div className="col col-md-12 pr-0 pl-0" style={!newUploads.length ? {display: 'none'} : {}}>
-                      <div class="table-responsive">
-                        <table class="table table-bordered table-hover mb-0 text-nowrap">
+                      <div className="table-responsive">
+                        <table className="table table-bordered table-hover mb-0 text-nowrap">
                           <thead>
                           <tr>
                             {/* <th className="wd-15p">S/N</th> */}
-                            <th class="wd-15p">File Name</th>
-                            <th class="wd-15p"></th>
-                            <th class="wd-25p"></th>
+                            <th className="wd-15p">File Name</th>
+                            <th className="wd-15p"></th>
+                            <th className="wd-25p"></th>
                           </tr>
                           </thead>
                           <tbody>
@@ -1479,7 +1503,7 @@ class PersonalInfo extends Component {
                               newUploads.length ?
                                 newUploads.map(data => (
                                   data.from === 'personalInfo' ?
-                                  <tr>
+                                  <tr key={data.id}>
                                     <td>{data.fileName}</td>
                                     <td>{<a href={`${data.path}`} target="_blank">View document</a>}</td>
                                     <td><a className="ml-3 text-danger" onClick={() => this.deleteDoc(data.id)} style={{ cursor: 'pointer' }}>Delete</a></td>

@@ -77,9 +77,9 @@ export default class pendingActions extends Component {
 								</li>
 							</ol>
 							<div className="section-body ul">
-								<div class="wrap">
+								<div className="wrap">
 									<div>
-										<ul class="wrapList">
+										<ul className="wrapList">
 											<li
 												className={`${
 													this.state.pages.switcher === "chats" ? "coloe" : ""
@@ -87,7 +87,7 @@ export default class pendingActions extends Component {
 												onClick={this.switchToChats}
 											>
 												{" "}
-												<i class="fa fa-comments fff"></i>Messages
+												<i className="fa fa-comments fff"></i>Messages
 											</li>
 
 											<li
@@ -97,7 +97,7 @@ export default class pendingActions extends Component {
 												onClick={this.switchTodo}
 											>
 												{" "}
-												<i class="fa fa-list-ul fff"></i>Todo List
+												<i className="fa fa-list-ul fff"></i>Todo List
 											</li>
 											<li
 												className={`${
@@ -107,7 +107,7 @@ export default class pendingActions extends Component {
 												}`}
 												onClick={this.switchToNotceBoard}
 											>
-												<i class="fa fa-pencil-square-o fff"></i>Notice Board
+												<i className="fa fa-pencil-square-o fff"></i>Notice Board
 											</li>
 											<li
 												className={`${
@@ -115,7 +115,7 @@ export default class pendingActions extends Component {
 												}`}
 												onClick={this.switchToPending}
 											>
-												<i class="fa fa-universal-access fff"></i>Requests
+												<i className="fa fa-universal-access fff"></i>Requests
 											</li>
 										</ul>
 									</div>
@@ -142,37 +142,37 @@ export default class pendingActions extends Component {
 						</section>
 					</div>
 					<div
-						class="modal fade"
+						className="modal fade"
 						id="exampleModal3"
 						tabindex="-1"
 						role="dialog"
 						aria-hidden="true"
 					>
-						<div class="modal-dialog" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="example-Modal3">
+						<div className="modal-dialog" role="document">
+							<div className="modal-content">
+								<div className="modal-header">
+									<h5 className="modal-title" id="example-Modal3">
 										Compose
 									</h5>
 									<button
 										type="button"
-										class="close"
+										className="close"
 										data-dismiss="modal"
 										aria-label="Close"
 									>
 										<span aria-hidden="true">&times;</span>
 									</button>
 								</div>
-								<div class="modal-body">
+								<div className="modal-body">
 									<form>
-										<div class="form-group">
-											<label for="recipient-name" class="form-control-label">
+										<div className="form-group">
+											<label for="recipient-name" className="form-control-label">
 												Messages Type
 											</label>
 											<select
 												value={this.state.chatControl.ChatType}
 												onChange={this.OnchangeChatType}
-												class="form-control sel"
+												className="form-control sel"
 												id="exampleFormControlSelect1"
 											>
 												<option value="none">Select</option>
@@ -188,7 +188,7 @@ export default class pendingActions extends Component {
 													: ""
 											}`}
 										>
-											<label for="recipient-name" class="form-control-label">
+											<label for="recipient-name" className="form-control-label">
 												User Name
 											</label>
 											<input
@@ -200,7 +200,7 @@ export default class pendingActions extends Component {
 												}
 												onChange={this.branchName}
 												type="text"
-												class="form-control"
+												className="form-control"
 												id="recipient-name"
 											/>
 										</div>
@@ -212,7 +212,7 @@ export default class pendingActions extends Component {
 													: ""
 											}`}
 										>
-											<label for="recipient-name" class="form-control-label">
+											<label for="recipient-name" className="form-control-label">
 												Message
 											</label>
 											<textarea
@@ -224,7 +224,7 @@ export default class pendingActions extends Component {
 												}
 												onChange={this.branchAddress}
 												type="text"
-												class="form-control"
+												className="form-control"
 												id="recipient-name"
 											/>
 										</div>
@@ -236,7 +236,7 @@ export default class pendingActions extends Component {
 													: ""
 											}`}
 										>
-											<label for="recipient-name" class="form-control-label">
+											<label for="recipient-name" className="form-control-label">
 												Group Name
 											</label>
 											<input
@@ -247,7 +247,7 @@ export default class pendingActions extends Component {
 												}
 												onChange={this.branchAddress}
 												type="text"
-												class="form-control"
+												className="form-control"
 												id="recipient-name"
 											/>
 										</div>
@@ -259,7 +259,7 @@ export default class pendingActions extends Component {
 													: ""
 											}`}
 										>
-											<label for="recipient-name" class="form-control-label">
+											<label for="recipient-name" className="form-control-label">
 												{" "}
 												About Group
 											</label>
@@ -271,16 +271,16 @@ export default class pendingActions extends Component {
 												}
 												onChange={this.branchAddress}
 												type="text"
-												class="form-control"
+												className="form-control"
 												id="recipient-name"
 											/>
 										</div>
 									</form>
 								</div>
-								<div class="modal-footer">
+								<div className="modal-footer">
 									<button
 										type="button"
-										class="btn btn-danger"
+										className="btn btn-danger"
 										data-dismiss="modal"
 									>
 										Close
@@ -291,7 +291,7 @@ export default class pendingActions extends Component {
 										}
 										onClick={this.handleSubmit}
 										type="button"
-										class="btn btn-primary"
+										className="btn btn-primary"
 									>
 										{this.state.chatControl.ChatType === "Group"
 											? "Create Group"

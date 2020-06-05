@@ -37,10 +37,19 @@ class Login extends Component {
         // console.log(res.payload);
         if(res.payload.role === 'staff') {
           if(res.payload.user.onBoarding < 4 && res.payload.user.applicationStatus === 'pending'){
-            localStorage.setItem('token', res.payload.token);
-            this.props.history.push(`/create_staff/one/${res.payload.user.id}`);
+            if(res.payload.user.onBoarding === 3){
+              this.props.history.push('/application_status');
+            }else {
+              localStorage.setItem('token', res.payload.token);
+              this.props.history.push(`/create_staff/one/${res.payload.user.id}`);
+            }
           } else {
-            console.log('User has either been approved or rejected')
+            if(res.payload.user.applicationStatus === 'approved'){
+              this.props.history.push('/staff_dashboard');
+            } else {
+              NotificationManager.warning('Unauthorized');
+            }
+            
           }
         } else {
           localStorage.setItem('token', res.payload.token);
@@ -77,11 +86,11 @@ class Login extends Component {
   render() {
     return (
       <div id="app">
-        <div class="container-center">
+        <div className="container-center">
           <h1 className="appName">SLO </h1>
 
           <form className="loginForm99" onSubmit={this.handleSubmit}>
-            <div class="containerlogin">
+            <div className="containerlogin">
               <div className="formHeader">
                 <h1>LOGIN</h1>
               </div>

@@ -111,24 +111,24 @@ export default class department extends Component {
 		return (
 			<Layout page="departments">
 
-				<div class="app-content">
-					<section class="section">
-						<ol class="breadcrumb">
-							<li class="breadcrumb-item"><a href="#" class="text-muted">Home</a></li>
-							<li class="breadcrumb-item"><a href="#" class="text-muted">Performance</a></li>
-							<li class="breadcrumb-item active text-" aria-current="page">Branch</li>
+				<div className="app-content">
+					<section className="section">
+						<ol className="breadcrumb">
+							<li className="breadcrumb-item"><a href="#" className="text-muted">Home</a></li>
+							<li className="breadcrumb-item"><a href="#" className="text-muted">Performance</a></li>
+							<li className="breadcrumb-item active text-" aria-current="page">Branch</li>
 						</ol>
-						<div class="section-body">
-							<div class="row">
+						<div className="section-body">
+							<div className="row">
 
-								<div class="col-lg-12">
+								<div className="col-lg-12">
 														
-									<div class="card department-table-card">
+									<div className="card department-table-card">
 
-									<div class="card-body department-table">
-										<div class="card-header custom-header">
-										<button type="button" class="btn " data-toggle="modal" data-target="#departmentModal">CREATE NEW</button>
-										{/* <div class="inputf">
+									<div className="card-body department-table">
+										<div className="card-header custom-header">
+										<button type="button" className="btn " data-toggle="modal" data-target="#departmentModal">CREATE NEW</button>
+										{/* <div className="inputf">
 														<input placeholder="Input a Branch Name"/><button className="search-bt">Search</button>
 												</div> */}
 										</div>

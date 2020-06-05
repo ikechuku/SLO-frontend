@@ -3,18 +3,18 @@ import Select from 'react-select'
 
 export default function UnitModal(props) {
   return (
-    <div class="modal fade" id="createStaffModal" tabIndex="-1" role="dialog"  aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
+    <div className="modal fade" id="createStaffModal" tabIndex="-1" role="dialog"  aria-hidden="true">
+      <div className="modal-dialog" role="document">
+        <div className="modal-content">
+          <div className="modal-header">
             <h5 
-              class="modal-title"
+              className="modal-title"
               id="example-Modal3">
                 {props.modalMode === 'create' ? 'CREATE NEW STAFF' : 'EDIT STAFF'}
             </h5>
             <button
               type="button" 
-              class="close" 
+              className="close" 
               data-dismiss="modal" 
               aria-label="Close"
               onClick={props.closeModal}
@@ -22,12 +22,12 @@ export default function UnitModal(props) {
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
+          <div className="modal-body">
             <form>
-              <div class="form-group">
-                <label for="recipient-name" class="form-control-label">Username</label>
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend select2-padding">
+              <div className="form-group">
+                <label for="recipient-name" className="form-control-label">Username</label>
+                <div className="input-group mb-3">
+                  <div className="input-group-prepend select2-padding">
                     <Select
                       className="input-group-text pt-0 pb-0 pr-0 pl-0 border-0"
                       value={props.customMobile}
@@ -40,7 +40,7 @@ export default function UnitModal(props) {
                   </div>
                   <input 
                     type="text" 
-                    class="form-control" 
+                    className="form-control" 
                     value={props.staff.username} 
                     name="username"
                     placeholder="E.g 8033036225"
@@ -53,14 +53,14 @@ export default function UnitModal(props) {
             
             </form>
           </div>
-          <div class="modal-footer">
+          <div className="modal-footer">
             <button 
               type="button" 
-              class="btn btn-danger" 
+              className="btn btn-danger" 
               data-dismiss="modal"
               onClick={props.closeModal}
             >Close</button>
-            <button type="button" class="btn btn-primary" onClick={props.handleSubmit}>
+            <button type="button" className="btn btn-primary" onClick={props.handleSubmit}>
               {props.modalMode === 'create' ? 'Create' : 'Update'}
             </button>
             
