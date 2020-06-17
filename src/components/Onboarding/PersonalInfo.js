@@ -598,6 +598,7 @@ class PersonalInfo extends Component {
           if(res.code === 200){
             await this.saveDoc();
             hideLoader();
+            NotificationManager.success('Updated Successfully')
             // setState({ userId: res.data.id });
             // return this.props.history.push(`/create_staff/four/${res.data.id}`)
             return this.props.history.push({
@@ -612,6 +613,7 @@ class PersonalInfo extends Component {
           const res = await httpPatch(`auth/edit_staff/${id}`, this.state.data);
           if(res.code === 200){
             await this.saveDoc()
+            NotificationManager.success('Updated Successfully')
             hideLoader();
           }
         }
@@ -634,6 +636,7 @@ class PersonalInfo extends Component {
           if(res.code === 201){
             await this.setState({ userId: res.data.id });
             await this.saveDoc();
+            NotificationManager.success('Saved Successfully')
             hideLoader();
             // return this.props.history.push(`/create_staff/two/${res.data.id}`)
             return this.props.history.push({
@@ -649,6 +652,7 @@ class PersonalInfo extends Component {
           const res = await httpPost(`auth/onboarding_one/${id}`, this.state.data);
           if(res.code === 201){
             await this.saveDoc()
+            NotificationManager.success('Saved Successfully')
             hideLoader();
           }
         }
@@ -716,11 +720,12 @@ class PersonalInfo extends Component {
   deleteDoc = async (id) => {
     try{
       showLoader();
+      const { id } = this.props.match.params;
       const res = await httpDelete(`auth/document/${id}`);
 
       if(res.code === 200){
+        this.getUserDetails(id)
         hideLoader();
-        this.getUserDetails(this.state.userId)
       }
     }catch(error){
       console.log(error)
@@ -733,17 +738,10 @@ class PersonalInfo extends Component {
     const { id } = this.props.match.params;
     if(this.props.location.direction === 'backward'){
       // get User details and save to state
-      const { savedId } = this.props.location;
-      await this.getUserDetails(savedId);
-      this.setState({ userId: savedId, pageMode: 'edit' });
+      await this.getUserDetails(id);
+      this.setState({ userId: id, pageMode: 'edit' });
     }
     this.getUserDetails(id);
-    // if(this.state.pageMode === 'edit'){
-    //   // get User details and save to state
-    //   const id = 'f657d590-a27f-4f3c-b9a1-6f61a686bb4b';
-    //   this.getUserDetails(id);
-    //   this.setState({ userId: id, pageMode: 'edit' });
-    // }
   }
   
   getUserDetails = async (id) => {

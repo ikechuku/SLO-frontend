@@ -31,7 +31,7 @@ export class GuarantorModal extends Component {
     componentDidMount() {
         const all_years = [];
         const all_months = [];
-        for (var i=1; i<=35; i++){
+        for (var i=0; i<=35; i++){
             if(i === 1){
                 all_years.push(`${i} year`)
             } else {
@@ -42,12 +42,12 @@ export class GuarantorModal extends Component {
             all_months.push(`${k} months`)
         }
         this.setState({years: [...all_years], months: [...all_months], fileName: '' })
-		}
-		
-		handleClose = () => {
-			this.props.closeModal();
-			this.setState({ fileName: '' });
-		}
+    }
+    
+    handleClose = () => {
+      this.props.closeModal();
+      this.setState({ fileName: '' });
+    }
 
     handleChange = (e) => {
         this.setState({[e.target.name]: e.target.value});
@@ -995,6 +995,7 @@ export class GuarantorModal extends Component {
                                             <div className="col-md-3">
                                                 <select required={(!this.props.mainCustomState.postData.employeeKnownYear)} value={this.props.mainCustomState.postData.employeeKnownMonth} onChange={this.props.handleChange} className="form-control" name="employeeKnownMonth" id="">
                                                     <option value=""  disabled selected>Select Month</option>
+                                                    <option value="0 month">0 month</option>
                                                     {this.state.months.map(item=>(
                                                         <option value={item}>{item}</option>
                                                     ))}
@@ -1042,8 +1043,8 @@ export class GuarantorModal extends Component {
                               className="form-control"
                               name="details"
                               onChange={this.props.handleChange}
-															value={this.props.postData.details}
-															rows="4"
+                              value={this.props.postData.details}
+                              rows="4"
                     ></textarea>
                                             </div>
                                         </div>
@@ -1077,8 +1078,8 @@ export class GuarantorModal extends Component {
                                                        className="form-control"
                                                        name="path"
                                                        onChange={this.upload}
-																											 id="select-file"
-																											 ref='fileRef'
+                                                       id="select-file"
+                                                       ref='fileRef'
                                                 />
                                             </div>
                                         </div>

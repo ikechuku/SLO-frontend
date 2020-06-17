@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Nav from './Nav';
 import Sidebar from './Sidebar';
-import StaffSidebar from './staffSidebar';
+import { StaffSidebar, PmuSidebar } from './rolesSidebar';
 import { getUser } from '../../actions/auth.action';
 
 // getUser();
@@ -23,6 +23,7 @@ class Layout extends Component {
           <Nav />
           {
             this.props.user.role === 'super admin' ? <Sidebar props={this.props}/> :
+            // this.props.user.role === 'pmu' ? <PmuSidebar props={this.props}/> :
             this.props.user.role === 'staff' ? <StaffSidebar props={this.props}/> :
             <Sidebar props={this.props}/>
           }

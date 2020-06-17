@@ -28,6 +28,11 @@ import UnderReview from './components/Onboarding/UnderReview';
 import StaffDashboard from './components/Dashboard/Staff';
 import Logout from './components/Logout';
 import Testing from './components/testing';
+import Appraisal from './components/Appraisal';
+import ViewAppraisal from './components/Appraisal/ViewAppraisal';
+import AppraisalList from './components/Appraisal/AppraisalList';
+import AssignKpi from "./components/KPI/AssignKpi";
+import Labels from './components/PerformanceLabels'
 
 import "react-notifications/lib/notifications.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -67,11 +72,16 @@ function App() {
 					<ProtectedRoute path="/units" component={Unit} />
 					<ProtectedRoute path="/roles" component={Role} />
 					<ProtectedRoute path="/kpi" component={Kpi} />
+					<ProtectedRoute path="/assign_kpi" component={AssignKpi} />
 					<ProtectedRoute path="/responsibility" component={Responsibility} />
+					<ProtectedRoute path="/appraisal" component={Appraisal} />
+					<ProtectedRoute path="/view_appraisal/:id" component={ViewAppraisal} />
+					<ProtectedRoute path="/user_appraisal_list" component={AppraisalList} />
 					<ProtectedRoute path="/leave_setup" component={CreateLeave} />
 					<ProtectedRoute path="/leave_management" component={LeaveMangement} />
 					<ProtectedRoute path="/leave_history" component={LeaveHistory} />
 					<ProtectedRoute path="/view_details/:id" component={UserInfo} />
+					<ProtectedRoute path="/manage_labels" component={Labels} />
 					<Route path="/application_status" component={UnderReview} />
 					{/* <Route path="/testing" component={Testing} /> */}
 					<Route path="/logout" component={Logout} />

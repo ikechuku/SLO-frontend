@@ -78,7 +78,7 @@ class StaffList extends Component {
       return {
         "sn": `${index + 1}`,
         "fullname": <span>{data.lastName} {data.firstName}</span>,
-        "position": role.title || '',
+        "position": role ? role.title : '' || '',
         "startdate": <Moment format='MMM DD, YYYY'>{data.createdAt}</Moment>,
         "status": data.applicationStatus || '',
         "employmentInfo": <Link to={`/create_staff/four/${data.id}`} className="add-more ml-3">Edit</Link>,

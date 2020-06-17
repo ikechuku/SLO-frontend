@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { NotificationManager } from "react-notifications";
 import $ from "jquery";
 import Layout from "../layout/index";
-import RoleTable from "./kpiTable";
+import KpiTable from "./kpiTable";
 import {
 	httpPost,
 	httpGet,
@@ -10,32 +10,34 @@ import {
 	httpPatch,
 } from "../../actions/data.action";
 import { hideLoader, showLoader } from "../../helpers/loader";
-import { KpiModal } from "../Modals/KPImodal";
+import { KpiModal } from "./Modal";
 import "./kpi.css";
-import { array } from "prop-types";
+import { Confirm } from "../Modals/Confirm";
+import removeEmptyString from '../../helpers/removeEmptyString';
 
 export default class Role extends Component {
 	constructor() {
 		super();
 		this.state = {
-			KPIS: [],
-			roles: [],
+			kpis: [],
 			modalMode: "create",
-			role: {},
+			kpi: {},
 			currentEditId: null,
-			roleOptions: [],
-			responsibilityOptions: [],
+			sourceOptions: [
+				{ value: 'automatic', label: 'Automatic' },
+				{ value: 'manual', label: 'Manual' }
+			],
+			typeOptions: [
+				{ value: 'positive', label: 'Positive' },
+				{ value: 'negative', label: 'Negative' }
+			],
 			customSelect1: null,
 			customSelect2: null,
-			errorMessage1: null,
-			errorMessage2: null,
-			roleID: null,
-			weightMarkCount: [],
+			id: null
 		};
 	}
 
 	componentDidMount() {
-		this.getRoles();
 		this.getKPI();
 	}
 
@@ -43,187 +45,123 @@ export default class Role extends Component {
 		try {
 			const res = await httpGet("kpis/all");
 
-			console.log(res);
 			if (res.code === 200) {
-				let weightMark = res.data.kpis.map((data) => {
-					this.setState({
-						weightMarkCount: data.weightMark,
-					});
-					console.log(this.state.weightMarkCount);
-				});
 				this.setState({
-					KPIS: res.data.kpis,
+					kpis: res.data.kpis,
 				});
-				hideLoader();
-				console.log(this.state.KPIS);
-			}
-		} catch (error) {
-			hideLoader();
-			console.log(error);
-		}
-	};
-
-	getRoles = async () => {
-		try {
-			const res = await httpGet("role_responsibility");
-
-			showLoader();
-			if (res.code === 200) {
-				console.log(res.data);
-
-				let optionList = [];
-				await [...res.data.role].map((data) =>
-					optionList.push({ value: data.id, label: data.title })
-				);
-
-				this.setState({
-					roles: res.data.role,
-					roleOptions: optionList,
-				});
-				console.log(this.state.roles);
 				hideLoader();
 			}
 		} catch (error) {
 			hideLoader();
 			console.log(error);
 		}
-	};
-
-	handleChange = async (e, name) => {
-		const { role } = this.state;
-		if (name === "responsibilityId") {
-			role[name] = e.value;
-			await this.setState({ role, customSelect2: e, errorMessage2: null });
-		} else if (name === "roleId") {
-			role[name] = e.value;
-			// console.log(e.value);
-			await this.setState({ role, customSelect1: e });
-			this.getResponsibility();
-		} else {
-			role[e.target.name] = e.target.value;
-			this.setState({ role, errorMessage1: null });
-		}
-	};
-
-	getResponsibility = async () => {
-		const { role, roles } = this.state;
-
-		let newRole = [...roles].filter((item) => item.id === role.roleId)[0];
-		console.log(newRole);
-		let optionList = [];
-		await newRole.responsibility.map((data) =>
-			optionList.push({ value: data.id, label: data.name })
-		);
-		console.log(optionList);
-		this.setState({ responsibilityOptions: optionList });
 	};
 
 	handleEdit = async (id) => {
 		showLoader();
-		const res = await httpGet(`kpi/${id}`);
-		console.log(res.data);
-		if (res.code === 200) {
-			hideLoader();
-			const customSelect1 =
-				res.data.kpi.responsibilityId !== null
-					? {
-							value: res.data.kpi.responsibilityId,
-							label: res.data.kpi.responsibility.role.title,
-					  }
-					: "";
-			const customSelect2 =
-				res.data.kpi.roleId !== null
-					? {
-							value: res.data.kpi.responsibility.roleId,
-							label: res.data.kpi.responsibility.name,
-					  }
-					: null;
-			this.setState({
-				role: res.data.kpi,
-				currentEditId: id,
-				modalMode: "edit",
-				customSelect1,
-				customSelect2,
-			});
-		}
+		const { kpis} = this.state;
+		let filteredKpi = [...kpis].filter(item => item.id === id)[0];
+
+		hideLoader();
+		const customSelect1 = filteredKpi.source !== null ? 
+			{
+				value: filteredKpi.source,
+				label: filteredKpi.source === 'manual' ? 'Manual' : 'Automatic',
+			} : null;
+		const customSelect2 = filteredKpi.type !== null
+				? {
+						value: filteredKpi.type,
+						label: filteredKpi.type,
+					}
+				: null;
+
+		this.setState({
+			kpi: filteredKpi,
+			currentEditId: id,
+			modalMode: "edit",
+			customSelect1,
+			customSelect2,
+		});
 	};
 
-	handleDelete = async (id) => {
-		const { KPIS } = this.state;
+	handlePassId = (id) => {
+		this.setState({ id })
+	}
+
+	handleDelete = async () => {
+		const { kpis, id } = this.state;
 		showLoader();
 		const res = await httpDelete(`kpi/delete/${id}`);
 		if (res.code === 200) {
 			this.setState({
-				KPIS: KPIS.filter((KPI) => KPI.id !== id),
+				kpis: kpis.filter((item) => item.id !== id),
+				id: null
 			});
-
 			hideLoader();
+			$(".modal").modal("hide");
+			$(document.body).removeClass("modal-open");
+			$(".modal-backdrop").remove();
 		}
-	};
-
-	handleSubmit = async (btnType) => {
-		showLoader();
-		const {
-			role,
-			currentEditId,
-			modalMode,
-			errorMessage1,
-			errorMessage2,
-		} = this.state;
-		console.log(role);
-		if (role.name === undefined || role.name === "") {
-			hideLoader();
-			this.setState({ errorMessage1: "Job title is required" });
-			return;
-		}
-
-		if (role.responsibilityId === undefined || role.responsibilityId === "") {
-			hideLoader();
-			this.setState({ errorMessage2: "Department is required" });
-			return;
-		}
-
-		if (errorMessage1 !== null || errorMessage2 !== null) {
-			hideLoader();
-			return NotificationManager.warning("Complete all required fields");
-		}
-
-		parseInt(role.weightMark);
-		console.log(role.weightMark);
-		console.log(role);
-		if (modalMode === "create") {
-			const res = await httpPost(`kpi/create`, role);
-			if (res.code === 201) {
-				$(".modal").modal("hide");
-				$(document.body).removeClass("modal-open");
-				$(".modal-backdrop").remove();
-			}
-		} else {
-			const res = await httpPatch(`kpi/update/${currentEditId}`, role);
-			if (res.code === 200) {
-				$(".modal").modal("hide");
-				$(document.body).removeClass("modal-open");
-				$(".modal-backdrop").remove();
-			}
-		}
-		this.getKPI();
 		this.clearState();
-		hideLoader();
 	};
+
+	handleChange = async (e, name) => {
+		const { kpi } = this.state;
+		if (name === "source") {
+			kpi[name] = e.value;
+			await this.setState({ kpi, customSelect1: e });
+		} else if (name === "type") {
+			kpi[name] = e.value;
+			await this.setState({ kpi, customSelect2: e });
+		} else {
+			kpi[e.target.name] = e.target.value;
+			this.setState({ kpi });
+		}
+	};
+
+	handleSubmit = async(e) => {
+		e.preventDefault();
+		try{
+			const { kpi, modalMode, currentEditId } = this.state;
+			const kpiData = removeEmptyString(kpi)
+			if (modalMode === "create") {
+				const res = await httpPost(`kpi/create`, kpiData);
+				if (res.code === 201) {
+					$(".modal").modal("hide");
+					$(document.body).removeClass("modal-open");
+					$(".modal-backdrop").remove();
+				}
+			} else {
+				const res = await httpPatch(`kpi/update/${currentEditId}`, kpiData);
+				if (res.code === 200) {
+					$(".modal").modal("hide");
+					$(document.body).removeClass("modal-open");
+					$(".modal-backdrop").remove();
+				}
+			}
+			this.getKPI();
+			this.clearState();
+			hideLoader();
+		}catch(error){
+			console.log(error)
+		}
+	}
 
 	clearState = () => {
 		this.setState({
-			role: {
-				title: "",
-				responsibilityId: "",
+			kpi: {
+				name: '',
+				source: '',
+				apiKey: '',
+				type: ''
 			},
 			modalMode: "create",
 			currentEditId: null,
 			customSelect1: null,
 			customSelect2: null,
-			errorMessage1: null,
-			errorMessage2: null,
 		});
+		// $(".close-btn").click();
+		// console.log($(".close-btn"))
 	};
 
 	closeModal = () => {
@@ -231,17 +169,6 @@ export default class Role extends Component {
 	};
 
 	render() {
-		const {
-			KPIS,
-			modalMode,
-			role,
-			roleOptions,
-			customSelect1,
-			customSelect2,
-			errorMessage1,
-			errorMessage2,
-		} = this.state;
-
 		return (
 			<Layout page="kpi">
 				<div className="app-content">
@@ -261,37 +188,39 @@ export default class Role extends Component {
 								KPI
 							</li>
 						</ol>
-						<div className="section-body">
+						<div className="section-body animation">
 							<div className="row">
-								<div className="col-md-7">
+								<div className="col-md-8">
 									<div className="card">
-										<div className="card-header custom-header">
-											<div className="col col-md-12">
-												<button
-													type="button"
-													data-backdrop="static"
-													className="btn "
-													data-toggle="modal"
-													data-target="#kpiModal"
-												>
-													CREATE NEW
-												</button>
-												{/* <div className="inputf">
-														<input placeholder="Input a Branch Name"/><button className="search-bt">Search</button>
-												</div> */}
+                    <div className="mt-5 mb-3 text-center">
+                      <h4>Manage KPI</h4>
+                    </div>
+										<div className="card-header custom-kpi-header" style={{ padding: '15px 30px', borderBottom: 'none'}}>
+											<div className="col col-md-12 pl-0 pr-0">
+                        <div className="row">
+                          <div className="col-6">
+                            <button
+                              type="button"
+                              data-backdrop="static"
+                              className="btn "
+                              data-toggle="modal"
+                              data-target="#kpiModal"
+                            >
+                              CREATE NEW
+                            </button>
+                          </div>
+                          <div className="col-6 text-right">
+                            <button className="pl-5 pr-5" style={{ border: 'none', background: '#E7F5FF', borderRadius: '4px' }} onClick={() => this.props.history.push('/assign_kpi')}>Assign Kpi</button>
+                          </div>
+                        </div>
 											</div>
 										</div>
 
 										<div className="card-body">
-											<div className="base-score">
-												<span>Base Score:</span>
-												<span>50</span>
-											</div>
-											<RoleTable
-												roles={KPIS}
-												modalMode={modalMode}
+											<KpiTable
+                        kpis={this.state.kpis || []}
 												handleEdit={this.handleEdit}
-												handleDelete={this.handleDelete}
+												handlePassId={this.handlePassId}
 											/>
 										</div>
 									</div>
@@ -301,19 +230,22 @@ export default class Role extends Component {
 					</section>
 				</div>
 
-				<KpiModal
-					role={role}
-					roleOptions={roleOptions}
-					responsibilityOptions={this.state.responsibilityOptions}
-					customSelect1={customSelect1}
-					customSelect2={customSelect2}
+        <KpiModal
+          kpi={this.state.kpi || {}}
+					modalMode={'create'}
+					sourceOptions={this.state.sourceOptions}
+					typeOptions={this.state.typeOptions}
 					handleChange={this.handleChange}
 					handleSubmit={this.handleSubmit}
+					customSelect1={this.state.customSelect1}
+					customSelect2={this.state.customSelect2}
 					closeModal={this.closeModal}
-					modalMode={modalMode}
-					errorMessage1={errorMessage1}
-					errorMessage2={errorMessage2}
 				/>
+
+				<Confirm 
+					handleAction={this.handleDelete}
+          modalAction={'delete'}
+        />
 			</Layout>
 		);
 	}

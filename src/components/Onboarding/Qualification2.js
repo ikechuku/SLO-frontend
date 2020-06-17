@@ -188,8 +188,13 @@ class Qualification extends Component {
       course,
       startDate,
       endDate,
-      documentId
+      documentId,
+      highestEducation
     } = this.state.qualification;
+
+    if((new Date(endDate) > new Date(Date.now())) && highestEducation === 'Yes'){
+      return NotificationManager.warning('Only completed qualification can be set as highest education')
+    }
 
     const { qualificationErrors } = this.state;
 
@@ -614,6 +619,7 @@ class Qualification extends Component {
         previousEmploymentErrors.phoneNumberCode !== undefined
     ){
       hideLoader()
+      console.log(previousEmploymentErrors)
       return NotificationManager.warning('Complete all required fields')
     }
 
@@ -770,22 +776,13 @@ class Qualification extends Component {
     const { id } = this.props.match.params;
     return this.props.history.push({
       pathname: `/create_staff/one/${id}` ,
-      savedId: this.props.location.savedId || id,
       direction: 'backward'
     })
   }
 
   async componentDidMount(){
     const { id } = this.props.match.params;
-    if(this.props.location.direction === 'backward'){
-      this.setState({ userId: this.props.location.savedId, pageMode: 'edit'});
-      await this.getPageDetails(this.props.location.savedId || id)
-    } else if(this.props.location.direction === 'completeOnboarding'){
-      this.setState({ pageMode: 'create'});
-    } else {
-      this.getPageDetails(id);
-    }
-    
+    this.getPageDetails(id);
   }
   
   getPageDetails = async (id) => {
@@ -905,7 +902,7 @@ class Qualification extends Component {
           if(uploadType === 'previousEmployment'){
             previousEmployment['documentId'] = res.data.upload.id;
             previousEmployment['path'] = res.data.upload.path;
-            previousEmploymentErrors['documentId'] = '';
+            previousEmploymentErrors['documentId'] = undefined;
             this.setState({ previousEmployment, previousEmploymentErrors });
           }
         }
@@ -943,21 +940,21 @@ class Qualification extends Component {
       } else if(type === 'certification'){
         const res = await httpDelete(`auth/document/${id}`);
         if(res.code === 200){
-          hideLoader();
           const { certification } = this.state;
           certification['documentId'] = '';
           certification['path'] = ''
           this.setState({ certification });
+          hideLoader();
         }
         hideLoader();
       } else {
         const res = await httpDelete(`auth/document/${id}`);
         if(res.code === 200){
-          hideLoader();
           const { previousEmployment } = this.state;
           previousEmployment['documentId'] = '';
           previousEmployment['path'] = ''
           this.setState({ previousEmployment });
+          hideLoader();
         }
         hideLoader();
       }
@@ -1017,9 +1014,10 @@ class Qualification extends Component {
 
       if(moreQualification.length) {
         let isHeighest = [];
+        let isNotHeighest = [];
         moreQualification.map(data => {
           if(!data.highestEducation || data.highestEducation === 'No'){
-            isHeighest.push(0)
+            isNotHeighest.push(0)
           } else {
             isHeighest.push(1)
           }
@@ -1031,6 +1029,12 @@ class Qualification extends Component {
           return;
         }
 
+        if(isHeighest.length > 1){
+          hideLoader();
+          NotificationManager.warning("Maximum of one highest education is allowed")
+          return;
+        }
+
       }
 
       
@@ -1038,6 +1042,7 @@ class Qualification extends Component {
       if(this.state.pageMode === 'edit'){
         const res = await httpPatch(`auth/edit_onboarding_two/${id}`, data);
         if(res.code === 201){
+          NotificationManager.success('Updated Successfully')
           hideLoader();
 
           return this.props.history.push({
@@ -1050,6 +1055,7 @@ class Qualification extends Component {
       } else {
         const res = await httpPost(`auth/onboarding_two/${id}`, data);
         if(res.code === 201){
+          NotificationManager.success('Saved Successfully')
           hideLoader();
           // setState({ userId: res.data.id });
           //return this.props.history.push(`/create_staff/three/${res.data.id}`)
@@ -1089,15 +1095,62 @@ class Qualification extends Component {
         return;
       }
 
+      const { moreQualification } = this.state;
+      if(moreQualification.length) {
+        let isCompleted = [];
+        moreQualification.map(data => {
+          if(new Date(data.endDate) > new Date(Date.now())){
+            isCompleted.push(0)
+          } else {
+            isCompleted.push(1)
+          }
+        })
+
+        if(!isCompleted.includes(1)){
+          hideLoader()
+          NotificationManager.warning("Fill in at least one completed qualification")
+          return;
+        }
+
+      }
+
+      if(moreQualification.length) {
+        let isHeighest = [];
+        let isNotHeighest = [];
+        moreQualification.map(data => {
+          if(!data.highestEducation || data.highestEducation === 'No'){
+            isNotHeighest.push(0)
+          } else {
+            isHeighest.push(1)
+          }
+        })
+
+        if(!isHeighest.includes(1)){
+          hideLoader()
+          NotificationManager.warning("Fill in at least one highest education")
+          return;
+        }
+
+        if(isHeighest.length > 1){
+          hideLoader();
+          NotificationManager.warning("Maximum of one highest education is allowed")
+          return;
+        }
+
+      }
+
+
       if(this.state.pageMode === 'edit'){
         const res = await httpPatch(`auth/edit_onboarding_two/${id}`, data);
        if(res.code === 201){
+        NotificationManager.success('Updated Successfully')
         hideLoader();
        }
      } else {
       const res = await httpPost(`auth/onboarding_two/${id}`, data);
       if(res.code === 201){
-       hideLoader();
+        NotificationManager.success('Saved Successfully')
+        hideLoader();
       }
      }
     } catch (error){
