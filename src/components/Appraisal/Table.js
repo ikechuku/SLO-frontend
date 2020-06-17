@@ -41,11 +41,11 @@ export class AppraisalTable extends Component {
 	render() {
 		return (
 			<div className="table-responsive" style={{overflow: 'hidden'}}>
-        <div
+        {/* <div
           className="openChat"
         >
           <i className="fa fa-plus"></i>
-        </div>
+        </div> */}
 				<Table 
           body={this.bodyRow}
 					head={this.header}
