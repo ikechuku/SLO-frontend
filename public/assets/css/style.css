@@ -255,7 +255,8 @@ a:not(.btn-social-icon):not(.btn-social):not(.page-link) .ion, a:not(.btn-social
 	color: #484c67 !important;
 }
 .text-primary {
-	color: #5458b3 !important;
+	/* color: #5458b3 !important; */
+	color: #003766 !important
 }
 .text-secondary {
 	color: #b03cd5 !important;

@@ -394,7 +394,6 @@ const validateData = (postData) => {
         lga,
         maritalStatus,
         noOfDependants,
-        staffCategory,
         noOfImmediateFamily,
         permanentAddress,
         permanentCountry,
@@ -543,14 +542,6 @@ const validateData = (postData) => {
       }
     }
 
-    if (staffCategory === '' || staffCategory === null || staffCategory === undefined){
-      return {
-        error,
-        type: 'staffCategory',
-        errorMessage: 'Staff category is required'
-      }
-    }
-
     if (noOfImmediateFamily === ''){
       return {
         error,
@@ -649,7 +640,8 @@ const validateEmploymentInfoForm = (postData) => {
     salaryAmount,
     employeeNumber,
     employmentDate,
-    departmentId
+    departmentId,
+    staffCategory
   } = postData;
 
   if (rank === '' || rank === null || rank === undefined){
@@ -657,6 +649,14 @@ const validateEmploymentInfoForm = (postData) => {
       error,
       type: 'rank',
       errorMessage: 'Rank at employment field is required'
+    }
+  }
+
+  if (staffCategory === '' || staffCategory === null || staffCategory === undefined){
+    return {
+      error,
+      type: 'staffCategory',
+      errorMessage: 'Staff category is required'
     }
   }
 

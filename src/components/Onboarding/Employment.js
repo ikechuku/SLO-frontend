@@ -30,6 +30,7 @@ class Employment extends Component {
 			errorMessage7: null,
       errorMessage8: null,
       errorMessage9: null,
+      staffCategoryErrorMessage: null,
       units: [],
       roles: [],
       branches: [],
@@ -44,6 +45,7 @@ class Employment extends Component {
       customDateOfResumption: undefined,
       customDepartmentId: null,
       customEmploymentDate: undefined,
+      customStaffCategory: null,
       customJobTitle: null,
       customRank: null,
       customUnitId: null,
@@ -86,6 +88,14 @@ class Employment extends Component {
       } else {
         this.setState({ errorMessage9: null })
       }
+
+    } else if(nameValue === 'staffCategory'){
+      postData[nameValue] = e.value;
+      this.setState({ 
+        postData,
+        customStaffCategory: e,
+        staffCategoryErrorMessage: null
+      });
 
     } else if(nameValue === 'branchId'){
       const isValidate = await validateEmpoymentFields('branchId', e.value);
@@ -256,7 +266,8 @@ class Employment extends Component {
       jobTitle,
       departmentId,
       regionId,
-      areaId
+      areaId,
+      staffCategory
     } = this.state.postData;
 
     const data = {
@@ -270,7 +281,8 @@ class Employment extends Component {
       jobTitle,
       departmentId,
       regionId,
-      areaId
+      areaId,
+      staffCategory
     }
 
     console.log(data);
@@ -285,6 +297,10 @@ class Employment extends Component {
       } else if(isValidate.type === 'dateOfResumption'){
         this.setState({ 
           errorMessage2: isValidate.errorMessage,
+        })
+      } else if(isValidate.type === 'staffCategory'){
+        this.setState({ 
+          staffCategoryErrorMessage: isValidate.errorMessage,
         })
       } else if(isValidate.type === 'branchId'){
         this.setState({ 
@@ -329,10 +345,11 @@ class Employment extends Component {
 				errorMessage6, 
 				errorMessage7, 
         errorMessage8,
-        errorMessage9
+        errorMessage9,
+        staffCategoryErrorMessage,
 			} = this.state;
 
-			if(errorMessage1 !== null || errorMessage2 !== null || errorMessage3 !== null || errorMessage4 !== null || errorMessage5 !== null || errorMessage6 !== null || errorMessage7 !== null || errorMessage8 !== null || errorMessage9 !== null){
+			if(errorMessage1 !== null || errorMessage2 !== null || errorMessage3 !== null || errorMessage4 !== null || errorMessage5 !== null || errorMessage6 !== null || errorMessage7 !== null || errorMessage8 !== null || errorMessage9 !== null || staffCategoryErrorMessage !== null){
         hideLoader();
         NotificationManager.warning("Complete all required fields")
         return;
@@ -533,7 +550,8 @@ class Employment extends Component {
           salaryAmount,
           branchId,
           employeeNumber,
-          jobTitle,
+          jobTitle, 
+          staffCategory,
           departmentId,
           branch,
           unit,
@@ -553,6 +571,7 @@ class Employment extends Component {
         const customDepartmentId = { value: departmentId, label: department.name };
         const customRegionId = regionId === null ? null : { value: regionId, label: region.name };
         const customAreaId = areaId === null ? null : { value: areaId, label: area.name };
+        const customStaffCategory = { value: staffCategory, label: staffCategory };
         this.setState({
           postData: res.data.employmentInfo,
           customBranchId,
@@ -564,6 +583,7 @@ class Employment extends Component {
           customUnitId,
           customAreaId,
           customRegionId,
+          customStaffCategory,
           pageMode: 'edit' 
         });
       }
@@ -773,6 +793,28 @@ class Employment extends Component {
 													<span className="text-danger">{this.state.errorMessage2 !== null ? this.state.errorMessage2 : ''}</span>
 												</div>
 											</div>
+                      <div className="form-group row">
+                      <label for="inputName" className="col-md-2 col-form-label">Staff Category <span className="impt">*</span></label>
+												<div className="col-md-4">
+                          <Select
+                            className="pt-0 pb-0 pr-0 pl-0 border-0"
+                            value={this.state.customStaffCategory}
+                            onChange={e => this.handleChange(e, 'staffCategory')}
+                            options={[
+                              { value: 'Full time', label: 'Full time'},
+                              { value: 'Contact', label: 'Contact'},
+                              { value: 'Casual', label: 'Casual'},
+                              { value: 'Consultant', label: 'Consultant'},
+                              { value: 'Part time', label: 'Part time'},
+                              { value: 'Probation', label: 'Probation'},
+                              { value: 'FreeLancers', label: 'FreeLancers'}
+                            ]}
+                            name="staffCategory"
+                            placeholder="Select"
+                          />
+                          <span className="text-danger">{this.state.staffCategoryErrorMessage !== null ? this.state.staffCategoryErrorMessage : ''}</span>
+												</div>
+                      </div>
                       <div className="form-group row" style={{display: 'none'}}>
                         <label for="inputName" className="col-md-2 col-form-label">Employee Number <span className="impt">*</span></label>
                         <div className="col-md-4">

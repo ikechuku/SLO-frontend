@@ -16,9 +16,11 @@ export default function Sidebar(props) {
         </div>
       </div> */}
       <ul className="side-menu">
+
         <li className={props.props.page === 'dashboard' ? "active" : ""}>
           <Link className={props.props.page === 'dashboard' ? "side-menu__item active" : "side-menu__item"}  to="/"><i className="side-menu__icon fa fa-desktop"></i><span className="side-menu__label">Dashboard</span></Link>
         </li>
+
         <li className={(props.props.page === 'branch') || (props.props.page === 'departments') || (props.props.page === 'units') || (props.props.page === 'roles') || (props.props.page === 'responsibility') || (props.props.page === 'kpi') || (props.props.page === 'staff') ? "slide is-expanded" : "slide"}>
           <a className={(props.props.page === 'branch') || (props.props.page === 'departments') || (props.props.page === 'units') || (props.props.page === 'roles') || (props.props.page === 'responsibility') || (props.props.page === 'kpi') || (props.props.page === 'staff') ? "side-menu__item active" : "side-menu__item"}  data-toggle="slide" href="#"><i className="side-menu__icon fa fa-tasks"></i><span className="side-menu__label">Company MGT</span><i className="angle fa fa-angle-right"></i></a>
           <ul className="slide-menu">
@@ -48,10 +50,21 @@ export default function Sidebar(props) {
                 <span>Responsibility</span>
               </Link>
             </li>
-            <li className={props.props.page === 'kpi' ? "active" : ""}>
-              <Link className={props.props.page === 'kpi' ? "slide-item active" : "slide-item"} to="/kpi">
-                <span>Kpi</span>
+            <li className={props.props.page === 'appraisal' ? "active" : ""}>
+              <Link className={props.props.page === 'appraisal' ? "slide-item active" : "slide-item"} to="/appraisal">
+                <span>Appraisal</span>
               </Link>
+            </li>
+            <li className={props.props.page === 'kpi' ? "slide active" : "slide"}>
+              <Link className="side-menu__item second-side-menu__item" data-toggle="second-slide" to="/kpi">
+                <span className="side-menu__label" style={{paddingLeft: '25px', fontSize: '12px'}}>Kpi Settings</span><i className="angle fa fa-angle-right"></i>
+              </Link>
+              <ul className="second-slide-menu">
+								<li className="active"><Link to="/kpi" className="slide-item active">Manage Kpi</Link></li>
+								<li><Link to="/assign_kpi" className="slide-item">Assign Kpi</Link></li>
+                <li><Link to="/manage_labels" className="slide-item">Manage Performance Label</Link></li>
+                <li><Link to="/appraisal" className="slide-item">Appraisal</Link></li>
+							</ul>
             </li>
             <li className={props.props.page === 'staff' ? "slide active" : "slide"}>
 							<a className="side-menu__item second-side-menu__item" data-toggle="second-slide" href="#">
@@ -69,6 +82,7 @@ export default function Sidebar(props) {
 						</li>
           </ul>
         </li>
+
         <li>
           <a className="side-menu__item" href="#"><i className="side-menu__icon fa fa-credit-card"></i><span className="side-menu__label">Payroll</span></a>
         </li>

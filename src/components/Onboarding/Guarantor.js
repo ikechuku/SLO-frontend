@@ -97,13 +97,13 @@ class Guarantor extends Component {
             customBusinessState: null,
             customBusinessLga: null,
             bvnErrorMessage: null,
-						taken_occupation: [],
-						alert: null
+            taken_occupation: [],
+            alert: null
         }
     }
 
     handleChange = async (e, nameValue) => {
-				const {postData} = this.state;
+        const {postData} = this.state;
         let details = e !== null ? e.target : '';
 
         if (details.name === 'employeeKnownMonth') {
@@ -271,7 +271,7 @@ class Guarantor extends Component {
     }
 
     handleCustomSelect = (result, name) => {
-				const {postData} = this.state;
+        const {postData} = this.state;
         const value = result !== null ? result.value : ''
         if (name === 'mobilePhoneCode') {
             postData[name] = value;
@@ -403,29 +403,29 @@ class Guarantor extends Component {
     }
 
     collectDocument = (document, id) => {
-			const { postData } = this.state;
+      const { postData } = this.state;
       postData['documentId'] = [...postData.documentId, id];
         this.setState({ 
           documents: [...this.state.documents, document],
           postData
         })
-		}
-		
-		deleteDoc = async (id) => {
-			try {
-				const { postData } = this.state;
-				const res = await httpDelete(`auth/document/${id}`);
-				if (res.code === 200) {
-					postData['documentId'] = [...this.state.postData.documentId].filter(item => item !== id);
-					this.setState({
-						documents: [...this.state.documents].filter(item => item.id !== id),
-						postData
-					});
-				}
-			} catch (error) {
-				console.log(error)
-			}
-		}
+    }
+    
+    deleteDoc = async (id) => {
+      try {
+        const { postData } = this.state;
+        const res = await httpDelete(`auth/document/${id}`);
+        if (res.code === 200) {
+          postData['documentId'] = [...this.state.postData.documentId].filter(item => item !== id);
+          this.setState({
+            documents: [...this.state.documents].filter(item => item.id !== id),
+            postData
+          });
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
     addMore = async (event) => {
         event.preventDefault();
@@ -758,11 +758,11 @@ class Guarantor extends Component {
                 nationality: '',
                 state: '',
                 lga: '',
-								bvn: '',
-								details: '',
-								documentId: []
-						},
-						documents: [],
+                bvn: '',
+                details: '',
+                documentId: []
+            },
+            documents: [],
             modalMode: 'create',
             editIndex: null,
             customSelect1: null,
@@ -814,37 +814,37 @@ class Guarantor extends Component {
 
                     // NotificationManager.success('Completed Successfully', 'Onboarding Status')
                     const getAlert = () => (
-											<SweetAlert 
-												success 
-												title="Onboarding Status" 
-												onConfirm={() => this.hideAlert()}
-											>
-												Completed Successfully
-											</SweetAlert>
-										);
-								
-										this.setState({
-											alert: getAlert()
-										});
+                      <SweetAlert 
+                        success 
+                        title="Onboarding Status" 
+                        onConfirm={() => this.hideAlert()}
+                      >
+                        Completed Successfully
+                      </SweetAlert>
+                    );
+                
+                    this.setState({
+                      alert: getAlert()
+                    });
                 }
             } else {
                 showLoader();
                 const res = await httpPost(`auth/onboarding_three/${id}`, this.state.moreData);
                 if (res.code === 200) {
-										hideLoader();
-										const getAlert = () => (
-											<SweetAlert 
-												success 
-												title="Onboarding Status" 
-												onConfirm={() => this.hideAlert()}
-											>
-												Completed Successfully
-											</SweetAlert>
-										);
-								
-										this.setState({
-											alert: getAlert()
-										});
+                    hideLoader();
+                    const getAlert = () => (
+                      <SweetAlert 
+                        success 
+                        title="Onboarding Status" 
+                        onConfirm={() => this.hideAlert()}
+                      >
+                        Completed Successfully
+                      </SweetAlert>
+                    );
+                
+                    this.setState({
+                      alert: getAlert()
+                    });
                     // NotificationManager.success('Completed Successfully', 'Onboarding Status')
                 }
             }
@@ -853,14 +853,14 @@ class Guarantor extends Component {
             hideLoader()
             console.log(error)
         }
-		}
-		
-		hideAlert() {
-			this.setState({
-				alert: null
-			});
-			this.props.history.push('/logout');
-		}
+    }
+    
+    hideAlert() {
+      this.setState({
+        alert: null
+      });
+      this.props.history.push('/logout');
+    }
 
     // handleSave = async (e) => {
     //     e.preventDefault()
@@ -875,40 +875,40 @@ class Guarantor extends Component {
     //             showLoader();
     //             const res = await httpPatch(`auth/edit_onboarding_three/${id}`, this.state.moreData);
     //             if (res.code === 201) {
-		// 								hideLoader();
-		// 								const getAlert = () => (
-		// 									<SweetAlert 
-		// 										success 
-		// 										title="Onboarding Status" 
-		// 										onConfirm={() => this.hideAlert()}
-		// 									>
-		// 										Completed Successfully
-		// 									</SweetAlert>
-		// 								);
-								
-		// 								this.setState({
-		// 									alert: getAlert()
-		// 								});
+    // 								hideLoader();
+    // 								const getAlert = () => (
+    // 									<SweetAlert 
+    // 										success 
+    // 										title="Onboarding Status" 
+    // 										onConfirm={() => this.hideAlert()}
+    // 									>
+    // 										Completed Successfully
+    // 									</SweetAlert>
+    // 								);
+                
+    // 								this.setState({
+    // 									alert: getAlert()
+    // 								});
     //                 this.setState({moreData: res.data.guarantor});
     //             }
     //         } else {
     //             showLoader();
     //             const res = await httpPost(`auth/onboarding_three/${id}`, this.state.moreData);
     //             if (res.code === 201) {
-		// 								hideLoader();
-		// 								const getAlert = () => (
-		// 									<SweetAlert 
-		// 										success 
-		// 										title="Onboarding Status" 
-		// 										onConfirm={() => this.hideAlert()}
-		// 									>
-		// 										Completed Successfully
-		// 									</SweetAlert>
-		// 								);
-								
-		// 								this.setState({
-		// 									alert: getAlert()
-		// 								});
+    // 								hideLoader();
+    // 								const getAlert = () => (
+    // 									<SweetAlert 
+    // 										success 
+    // 										title="Onboarding Status" 
+    // 										onConfirm={() => this.hideAlert()}
+    // 									>
+    // 										Completed Successfully
+    // 									</SweetAlert>
+    // 								);
+                
+    // 								this.setState({
+    // 									alert: getAlert()
+    // 								});
     //                 this.setState({moreData: res.data.guarantor});
     //             }
     //         }
@@ -929,12 +929,12 @@ class Guarantor extends Component {
 
     componentDidMount() {
       const {id} = this.props.match.params;
-      if (this.props.location.direction === 'backward') {
-          this.setState({userId: this.props.location.savedId, pageMode: 'edit'});
-          this.getUserDetails(this.props.location.savedId || id)
-      } else if (this.props.location.direction === 'completeOnboarding') {
-          this.setState({pageMode: 'completeOnboarding'});
-      }
+      // if (this.props.location.direction === 'backward') {
+      //     this.setState({userId: this.props.location.savedId, pageMode: 'edit'});
+      //     this.getUserDetails(this.props.location.savedId || id)
+      // } else if (this.props.location.direction === 'completeOnboarding') {
+      //     this.setState({pageMode: 'completeOnboarding'});
+      // }
       this.getUserDetails(id)
     }
 
@@ -943,11 +943,11 @@ class Guarantor extends Component {
             showLoader()
             const res = await httpGet(`auth/get_onboarding_three/${id}`)
             if (res.code === 200) {
-                hideLoader();
-                this.setState({
-                    moreData: res.data.guarantor,
-                    pageMode: 'edit'
-                })
+              hideLoader();
+              this.setState({
+                  moreData: res.data.guarantor,
+                  pageMode: res.data.guarantor.length ? 'edit' : 'create'
+              })
             }
         } catch (error) {
             hideLoader();

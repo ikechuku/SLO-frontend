@@ -49,7 +49,7 @@ export class PreviousEmploymentModal extends Component {
     return (
       <div>
         <div className="modal fade" id="employmentModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style={{ overflowY: 'scroll'}}>
-            <div className="modal-dialog modal-md" role="document">
+            <div className="modal-dialog modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title" id="example-Modal3">{this.props.modalMode === 'create' ? 'ADD NEW WORK EXPERIENCE' : 'EDIT WORK EXPERIENCE'}</h5>
@@ -152,7 +152,7 @@ export class PreviousEmploymentModal extends Component {
                     </div>
 
                     <div className="form-group row">
-                      <label for="inputName" className="col-md-5 col-form-label">Upload <span className="impt">*</span></label>
+                      <label for="inputName" className="col-md-5 col-form-label">Upload appointment letter or letter of recommendation from previous employer <span className="impt">*</span></label>
                       <div className="col-md-7">
                         <input type="file" 
                           className="form-control" 

@@ -36,7 +36,6 @@ class PersonalInfo extends Component {
       customPermanentCountry: null,
       customPermanentState: null,
       customPermanentLga: null,
-      customStaffCategory: null,
       customMobile: null,
       customHome: null,
       customMaritalStatus: null,
@@ -57,7 +56,6 @@ class PersonalInfo extends Component {
       dependantsErrorMessage: null,
       currentErrorMessage: null,
       currentLandmarkErrorMessage: null,
-      staffCategoryErrorMessage: null,
       immediateFamilyErrorMessage: null,
       lgaErrorMessage: null,
       maritalErrorMessage: null,
@@ -385,14 +383,6 @@ class PersonalInfo extends Component {
         customMaritalStatus: result,
         maritalErrorMessage: null
       });
-    } else if(name === 'staffCategory'){
-      data[name] = result.value;
-      this.setState({ 
-        data,
-        customStaffCategory: result,
-        staffCategoryErrorMessage: null
-      });
-
     } else if(name === 'hobbies'){
       await this.setState({ customHobbies: result });
       let newValue = [];
@@ -512,10 +502,6 @@ class PersonalInfo extends Component {
         this.setState({ 
           dependantsErrorMessage: isValidate.errorMessage,
         })
-      } else if(isValidate.type === 'staffCategory'){
-        this.setState({ 
-          staffCategoryErrorMessage: isValidate.errorMessage,
-        })
       } else if(isValidate.type === 'noOfImmediateFamily'){
         this.setState({ 
           immediateFamilyErrorMessage: isValidate.errorMessage,
@@ -560,7 +546,6 @@ class PersonalInfo extends Component {
       genderErrorMessage,
       dependantsErrorMessage,
       currentErrorMessage,
-      staffCategoryErrorMessage,
       immediateFamilyErrorMessage,
       lgaErrorMessage,
       maritalErrorMessage,
@@ -580,7 +565,6 @@ class PersonalInfo extends Component {
       genderErrorMessage !== null ||
       dependantsErrorMessage !== null ||
       currentErrorMessage !== null ||
-      staffCategoryErrorMessage !== null ||
       immediateFamilyErrorMessage !== null ||
       lgaErrorMessage !== null ||
       maritalErrorMessage !== null ||
@@ -598,6 +582,7 @@ class PersonalInfo extends Component {
           if(res.code === 200){
             await this.saveDoc();
             hideLoader();
+            NotificationManager.success('Updated Successfully')
             // setState({ userId: res.data.id });
             // return this.props.history.push(`/create_staff/four/${res.data.id}`)
             return this.props.history.push({
@@ -612,6 +597,7 @@ class PersonalInfo extends Component {
           const res = await httpPatch(`auth/edit_staff/${id}`, this.state.data);
           if(res.code === 200){
             await this.saveDoc()
+            NotificationManager.success('Updated Successfully')
             hideLoader();
           }
         }
@@ -634,6 +620,7 @@ class PersonalInfo extends Component {
           if(res.code === 201){
             await this.setState({ userId: res.data.id });
             await this.saveDoc();
+            NotificationManager.success('Saved Successfully')
             hideLoader();
             // return this.props.history.push(`/create_staff/two/${res.data.id}`)
             return this.props.history.push({
@@ -649,6 +636,7 @@ class PersonalInfo extends Component {
           const res = await httpPost(`auth/onboarding_one/${id}`, this.state.data);
           if(res.code === 201){
             await this.saveDoc()
+            NotificationManager.success('Saved Successfully')
             hideLoader();
           }
         }
@@ -716,11 +704,12 @@ class PersonalInfo extends Component {
   deleteDoc = async (id) => {
     try{
       showLoader();
+      const { id } = this.props.match.params;
       const res = await httpDelete(`auth/document/${id}`);
 
       if(res.code === 200){
+        this.getUserDetails(id)
         hideLoader();
-        this.getUserDetails(this.state.userId)
       }
     }catch(error){
       console.log(error)
@@ -733,17 +722,10 @@ class PersonalInfo extends Component {
     const { id } = this.props.match.params;
     if(this.props.location.direction === 'backward'){
       // get User details and save to state
-      const { savedId } = this.props.location;
-      await this.getUserDetails(savedId);
-      this.setState({ userId: savedId, pageMode: 'edit' });
+      await this.getUserDetails(id);
+      this.setState({ userId: id, pageMode: 'edit' });
     }
     this.getUserDetails(id);
-    // if(this.state.pageMode === 'edit'){
-    //   // get User details and save to state
-    //   const id = 'f657d590-a27f-4f3c-b9a1-6f61a686bb4b';
-    //   this.getUserDetails(id);
-    //   this.setState({ userId: id, pageMode: 'edit' });
-    // }
   }
   
   getUserDetails = async (id) => {
@@ -759,8 +741,7 @@ class PersonalInfo extends Component {
           homePhoneCode, 
           maritalStatus, 
           religion, 
-          dob, 
-          staffCategory,
+          dob,
           skills,
           hobbies,
           stateOfOrigin,
@@ -786,7 +767,6 @@ class PersonalInfo extends Component {
         const customMaritalStatus = { value: maritalStatus, label: maritalStatus };
         const customReligion = { value: religion, label: religion };
         const customDob = !dob ? undefined : moment(dob).toDate();
-        const customStaffCategory = { value: staffCategory, label: staffCategory }
         let customSkills = [], customHobbies = [];
         const newSkills = skills !== null ? skills.split(',') : [];
         await newSkills.map(data => (
@@ -811,7 +791,6 @@ class PersonalInfo extends Component {
           customMobile,
           customHome,
           customMaritalStatus,
-          customStaffCategory,
           customSkills,
           customHobbies,
           customReligion,
@@ -1288,25 +1267,16 @@ class PersonalInfo extends Component {
                           />
                           <span className="text-danger">{this.state.dependantsErrorMessage !== null ? this.state.dependantsErrorMessage : ''}</span>
 												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Staff Category <span className="impt">*</span></label>
+                        <label for="inputName" className="col-md-2 col-form-label">No of Immediate Family <span className="impt">*</span></label>
 												<div className="col-md-4">
-                          <Select
-                            className="pt-0 pb-0 pr-0 pl-0 border-0"
-                            value={this.state.customStaffCategory}
-                            onChange={e => this.handleCustomSelect(e, 'staffCategory')}
-                            options={[
-                              { value: 'Full time', label: 'Full time'},
-                              { value: 'Contact', label: 'Contact'},
-                              { value: 'Casual', label: 'Casual'},
-                              { value: 'Consultant', label: 'Consultant'},
-                              { value: 'Part time', label: 'Part time'},
-                              { value: 'Probation', label: 'Probation'},
-                              { value: 'FreeLancers', label: 'FreeLancers'}
-                            ]}
-                            name="staffCategory"
-                            placeholder="Select"
+                          <input type="number" 
+                            className="form-control"
+                            name="noOfImmediateFamily"
+                            defaultValue={this.state.data.noOfImmediateFamily !== null ? this.state.data.noOfImmediateFamily : 0}
+                            // value={this.state.data.noOfDependant}
+                            onChange={this.handleChange}
                           />
-                          <span className="text-danger">{this.state.staffCategoryErrorMessage !== null ? this.state.staffCategoryErrorMessage : ''}</span>
+                          <span className="text-danger">{this.state.immediateFamilyErrorMessage !== null ? this.state.immediateFamilyErrorMessage : ''}</span>
 												</div>
                       </div>
                       <div className="form-group row">
@@ -1356,17 +1326,7 @@ class PersonalInfo extends Component {
 												</div>
                       </div>
                       <div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">No of Immediate Family <span className="impt">*</span></label>
-												<div className="col-md-4">
-                          <input type="number" 
-                            className="form-control"
-                            name="noOfImmediateFamily"
-                            defaultValue={this.state.data.noOfImmediateFamily !== null ? this.state.data.noOfImmediateFamily : 0}
-                            // value={this.state.data.noOfDependant}
-                            onChange={this.handleChange}
-                          />
-                          <span className="text-danger">{this.state.immediateFamilyErrorMessage !== null ? this.state.immediateFamilyErrorMessage : ''}</span>
-												</div>
+
                       </div>
                       <div className="form-group row">
 												<label for="inputName" className="col-md-2 pr-0 col-form-label">Current Address <span className="impt">*</span></label>

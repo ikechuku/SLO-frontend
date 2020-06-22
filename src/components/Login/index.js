@@ -36,8 +36,8 @@ class Login extends Component {
         hideLoader();
         // console.log(res.payload);
         if(res.payload.role === 'staff') {
-          if(res.payload.user.onBoarding < 4 && res.payload.user.applicationStatus === 'pending'){
-            if(res.payload.user.onBoarding === 3){
+          if(res.payload.user.applicationStatus === 'pending'){
+            if(res.payload.user.onBoarding > 2){
               this.props.history.push('/application_status');
             }else {
               localStorage.setItem('token', res.payload.token);
@@ -51,11 +51,14 @@ class Login extends Component {
             }
             
           }
+        } else if(res.payload.role === 'pmu'){
+          localStorage.setItem('token', res.payload.token);
+          this.props.history.push(`/kpi`);
         } else {
           localStorage.setItem('token', res.payload.token);
           this.props.history.push(`/create_staff`);
-          this.setState({ email: '', password: '' });
         }
+        this.setState({ email: '', password: '' });
       }
 
       // const data = await httpPost('auth/login', body)
@@ -87,7 +90,7 @@ class Login extends Component {
     return (
       <div id="app">
         <div className="container-center">
-          <h1 className="appName">SLO </h1>
+          <h1 className="appName">Standard Life </h1>
 
           <form className="loginForm99" onSubmit={this.handleSubmit}>
             <div className="containerlogin">

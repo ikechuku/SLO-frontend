@@ -120,6 +120,49 @@ thead .thead-th {
 	background-color: #f6f6f9 !important;
 }
 
+.custom-appraisal-btn .btn{
+	line-height: 23px !important;
+	letter-spacing: .4px !important;
+	/* box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08); */
+	cursor: pointer !important;
+
+	font-size: 12px !important;
+	line-height: 30px !important;
+	text-align: center !important;
+	height: 30px !important;
+	color: white !important;
+
+	background: linear-gradient(180deg, #F85359 3.03%, #DC151D 97.78%) !important;
+	border: 1px solid #DB161E !important;
+	box-sizing: border-box !important;
+	border-radius: 4px !important;
+	width: 200px !important;
+	text-align: center;
+}
+
+.custom-kpi-header .btn {
+	padding: 0 !important;
+	font-size: 12px !important;
+	border-radius: 30px !important;
+	line-height: 30px !important;
+	border: 1px solid #edeaea !important;
+	width: 119px !important;
+	text-align: center !important;
+	height: 43px !important;
+	background-color: #012F5D !important;
+	color: white !important;
+	
+}
+button.focus, button:focus {
+	outline: 0 !important;
+	box-shadow: none!important;
+}
+
+.custom-kpi-header .btn :hover{
+	background-color: #012F5D !important;
+	color: white !important;
+}
+
 @media (min-width: 992px) {
 	.modal-lg {
 		max-width: 850px !important;

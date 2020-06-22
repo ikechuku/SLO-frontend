@@ -1,16 +1,24 @@
 import React, { Component } from "react";
 import Table from "../../helpers/customTable";
+import { DeleteSvg } from "../../helpers/Svg";
 
-class RoleTable extends Component {
+const test = [
+	{
+		name: 'Case Load',
+		source: 'Automatic',
+		type: 'Postive',
+	}
+]
+
+class KpiTable extends Component {
 	constructor(props) {
 		super(props);
 	}
 	bodyRow = () => {
-		const body = this.props.roles.map((data, index) => ({
-			KPI: data.name,
-			Weight: data.weightMark,
-			Responsibility: data.responsibility.name,
-			JobRoles: data.responsibility.role.title,
+		const body = this.props.kpis.map((data, index) => ({
+			name: data.name,
+			source: data.source,
+			type: data.type,
 			action: (
 				<a>
 					<span
@@ -22,8 +30,12 @@ class RoleTable extends Component {
 					>
 						Edit
 					</span>
-					<span className="del" onClick={() => this.props.handleDelete(data.id)}>
-						Delete
+					<span className="del ml-5" 
+						data-toggle="modal"
+						data-target="#confirm"
+						onClick={() => this.props.handlePassId(data.id)}
+					>
+						<DeleteSvg />
 					</span>
 				</a>
 			),
@@ -33,14 +45,13 @@ class RoleTable extends Component {
 	header = () => {
 		const header = [
 			{
-				title: "KPI (filterable)",
-				prop: "KPI",
+				title: "Name (filterable)",
+				prop: "name",
 				sortable: true,
 				filterable: true,
 			},
-			{ title: "Responsibility", prop: "Responsibility", sortable: true },
-			{ title: "Job Roles", prop: "JobRoles", sortable: true },
-			{ title: "Weight Mark", prop: "Weight" },
+			{ title: "Source", prop: "source", sortable: true },
+			{ title: "Type", prop: "type", sortable: true },
 			{ title: "Actions", prop: "action" },
 		];
 		return header;
@@ -59,4 +70,4 @@ class RoleTable extends Component {
 	}
 }
 
-export default RoleTable;
+export default KpiTable;

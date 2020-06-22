@@ -1,0 +1,12 @@
+.view-appraisal .controlRow__root {
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.view-appraisal .input-group-append {
+  display: none;
+}
+
+.view-appraisal .pull-right {
+  float: unset;
+}
