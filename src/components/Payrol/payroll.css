@@ -1,0 +1,169 @@
+.payrolBtn {
+  border: none;
+  background-color: transparent;
+  font-size: 15px;
+  color: #003766;
+  cursor: pointer;
+}
+
+.payrolBtn i {
+  background-color: #003766;
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  color: white;
+  margin-right: 5px;
+  line-height: 1.4;
+  font-size: 15px;
+}
+
+.input-group-append {
+  display: none;
+}
+
+.payroll-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+
+.payroll-header h1 {
+  font-size: 18px;
+}
+
+.payroll-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50vw;
+  margin: auto;
+}
+
+.payroll-form form {
+  width: 100%;
+}
+
+.inputPayroll {
+  display: flex;
+  margin: 20px;
+}
+
+.inputPayroll label {
+  margin-right: 20px;
+  width: 90px;
+  font-weight: 600 !important;
+}
+
+.inputPayroll select {
+  width: 370px;
+  margin-left: 10px;
+}
+
+.inputPayroll .payrolDatePicker {
+  width: 370px;
+  margin-left: 10px;
+}
+
+.inputPayroll input {
+  width: 370px;
+  margin-left: 10px;
+}
+
+.buttonWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.buttonWrap button {
+  width: 40%;
+}
+
+.buttonWrap button:hover {
+  background-color: #003766 !important;
+}
+
+@media(max-width:828px) {
+  .payroll-form {
+    width: 60vw;
+    margin: auto;
+  }
+}
+
+@media(max-width:714px) {
+  .payroll-form {
+    width: 80vw;
+    margin: auto;
+  }
+}
+
+@media(max-width:529px) {
+  .payroll-form {
+    width: 90vw;
+    margin: auto;
+  }
+  .payroll-form form {
+    width: 100%;
+  }
+}
+
+@media(max-width:460px) {
+  .payroll-form {
+    width: 90vw;
+    margin: auto;
+  }
+  .payroll-form form {
+    width: 100%;
+  }
+  .inputPayroll {
+    margin-bottom: 20px;
+    /* display: flex; */
+    flex-direction: column;
+  }
+  .inputPayroll label {
+    margin-left: 0px;
+    width: auto;
+  }
+  .inputPayroll select {
+    width: auto;
+    margin-left: 0px;
+  }
+  .inputPayroll .payrolDatePicker {
+    width: 80vw;
+    margin-left: 0px;
+  }
+  .inputPayroll input {
+    width: auto;
+    margin-left: 0px;
+  }
+  .buttonWrap {
+    width: 100%;
+  }
+  .buttonWrap button {
+    width: 60%;
+    margin-bottom: 20px;
+  }
+}
+
+.payrolDatePicker {
+  border: 1px solid #ececff;
+  height: 40px;
+  padding-left: 20px;
+  color: #777ab2;
+  border-radius: 5px;
+  position: relative;
+}
+
+.cal-fontAwsome {
+  position: absolute;
+  margin-top: -25px;
+  z-index: 0;
+  margin-right: 10px;
+  right: 1px;
+}
+
+.dataeP {
+  position: relative;
+}
