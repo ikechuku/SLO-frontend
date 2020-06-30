@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import ReactTooltip from "react-tooltip";
-import Table from "../../helpers/customTable";
+import Table from "../../../helpers/customTable";
 import { Link } from "react-router-dom";
 
-export default class payroll extends Component {
+export default class payrollLocation extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
@@ -12,40 +12,40 @@ export default class payroll extends Component {
 	bodyRow = () => {
 		const datas = [
 			{
-				name: "Basic Salary",
-				taxable: "Yes",
-				passionable: "Yes",
-				positive: "Yes",
+				name: "Okeke HeartBeat",
+				Gross: "125,000",
+				Tax: "20",
+				Pension: "40,00",
 				payableMonths: "10",
 			},
 			{
-				name: "Transport",
-				taxable: "Yes",
-				passionable: "Yes",
-				positive: "Yes",
+				name: "Femi Tijani",
+				Gross: "125,000",
+				Tax: "20",
+				Pension: "40,00",
 				payableMonths: "10",
 			},
 			{
-				name: "Housing",
-				taxable: "Yes",
-				passionable: "Yes",
-				positive: "Yes",
+				name: "Adm James",
+				Gross: "125,000",
+				Tax: "20",
+				Pension: "40,00",
 				payableMonths: "10",
 			},
 			{
-				name: "Range Don",
-				taxable: "Yes",
-				passionable: "Yes",
-				positive: "Yes",
+				name: "Joe Doe",
+				Gross: "125,000",
+				Tax: "20",
+				Pension: "40,00",
 				payableMonths: "10",
 			},
 		];
 		const body = datas.map((data, index) => ({
 			name: data.name,
-			taxable: data.taxable,
+			Gross: data.Gross,
 
-			Pensionable: data.passionable,
-			Positive: data.positive,
+			Tax: data.Tax,
+			Pension: data.Pension,
 			PayableMonth: data.payableMonths,
 
 			action: (
@@ -74,18 +74,18 @@ export default class payroll extends Component {
 	header = () => {
 		const header = [
 			{
-				title: "Item Name (filterable)",
+				title: "Staff Name (filterable)",
 				prop: "name",
 				sortable: true,
 				filterable: true,
 			},
-			{ title: "Taxable", prop: "taxable", sortable: true },
+			{ title: "Gross Pay", prop: "Gross", sortable: true },
 
-			{ title: "Pensionable", prop: "Pensionable", sortable: true },
+			{ title: "Tax", prop: "Tax", sortable: true },
 
-			{ title: "Positive", prop: "Positive", sortable: true },
+			{ title: "Pension", prop: "Pension", sortable: true },
 
-			{ title: "Payable Month", prop: "PayableMonth", sortable: true },
+			{ title: "Not Pay", prop: "PayableMonth", sortable: true },
 			{ title: "Actions", prop: "action" },
 		];
 		return header;
@@ -100,6 +100,15 @@ export default class payroll extends Component {
 					rowsPerPage={10}
 					rowsPerPageOption={[10, 15, 20, 25]}
 				/>
+				<div className="payrollSubmitBtn">
+					<button
+						type="button"
+						data-toggle="modal"
+						data-target="#payrollSubmit"
+					>
+						Submit
+					</button>
+				</div>
 			</div>
 		);
 	}

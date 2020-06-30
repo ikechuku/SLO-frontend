@@ -1,0 +1,97 @@
+.ReactCollapse--collapse {
+  transition: height 500ms;
+}
+
+.DropDownWrap56 {
+  width: 40vw;
+  height: fit-content;
+  background-color: white;
+  filter: drop-shadow(1px 1px 2px rgba(128, 128, 128, 0.692));
+  border-radius: 5px;
+}
+
+.dropHeader {
+  background: #FAFAFA;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dropHeader i {
+  padding: 10px;
+  padding-right: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  position: relative;
+  z-index: 50;
+}
+
+.actionsSS {
+  position: absolute;
+  width: 70px;
+  color: #666666;
+  height: 62px;
+  background-color: white;
+  right: 4px;
+  border-radius: 5px;
+  filter: drop-shadow(1px 1px 1px rgba(128, 128, 128, 0.527));
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.dropHead {
+  display: flex;
+}
+
+.dropHead span {
+  padding: 10px;
+  padding-top: 13px;
+  padding-left: 15px;
+  padding-right: 1px;
+}
+
+.dropHeader h1 {
+  font-size: 16px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  margin: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.SSbasicSalary {
+  font-weight: 400;
+  font-size: 14px;
+  margin-right: 6px;
+}
+
+.SSbasicSalaryFEE {
+  font-size: 14px;
+  margin-right: 6px;
+  color: #151522;
+}
+
+.salaryStructure {
+  width: fit-content;
+  background-color: #fff;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  filter: drop-shadow(1px 1px 2px rgba(128, 128, 128, 0.527));
+}
+
+.salaryStructure button {
+  font-weight: 500;
+  font-size: 14px;
+}

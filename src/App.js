@@ -44,6 +44,10 @@ import ProtectedRoute from "./helpers/ProtectedRoute";
 import UserInfo from "./components/personalinfo/info";
 import PayRoll from "./components/Payrol/payroll";
 import PayrollForm from "./components/Payrol/payrollForm";
+import PayrollSetup from "./components/Payrol/setUpPayroll/payrollSetup";
+import MainPayrolls from "./components/Payrol/payrolls/payroll";
+import PayNow from "./components/Payrol/payrollPay/pay";
+import SalaryStructure from "./components/salaryStructure/index";
 // import "bootstrap/dist/css/bootstrap.css";
 
 function App() {
@@ -111,6 +115,10 @@ function App() {
 					<Route path="/logout" component={Logout} />
 					<Route path="/payroll" component={PayRoll} />
 					<Route path="/payroll-form" component={PayrollForm} />
+					<Route path="/setup-payroll" component={PayrollSetup} />
+					<Route path="/main-payrolls" component={MainPayrolls} />
+					<Route path="/pay-now" component={PayNow} />
+					<Route path="/salary-structure" component={SalaryStructure} />
 				</Switch>
 			</Router>
 		</Provider>

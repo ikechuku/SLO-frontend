@@ -29,14 +29,12 @@
 }
 
 .payroll-header h1 {
-	font-size: 24px;
-	white-space: nowrap;
-	font-weight: 600;
+	font-size: 18px;
 }
 
 .wrapperPayroll {
 	display: flex;
-	width: 33vw;
+	width: 60vw;
 	justify-content: center;
 	align-items: center;
 	background: white;
@@ -59,7 +57,7 @@
 .inputPayroll {
 	display: flex;
 	margin: 20px;
-	flex-direction: column;
+	/* flex-direction: column;	 */
 }
 
 .inputPayroll label {
@@ -149,7 +147,7 @@
 	border-radius: 24px;
 }
 
-.radio-button__input:checked+.turnOn:after {
+.radio-button__input:checked + .turnOn:after {
 	content: "";
 	display: block;
 	position: absolute;
@@ -169,11 +167,12 @@
 	left: 5px;
 	width: 10px;
 	height: 10px;
+	background-color: green;
 	border-radius: 12px;
 }
 
-.radio-button__input:checked+.radio-button__control {
-	/* border-color: #01a982; */
+.radio-button__input:checked + .radio-button__control {
+	border-color: #01a982;
 }
 
 .radio-button__control {
@@ -198,6 +197,68 @@
 	margin-bottom: 5px;
 }
 
+@media (max-width: 828px) {
+	.payroll-form {
+		width: 60vw;
+		margin: auto;
+	}
+}
+
+@media (max-width: 714px) {
+	.payroll-form {
+		width: 80vw;
+		margin: auto;
+	}
+}
+
+@media (max-width: 529px) {
+	.payroll-form {
+		width: 90vw;
+		margin: auto;
+	}
+	.payroll-form form {
+		width: 100%;
+	}
+}
+
+@media (max-width: 460px) {
+	.payroll-form {
+		width: 90vw;
+		margin: auto;
+	}
+	.payroll-form form {
+		width: 100%;
+	}
+	.inputPayroll {
+		margin-bottom: 20px;
+		/* display: flex; */
+		flex-direction: column;
+	}
+	.inputPayroll label {
+		margin-left: 0px;
+		width: auto;
+	}
+	.inputPayroll select {
+		width: auto;
+		margin-left: 0px;
+	}
+	.inputPayroll .payrolDatePicker {
+		width: 80vw;
+		margin-left: 0px;
+	}
+	.inputPayroll input {
+		width: auto;
+		margin-left: 0px;
+	}
+	.buttonWrap {
+		width: 100%;
+	}
+	.buttonWrap button {
+		width: 60%;
+		margin-bottom: 20px;
+	}
+}
+
 .payrolDatePicker {
 	border: 1px solid #ececff;
 	height: 40px;
@@ -217,116 +278,4 @@
 
 .dataeP {
 	position: relative;
-}
-
-@media (max-width: 626px) {
-	.payroll-form {
-		width: 90%;
-	}
-	.payroll-form form {
-		width: 100%;
-	}
-	.inputPayroll {
-		display: flex;
-		margin: 20px;
-		flex-direction: column;
-	}
-	.inputPayroll label {
-		font-weight: 600 !important;
-		/* width: 190px; */
-	}
-	.inputPayroll input {
-		width: 90%;
-		margin-left: 0px;
-	}
-	.inputPayroll select {
-		width: 90%;
-		margin-left: 0px;
-		cursor: pointer;
-	}
-	.inputPayroll textarea {
-		width: 90%;
-		margin-left: 0px;
-		height: 90px;
-		/* cursor: pointer; */
-	}
-	.inputPayroll-Checkbox {
-		width: 88%;
-	}
-	.inputPayroll .dataeP {
-		width: 100% !important;
-	}
-	.inputPayroll .dataeP .payrolDatePicker {
-		width: fit-content;
-	}
-	.buttonWrap {
-		width: 100%;
-		margin: auto;
-		/* margin-bottom: 30px;
-		margin-left: 15px; */
-	}
-	.buttonWrap button {
-		width: 90%;
-	}
-}
-
-@media (max-width:1218px) {
-	.wrapperPayroll {
-		width: 50vw;
-	}
-}
-
-@media (max-width: 723px) {
-	.wrapperPayroll {
-		display: flex;
-		width: 90vw;
-	}
-	.payroll-form {
-		width: 90%;
-	}
-	.payroll-form form {
-		width: 100%;
-	}
-	.inputPayroll {
-		display: flex;
-		margin: 20px;
-		flex-direction: column;
-	}
-	.inputPayroll label {
-		font-weight: 600 !important;
-		/* width: 190px; */
-	}
-	.inputPayroll input {
-		width: 90%;
-		margin-left: 0px;
-	}
-	.inputPayroll select {
-		width: 90%;
-		margin-left: 0px;
-		cursor: pointer;
-	}
-	.inputPayroll textarea {
-		width: 90%;
-		margin-left: 0px;
-		height: 90px;
-		/* cursor: pointer; */
-	}
-	.inputPayroll-Checkbox {
-		width: 88%;
-	}
-	.inputPayroll .dataeP {
-		width: 90vw;
-	}
-	.inputPayroll .dataeP .payrolDatePicker {
-		width: 80vw;
-	}
-	.buttonWrap {
-		width: 100%;
-		margin: auto;
-		/* margin-bottom: 30px;
-		margin-left: 15px; */
-	}
-	.buttonWrap button {
-		width: 90%;
-	}
 }

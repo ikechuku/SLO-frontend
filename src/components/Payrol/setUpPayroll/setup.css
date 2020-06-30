@@ -1,0 +1,307 @@
+.previousPayRollWrap-processPayroll {
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	width: 50vw;
+	margin-bottom: 10px;
+}
+.paysetUpwraper {
+	background-color: white;
+	width: fit-content;
+	padding-right: 20px;
+	padding-top: 20px;
+	border-radius: 10px;
+	filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.267));
+}
+
+.payroll-header-payrol {
+}
+
+.payroll-form-setup {
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	margin-left: 50px;
+	width: auto;
+}
+
+.inputPayroll-setup {
+	display: flex;
+	width: 100%;
+}
+
+.inputPayroll-setup-wrap label {
+	font-weight: 600;
+}
+
+.inputPayroll-setup-wrap {
+	width: 100%;
+	margin-bottom: 25px;
+}
+
+.inputPayroll-setup-wrap input {
+	width: 290px;
+	margin-right: 90px;
+}
+
+.inputPayroll-setup-wrap select {
+	width: 290px;
+	margin-right: 90px;
+}
+
+.buttonWrap-setup {
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+	margin-right: 90px;
+	margin-top: 5px;
+}
+
+.buttonWrap-setup button:hover {
+	background-color: #003766 !important;
+}
+
+.previousPayRollWrap {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	flex-direction: column;
+	margin-left: 50px;
+	width: 50vw;
+}
+
+.previousPayRollWrap h1 {
+	font-size: 20px;
+	margin-top: 36px;
+}
+
+.previousPayroll {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	width: 100%;
+	background-color: white;
+	height: 45px;
+	border: 1px solid rgba(112, 109, 109, 0.329);
+}
+
+.payrollLocation {
+	margin-right: auto;
+	margin-left: 20px;
+	font-weight: 600;
+}
+
+@media (max-width: 1004px) {
+	/* .paysetUpwraper {
+		width: 600px;
+	} */
+	.inputPayroll-setup-wrap input {
+		width: 220px;
+		margin-right: 50px;
+	}
+	.inputPayroll-setup-wrap select {
+		width: 220px;
+		margin-right: 50px;
+	}
+	.buttonWrap-setup {
+		display: flex;
+		justify-content: flex-end;
+		align-items: flex-end;
+		margin-right: 50px;
+		margin-top: 5px;
+	}
+}
+
+@media (max-width: 863px) {
+	.payroll-form-setup {
+		width: auto;
+	}
+	.paysetUpwraper {
+		width: fit-content;
+	}
+	.inputPayroll-setup {
+		display: flex;
+		width: 100%;
+		flex-direction: column;
+	}
+	.inputPayroll-setup-wrap {
+		width: 100%;
+		margin-bottom: 25px;
+	}
+	.inputPayroll-setup-wrap input {
+		width: 40vw;
+		margin: 0;
+	}
+	.inputPayroll-setup-wrap select {
+		width: 40vw;
+		margin: 0;
+	}
+	.buttonWrap-setup {
+		margin-right: 0px;
+		margin-top: 5px;
+	}
+	.previousPayroll {
+		width: 40vw;
+		margin: 0;
+	}
+}
+
+@media (max-width: 768px) {
+	.payroll-form-setup {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: fit-content;
+		margin: auto;
+	}
+	.inputPayroll-setup {
+		display: flex;
+		width: 100%;
+		flex-direction: column;
+	}
+	.inputPayroll-setup-wrap {
+		width: 100%;
+		margin-bottom: 25px;
+	}
+	.inputPayroll-setup-wrap input {
+		width: 80vw;
+		margin: 0;
+	}
+	.inputPayroll-setup-wrap select {
+		width: 80vw;
+		margin: 0;
+	}
+	.buttonWrap-setup {
+		margin-right: 0px;
+		margin-top: 5px;
+	}
+	.previousPayroll {
+		width: 80vw;
+		margin: 0;
+	}
+	.paysetUpwraper {
+		padding: 20px;
+	}
+}
+
+@media (max-width: 512px) {
+	.payroll-form-setup {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: fit-content;
+		margin: auto;
+	}
+	.inputPayroll-setup {
+		display: flex;
+		width: 100%;
+		flex-direction: column;
+	}
+	.inputPayroll-setup-wrap {
+		width: 100%;
+		margin-bottom: 25px;
+	}
+	.inputPayroll-setup-wrap input {
+		width: 70vw;
+		margin: 0;
+	}
+	.inputPayroll-setup-wrap select {
+		width: 70vw;
+		margin: 0;
+	}
+	.buttonWrap-setup {
+		margin-right: 0px;
+		margin-top: 5px;
+	}
+	.previousPayroll {
+		width: 80vw;
+		margin: 0;
+	}
+	.paysetUpwraper {
+		padding: 20px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 90vw !important;
+		margin: auto;
+		/* margin-right: 5px !important; */
+	}
+}
+
+/* PAYROLL HISTORY CUBES */
+
+.payHistory {
+	display: flex;
+	width: 100%;
+	margin-top: 20px;
+	justify-content: space-evenly;
+	align-items: center;
+	/* margin-bottom: 70px; */
+}
+
+.payCube {
+	width: fit-content;
+	padding: 15px;
+	width: 100px;
+	background: rgba(46, 212, 122, 0.47);
+	border-radius: 10px;
+	margin: 10px;
+	box-shadow: 2px 2px 4px rgba(128, 128, 128, 0.678);
+	height: 70px;
+}
+.payCube2 {
+	width: fit-content;
+	padding: 15px;
+	background: rgba(237, 233, 17, 0.52);
+	box-shadow: 2px 2px 4px rgba(128, 128, 128, 0.678);
+	border-radius: 10px;
+	margin: 10px;
+	height: 70px;
+}
+.payCube3 {
+	width: fit-content;
+	padding: 15px;
+	background: rgba(247, 104, 91, 0.6);
+	box-shadow: 2px 2px 4px rgba(128, 128, 128, 0.678);
+	border-radius: 10px;
+	margin: 10px;
+	height: 70px;
+}
+
+.innercubeContent {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	white-space: nowrap;
+	margin: auto;
+	width: 95%;
+	height: 95%;
+}
+.innerSpan1 {
+	font-weight: 400;
+	color: #003766;
+}
+
+.innerSpan2 {
+	font-weight: 700;
+	color: #003766;
+	font-size: 18px;
+}
+
+@media (max-width: 472px) {
+	.payHistory {
+		flex-direction: column;
+	}
+	.payCube,
+	.payCube2,
+	.payCube3 {
+		width: 60vw;
+	}
+}
+.payCube,
+.payCube2,
+.payCube3 {
+	cursor: pointer;
+}

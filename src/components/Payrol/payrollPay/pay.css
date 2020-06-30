@@ -1,0 +1,254 @@
+.payWrapper {
+	background-color: white;
+	width: 30vw;
+	height: fit-content;
+	display: flex;
+	/* justify-content: ; */
+	align-items: center;
+	flex-direction: column;
+	border-radius: 5px;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 20px;
+	overflow: hidden;
+	margin-bottom: 10px;
+	/* margin-left: 60px; */
+	filter: drop-shadow(1px 1px 2px rgba(128, 128, 128, 0.336));
+}
+
+.grossPay {
+	display: flex;
+	justify-content: space-evenly;
+	width: 100%;
+	margin-top: 0px;
+	padding: 10px;
+	padding-left: 2px;
+	padding-right: 2px;
+	overflow: hidden;
+	position: relative;
+	z-index: 10;
+}
+
+.grossPayTitle {
+	font-weight: 700;
+	margin-right: auto;
+}
+
+.grossPayPrize {
+	font-weight: 600;
+	color: #2ed47a;
+	cursor: pointer;
+}
+
+.paybill {
+	display: flex;
+	justify-content: space-evenly;
+	width: 100%;
+	margin-top: 5px;
+	overflow: hidden;
+	position: relative;
+	z-index: 5;
+}
+
+.paybillTitle {
+	margin-right: auto;
+}
+
+.paybillPrize span {
+	color: #8d8d8d;
+}
+
+.hideAccordion {
+	overflow: hidden;
+	/* animation: hideAcc 300ms ease-in-out forwards;
+	 */
+	display: none;
+}
+
+.hideAccordion2 {
+	overflow: hidden;
+	/* animation: hideAcc 300ms ease-in-out forwards;
+	 */
+	display: none;
+}
+
+@keyframes hideAcc {
+	0% {
+		transform: translateY(0);
+	}
+	30% {
+		transform: translateY(-500px);
+	}
+	50% {
+		opacity: 0;
+	}
+	100% {
+		visibility: hidden;
+	}
+}
+
+.showAccordion {
+	overflow: hidden;
+	animation: showAcc 300ms ease-in-out forwards;
+}
+
+@keyframes showAcc {
+	0% {
+		opacity: 0;
+	}
+	20% {
+		opacity: 0;
+	}
+	50% {
+		transform: translateY(-10px);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+
+.showAccordion2 {
+	overflow: hidden;
+	animation: showAcc 300ms ease-in-out forwards;
+}
+
+@keyframes showAcc {
+	0% {
+		opacity: 0;
+	}
+	20% {
+		opacity: 0;
+	}
+	50% {
+		transform: translateY(-10px);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+
+.deffaultAccState {
+	display: none;
+}
+
+.hrLine {
+	width: 90%;
+}
+
+.hrLine hr {
+	margin-top: 15px;
+}
+
+.Grosstotal {
+	font-weight: 600;
+	color: #8d8d8d;
+}
+
+.payButtonPayroo {
+	width: 100%;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	padding: 10px;
+	background: rgba(237, 233, 17, 0.44);
+	border-radius: 2px;
+	margin-bottom: 10px;
+}
+
+.PayrollNetpay {
+	margin-right: auto;
+	font-weight: 600;
+}
+
+.PayrollNetpay h1 {
+	margin-right: auto;
+	font-weight: 700;
+	font-size: 16px;
+}
+
+.PayrollNetprize {
+	font-size: 16px;
+	font-weight: 600;
+	color: #109cf1;
+}
+
+.saveButtonPayroll {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 15px;
+	margin-top: 4px;
+}
+
+.saveButtonPayroll button {
+	width: 40%;
+	background: #003766;
+	border-radius: 4px;
+	color: white;
+	border: none;
+	padding: 5px;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.AddPayrollItem23 {
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+	width: 100%;
+	font-weight: 500;
+	margin-bottom: 5px;
+}
+
+.payr-fa {
+	background: #003766;
+	border-radius: 10px;
+	color: white;
+	width: 20px;
+	height: 19px;
+	/* line-height: 1; */
+	/* padding: 2px; */
+	padding-top: 3px;
+	padding-left: 4.4px;
+}
+
+.AddPayrollItem23 .adP {
+	margin-left: auto;
+}
+
+@media(max-width:1210px) {
+	.payWrapper {
+		width: 40vw;
+	}
+}
+
+@media(max-width:960px) {
+	.payWrapper {
+		width: 45vw;
+	}
+}
+
+@media(max-width:777px) {
+	.payWrapper {
+		width: 50vw;
+	}
+}
+
+@media(max-width:691px) {
+	.payWrapper {
+		width: 55vw;
+	}
+}
+
+@media(max-width:644px) {
+	.payWrapper {
+		width: 60vw;
+	}
+}
+
+@media(max-width:555px) {
+	.payWrapper {
+		width: 90vw;
+	}
+}
