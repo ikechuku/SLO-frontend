@@ -13,7 +13,7 @@ import {
 } from "../../actions/data.action";
 import { hideLoader, showLoader } from "../../helpers/loader";
 
-import ResponsibilityTable from "./payrollTable";
+import Payroll from "./payrollTable";
 import "./payroll.css";
 
 export default class payroll extends Component {
@@ -54,7 +54,7 @@ export default class payroll extends Component {
 										</div>
 
 										<div className="card-body">
-											<ResponsibilityTable />
+											<Payroll />
 										</div>
 									</div>
 								</div>

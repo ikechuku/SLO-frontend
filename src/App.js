@@ -48,6 +48,9 @@ import PayrollSetup from "./components/Payrol/setUpPayroll/payrollSetup";
 import MainPayrolls from "./components/Payrol/payrolls/payroll";
 import PayNow from "./components/Payrol/payrollPay/pay";
 import SalaryStructure from "./components/salaryStructure/index";
+import LoanTypes from "./components/Loan/loanType";
+import LoanRequests from "./components/Loan/loanRequests";
+import UserLoan from "./components/Loan/decideLoan";
 // import "bootstrap/dist/css/bootstrap.css";
 
 function App() {
@@ -119,6 +122,9 @@ function App() {
 					<Route path="/main-payrolls" component={MainPayrolls} />
 					<Route path="/pay-now" component={PayNow} />
 					<Route path="/salary-structure" component={SalaryStructure} />
+					<Route path="/loan" component={LoanTypes} />
+					<Route path="/loan-requests" component={LoanRequests} />
+					<Route path="/user-loan-request" component={UserLoan} />
 				</Switch>
 			</Router>
 		</Provider>

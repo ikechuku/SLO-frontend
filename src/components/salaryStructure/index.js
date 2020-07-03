@@ -41,7 +41,7 @@ export default class index extends Component {
 	};
 	render() {
 		return (
-			<Layout page="payroll">
+			<Layout page="salaryStructure">
 				<div className="app-content">
 					<section className="section">
 						<ol className="breadcrumb">
