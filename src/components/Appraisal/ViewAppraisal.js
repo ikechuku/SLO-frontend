@@ -94,6 +94,15 @@ export default class ViewAppraisal extends Component {
     }
   }
 
+  getLabels = () => {
+    const { labels, percentage } = this.state;
+    return (
+      labels.length ? labels.map(item => (
+        (parseInt(percentage) >= parseInt(item.lowestGrade) &&  parseInt(percentage) <= parseInt(item.highestGrade)) ?
+          <span style={{ color: item.color }}>{item.name}</span> : ''
+      )) : '...'
+    )
+  }
   // Add appraisal to user (only branch manager, not available after submission)
 
   // submit appraisal (only branch manager)
@@ -137,8 +146,13 @@ export default class ViewAppraisal extends Component {
                           </div>
                           <div className="col-md-3 col-sm-5 text-right pr-0">
                             <div className="text-left">
-                              <span>Summary:</span>
-                              <span className="text-danger"> Very Poor</span>
+                              <span>Summary: </span>
+                              {/* <span className="text-danger">
+                                
+                              </span> */}
+                              {
+                                this.getLabels()
+                              }
                               <span> ({parseInt(percentage) || 0}%)</span>
                             </div>
                             <div className="text-left">
