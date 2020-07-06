@@ -4,7 +4,7 @@ import moment from 'moment';
 
 const date_format = 'DD/MM/YYYY';
 
-export default function SetAppraisal(props) {
+export default function SetAppraisalExcess(props) {
 
   const CustomInput = ({ value, onClick }) => (
     <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')"
@@ -22,21 +22,26 @@ export default function SetAppraisal(props) {
 
 
   return (
-    <div className="modal fade" id="setAppraisalModal" tabIndex="-1" role="dialog"  aria-hidden="true">
-      <div className="modal-dialog modal-dialog-centered" role="document">
+    <div className="modal fade" id="setAppraisalExcessModal" tabIndex="-1" role="dialog"  aria-hidden="true">
+      <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div className="modal-content">
-          <div className="modal-body p-5 mt-5 mr-5 mb-2 ml-5">
-            <h4 className="mb-4">Upcoming Appraisal Date</h4>
+          <div className="modal-body p-5 mt-5 mr-5 mb-2 ml-5 mx-auto">
+            <div className="text-center mx-auto">
+              <h4 className="mb-4">Set New Appraisal Date</h4>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={props.clearInputs}>
+              <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
             <form onSubmit={props.handleSubmit}>
             <div className="mx-auto my-auto mt-5">  
-              <label htmlFor="" className="col-12">Start Date</label>
-              <div className="col-12 c-date-picker">
+              {/* <label htmlFor="" className="col-12">Start Date</label> */}
+              <div className="c-date-picker mb-3">
                 <DatePicker
                   className="form-control"
                   selected={props.date1}
                   onChange={(e) => props.handleDate(e, 'startDate')}
                   dateFormat="yyyy/MM/dd"
-                  placeholderText="Click to select a date"
+                  placeholderText="From"
                   peekNextMonth
                   showMonthDropdown
                   showYearDropdown
@@ -46,14 +51,14 @@ export default function SetAppraisal(props) {
                 />
               </div>
 
-              <label htmlFor="" className="col-12 mt-5">End Date</label>
-              <div className="col-12 c-date-picker">
+              {/* <label htmlFor="" className="col-12 mt-5">End Date</label> */}
+              <div className="c-date-picker">
                 <DatePicker
                   className="form-control"
                   selected={props.date2}
                   onChange={(e) => props.handleDate(e, 'endDate')}
                   dateFormat="yyyy/MM/dd"
-                  placeholderText="Click to select a date"
+                  placeholderText="To"
                   peekNextMonth
                   showMonthDropdown
                   showYearDropdown
@@ -62,24 +67,51 @@ export default function SetAppraisal(props) {
                 />
               </div>
 
+              <div className="mt-3">
+                <input 
+                  className="form-control" 
+                  type="text" 
+                  name="totalExcess" id="" 
+                  placeholder="Total Excess Score"
+                  onChange={(e) => props.handleDate(e, 'totalExcess')}
+                />
+              </div>
+
+
+              <div className="mt-5">
+                <div className="text-center">
+                  <h5 className="mb-4">Convert excess to bonus</h5>
+                </div>
+                <div className="col-md-12">
+                  <label htmlFor="" className="col-md-2 d-inline">1 score</label>
+                  <input 
+                    className="col-md-6 form-control d-inline" 
+                    type="text" 
+                    name="excessConversion" id="" 
+                    placeholder="N10"
+                    onChange={(e) => props.handleDate(e, 'excessConversion')}
+                  />
+                </div>
+              </div>
+
 
               <div className="modal-footer justify-content-center mt-5" style={{ border: 'none'}}>
-						<button
+						{/* <button
 							type="button"
               className="btn btn-danger rounded-circle"
               style={{ padding: '15px 20px', fontSize: '20px'}}
 							data-dismiss="modal"
-							onClick={props.clearInputs}
+							onClick={props.closeModal}
 						>
 							<i className="fa fa-times"></i>
-						</button>
+						</button> */}
 						<button
 							type="submit"
 							onSubmit={props.handleSubmit}
-              className="btn btn-primary rounded-circle ml-5"
-              style={{ padding: '15px 20px', fontSize: '20px' }}
+              className="btn btn-danger"
+              style={{ padding: '15px 20px', fontSize: '20px', minWidth: '325px', height: '45px' }}
 						>
-							{props.modalMode === "create" ? <i className="fa fa-check"></i> : <i className="fa fa-check"></i>}
+							END
 						</button>
 					</div>
               
