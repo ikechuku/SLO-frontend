@@ -1,72 +1,98 @@
-import React from 'react'
+import React, { Component} from 'react';
+import Moment from 'react-moment';
+import { NotificationManager } from 'react-notifications';
 import Layout from '../layout'
 import { SpecificUserAppraisalTable } from './Table'
-import { Component } from 'react'
 import DownloadSvg from './downloadSvg';
 import { showLoader, hideLoader } from '../../helpers/loader';
-import { httpGet } from '../../actions/data.action';
+import { httpGet, httpPost } from '../../actions/data.action';
 import {AddAppraisal} from './Modal';
+import dateFromNow from '../../helpers/dateFromNow';
 
 export default class ViewAppraisal extends Component {
   constructor(props){
     super(props);
     this.state = {
-      isUser: false,
-      assignedKpis: [],
-      userAppraisals: [],
-      assignedKpisOption: [],
+      appraisal: {},
+      appraisalItems: [],
+      comments: [],
       assignData: {},
-      customSelect: null
+      customSelect: null,
+      comment: '',
+      percentage: null,
+      labels: [],
+      user: {}
     }
   }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     showLoader();
-    this.getUserAppraisal();
-    this.getUserAssignedKpis();
-    hideLoader();
+    await this.getUserAppraisal();
+    await this.getPerformanceLabel();
   }
 
   //get user appraisal (all views)
   getUserAppraisal = async () => {
     const { id } = this.props.match.params;
-
-    const res = await httpGet(`get_user_appraisals/${!this.state.isUser ? id : null}`);
-    if(res.code === 200){
-      this.setState({ userAppraisals: res.data.userAppraisals })
+    try{
+      const res = await httpGet(`get_staff_appraisal/${id}`);
+      if(res.code === 200){
+        const percentage = ( res.data.totalAppraisalScore[0].totalAppraisalScore / res.data.totalTargetScore[0].totalTargetScore) * 100
+        this.setState({ 
+          appraisal: res.data.appraisal,
+          appraisalItems: res.data.appraisal.userAppraisal,
+          comments: res.data.comments,
+          percentage,
+          user: res.data.appraisal.user
+        })
+        hideLoader();
+      }
+    }catch(error){
+      hideLoader();
+      console.log(error)
     }
   }
 
-  // get user's role assigned kpi
-  getUserAssignedKpis = async () => {
+  getPerformanceLabel = async () => {
     const { id } = this.props.match.params;
-
-    const res = await httpGet(`get_user_assigned_kpi/${id}`);
-    if(res.code === 200){
-      console.log(res.data.assignedKpis)
-      let assignedKpisOption = [];
-      await res.data.assignedKpis.length ? [...res.data.assignedKpis].map(data => 
-        assignedKpisOption.push({ value: data.id, label: data.kpi !== undefined ? data.kpi.name : null })
-      ) : assignedKpisOption = [];
-      this.setState({ assignedKpis: res.data.assignedKpis, assignedKpisOption })
+    try{
+      const res = await httpGet(`performance_label`);
+      if(res.code === 200){
+        this.setState({ 
+          labels: res.data.performanceLabel,
+        })
+        hideLoader();
+      }
+    }catch(error){
+      hideLoader();
+      console.log(error)
     }
   }
 
-  handleChange = (e, name) => {
-    const { assignData, assignedKpis } = this.state;
-    console.log(name)
-    if(name === 'assignedKpiId'){
-      const data = [...assignedKpis].filter(item => item.id === e.value)[0];
-      assignData[name] = e.value;
-      assignData['targetValue'] = data.target;
-      assignData['targetScore'] = data.score;
-      this.setState({ assignData, customSelect: e });
-    } else {
-      assignData[e.target.name] = e.target.value;
-      this.setState({ assignData });
+  postComment = async (e) => {
+    e.preventDefault();
+    try{
+      showLoader();
+      const { comment, appraisal } = this.state;
+      const { id } = appraisal;
+      if(comment === ''){
+        hideLoader();
+        return NotificationManager.warning('Comment cannot be empty')
+      }
+      const data = {
+        comment
+      }
+      const res = await httpPost(`pmu_comment_appraisal/${id}`, data);
+      if(res.code === 201){
+        this.getUserAppraisal();
+        this.setState({ comment: '' })
+        hideLoader();
+        NotificationManager.success('Saved Successfully')
+      }
+    }catch(error){
+      console.log(error)
     }
   }
-
 
   // Add appraisal to user (only branch manager, not available after submission)
 
@@ -75,9 +101,9 @@ export default class ViewAppraisal extends Component {
   // comment ( staff, branch manager )
 
   render() {
-    console.log(this.state.userAppraisals)
+    const { appraisal, appraisalItems, comments, percentage, labels, user } = this.state;
     return (
-      <Layout page="branch">
+      <Layout page="appraisal">
         <div className="app-content">
           <section className="section">
             <ol className="breadcrumb">
@@ -106,18 +132,18 @@ export default class ViewAppraisal extends Component {
                       <div className="col-md-12">
                         <div className="row">
                           <div className="col-md-9 col-sm-7 pl-0 text-primary" style={{ fontWeight: '600'}}>
-                            <p className="mb-0" style={{ fontSize: '20px'}}>Yinka Ayefele</p>
+                            <p className="mb-0" style={{ fontSize: '20px'}}>{user.firstName + ' ' + user.lastName}</p>
                             <p className="mb-0" style={{color: '#999999'}}>MIS Officer</p>
                           </div>
                           <div className="col-md-3 col-sm-5 text-right pr-0">
                             <div className="text-left">
                               <span>Summary:</span>
                               <span className="text-danger"> Very Poor</span>
-                              <span> (10%)</span>
+                              <span> ({parseInt(percentage) || 0}%)</span>
                             </div>
                             <div className="text-left">
                               <span className="p">Status:</span>
-                              <span> Staff Responded</span>
+                              <span> {appraisal.status}</span>
                             </div>
                           </div>
                         </div>
@@ -133,51 +159,58 @@ export default class ViewAppraisal extends Component {
                         <i className="fa fa-plus"></i>
                       </div>
                       <SpecificUserAppraisalTable
-                        branches={this.state.appraisals || []}
+                        appraisalItems={appraisalItems || []}
                         // handleDelete={this.deleteBranch}
                         // handleEdit={this.handleEdit}
                       />
 
 
                       <div class="col-md-12 mt-5 pt-5">
-												<div class="media mt-0">
-                            <div class="media-left"> <a href="javascript:void(0)"> <img src="/assets/img/avatar/avatar-2.jpg" alt="" class="media-object" /> </a> </div>
-                            <div class="media-body">
-                              <h4 class="media-heading">Yinka Ayefele<br />
-                                <small>MIT Officer</small><br />
-                              </h4>
-                            </div>
+												{
+                          comments.length ? comments.map(item => (
                             <div>
-                              <small class="text-muted"><i class="fa fa-clock-o"></i> Yesterday, 2:00 am</small>
+                              <div class="media mt-0">
+                                <div class="media-left"> <a href="javascript:void(0)"> <img src="/assets/img/avatar/avatar-2.jpg" alt="" class="media-object" /> </a> </div>
+                                <div class="media-body">
+                                  <h4 class="media-heading">{item.user.firstName + ' ' + item.user.lastName}<br />
+                                    <small>{item.user.role}</small><br />
+                                  </h4>
+                                </div>
+                                <div>
+                                  <small class="text-muted"><i class="fa fa-clock-o"></i> {dateFromNow(item.createdAt)}, <Moment format='LT'>{item.createdAt}</Moment></small>
+                                </div>
+                              </div>
+                              <div style={{
+                                marginLeft: '23px',
+                                padding: '5px 10px 5px 42px',
+                                borderLeft: '2px solid #B1B4C1'
+                              }}>
+                                <p>{item.comment}</p>
+                              </div>
                             </div>
-												</div>
-                        <div style={{
-                          marginLeft: '23px',
-                          padding: '5px 10px 5px 42px',
-                          borderLeft: '2px solid #B1B4C1'
-                        }}>
-                          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam obcaecati ex nemo. Similique, a porro? Aperiam nam laudantium ratione quis laborum facilis libero iure recusandae nihil! Laboriosam nobis cumque ducimus laborum, voluptate magnam modi voluptates. Quia, maiores impedit assumenda asperiores natus saepe commodi architecto odit ullam! Odit modi illum alias.</p>
-                        </div>
+                          )) :
+                          <div> 
+                            <div class="media mt-0">
+                              <div class="media-left"> <a href="javascript:void(0)"> <img src="/assets/img/avatar/avatar-2.jpg" alt="" class="media-object" /> </a> </div>
+                              <div class="media-body">
+                                <h4 class="media-heading">....<br />
+                                  <small>....</small><br />
+                                </h4>
+                              </div>
+                              <div>
+                                <small class="text-muted"><i class="fa fa-clock-o"></i> ...., ...</small>
+                              </div>
+                              </div>
+                              <div style={{
+                                marginLeft: '23px',
+                                padding: '5px 10px 5px 42px',
+                                borderLeft: '2px solid #B1B4C1'
+                              }}>
+                                <p>....</p>
+                            </div>
+                          </div>
+                        }
 
-
-                        <div class="media mt-0">
-                          <div class="media-left"> <a href="javascript:void(0)"> <img src="/assets/img/avatar/avatar-2.jpg" alt="" class="media-object" /> </a> </div>
-                            <div class="media-body">
-                              <h4 class="media-heading">Ayomide Martins<br />
-                                <small>Branch Manager</small><br />
-                              </h4>
-                            </div>
-                            <div>
-                              <small class="text-muted"><i class="fa fa-clock-o"></i> Yesterday, 2:00 am</small>
-                            </div>
-												</div>
-                        <div style={{
-                          marginLeft: '23px',
-                          padding: '5px 10px 5px 42px',
-                          borderLeft: '2px solid #B1B4C1'
-                        }}>
-                          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam obcaecati ex nemo. Similique, a porro? Aperiam nam laudantium ratione quis laborum facilis libero iure recusandae nihil! Laboriosam nobis cumque ducimus laborum, voluptate magnam modi voluptates. Quia, maiores impedit assumenda asperiores natus saepe commodi architecto odit ullam! Odit modi illum alias.</p>
-                        </div>
 											</div>
 
                       <div className="mt-5">
@@ -190,7 +223,23 @@ export default class ViewAppraisal extends Component {
                             border: '1px solid #DFE3E9',
                             borderRadius: '4px'
                           }}
+                          onChange={e => this.setState({ comment: e.target.value })}
                         />
+                        <div className="text-center mt-2">
+                          <button className="btn btn-lg-primary"
+                           style={{ 
+                            minWidth: '325px', height: '45px',
+                            background: '#003766', color: '#fff'
+                          }}
+                          disabled={
+                            !comments.length || comments.length === 3 ?
+                            true : false
+                          }
+                          onClick={this.postComment}
+                          >
+                            Submit
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -200,12 +249,12 @@ export default class ViewAppraisal extends Component {
           </section>
         </div>
 
-        <AddAppraisal 
+        {/* <AddAppraisal 
           assignedKpisOption={this.state.assignedKpisOption}
           assignData={this.state.assignData}
           handleChange={this.handleChange}
           customSelect={this.state.customSelect}
-        />
+        /> */}
       </Layout>
     )
   }
