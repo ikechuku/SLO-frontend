@@ -37,7 +37,8 @@ export default class ViewAppraisal extends Component {
     try{
       const res = await httpGet(`get_staff_appraisal/${id}`);
       if(res.code === 200){
-        const percentage = ( res.data.totalAppraisalScore[0].totalAppraisalScore / res.data.totalTargetScore[0].totalTargetScore) * 100
+        const percentage = Math.round(( res.data.totalAppraisalScore / res.data.totalTargetScore) * 100);
+        console.log(res.data.totalAppraisalScore, res.data.totalTargetScore)
         this.setState({ 
           appraisal: res.data.appraisal,
           appraisalItems: res.data.appraisal.userAppraisal,
@@ -153,7 +154,7 @@ export default class ViewAppraisal extends Component {
                               {
                                 this.getLabels()
                               }
-                              <span> ({parseInt(percentage) || 0}%)</span>
+                              <span> ({percentage || 0}%)</span>
                             </div>
                             <div className="text-left">
                               <span className="p">Status:</span>
@@ -246,7 +247,7 @@ export default class ViewAppraisal extends Component {
                             background: '#003766', color: '#fff'
                           }}
                           disabled={
-                            !comments.length || comments.length === 3 ?
+                            !comments.length || comments.length >= 3 ?
                             true : false
                           }
                           onClick={this.postComment}

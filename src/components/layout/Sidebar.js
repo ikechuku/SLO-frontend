@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 
 export default function Sidebar(props) {
 
-  // useEffect(() => {
-  //   window.$(".app-sidebar").mCustomScrollbar({
-  //     theme:"minimal",
-  //     autoHideScrollbar: true,
-  //     scrollbarPosition: "outside"
-  //   });
-  // }, [])
+  useEffect(() => {
+    window.$(".app-sidebar").mCustomScrollbar({
+      theme:"minimal",
+      autoHideScrollbar: true,
+      scrollbarPosition: "outside"
+    });
+  }, [])
 
   return (
     <aside className="app-sidebar mCustomScrollbar _mCS_1 mCS-autoHide">

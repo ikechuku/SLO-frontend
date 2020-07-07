@@ -14,14 +14,20 @@ export class AppraisalTable extends Component {
 	getScore = (items) => {
 		const appraisals = items.userAppraisal;
 		let totalAppraisalScore = 0, totalTargetValue = 0;
-		appraisals.map(data => (
-			totalAppraisalScore = totalAppraisalScore + data.appraisalScore
-		))
+		appraisals.map(data => {
+			if(data.assignedKpiUser.kpi.type === 'positive'){
+				console.log(data.appraisalScore)
+				totalAppraisalScore = totalAppraisalScore + Math.round(data.appraisalScore)
+			}	else {
+				console.log(data.appraisalScore)
+				totalAppraisalScore = totalAppraisalScore - data.appraisalScore
+			}
+		})
 		appraisals.map(data => (
 			totalTargetValue = totalTargetValue + data.assignedKpiUser.score
 		))
 		console.log( '$$$',totalAppraisalScore, totalTargetValue)
-		const percentage = parseInt((totalAppraisalScore / totalTargetValue) * 100);
+		const percentage = Math.round((totalAppraisalScore / totalTargetValue) * 100);
 		return `${percentage}`
 	}
 
@@ -90,7 +96,7 @@ export class SpecificUserAppraisalTable extends Component {
 				"targetValue": data.assignedKpiUser.target,
 				"appraisedValue": data.appraisalValue,
 				"targetScore": data.assignedKpiUser.score,
-				"appraisedScore": `${data.assignedKpiUser.kpi.type === 'positive' ? '+' : '-'}${data.appraisalScore}`
+				"appraisedScore": `${data.assignedKpiUser.kpi.type === 'positive' ? '+' : '-'}${Math.round(data.appraisalScore * 100) / 100}`
 			}
 		));
 		return body;
