@@ -24,25 +24,33 @@ import LeaveMangement from "./components/Leave/LeaveManagement/leaveManagement";
 import LeaveHistory from "./components/Leave/leaveHistory/leaveHistory";
 import CreateStaff from "./components/Onboarding/createStaff";
 import Login from "./components/Login";
-import UnderReview from './components/Onboarding/UnderReview';
-import StaffDashboard from './components/Dashboard/Staff';
-import Logout from './components/Logout';
-import Testing from './components/testing';
-import Appraisal from './components/Appraisal';
-import ViewAppraisal from './components/Appraisal/ViewAppraisal';
-import AppraisalList from './components/Appraisal/AppraisalList';
+import UnderReview from "./components/Onboarding/UnderReview";
+import StaffDashboard from "./components/Dashboard/Staff";
+import Logout from "./components/Logout";
+import Testing from "./components/testing";
+import Appraisal from "./components/Appraisal";
+import ViewAppraisal from "./components/Appraisal/ViewAppraisal";
+import AppraisalList from "./components/Appraisal/AppraisalList";
 import AssignKpi from "./components/KPI/AssignKpi";
-import Labels from './components/PerformanceLabels'
+import Labels from "./components/PerformanceLabels";
 
 import "react-notifications/lib/notifications.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-tooltip/dist/index.js";
 
-import ProtectedRoute from './helpers/ProtectedRoute';
+import ProtectedRoute from "./helpers/ProtectedRoute";
 
 // NEW CHANGES
 import UserInfo from "./components/personalinfo/info";
-
+import PayRoll from "./components/Payrol/payroll";
+import PayrollForm from "./components/Payrol/payrollForm";
+import PayrollSetup from "./components/Payrol/setUpPayroll/payrollSetup";
+import MainPayrolls from "./components/Payrol/payrolls/payroll";
+import PayNow from "./components/Payrol/payrollPay/pay";
+import SalaryStructure from "./components/salaryStructure/index";
+import LoanTypes from "./components/Loan/loanType";
+import LoanRequests from "./components/Loan/loanRequests";
+import UserLoan from "./components/Loan/decideLoan";
 // import "bootstrap/dist/css/bootstrap.css";
 
 function App() {
@@ -57,12 +65,29 @@ function App() {
 					<Route exact path="/login" component={Login} />
 					{/* <Route path="/create_staff/one" component={PersonalInfo} /> */}
 					<Route exact path="/staff_dashboard" component={StaffDashboard} />
-					<ProtectedRoute exact path="/pending_actions" component={PendingActions} />
+					<ProtectedRoute
+						exact
+						path="/pending_actions"
+						component={PendingActions}
+					/>
 					<ProtectedRoute exact path="/create_staff" component={CreateStaff} />
-					<ProtectedRoute exact path="/create_staff/one/:id" component={PersonalInfo} />
-					<ProtectedRoute path="/create_staff/two/:id" component={Qualification} />
-					<ProtectedRoute path="/create_staff/three/:id" component={Guarantor} />
-					<ProtectedRoute path="/create_staff/four/:id" component={Employment} />
+					<ProtectedRoute
+						exact
+						path="/create_staff/one/:id"
+						component={PersonalInfo}
+					/>
+					<ProtectedRoute
+						path="/create_staff/two/:id"
+						component={Qualification}
+					/>
+					<ProtectedRoute
+						path="/create_staff/three/:id"
+						component={Guarantor}
+					/>
+					<ProtectedRoute
+						path="/create_staff/four/:id"
+						component={Employment}
+					/>
 					{/* <Route path="/create_staff/five/:id" component={Upload} /> */}
 					{/* <Route path="/create_staff/six" component={PendingApplication} /> */}
 					<ProtectedRoute path="/staff_list" component={StaffList} />
@@ -75,8 +100,14 @@ function App() {
 					<ProtectedRoute path="/assign_kpi" component={AssignKpi} />
 					<ProtectedRoute path="/responsibility" component={Responsibility} />
 					<ProtectedRoute path="/appraisal" component={Appraisal} />
-					<ProtectedRoute path="/view_appraisal/:id" component={ViewAppraisal} />
-					<ProtectedRoute path="/user_appraisal_list" component={AppraisalList} />
+					<ProtectedRoute
+						path="/view_appraisal/:id"
+						component={ViewAppraisal}
+					/>
+					<ProtectedRoute
+						path="/user_appraisal_list"
+						component={AppraisalList}
+					/>
 					<ProtectedRoute path="/leave_setup" component={CreateLeave} />
 					<ProtectedRoute path="/leave_management" component={LeaveMangement} />
 					<ProtectedRoute path="/leave_history" component={LeaveHistory} />
@@ -85,6 +116,15 @@ function App() {
 					<Route path="/application_status" component={UnderReview} />
 					{/* <Route path="/testing" component={Testing} /> */}
 					<Route path="/logout" component={Logout} />
+					<Route path="/payroll" component={PayRoll} />
+					<Route path="/payroll-form" component={PayrollForm} />
+					<Route path="/setup-payroll" component={PayrollSetup} />
+					<Route path="/main-payrolls" component={MainPayrolls} />
+					<Route path="/pay-now" component={PayNow} />
+					<Route path="/salary-structure" component={SalaryStructure} />
+					<Route path="/loan" component={LoanTypes} />
+					<Route path="/loan-requests" component={LoanRequests} />
+					<Route path="/user-loan-request" component={UserLoan} />
 				</Switch>
 			</Router>
 		</Provider>

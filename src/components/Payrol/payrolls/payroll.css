@@ -1,0 +1,52 @@
+.PayrollTitle {
+	text-align: center;
+	font-weight: 600;
+	font-size: 15px;
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+.PayrollSubTitle {
+	text-align: center;
+	font-weight: 400;
+	font-size: 12px;
+	margin-bottom: 20px;
+}
+
+.payrollSubmitBtn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 25px;
+}
+
+.payrollSubmitBtn button {
+	background: #003766;
+	border-radius: 5px;
+	color: white;
+	font-weight: 600;
+	border: none;
+	padding: 10px;
+	width: 100px;
+	cursor: pointer;
+}
+.submitPayrollAlert {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+.submitPayrollAlert button {
+	width: 50%;
+	border: none;
+	margin: 10px;
+	padding: 5px;
+	margin-bottom: 5px;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.fa-fw {
+	position: absolute;
+	line-height: 2;
+	padding: 0 !important;
+}

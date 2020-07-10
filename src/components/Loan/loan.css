@@ -1,0 +1,161 @@
+.loanContainer {
+  background-color: white;
+  width: 45vw;
+  height: fit-content;
+  filter: drop-shadow(1px 2px 2px rgba(128, 128, 128, 0.527));
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+
+.loanHeader {
+  background: #FAFAFA;
+  border-radius: 10px 10px 0 0;
+}
+
+.loanHeader h1 {
+  font-size: 18px;
+  font-weight: 700;
+  width: 100%;
+  height: 60px;
+  padding-top: 21px;
+  padding-left: 16px;
+}
+
+/* .loanHeader h1::before {
+  content: "";
+  background-color: red;
+  padding: 10px;
+} */
+
+.loanDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px 10px 20px;
+}
+
+.detail1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail1>div {
+  padding: 0 10px 0 20px;
+}
+
+.subDetails1 {
+  letter-spacing: 0.01em;
+  font-size: 15px;
+  font-weight: 700;
+  color: #003766;
+}
+
+.subDetails2 {
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  font-size: 15px;
+  font-weight: 500;
+  margin-left: auto;
+  color: #8D8D8D;
+}
+
+.loanBtn {
+  display: flex;
+  justify-self: center;
+  align-items: center;
+  margin: auto;
+  width: fit-content;
+}
+
+.loanBtn button {
+  background: #003766;
+  border-radius: 5px;
+  color: white;
+  border: none;
+  padding: 10px 30px 10px 30px;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.responsiveOverfloy {
+  margin-left: 25px
+}
+
+@media(max-width:1020px) {
+  .loanContainer {
+    width: 50vw;
+  }
+}
+
+@media(max-width:943px) {
+  .loanContainer {
+    width: 60vw;
+  }
+}
+
+@media(max-width:767px) {
+  .loanContainer {
+    width: 80vw;
+  }
+}
+
+@media(max-width:595px) {
+  .loanContainer {
+    width: 90vw;
+  }
+}
+
+@media(max-width:526px) {
+  .loanDetails {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 5px;
+    margin: 5px;
+    flex-direction: column;
+    width: 100%;
+  }
+  .detail1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+    width: 95%;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.loanForm {}
+
+.loanForm form {
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  align-items: center;
+  margin: auto;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.loanForm form input {
+  width: 300px;
+}
+
+.loanForm form label {
+  font-weight: 700;
+  color: #003766;
+}
+
+.res-tb {
+  width: fit-content;
+  padding: 15px;
+}
+
+.userRequest {
+  width: 40vw;
+}
