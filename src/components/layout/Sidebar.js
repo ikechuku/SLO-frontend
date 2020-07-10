@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Sidebar(props) {
+
+  // useEffect(() => {
+  //   window.$(".app-sidebar").mCustomScrollbar({
+  //     theme:"minimal",
+  //     autoHideScrollbar: true,
+  //     scrollbarPosition: "outside"
+  //   });
+  // }, [])
+
   return (
-    <aside className="app-sidebar">
+    <aside className="app-sidebar mCustomScrollbar _mCS_1 mCS-autoHide">
       {/* <div className="app-sidebar__user">
           <div className="dropdown">
           <a className="nav-link pl-2 pr-2 leading-none d-flex" data-toggle="dropdown" href="#">
@@ -45,7 +54,7 @@ export default function Sidebar(props) {
                 <span>Roles</span>
               </Link>
             </li>
-            <li className={props.props.page === 'responsibility' ? "active" : ""}>
+            {/* <li className={props.props.page === 'responsibility' ? "active" : ""}>
               <Link className={props.props.page === 'responsibility' ? "slide-item active" : "slide-item"} to="/responsibility">
                 <span>Responsibility</span>
               </Link>
@@ -54,7 +63,7 @@ export default function Sidebar(props) {
               <Link className={props.props.page === 'appraisal' ? "slide-item active" : "slide-item"} to="/appraisal">
                 <span>Appraisal</span>
               </Link>
-            </li>
+            </li> */}
             <li className={props.props.page === 'kpi' ? "slide active" : "slide"}>
               <Link className="side-menu__item second-side-menu__item" data-toggle="second-slide" to="/kpi">
                 <span className="side-menu__label" style={{paddingLeft: '25px', fontSize: '12px'}}>Kpi Settings</span><i className="angle fa fa-angle-right"></i>

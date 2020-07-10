@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Table from '../../helpers/customTable';
 import Datatable from 'react-bs-datatable';
 import './index.css'
@@ -10,13 +11,28 @@ export class AppraisalTable extends Component {
 	
 	}
 
+	getScore = (items) => {
+		const appraisals = items.userAppraisal;
+		let totalAppraisalScore = 0, totalTargetValue = 0;
+		appraisals.map(data => (
+			totalAppraisalScore = totalAppraisalScore + data.appraisalScore
+		))
+		appraisals.map(data => (
+			totalTargetValue = totalTargetValue + data.assignedKpiUser.score
+		))
+		console.log( '$$$',totalAppraisalScore, totalTargetValue)
+		const percentage = parseInt((totalAppraisalScore / totalTargetValue) * 100);
+		return `${percentage}`
+	}
+
 	bodyRow = () => {
-		const body = this.props.branches.map((data, index) => (
+		const body = this.props.appraisals.map((data, index) => (
 			{
-				"branchName": data.name,
-				"region": data.region,
-				"address": data.address,
-				"action": <span>View</span>
+				"name": data.user.firstName + `${' '}` + data.user.lastName,
+				"role": data.user.role,
+				"appraisalScore": this.getScore(data),
+				"status": data.status,
+				"action": <Link to={`/view_appraisal/${data.userId}`}>View</Link>
 			}
 		));
 		return body;
@@ -39,6 +55,7 @@ export class AppraisalTable extends Component {
 	}
 
 	render() {
+		console.log('>>>', this.props.appraisals)
 		return (
 			<div className="table-responsive" style={{overflow: 'hidden'}}>
         {/* <div
@@ -67,14 +84,13 @@ export class SpecificUserAppraisalTable extends Component {
 	}
 
 	bodyRow = () => {
-		const body = this.props.branches.map((data, index) => (
+		const body = this.props.appraisalItems.map((data, index) => (
 			{
-				"kpi": data.name,
-				"targetValue": data.region,
-				"appraisedValue": data.address,
-				"targetScore": data.region,
-				"appraisedScore": data.address,
-				"action": <span>View</span>
+				"kpi": data.assignedKpiUser.kpi.name,
+				"targetValue": data.assignedKpiUser.target,
+				"appraisedValue": data.appraisalValue,
+				"targetScore": data.assignedKpiUser.score,
+				"appraisedScore": `${data.assignedKpiUser.kpi.type === 'positive' ? '+' : '-'}${data.appraisalScore}`
 			}
 		));
 		return body;
@@ -92,7 +108,6 @@ export class SpecificUserAppraisalTable extends Component {
       { title: 'Appraised Value', prop: 'appraisedValue', sortable: true },
 			{ title: 'Target Score', prop: 'targetScore', sortable: true },
 			{ title: 'Appraised Score', prop: 'appraisedScore', sortable: true },
-			{ title: '', prop: 'action' },
 		];
 		return header;
 	}

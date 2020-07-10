@@ -10,6 +10,7 @@ import DownloadSvg from './downloadSvg';
 import SetAppraisal from './SetAppraisal';
 import { httpGet, httpPost } from '../../actions/data.action';
 import { showLoader, hideLoader } from '../../helpers/loader';
+import SetAppraisalExcess from './SetAppraisalExcess';
 
 export default class Index extends Component {
   constructor(props){
@@ -17,6 +18,7 @@ export default class Index extends Component {
     this.state = {
       postData: {},
       dates: [],
+      appraisals: [],
       date1: undefined,
       date2: undefined,
     }
@@ -45,7 +47,7 @@ export default class Index extends Component {
 
       const res = await httpGet(`current_appraisals`);
       if(res.code === 200){
-        this.setState({ dates: res.data.appraisalDates });
+        this.setState({ appraisals: res.data.appraisals });
       }
     }catch(error){
       console.log(error)
@@ -60,6 +62,9 @@ export default class Index extends Component {
     } else if(name === 'endDate'){
       postData[name] = e;
       this.setState({ postData, date2: e })
+    } else {
+      postData[name] = e;
+      this.setState({ postData })
     }
   }
 
@@ -76,6 +81,7 @@ export default class Index extends Component {
         $(document.body).removeClass('modal-open');
         $('.modal-backdrop').remove();
         await this.getAppraisalDates();
+        this.clearInputs();
         hideLoader();
       }  
     } catch(error){
@@ -117,6 +123,43 @@ export default class Index extends Component {
     }
   }
 
+  endAppraisal = async(e) => {
+    e.preventDefault();
+    try{
+      showLoader();
+      const { startDate, endDate } = this.state.postData;
+      if(startDate === '' || endDate === ''){
+        NotificationManager.success('Dates must be filled in completely');
+        hideLoader();
+      }
+
+      const res = await httpPost('end_appraisal', this.state.postData);
+      if(res.code === 200){
+        NotificationManager.success('Successfully ended aprraisal');
+        $('.modal').modal('hide');
+        $(document.body).removeClass('modal-open');
+        $('.modal-backdrop').remove();
+        await this.getAppraisalDates();
+        this.clearInputs();
+        hideLoader();
+      }  
+    } catch(error){
+      hideLoader();
+      console.log(error)
+    }
+  }
+
+  clearInputs = () => {
+    this.setState({
+      date1: undefined,
+      date2: undefined,
+      postData: {
+        startDate: '',
+        endDate: ''
+      }
+    })
+  }
+
   render() {
     return (
       <Layout page="branch">
@@ -155,7 +198,7 @@ export default class Index extends Component {
                               type="button"
                               className="btn btn-danger mb-4"
                               data-toggle="modal"
-                              data-target="#branchModal"
+                              data-target="#setAppraisalExcessModal"
                             >
                               End Appraisal
                             </button>
@@ -193,7 +236,7 @@ export default class Index extends Component {
                         </p>
                       </div>
                       <AppraisalTable
-                        branches={this.state.appraisals || []}
+                        appraisals={this.state.appraisals || []}
                         // handleDelete={this.deleteBranch}
                         // handleEdit={this.handleEdit}
                       />
@@ -210,6 +253,15 @@ export default class Index extends Component {
           modalMode={'create'}
           handleDate={this.handleDate}
           handleSubmit={this.handleSubmit}
+          clearInputs={this.clearInputs}
+        />
+        <SetAppraisalExcess
+          date1={this.state.date1}
+          date2={this.state.date2}
+          modalMode={'create'}
+          handleDate={this.handleDate}
+          handleSubmit={this.endAppraisal}
+          clearInputs={this.clearInputs}
         />
       </Layout>
     )
