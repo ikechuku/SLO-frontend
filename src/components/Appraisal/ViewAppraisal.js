@@ -37,7 +37,8 @@ export default class ViewAppraisal extends Component {
     try{
       const res = await httpGet(`get_staff_appraisal/${id}`);
       if(res.code === 200){
-        const percentage = ( res.data.totalAppraisalScore[0].totalAppraisalScore / res.data.totalTargetScore[0].totalTargetScore) * 100
+        const percentage = Math.round(( res.data.totalAppraisalScore / res.data.totalTargetScore) * 100);
+        console.log(res.data.totalAppraisalScore, res.data.totalTargetScore)
         this.setState({ 
           appraisal: res.data.appraisal,
           appraisalItems: res.data.appraisal.userAppraisal,
@@ -94,6 +95,15 @@ export default class ViewAppraisal extends Component {
     }
   }
 
+  getLabels = () => {
+    const { labels, percentage } = this.state;
+    return (
+      labels.length ? labels.map(item => (
+        (parseInt(percentage) >= parseInt(item.lowestGrade) &&  parseInt(percentage) <= parseInt(item.highestGrade)) ?
+          <span style={{ color: item.color }}>{item.name}</span> : ''
+      )) : '...'
+    )
+  }
   // Add appraisal to user (only branch manager, not available after submission)
 
   // submit appraisal (only branch manager)
@@ -137,9 +147,14 @@ export default class ViewAppraisal extends Component {
                           </div>
                           <div className="col-md-3 col-sm-5 text-right pr-0">
                             <div className="text-left">
-                              <span>Summary:</span>
-                              <span className="text-danger"> Very Poor</span>
-                              <span> ({parseInt(percentage) || 0}%)</span>
+                              <span>Summary: </span>
+                              {/* <span className="text-danger">
+                                
+                              </span> */}
+                              {
+                                this.getLabels()
+                              }
+                              <span> ({percentage || 0}%)</span>
                             </div>
                             <div className="text-left">
                               <span className="p">Status:</span>
@@ -232,7 +247,7 @@ export default class ViewAppraisal extends Component {
                             background: '#003766', color: '#fff'
                           }}
                           disabled={
-                            !comments.length || comments.length === 3 ?
+                            !comments.length || comments.length >= 3 ?
                             true : false
                           }
                           onClick={this.postComment}
