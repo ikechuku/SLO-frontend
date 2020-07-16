@@ -38,6 +38,7 @@ export default class Role extends Component {
 	}
 
 	componentDidMount() {
+		showLoader();
 		this.getKPI();
 	}
 
@@ -122,6 +123,7 @@ export default class Role extends Component {
 	handleSubmit = async(e) => {
 		e.preventDefault();
 		try{
+			showLoader();
 			const { kpi, modalMode, currentEditId } = this.state;
 			const kpiData = removeEmptyString(kpi)
 			if (modalMode === "create") {
@@ -130,6 +132,7 @@ export default class Role extends Component {
 					$(".modal").modal("hide");
 					$(document.body).removeClass("modal-open");
 					$(".modal-backdrop").remove();
+					hideLoader();
 				}
 			} else {
 				const res = await httpPatch(`kpi/update/${currentEditId}`, kpiData);
@@ -137,12 +140,14 @@ export default class Role extends Component {
 					$(".modal").modal("hide");
 					$(document.body).removeClass("modal-open");
 					$(".modal-backdrop").remove();
+					hideLoader();
 				}
 			}
 			this.getKPI();
 			this.clearState();
 			hideLoader();
 		}catch(error){
+			hideLoader();
 			console.log(error)
 		}
 	}
