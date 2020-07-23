@@ -12,20 +12,22 @@ export default function Index() {
   const [postData, setPostData] = useState({});
   const [labels, setLabels] = useState([]);
   const [labelId, setLabelId] = useState(null);
+  const [customSelect, setCustomSelect] = useState(null);
 
   useEffect(() => {
     showLoader();
     getLabels();
-    hideLoader();
   }, []);
 
   const getLabels = async() => {
     try{
       const res = await httpGet('performance_label');
       if(res.code === 200){
+        hideLoader();
         setLabels(res.data.performanceLabel)
       }
     }catch(error){
+      hideLoader();
       console.log(error)
     }
   }
@@ -94,21 +96,32 @@ export default function Index() {
       name: '',
       highestGrade: '',
       lowestGrade: '',
-      color: ''
+      color: '',
+      recommendation: ''
     }
     setModalMode('create');
     setPostData({ ...clearedPost });
+    // setCustomSelect(null)
   }
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setPostData(prevState => ({ ...prevState, [name]: value }));
+  const handleChange = (e, customName) => {
+    if(customName === 'recommendation'){
+      setPostData(prevState => ({ ...prevState, [customName]: e.value }));
+      setCustomSelect(e)
+    } else {
+      const { name, value } = e.target;
+      setPostData(prevState => ({ ...prevState, [name]: value }));
+    }
   }
 
   const handleEdit = (id) => {
     setModalMode('edit')
     const newLabel = labels.filter(item => item.id === id)[0];
     setPostData(newLabel);
+    const { recommendation } = newLabel;
+    const newCustom = (recommendation !== undefined || recommendation !== null) ? 
+      { label: recommendation, value: recommendation } : null;
+    setCustomSelect(newCustom);
     setLabelId(id)
   }
 
@@ -199,6 +212,7 @@ export default function Index() {
         modalMode={modalMode || 'create'}
         handleSubmit={handleSubmit}
         handleChange={handleChange}
+        customSelect={customSelect}
       />
       <Confirm
         modalAction={'delete'}
