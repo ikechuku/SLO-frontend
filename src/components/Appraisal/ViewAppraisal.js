@@ -1,6 +1,7 @@
 import React, { Component} from 'react';
 import Moment from 'react-moment';
 import { NotificationManager } from 'react-notifications';
+import _, { capitalize } from 'lodash';
 import Layout from '../layout'
 import { SpecificUserAppraisalTable } from './Table'
 import DownloadSvg from './downloadSvg';
@@ -158,7 +159,7 @@ export default class ViewAppraisal extends Component {
                             </div>
                             <div className="text-left">
                               <span className="p">Status:</span>
-                              <span> {appraisal.status}</span>
+                              <span> {_.startCase(_.lowerCase(appraisal.status))}</span>
                             </div>
                           </div>
                         </div>
@@ -182,20 +183,29 @@ export default class ViewAppraisal extends Component {
 
                       <div class="col-md-12 mt-5 pt-5">
 												{
-                          comments.length ? comments.map(item => (
+                          comments.length ? comments.map((item, index) => (
                             <div>
                               <div class="media mt-0">
                                 <div class="media-left"> <a href="javascript:void(0)"> <img src="/assets/img/avatar/avatar-2.jpg" alt="" class="media-object" /> </a> </div>
                                 <div class="media-body">
                                   <h4 class="media-heading">{item.user.firstName + ' ' + item.user.lastName}<br />
-                                    <small>{item.user.role}</small><br />
+                                    <small>
+                                      {
+                                        item.user.role === 'pmu' ?
+                                        item.user.role.toUpperCase() :
+                                        _.startCase(_.lowerCase(item.user.role))
+                                      }
+                                    </small><br />
                                   </h4>
                                 </div>
                                 <div>
                                   <small class="text-muted"><i class="fa fa-clock-o"></i> {dateFromNow(item.createdAt)}, <Moment format='LT'>{item.createdAt}</Moment></small>
                                 </div>
                               </div>
-                              <div style={{
+                              <div style={index >= 2 ? {
+                                marginLeft: '23px',
+                                padding: '5px 10px 5px 42px'
+                              } : {
                                 marginLeft: '23px',
                                 padding: '5px 10px 5px 42px',
                                 borderLeft: '2px solid #B1B4C1'
@@ -234,6 +244,7 @@ export default class ViewAppraisal extends Component {
                           className="col-12 pt-2 pb-5"
                           placeholder="Type your comment"
                           name=""
+                          value={this.state.comment}
                           style={{
                             border: '1px solid #DFE3E9',
                             borderRadius: '4px'

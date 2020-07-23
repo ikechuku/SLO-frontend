@@ -1,4 +1,5 @@
 import React from 'react';
+import Select from "react-select";
 
 export function AddLabels(props) {
 	return (
@@ -87,6 +88,37 @@ export function AddLabels(props) {
 									placeholder="Color"
 									required
 								/>
+							</div>
+
+							<div className="form-group">
+								<label htmlFor="recommendation" className="form-control-label">
+									Recommendation
+								</label>
+								<React.Fragment>
+									<Select
+										className="w-100 pr-0 pl-0 col-md-12 mr-1"
+										value={props.customSelect}
+										onChange={(e) => props.handleChange(e, "recommendation")}
+										options={[
+											{ label: 'Recommended for promotion', value: 'Recommended for promotion'},
+											{ label: 'Recommended for salary raise (without promotion)', value: 'Recommended for salary raise (without promotion)'},
+											{ label: 'Recommended for additional training', value: 'Recommended for additional training'},
+											{ label: 'Recommended for demotion', value: 'Recommended for demotion'},
+											{ label: 'Recommended for termination', value: 'Recommended for termination'}
+										]}
+										isSearchable="true"
+										name="recommendation"
+										placeholder="Select"
+									/>
+									<input
+										tabIndex={-1}
+										value={props.postData.recommendation}
+										onChange={(e) => props.handleChange(e, "recommendation")}
+										autoComplete="off"
+										style={{opacity: 0, height: 0, width: 0, padding: 0, margin: 0}}
+										required={true}
+									/>
+								</React.Fragment>
 							</div>
 
 							<div className="modal-footer justify-content-center mb-4" style={{ border: 'none'}}>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import _ from 'lodash';
 import Table from '../../helpers/customTable';
 import Datatable from 'react-bs-datatable';
 import './index.css'
@@ -37,7 +38,7 @@ export class AppraisalTable extends Component {
 				"name": data.user.firstName + `${' '}` + data.user.lastName,
 				"role": data.user.role,
 				"appraisalScore": this.getScore(data),
-				"status": data.status,
+				"status": _.startCase(_.lowerCase(data.status)),
 				"action": <Link to={`/view_appraisal/${data.userId}`}>View</Link>
 			}
 		));

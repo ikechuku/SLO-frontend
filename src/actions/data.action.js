@@ -22,6 +22,7 @@ export const httpPost = async (url, postBody) => {
 			"Oops!",
 			3000
 		);
+		return error;
 	}
 };
 
@@ -39,6 +40,7 @@ export const httpPatch = async (url, postBody) => {
 			"Oops!",
 			3000
 		);
+		return error
 	}
 };
 
@@ -56,6 +58,7 @@ export const httpDelete = async (url, postBody) => {
 			"Oops!",
 			3000
 		);
+		return error
 	}
 };
 
@@ -73,7 +76,6 @@ export const httpGet = async (url) => {
 		// 	"Oops!",
 		// 	3000
 		// );
-		return error;
 	}
 };
 
@@ -94,5 +96,6 @@ export const httpPostFormData = async (url, postBody) => {
 			"Oops!",
 			3000
 		);
+		return error
 	}
 };

@@ -248,10 +248,10 @@ export default class UserList extends Component {
                         <span className="p">{this.props.user.lastName + ' ' + this.props.user.firstName}</span>
                         <span className="font-weight-normal pb-1 add-cursor" style={{fontSize: '12px'}} onClick={this.props.handleChangeDisplay}>change user</span>
                       </div>
-											<div className="base-score">
+											{/* <div className="base-score">
 												<span>Total:</span>
 												<span className="text-danger"style={{fontSize: '25px'}} >10%</span>
-											</div>
+											</div> */}
                       <div className="table-responsive" style={{ overflow: "hidden" }}>
                         <Table
                           body={this.bodyRow}
