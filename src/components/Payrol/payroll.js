@@ -13,13 +13,96 @@ import {
 } from "../../actions/data.action";
 import { hideLoader, showLoader } from "../../helpers/loader";
 
-import Payroll from "./payrollTable";
+import PayrollTable from "./payrollTable";
 import "./payroll.css";
 
 export default class payroll extends Component {
 	constructor(props) {
 		super(props);
+		this.state={payrollItems:[]}
 	}
+ 
+
+   async componentDidMount() {
+	showLoader();
+	await this.getPayroll();
+this.deletePayroll()
+	hideLoader();
+}
+
+deletePayroll = async (id) => {
+	showLoader();
+	try {
+		const data = await httpDelete(`payroll_item/${id}`);
+		console.log(data);
+		if (data.code === 200) {
+			hideLoader();
+
+			this.setState({
+				payrollItems: this.state.payrollItems.filter(
+					(payroll) => payroll.id !== id
+				),
+			});
+			hideLoader();
+		}
+	} catch (error) {
+		hideLoader();
+		console.log(error);
+	}
+};
+
+
+  getPayroll = async ()=>{
+	
+	
+	try{
+	
+		showLoader()
+		const res = await httpGet(`/payroll_items`)
+  console.log(res)
+		if(res.code === 200){
+			this.setState({
+				payrollItems:res.data.payrollItems
+			})
+			console.log(this.state.payrollItems)
+			hideLoader();
+
+			
+		}
+  
+	  }catch(error){
+		hideLoader();
+		console.log(error);
+	  }
+	
+  }
+
+
+
+  editPayroll = async ()=>{
+	
+	
+	try{
+	
+		showLoader()
+		const res = await httpGet(`/payroll_items`)
+  console.log(res)
+		if(res.code === 200){
+			this.setState({
+				payrollItems:res.data.payrollItems
+			})
+			console.log(this.state.payrollItems)
+			hideLoader();
+
+			
+		}
+  
+	  }catch(error){
+		hideLoader();
+		console.log(error);
+	  }
+	
+  }
 
 	render() {
 		return (
@@ -54,7 +137,16 @@ export default class payroll extends Component {
 										</div>
 
 										<div className="card-body">
-											<Payroll />
+											<PayrollTable 
+											payrollDetails={this.state.payrollItems}
+											deletePayroll={this.deletePayroll}
+											
+											
+											
+											
+											/>
+											
+											
 										</div>
 									</div>
 								</div>

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ReactTooltip from "react-tooltip";
 import Table from "../../helpers/customTable";
 import { Link } from "react-router-dom";
+import _ from 'lodash';
 
 export default class payroll extends Component {
 	constructor(props) {
@@ -10,59 +11,27 @@ export default class payroll extends Component {
 	}
 
 	bodyRow = () => {
-		const datas = [
-			{
-				name: "Basic Salary",
-				taxable: "Yes",
-				passionable: "Yes",
-				positive: "Yes",
-				payableMonths: "10",
-			},
-			{
-				name: "Transport",
-				taxable: "Yes",
-				passionable: "Yes",
-				positive: "Yes",
-				payableMonths: "10",
-			},
-			{
-				name: "Housing",
-				taxable: "Yes",
-				passionable: "Yes",
-				positive: "Yes",
-				payableMonths: "10",
-			},
-			{
-				name: "Range Don",
-				taxable: "Yes",
-				passionable: "Yes",
-				positive: "Yes",
-				payableMonths: "10",
-			},
-		];
-		const body = datas.map((data, index) => ({
-			name: data.name,
-			taxable: data.taxable,
+		const body = this.props.payrollDetails.map((data, index) => ({
+			name: _.startCase(_.lowerCase(data.name)),
+			taxable:  _.startCase(_.lowerCase(`${data.taxable}`)),
 
-			Pensionable: data.passionable,
-			Positive: data.positive,
-			PayableMonth: data.payableMonths,
+			Pensionable: _.startCase(_.lowerCase(`${data.pensionable}`)),
+			positive: _.startCase(_.lowerCase(`${data.positive}`)),
+			PayableMonth:  _.startCase(_.lowerCase(`${data.periodicity}`)),
 
 			action: (
 				<a>
-					<Link to="/payroll-form">
+					<Link to={`edit-payroll/${data.id}`}>
 						{" "}
 						<span
 							className="edit"
-							// onClick={() => this.props.handleEdit(data.id)}
-							// data-backdrop="static"
 							className="fa fa-pencil-square-o mr-4 add-cursor"
 						></span>
 					</Link>
 
 					<span
 						className="del"
-						// onClick={() => this.props.handleDelete(data.id)}
+						onClick={() => this.props.deletePayroll(data.id)}
 						className="fa fa-trash mr-4 add-cursor"
 					></span>
 				</a>
@@ -83,9 +52,9 @@ export default class payroll extends Component {
 
 			{ title: "Pensionable", prop: "Pensionable", sortable: true },
 
-			{ title: "Positive", prop: "Positive", sortable: true },
+			{ title: "Positive", prop: "positive", sortable: true },
 
-			{ title: "Payable Month", prop: "PayableMonth", sortable: true },
+			{ title: "Payable", prop: "PayableMonth", sortable: true },
 			{ title: "Actions", prop: "action" },
 		];
 		return header;

@@ -2,6 +2,7 @@ import React from "react";
 import Select from "react-select";
 
 export function PayRollModal(props) {
+	console.log(props)
 	return (
 		<div
 			className="modal fade"
@@ -32,17 +33,26 @@ export function PayRollModal(props) {
 								<label for="recipient-name" className="form-control-label">
 									Departments
 								</label>
-								<Select
+								{/* <select
 									className="w-100 pr-0 pl-0 col-md-12 mr-1"
 									// defaultValue={props.postData.businessCountry}
 									// value={props.customSelect1}
 									// onChange={(e) => props.handleChange(e, "departmentId")}
 									// options={props.departmentOptions}
-									isSearchable="true"
-									name="departmentId"
-									placeholder="Select"
-								/>
-								<span className="text-danger">
+								
+								>
+									<option value="area">area</option>
+									<option value="area">area</option>
+									</select> */}
+
+<select value={props.payrolldata} name="applicableTo" onChange={props.onChangePayroll}
+class="form-control" id="">
+											<option>Select</option>
+											<option 	 value="Area">Area</option>
+											<option   value="branch">Branch</option>
+										</select>
+
+										<span className="text-danger">
 									{/* {props.errorMessage2 !== null ? props.errorMessage2 : ""} */}
 								</span>
 							</div>
@@ -51,16 +61,13 @@ export function PayRollModal(props) {
 								<label for="recipient-name" className="form-control-label">
 									Units
 								</label>
-								<Select
-									className="w-100 pr-0 pl-0 col-md-12 mr-1"
-									// defaultValue={props.postData.businessCountry}
-									// value={props.customSelect2}
-									// onChange={(e) => props.handleChange(e, "unitId")}
-									// options={props.unitOptions}
-									// isSearchable="true"
-									// name="UnitId"
-									// placeholder="Select"
-								/>
+								<select value={props.payrolldata} name="applicableTo"
+								 onChange={props.onChangePayroll}
+class="form-control" id="">
+											<option>Select</option>
+											<option 	 value="Area">unit a</option>
+											<option   value="branch">unit b</option>
+										</select>
 							</div>
 						</form>
 					</div>

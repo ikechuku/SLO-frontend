@@ -17,12 +17,14 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { PayRollModal } from "../Modals/payroll";
+import moment from 'moment'
 
 export default class payrollForm extends Component {
 	constructor(props){
 	super(props)
 	this.handleChange = this.handleChange.bind(this);
- 
+	 console.log(this.props.match.params.id)
+ console.log(this.props)
 	this.state = {
 		startDate: new Date(),
 		name: "",
@@ -36,7 +38,9 @@ export default class payrollForm extends Component {
 		effectiveDate: ""
 	};}
 
-	handleEdit=(id)=>{
+	componentDidMount (){
+		console.log('@@@@')
+		this.getSpecificPayroll()
 		
 	}
 
@@ -101,7 +105,7 @@ this.setState({applicableTo: [...PrevState,{ [e.target.name]: e.target.value }]}
 		try{
 		
 			showLoader()
-			const res = await httpPost(`/create_payroll_item`,data)
+			const res = await httpPatch(`update_payroll_items/${this.props.match.params.id}`,data)
 	  
 			if(res.code === 201){
 				this.setState({
@@ -127,6 +131,35 @@ this.setState({applicableTo: [...PrevState,{ [e.target.name]: e.target.value }]}
 			hideLoader();
 			console.log(error);
 		  }}
+		
+	  }
+
+	  getSpecificPayroll= async  ()=>{
+		try{
+		
+			showLoader()
+			const res = await httpGet(`payroll_item/${this.props.match.params.id}`)
+	     console.log(res)
+			if(res.code === 200){
+				this.setState({
+					name:res.data.payrollItem.name,
+				taxable: res.data.payrollItem.taxable,
+				pensionable:res.data.payrollItem.pensionable ,
+				positive: res.data.payrollItem.positive,
+				periodicity: res.data.payrollItem.periodicity,
+				occurence: res.data.payrollItem.occurence,
+				itemDescription: res.data.payrollItem.itemDescription,
+				applicableTo: ["area"],
+				effectiveDate: res.data.payrollItem.effectiveDate
+			})
+					  hideLoader();
+					  console.log(res)
+			}
+	  
+		  }catch(error){
+			hideLoader();
+			console.log(error);
+		  }
 		
 	  }
 
@@ -170,7 +203,7 @@ this.setState({applicableTo: [...PrevState,{ [e.target.name]: e.target.value }]}
 		// 	radioButtonCheck1: !toggleRadio,
 		// });
 	};
-	componentDidMount() {}
+	
 	render() {
 		return (
 			<Layout page="payrollForm">
@@ -193,7 +226,7 @@ this.setState({applicableTo: [...PrevState,{ [e.target.name]: e.target.value }]}
 					<div className="wrapperPayroll">
 						<div className="payroll-form">
 							<div className="payroll-header">
-								<h1>Add Payroll Item</h1>
+								<h1>Edit Payroll Item</h1>
 							</div>
 							<form>
 								<div class="inputPayroll">
@@ -350,6 +383,8 @@ this.setState({applicableTo: [...PrevState,{ [e.target.name]: e.target.value }]}
 												selected={this.state.startDate}
 												onChange={this.handleDate}
 												className="payrolDatePicker"
+												value={moment(this.state.effectiveDate).toDate()}
+												
 											/>
 											<div style={{ overflow: "hidden" }}>
 												<i

@@ -92,8 +92,33 @@ export default function Sidebar(props) {
           </ul>
         </li>
 
-        <li>
-          <a className="side-menu__item" href="#"><i className="side-menu__icon fa fa-credit-card"></i><span className="side-menu__label">Payroll</span></a>
+      
+
+
+
+
+
+        <li className={(props.props.page === 'payroll') || (props.props.page === 'salaryStructure') || (props.props.page === 'payrollSetup')  ? "slide is-expanded" : "slide"}>
+          <a className={(props.props.page === 'payroll') || (props.props.page === 'salaryStructure') ? "side-menu__item active" : "side-menu__item"} data-toggle="slide" href="#"><i className="side-menu__icon fa fa-credit-card"></i><span className="side-menu__label">Payroll Settings</span><i className="angle fa fa-angle-right"></i></a>
+          <ul className="slide-menu">
+            <li className={props.props.page === 'payroll' ? "active" : ""}>
+              <Link 
+                className={props.props.page === 'payroll' ? "slide-item active" : "slide-item"} to="/payroll">
+                <span>Setup Payroll Items</span>
+              </Link>
+            </li>
+            <li className={props.props.page === 'salaryStructure' ? "active" : ""}>
+              <Link 
+                className={props.props.page === 'salaryStructure' ? "slide-item active" : "slide-item"} to="/salary-structure"><span>Salary Structures</span>
+              </Link>
+            </li>
+            <li className={props.props.page === 'payrollSetup' ? "active" : ""}>
+              <Link 
+                className={props.props.page === 'payrollSetup' ? "slide-item active" : "slide-item"} to="/setup-payroll"><span>Process Payroll</span>
+              </Link>
+            </li>
+          
+          </ul>
         </li>
         {/* <li>
           <a className="side-menu__item" href="#"><i className="side-menu__icon fa fa-hand-o-left"></i><span className="side-menu__label">Leave</span></a>
@@ -124,6 +149,7 @@ export default function Sidebar(props) {
             </li>
           </ul>
         </li>
+        
         <li>
           <a className="side-menu__item" href="#"><i className="side-menu__icon fa fa-money"></i><span className="side-menu__label">Budget</span></a>
         </li>
