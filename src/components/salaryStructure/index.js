@@ -291,7 +291,7 @@ getSalaryStructure= async()=>{
 										>
 											<span
 												className={`${
-													this.state.toggle === data.id 
+													this.state.showDrop === true && this.state.toggle === data.id
 														? "fa fa-chevron-up"
 														: "fa fa-chevron-down"
 												}`}
@@ -323,14 +323,23 @@ getSalaryStructure= async()=>{
 										</div>
 									</div>
 									<div>
-										{this.state.toggle === data.id  && this.state.showDrop === true ? (<div className="showpayrolldata">
-											<div>
-												Basic Salary
+										{this.state.toggle === data.id  && this.state.showDrop === true ? (<div className="">
+											{
+												data.salaryStructureItem.map((data)=>{
+													return(
+														<div className="showpayrolldata">
+																		<div>
+												{data.payrollItem.name}
 											</div>
 
 											<div>
-												122000
+												{data.amount}
 											</div>
+														</div>
+													)
+												})
+											}
+								
 										</div>) : ""}
 										
 									</div>

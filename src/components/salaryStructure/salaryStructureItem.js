@@ -13,6 +13,7 @@ import {
 } from "../../actions/data.action";
 import $ from 'jquery';
 import { hideLoader, showLoader } from "../../helpers/loader";
+import SalaryStructureItemsTable from './salaryStructureItemsTable'
 
 export default class salaryStructureItem extends Component {
 	constructor(props){
@@ -21,12 +22,28 @@ export default class salaryStructureItem extends Component {
 			payrollItems:[],
 			name:null,
 			amount:null,
+			salaryData:[],
+            salaryStructureItems:[{
+				name:"static Data",
+				amount:"500"
+			},
+			{
+				name:"static Data",
+				amount:"500"
+			},
 
+			{
+				name:"static Data",
+				amount:"500"
+			},
+
+		]
 		}
 		console.log(this.props.match.params.id)
 	}
 componentDidMount(){
 	this.getPayrollID()
+	this.getSalaryStructure()
 }
 
 handleChange  =  (e) => {
@@ -102,12 +119,40 @@ console.log(this.state)
 		  console.log(error);
 		}}
 		}
+
+		getSalaryStructure= async()=>{
+			try{
+				 
+					showLoader()
+					// const res = await httpGet(`salary_structure/8d3f5b8a-1164-4caa-8c62-3ff62d85d0e7`)
+					const res = await httpGet(`salary_structure/${this.props.match.params.id}`)
+					if (res.code === 200) {
+						this.setState({salaryData:res.data.salaryStructureItem})
+					}
+					hideLoader()
+			  
+				console.log(res)
+					
+			  
+				  }
+				  catch(error){
+					hideLoader();
+					console.log(error);
+				  }}
+				
+				  GetAlertId= async(id)=>{
+					this.setState({
+						modalDeleteID:id,
+						hideActions: !this.state.hideActions
+					})
+				  }
+		
     render() {
 
 
 		
         return (
-            <Layout>
+            <Layout page="salaryStructure">
                 	<div className="app-content">
 					<section className="section">
 						<ol className="breadcrumb">
@@ -122,16 +167,29 @@ console.log(this.state)
 								</a>
 							</li>
 						</ol>
-						<div class="checkBoxW salaryStructure">
 						
-
-                            <i class="fa fa-plus" aria-hidden="true"></i>    <button type="button" class="" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>
-						</div>
 						<div className="DropDownWrap56">
 							<div>
                                 </div>
+<div style={{padding:"30px"}}>
+<div style={{marginBottom:"22px"}} class="checkBoxW ">
+						
+
+                            
+						<button style={{background: "transparent",
+border: "none",cursor:"pointer",color:"#003766",fontsize:"18px",fontWeight:"600"}} type="button" class="" data-toggle="modal" data-target="#exampleModal">
+						<i style={{    backgroundColor: "#003766",
+width: "22px",
+height: "22px",
+borderRadius: "11px",
+color: "white",
+lineHeight: "1.7",
+fontsize: "15px"}} class="fa fa-plus" aria-hidden="true"></i> Create Salary Structure Items
+</button>
+				</div>
+	<SalaryStructureItemsTable salaryStructureItems={this.state.salaryStructureItems}/>
+</div>
+								
                                 </div>
                                 </section>
                             
@@ -141,6 +199,8 @@ console.log(this.state)
 								 amount={this.state.amount}
 								 handleSubmit={this.handleSubmit}
 								 />   
+
+								 
             </Layout>
         )
     }

@@ -173,7 +173,7 @@ this.setState({applicableTo: [...PrevState,{ [e.target.name]: e.target.value }]}
 	componentDidMount() {}
 	render() {
 		return (
-			<Layout page="payrollForm">
+			<Layout page="payroll">
 				<div className="app-content">
 					<section className="section">
 						<ol className="breadcrumb">

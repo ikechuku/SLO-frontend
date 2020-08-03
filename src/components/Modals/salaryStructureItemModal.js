@@ -30,18 +30,21 @@ export function SalaryStructureItemModal(props) {
 							<div className="form-group">
 
                             <div class="form-group">
-    <label for="exampleFormControlSelect1">Example select</label>
+    <label for="exampleFormControlSelect1">Select</label>
 	<select
 	value={props.name}
 	 name="name"
 	onChange={props.handleChange} 
 	class="form-control" id="exampleFormControlSelect1">
+			<option>Select</option>
 		{props.payrollData.map((data)=>{
 			// console.log(data.id)
 			return(
 			
+		
+			
 				<option value={data.id}>{data.name}</option>
-				
+			
 				
 			)
 		})}

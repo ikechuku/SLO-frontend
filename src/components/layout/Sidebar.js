@@ -10,6 +10,7 @@ export default function Sidebar(props) {
       scrollbarPosition: "outside"
     });
   }, [])
+  
 
   return (
     <aside className="app-sidebar mCustomScrollbar _mCS_1 mCS-autoHide">
