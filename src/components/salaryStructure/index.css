@@ -126,6 +126,13 @@
   height: 36px;
 }
 
+.noSalaryStruture{
+  padding: 10px;
+  color: rgb(155, 19, 19);
+  font-weight: 600;
+  font-size: 13px;
+}
+
 .showpayrolldata div{
   font-size: 17px;
  

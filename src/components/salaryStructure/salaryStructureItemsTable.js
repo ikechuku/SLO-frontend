@@ -12,24 +12,26 @@ export default class salaryStructureItemsTable extends Component {
 
 	bodyRow = () => {
 		const body = this.props.salaryStructureItems.map((data, index) => ({
-			name: _.startCase(_.lowerCase(data.name)),
+			name: _.startCase(_.lowerCase(data.payrollItem.name)),
 			amount:  _.startCase(_.lowerCase(`${data.amount}`)),
 
 		
 
 			action: (
 				<a>
-					<Link to={`edit-payroll/${data.id}`}>
-						{" "}
+						{console.log(data)}
 						<span
+						onClick={(e)=>this.props.setModalType(data.id , data.salaryStructureId)}
+					
+						type="button" class="" data-toggle="modal" data-target="#exampleModal"
 							className="edit"
 							className="fa fa-pencil-square-o mr-4 add-cursor"
 						></span>
-					</Link>
-
+					
 					<span
-						className="del"
-						onClick={() => this.props.deletePayroll(data.id)}
+						
+						onClick={() => this.props.getDeleteId(data.id)}
+						type="button" class="" data-toggle="modal" data-target="#ComfirmModalDelete"
 						className="fa fa-trash mr-4 add-cursor"
 					></span>
 				</a>

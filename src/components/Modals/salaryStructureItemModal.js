@@ -13,7 +13,9 @@ export function SalaryStructureItemModal(props) {
 				<div className="modal-content">
 					<div className="modal-header">
 						<h5 className="modal-title" id="example-Modal3">
-						Create Salary Structure
+						{
+							props.modalType === "create" ? "Create" : "Edit"
+						} Salary Structure
 						</h5>
 						<button
 							type="button"
@@ -36,7 +38,7 @@ export function SalaryStructureItemModal(props) {
 	 name="name"
 	onChange={props.handleChange} 
 	class="form-control" id="exampleFormControlSelect1">
-			<option>Select</option>
+			<option value="invalidData">Select</option>
 		{props.payrollData.map((data)=>{
 			// console.log(data.id)
 			return(
@@ -84,13 +86,31 @@ export function SalaryStructureItemModal(props) {
                 <button type="button" className="btn btn-primary" onClick={props.handleCreate}>Create</button> :
                 <button type="button" className="btn btn-primary" onClick={props.handleUpdate}>Update</button>
             } */}
-						<button
-							type="button"
-							className="btn btn-primary"
-							onClick={props.handleSubmit}
-						>
-						Create
-						</button>
+
+{
+							props.modalType === "create" ? (
+								<button
+								type="button"
+								className="btn btn-primary"
+								onClick={props.handleSubmit}
+							>
+							Create
+							</button>
+							) : ""
+						}
+
+{
+							props.modalType === "edit" ? (
+								<button
+								type="button"
+								className="btn btn-primary"
+								onClick={props.editSalaryStructure}
+							>
+							Edit
+							</button>
+							) : ""
+						}
+					
 					</div>
 				</div>
 			</div>

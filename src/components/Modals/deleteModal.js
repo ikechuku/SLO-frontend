@@ -15,7 +15,7 @@ export default class comfirmModal extends Component {
         <div className="confirmWrapper removeBlockDisplay">
             <p>Are you sure you want to delete this? 
               <br/>
-              Action is not revisable
+              Action is not reversible
             </p>
             
         <button onClick={this.props.handleDelete}  type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>

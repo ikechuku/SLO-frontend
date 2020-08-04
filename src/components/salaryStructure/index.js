@@ -31,7 +31,9 @@ export default class index extends Component {
 		salaryData:[],
 		modalDeleteID:null,
 		modalEditID:null,
-		modalType:"create"
+		modalType:"create",
+		ch :false
+		
 	};
 	}
 	toggle = (id) => {
@@ -275,7 +277,8 @@ getSalaryStructure= async()=>{
 						</div>
 						<div className="DropDownWrap56">
 							<div>
-							
+							{	console.log(this.state.salaryData.length)}	
+							{	console.log(this.state.salaryData)}	
 {this.state.salaryData.map((data) => {
 	console.log(this.state.salaryStructure)
 						return (
@@ -322,14 +325,18 @@ getSalaryStructure= async()=>{
 											) : ""}
 										</div>
 									</div>
-									<div>
-										{this.state.toggle === data.id  && this.state.showDrop === true ? (<div className="">
+								
+										{console.log(">>>>gets here" , data.salaryStructureItem.length)}
+								{data.salaryStructureItem.length === 0 ? (<div>{this.state.toggle === data.id  && this.state.showDrop === true ? 
+								(<p className="noSalaryStruture">Opps, No Salary Structure Item </p>) : ""}</div>) : (<div>{this.state.toggle === data.id  && this.state.showDrop === true ?
+								 (<div className="">
 											{
 												data.salaryStructureItem.map((data)=>{
 													return(
 														<div className="showpayrolldata">
 																		<div>
 												{data.payrollItem.name}
+													
 											</div>
 
 											<div>
@@ -340,12 +347,13 @@ getSalaryStructure= async()=>{
 												})
 											}
 								
-										</div>) : ""}
+										</div>) : ""}</div>)}
+										
 										
 									</div>
 								</div>
 							
-							</div>
+						
 						);
 					})}
 								</div>

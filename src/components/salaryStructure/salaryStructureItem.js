@@ -14,6 +14,7 @@ import {
 import $ from 'jquery';
 import { hideLoader, showLoader } from "../../helpers/loader";
 import SalaryStructureItemsTable from './salaryStructureItemsTable'
+import DeleteModal from '../Modals/deleteModal'
 
 export default class salaryStructureItem extends Component {
 	constructor(props){
@@ -23,21 +24,10 @@ export default class salaryStructureItem extends Component {
 			name:null,
 			amount:null,
 			salaryData:[],
-            salaryStructureItems:[{
-				name:"static Data",
-				amount:"500"
-			},
-			{
-				name:"static Data",
-				amount:"500"
-			},
-
-			{
-				name:"static Data",
-				amount:"500"
-			},
-
-		]
+			modalType:"create",
+			salaryStructureItemID:null,
+			salaryStructure:null,
+			deleteId:null,
 		}
 		console.log(this.props.match.params.id)
 	}
@@ -78,11 +68,11 @@ console.log(this.state)
 
 	  handleSubmit= async ()=>{
 		const SalaryStructure = {name:this.state.name};
-		if (this.state.amount === "") {
+		if (this.state.amount === "" || this.state.name === "invalidData" || this.state.name === null ) {
 		  NotificationManager.error(
-			  "Opps Salary Structure Filed Can't Be Empty",
+			  "Opps Salary Structure Fileds Can't Be Empty",
 				  "Oops!",
-				  3000
+				  4000
 			  );
   
 			  
@@ -125,14 +115,14 @@ console.log(this.state)
 				 
 					showLoader()
 					// const res = await httpGet(`salary_structure/8d3f5b8a-1164-4caa-8c62-3ff62d85d0e7`)
-					const res = await httpGet(`salary_structure/${this.props.match.params.id}`)
+					const res = await httpGet(`all_salary_structure_items/${this.props.match.params.id}`)
 					if (res.code === 200) {
-						this.setState({salaryData:res.data.salaryStructureItem})
+						this.setState({salaryData:res.data.salaryStructureItems})
 					}
 					hideLoader()
 			  
-				console.log(res)
-					
+				console.log(this.state.salaryData)
+				console.log(this.state.salaryData[0].salaryStructureId)
 			  
 				  }
 				  catch(error){
@@ -147,6 +137,99 @@ console.log(this.state)
 					})
 				  }
 		
+
+				  
+	editSalaryStructure= async()=>{
+		console.log(this.props.match.params.id)
+		const SalaryStructure = {name:this.state.name};
+		if (this.state.amount === "" || this.state.name === "invalidData" || this.state.name === null ) {
+			NotificationManager.error(
+				"Opps Salary Structure Fileds Can't Be Empty",
+					"Oops!",
+					4000
+				);
+	
+				
+		  }
+  
+		else{
+				  
+	  
+		try{
+		  
+		  showLoader()
+		  let data ={
+			payrollItemId: this.state.name,
+			amount: this.state.amount,
+		  }
+		  const res = await 
+		  httpPatch(`update_salary_structure_items?id=${this.state.salaryStructureItemID}&salaryStructureId=${this.state.salaryStructure}`, data)
+		
+		  if(res.code === 200){
+		  this.setState({name:""})
+					hideLoader();
+					NotificationManager.success(
+					  "A Salary Structure item has successfully been Updated",
+						  "Success!",
+						  5000
+					  );
+					  $('.modal').modal('hide');
+					  $(document.body).removeClass('modal-open');
+					  $('.modal-backdrop').remove();
+					  this.getSalaryStructure()
+		  }
+	
+		}catch(error){
+		  hideLoader();
+		  console.log(error);
+		}}
+	}
+	  
+	setModalType=(salaryStructureItemId, salaryStructureID )=>{
+		this.setState({
+			modalType:"edit",
+			salaryStructureItemID:salaryStructureItemId,
+			salaryStructure:salaryStructureID
+		})
+		console.log(salaryStructureItemId , "data2>>>>", salaryStructureID)
+	}
+
+	clearModal=()=>{
+	
+		this.setState({
+			amount:"",
+			modalType:"create",
+			salaryStructureItemID:"",
+			salaryStructure:""
+		})
+	}
+	getDeleteId=(id)=>{
+   this.setState({
+	   deleteId:id
+   })
+	}
+
+	handleDelete = async () => {
+		showLoader();
+		try {
+			const data = await httpDelete(`salary_structure_item/${this.state.deleteId}`);
+			console.log(data);
+			if (data.code === 200) {
+				hideLoader();
+	
+				this.setState({
+					salaryData: this.state.salaryData.filter(
+						(datas) => datas.id !== this.state.deleteId
+					),
+				});
+				hideLoader();
+				// this.getSalaryStructure()
+			}
+		} catch (error) {
+			hideLoader();
+			console.log(error);
+		}
+	};
     render() {
 
 
@@ -176,18 +259,28 @@ console.log(this.state)
 						
 
                             
-						<button style={{background: "transparent",
-border: "none",cursor:"pointer",color:"#003766",fontsize:"18px",fontWeight:"600"}} type="button" class="" data-toggle="modal" data-target="#exampleModal">
+						<button 
+						
+						onClick={(e)=>{this.setState({modalType:"create"})}}
+						
+						style={{background: "transparent",
+border: "none",cursor:"pointer",color:"#003766",fontsize:"18px",fontWeight:"600"}} 
+type="button" class="" data-toggle="modal" data-target="#exampleModal">
 						<i style={{    backgroundColor: "#003766",
 width: "22px",
 height: "22px",
 borderRadius: "11px",
 color: "white",
 lineHeight: "1.7",
-fontsize: "15px"}} class="fa fa-plus" aria-hidden="true"></i> Create Salary Structure Items
+fontsize: "15px"}}
+
+class="fa fa-plus" aria-hidden="true"></i> Create Salary Structure Items
 </button>
 				</div>
-	<SalaryStructureItemsTable salaryStructureItems={this.state.salaryStructureItems}/>
+	<SalaryStructureItemsTable setModalType={this.setModalType}
+	salaryStructureItems={this.state.salaryData}
+	getDeleteId={this.getDeleteId}
+	/>
 </div>
 								
                                 </div>
@@ -198,8 +291,12 @@ fontsize: "15px"}} class="fa fa-plus" aria-hidden="true"></i> Create Salary Stru
 								handleChange={this.handleChange} name={this.state.name}
 								 amount={this.state.amount}
 								 handleSubmit={this.handleSubmit}
+								 modalMode={this.state.modalType}
+								 editSalaryStructure={this.editSalaryStructure}
+								 modalType={this.state.modalType}
+								 clearModal={this.clearModal}
 								 />   
-
+                               <DeleteModal handleDelete={this.handleDelete} />
 								 
             </Layout>
         )
