@@ -1,0 +1,123 @@
+.PayrollLocationInfo{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 15px;
+}
+
+#appWrapResponsive{
+    width: 100%;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.PayrollLocationInfo h1{
+color: #003766;
+font-size: 20px;
+font-weight: 600;
+}
+
+.PayrollLocationInfo h2{
+    color: #003766;
+    font-size: 18px;
+    font-weight: 400;
+    }
+
+    .PayrollLocationInfo h3{
+        color: #003766;
+        font-size: 16px;
+        font-weight: 600;
+        }
+
+        .processPayrollTable{
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .processPayrollTable table .thead td{
+            background-color:  rgba(245, 183, 60, 0.12) !important;
+         
+        }
+
+        .processPayrollTable .controlRow__root .text-right .col .ButtonGroup__root  {
+           margin-top: 80px !important;
+           margin-bottom: 0;
+        }
+
+       .PayrollTotal{
+         position: absolute;
+         bottom: 45px;
+         right: 20%;
+         padding-bottom: 0;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+       margin-bottom: 20px;
+       }
+       
+       .PayrollTotal h1{
+           font-size: 17px;
+           font-weight: 600;
+           margin-right: 15px;
+       }
+
+       
+.payrollDataP {
+    display: flex;
+    justify-content: space-between;
+}
+
+.payrollDataP div{
+    background-color: rgba(245, 183, 60, 0.12);
+    padding: 10px;
+}
+
+.payrollDataP div span:last-child{
+  margin-right: 20px;
+}
+
+.payrollDataP div span:first-child{
+    margin-right: 10px;
+    font-weight: 600;
+  }
+
+  .processPayrollAction{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 26px;
+  }
+
+  .processPayrollAction button{
+      margin-right: 20px;
+      width: 150px;
+      height: 45px;
+      border-radius: 5px;
+  }
+
+  .processPayrollAction button:first-child{
+   background-color: #003766;
+   color: white;
+   border: none;
+}
+
+.processPayrollAction button:last-child{
+    background-color: transparent;
+    color: #003766;
+    border: 1px solid #003766;
+ }
+
+ .Userpayslip{
+     display: flex;
+     width: 100%;
+     flex-wrap: wrap;
+     justify-content: space-between;
+ }
+
+ .payslipHeader{
+     display: flex;
+     justify-content: space-between;
+     background-color: rgba(245, 183, 60, 0.12);
+ }

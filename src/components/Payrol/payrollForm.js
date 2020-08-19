@@ -347,6 +347,8 @@ this.setState({applicableTo: [...PrevState,{ [e.target.name]: e.target.value }]}
 										<label for="">Specify Date</label>
 										<div className="dataeP">
 											<DatePicker
+											dateFormat="MM.yyyy"
+											showMonthYearPicker
 												selected={this.state.startDate}
 												onChange={this.handleDate}
 												className="payrolDatePicker"

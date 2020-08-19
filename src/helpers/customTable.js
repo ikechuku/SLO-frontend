@@ -83,7 +83,7 @@ const CustomTable = React.memo(props => {
         </Components.Col>
       </Components.Row>
       <Components.Row>
-        <Components.Col xs="12">
+        <Components.Col xs="12" className="table-responsive">
           <Components.Table className="table table-hover table-bordered border-t0 text-nowrap">
             <TableHeader
               classes={classes}
@@ -205,6 +205,7 @@ function Wrapper(props) {
         initialSort={{ prop: 'username', isAscending: true }}
         // onSort={onSortFunction}
         labels={customLabels}
+        classes={props.classes}
       />
     </>
   );

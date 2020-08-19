@@ -122,8 +122,7 @@ console.log(this.state)
 					hideLoader()
 			  
 				console.log(this.state.salaryData)
-				console.log(this.state.salaryData[0].salaryStructureId)
-			  
+			
 				  }
 				  catch(error){
 					hideLoader();

@@ -330,3 +330,44 @@
 		width: 90%;
 	}
 }
+
+.viewPayroll{
+	flex-direction: column;
+	/* width: 60%; */
+	justify-content: flex-start;
+	align-items: flex-start;
+	background-color: white;
+	width: 40%;
+	border-radius: 5px;
+	padding-bottom: 30px;
+}
+
+.viewPayroll h1{
+	font-size: 19px;
+	text-align: center;
+	margin-left: -63px;
+	padding-top: 30px;
+	padding-bottom: 20px;
+}
+
+.viewpayroll{
+display: flex;
+justify-content: flex-start;
+align-items: flex-start;
+width: 100%;
+background-color: white;
+border-radius: 5px;
+height: fit-content;
+padding: 10px;
+padding-left: 30px;
+}
+
+.viewpayroll span:last-child{
+	margin-left: auto;
+	width: 50%;
+}
+
+.viewpayroll span:first-child{
+	font-weight: 600;
+	width: 50%;
+}

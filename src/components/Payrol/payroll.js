@@ -23,10 +23,9 @@ export default class payroll extends Component {
 	}
  
 
-   async componentDidMount() {
+   componentDidMount=async()=>{
 	showLoader();
 	await this.getPayroll();
-this.deletePayroll()
 	hideLoader();
 }
 

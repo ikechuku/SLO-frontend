@@ -21,6 +21,14 @@ export default class payroll extends Component {
 
 			action: (
 				<a>
+					<Link to={`view_payroll/${data.id}`}>
+						{" "}
+						<span
+							className="edit"
+							className="fa fa-eye mr-4 add-cursor"
+						></span>
+					</Link>
+
 					<Link to={`edit-payroll/${data.id}`}>
 						{" "}
 						<span
