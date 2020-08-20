@@ -29,7 +29,7 @@ export default class branchTable extends Component {
                 "grossPay":data.grossPay,
                  "addictions":data.addictions,
                  "reduction":data.reduction,
-                 "netPay":data.netPay,
+                 "netPay":data.payrollProcessingItem.map((netpay)=>netpay.payroll.amount),
                  "bankCode":data.bankCode,
                  "bankAccount":data.user.accountNumber,
 
