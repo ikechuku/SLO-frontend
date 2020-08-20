@@ -263,7 +263,7 @@ getSalaryStructure= async()=>{
 								</a>
 							</li>
 						</ol>
-						<div class="checkBoxW salaryStructure">
+						<div style={{marginBottom:"-26px"}} class="checkBoxW salaryStructure">
 							<button
 								type="button"
 								className="payrolBtn "

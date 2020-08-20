@@ -32,7 +32,7 @@ export default class payrollForm extends Component {
 		periodicity: "",
 		occurence: "",
 		itemDescription: "",
-		applicableTo: [],
+		applicableTo: ["Entire Organization"],
 		effectiveDate: ""
 	};}
 
@@ -50,16 +50,20 @@ export default class payrollForm extends Component {
 		console.log(this.state.effectiveDate)
 	};
 
-	handleChange  =  (e) => {
+	handleChange  =  (e,applicable) => {
 		e.preventDefault();
 		this.setState({ [e.target.name]: e.target.value });
 
-		if (e.target.name === "applicableTo") {
-			let PrevState = this.state.applicableTo.slice(); 
-this.setState({applicableTo: [...PrevState,{ [e.target.name]: e.target.value }]});
+		if (applicable=="applicable") {
+			
+this.setState({applicableTo: this.state.applicableTo.concat(e.target.value)});
 		}
-	console.log(this.state.applicableTo)
-
+	
+		
+	console.log(this.state)
+	this.setState({
+		applicableTo:this.state.applicableTo.filter(function(val) {return val !== "area"})
+	})
 	  }
 
 	  handleSubmit = async (e)=>{
@@ -93,7 +97,7 @@ this.setState({applicableTo: [...PrevState,{ [e.target.name]: e.target.value }]}
 		periodicity: this.state.periodicity,
 		occurence: this.state.occurence,
 		itemDescription: this.state.itemDescription,
-		applicableTo: ["area",'branch'],
+		applicableTo: this.state.applicableTo,
 		effectiveDate: this.state.effectiveDate}
 
 	
@@ -370,7 +374,7 @@ this.setState({applicableTo: [...PrevState,{ [e.target.name]: e.target.value }]}
 							</form>
 						</div>
 					</div>
-					<PayRollModal onChangePayroll={this.handleChange} payrolldata={this.state.applicableTo}/>
+					<PayRollModal handleChange={this.handleChange} payrolldata={this.state.applicableTo}/>
 				</div>
 			</Layout>
 		);

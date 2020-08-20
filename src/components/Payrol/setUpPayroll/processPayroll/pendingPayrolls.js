@@ -12,8 +12,8 @@ import {
 } from "../../../../actions/data.action";
 import { hideLoader, showLoader } from "../../../../helpers/loader";
 import './index.css'
-import ProcessPayrollTable from './processPayrollTable'
-import PreviewTable from './previewPayrollData'
+import PendingPayrolls from './pendingPayrollTable'
+
 export default class processPayroll extends Component {
     constructor(props){
         super(props)
@@ -57,11 +57,12 @@ export default class processPayroll extends Component {
     getPayrollProcess=async()=>{
         try {
             showLoader()
-            const res = await httpGet(`processing_payroll_users/${this.props.match.params.id}`)
+            const res = await httpGet(`pending_processing_payroll`)
+            console.log(res)
             if (res.code === 200) {
                 hideLoader()
                 this.setState({
-                    processPayrollData:res.data.processPayrollUsers
+                    processPayrollData:res.data.pendingProcessPayroll
                 })
             }
             console.log(this.state.processPayrollData)
@@ -104,64 +105,10 @@ export default class processPayroll extends Component {
         console.log(this.state.processPayrollData)
         return (
             <div>
-                <Layout page="payrollSetup">
-				<div className="app-content">
-					<section className="section">
-					
-					</section>
-
-                    <div id="appWrapResponsive">
-	<section className="PayrollLocationInfo">
-                  <h1>Payroll for Northwest region, Lagos</h1>
-                  <h2>Period: June 2020</h2>
-                  <h3>Aba branch</h3>
-                    </section>
-
-    <div className="processPayrollTable">
-        
-
-    <div className={`${this.state.toggleTabel ===false? "greaterZindex":"lesserZindex"}`}>
-      <ProcessPayrollTable previewPayrollProcess={this.previewPayrollProcess} payroll={this.state.processPayrollData}/>  
-    </div>
-
-    
-    <div className={`${this.state.toggleTabel ===true? "greaterZindex":"lesserZindex"}`}>
-    <PreviewTable payroll={this.state.previewPayroll}/>
-      </div>
-
-                
-         
-  <div style={{position:"relative"}}>
-<div className="PayrollTotal">
-      <h1>Total Gross</h1>
-
-      <div className="payrollDataP">
- <div>
-          <span>Gross Pay</span> <span>300,00</span>
-      </div>
-
-      <div>
-          <span>Deduction</span> <span>300,00</span>
-      </div>
-
-      <div>
-          <span>Net Pay</span> <span>300,00</span>
-      </div>
-      </div>
-     
+               <PendingPayrolls previewPayrollProcess={this.previewPayrollProcess} processPayrollData={this.state.processPayrollData}/>
+               <div className="processPayrollAction">
+        <button >Submit</button> <button onClick={this.changeTable} >{this.state.toggleTabel===false?"Preview":"Select More"}</button>
   </div>
-  </div>
-  <div className="processPayrollAction">
-        <button onClick={this.handleSubmit}>Submit</button> <button onClick={this.changeTable} >{this.state.toggleTabel===false?"Preview":"Select More"}</button>
-  </div>
-        </div>
-                  
-                    </div>
-
-
-                    </div>
-				
-                    </Layout>
             </div>
         )
     }

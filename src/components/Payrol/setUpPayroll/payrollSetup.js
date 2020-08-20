@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import $, { data } from "jquery";
+import moment from 'moment'
 import { NotificationManager } from "react-notifications";
 import axios from "axios";
 import {Link} from 'react-router-dom'
@@ -13,6 +14,7 @@ import {
 import { hideLoader, showLoader } from "../../../helpers/loader";
 import "./setup.css";
 import PayHistory from "./payHistory";
+import PendingPayroll from './processPayroll/pendingPayrolls'
 export default class payrollsetup extends Component {
 	constructor(props){
 		super(props)
@@ -24,9 +26,21 @@ export default class payrollsetup extends Component {
 			areas:[],
 			areaOptions: [],
 			branchOptions:[],
-			branches:[]
+			branches:[],
+			payrollMonth:null,
+			payrollYear:new Date().getFullYear(),
+			title:"",
+			regionName:"",
+			payrollId:null,
+			branchName: '',
+			areaName: '',
+			regionName: ''
 		}
+		this.inputRef = React.createRef();
+		console.log(this.props)
 	}
+
+	
 
 	getRegion= async()=>{
         try{
@@ -132,27 +146,129 @@ componentDidMount= async()=>{
  this.getRegion()
 this.getArea()
 	this.getBranch()
-
+this.getTitle()
 }
 
 handleChange  =  async (e,type) => {
 	e.preventDefault();
-	await this.setState({ [e.target.name]: e.target.value });
-console.log(this.state.regionId)
+	console.log("event",e)
+    
 
-if (type === "area") {
-	console.log(">>>>>gets herer")
-	this.getAreaData()
-}
-
-if (type === "branch") {
-this.getBranchData()
-}
+	if (type === "area") {
+		console.log(">>>>>gets herer")
+		this.getAreaData()
+		const selected = [...this.state.areas].filter(item => item.id === e.target.value)[0];
+		const areaName = this.handleRegionAbbr(selected.name);
+		await this.setState({ [e.target.name]: e.target.value }, areaName );
+	} else if (type === "branch") {
+		this.getBranchData()
+		const selected = [...this.state.branches].filter(item => item.id === e.target.value)[0];
+		const branchName = this.handleRegionAbbr(selected.name);
+		await this.setState({ [e.target.name]: e.target.value, branchName });
+	} else if(type === "region"){
+		const selected = [...this.state.regions].filter(item => item.id === e.target.value)[0];
+		const regionName = this.handleRegionAbbr(selected.name);
+		await this.setState({ [e.target.name]: e.target.value, regionName });
+	} else {
+		await this.setState({ [e.target.name]: e.target.value });
+	}
+	// console.log(this.refs[e.target.getAttribute('regionName')].value);
   }
 
+  handleRegionAbbr = (value) => {
+	if(value === 'South West'){
+		  return 'SW'
+	} else if(value === 'South East'){
+		return 'SE'
+	} else if(value === 'South South'){
+		return 'SS'
+	} else if(value === 'North Central'){
+		return 'NC'
+	} else 	  if(value === 'North East'){
+		return 'NE'
+	} else 	  if(value === 'North West'){
+		return 'NW'
+	}
+  }
+
+  handleSubmit=async(e)=>{
+	showLoader()
+	console.log(this.state.payrollMonth, this.state.areaId,this.state.branchId,this.state.regionId,)
+	e.preventDefault()
+	if (this.state.payrollMonth === null) {
+		NotificationManager.error('Please select payment month', 'Opps', 5000, () => {
+			// alert('callback');
+			hideLoader()
+			return;
+		  });
+		  
+		
+	}
+
+	if (this.state.regionId ===null) {
+		NotificationManager.error('payroll region is required', 'Opps', 5000, () => {
+			// alert('callback');
+		  });
+		  hideLoader()
+		  return;
+		  
+	  }
+
+
+
+	let data;
+	const { regionId, areaId, branchId, title, payrollMonth, payrollYear, regionName, areaName, branchName } = this.state;
+	if(branchId){
+		data = {
+			month: payrollMonth,
+			branchId:branchId,
+			title: `${regionName}-${areaName}-${branchName}-${payrollMonth}-${payrollYear}`,
+			year: payrollYear   
+		}
+	} else if(areaId){
+		data = {
+			month: payrollMonth,
+			areaId:areaId,
+			title: `${regionName}-${areaName}-${payrollMonth}-${payrollYear}`,
+			year: payrollYear   
+		} 
+	} else{
+		data = {
+			month: payrollMonth,
+			regionId:regionId,
+			title: `${regionName}-${payrollMonth}-${payrollYear}`,
+			year: payrollYear   
+		}
+	}
+	console.log(data)
+	try {
+		const res = await httpPost('process_payroll',data)
+		showLoader()
+		console.log(res.code)
+		if (res.code === 201) {
+			
+			console.log(res.data.process.id)
+			// NotificationManager.error(res.message, 'Opps', 5000, () => {
+			// 	// alert('callback');
+			// });
+			this.props.history.push(`/process_payroll/${res.data.process.id}`)
+		}
+	} catch (error) {
+		hideLoader()
+	}
+	hideLoader()
+  }
   
-          
+  getTitle=(e,data)=>{
+this.setState({regionName:data})
+	console.log(">>>>gets here",this.state.regionName)
+}  
 	render() {
+	
+
+
+
+
 		console.log('@@', this.state.areas)
 		return (
 			<Layout page="payrollSetup">
@@ -182,10 +298,21 @@ this.getBranchData()
 							<div class="inputPayroll-setup">
 									<div class="inputPayroll-setup-wrap">
 										<label for="">Month for payment</label>
-										<select class="form-control" id="">
-											<option>Select Months</option>
-											<option>Jan</option>
-											<option>Data 2</option>
+										<select name="payrollMonth" onChange={this.handleChange}
+										 name="payrollMonth" class="form-control" id="">
+											<option value={null}>Select Months</option>
+											<option value="january">January</option>
+											<option value="february">February</option>
+											<option value="match">Match</option>
+											<option value="april">April</option>
+											<option value="may">May</option>
+											<option value="june">June</option>
+											<option value="july">July</option>
+											<option value="august">August</option>
+											<option value="september">September</option>
+											<option value="october">October</option>
+											<option value="november">November</option>
+											<option value="december">December</option>
 										</select>
 									</div>
 
@@ -198,10 +325,15 @@ this.getBranchData()
 										<label for="">Title</label>
 
 										<input
+										disabled="true"
 											type="text"
 											class="form-control"
 											id=""
 											placeholder="Type in the title"
+											value={`${this.state.regionName !== undefined? this.state.regionName:""}-${this.state.areaName 
+												!== undefined? this.state.areaName:""}-${this.state.branchName
+													 !== undefined? this.state.branchName:""}-${this.state.payrollMonth 
+														!== null ? this.state.payrollMonth : ""}-${this.state.payrollYear} `}
 										/>
 									</div>
 
@@ -210,16 +342,16 @@ this.getBranchData()
 									<select
 
 	 name="regionId"
-	 onChange={this.handleChange} 
+	 onChange={e => this.handleChange(e, 'region')} 
 	
 	class="form-control" id="exampleFormControlSelect1">
-			<option >Select</option>
+			<option value={null} >Select</option>
 		{this.state.regions.map((data)=>{
 			return(
 			
 		
 			
-				<option  value={data.id}>{data.name}</option>
+				<option ref={this.inputRef} name="regionName" regionName={data.name} value={data.id}>{data.name}</option>
 			
 				
 			)
@@ -238,7 +370,7 @@ this.getBranchData()
 	 onChange={(e)=>this.handleChange(e,"area")} 
 	 onClick={this.getAreaData}
 	class="form-control" id="exampleFormControlSelect1">
-			<option value={this.state.regionId}>Select</option>
+			<option value={null}>Select</option>
 		{this.state.areaOptions.map((data)=>{
 			return(
 			
@@ -258,11 +390,11 @@ this.getBranchData()
 
 										<select
 										 name="branchId"
-										
+										disabled={this.state.areaId===null}
 										 onChange={(e)=>this.handleChange(e,"branch")} 
 										 onClick={this.getBranchData}
 										class="form-control" id="">
-											<option>Select Branch</option>
+											<option value={null}>Select Branch</option>
 											{this.state.branchOptions.map((data)=>{
 			return(
 			
@@ -278,19 +410,32 @@ this.getBranchData()
 								</div>
 
 								<div className="buttonWrap-setup">
-									<Link to="/process_payroll">
-									<button type="submit" class="btn btn-primary">
+									{/* <Link to="/process_payroll"> */}
+									<button onClick={this.handleSubmit} type="submit" class="btn btn-primary">
 										Proceed
 									</button>
-									</Link>
+									{/* </Link> */}
 									
 								</div>
 							</form>
 						</div>
 						<PayHistory />
-						<br />
+						
+						
+						
 					</section>
+					<br/>
+					<section className="paysetUpwraper">
+					<div style={{ marginBottom: "20px" }} className="payroll-headr">
+							<h1 style={{ fontSize: "23px", marginLeft: "10px" }}>
+								Pendinging Payrolls
+							</h1>
+						</div>
+						<PendingPayroll />
+					</section>
+					
 				</div>
+				<br/>
 			</Layout>
 		);
 	}

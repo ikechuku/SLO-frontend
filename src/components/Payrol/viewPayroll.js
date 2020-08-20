@@ -77,7 +77,8 @@ export default class payrollForm extends Component {
 
 
 	 
-	componentDidMount() {}
+
+    
 	render() {
 		return (
 			<Layout page="payroll">

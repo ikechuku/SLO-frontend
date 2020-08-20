@@ -132,7 +132,7 @@ function App() {
 					<Route path="/loan-requests" component={LoanRequests} />
 					<Route path="/user-loan-request" component={UserLoan} />
 				<Route path="/salary_structure_items/:id" component={SalaryStructureItems}/>
-				<Route path="/process_payroll" component={ProcessPayroll}/>
+				<Route path="/process_payroll/:id" component={ProcessPayroll}/>
 				<Route path="/use_payslip" component={Payslip}/>
 				<Route path="/view_payroll/:id" component={ViewPayroll}/>
 				

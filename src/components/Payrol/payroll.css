@@ -371,3 +371,14 @@ padding-left: 30px;
 	font-weight: 600;
 	width: 50%;
 }
+
+
+.greaterZindex{
+position: relative;
+z-index: 10;
+}
+.lesserZindex{
+	position: relative;
+	z-index: 5;
+	display: none;
+	}

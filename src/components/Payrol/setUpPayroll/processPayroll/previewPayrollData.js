@@ -15,14 +15,17 @@ export default class branchTable extends Component {
 		const body = this.props.payroll.map((data, index) => (
 			
 			{
-                "checkbox":<div class="form-check">
-				<input  
-				style={{cursor:"pointer"}}
-				onClick={(e)=>{this.props.previewPayrollProcess(e,data)}}
-				key={data.staffId} 
-				name='list' 
-				type='checkbox'   type="checkbox" class="form-check-input" />
-              </div>,
+                "checkbox":
+                
+            //     <div class="form-check">
+			// 	<input  
+			// 	onClick={(e)=>{this.props.previewPayrollProcess(e,data)}}
+			// 	key={data.staffId} 
+			// 	name='list' 
+			// 	type='checkbox'   type="checkbox" class="form-check-input" />
+            //   </div>
+            ""
+            ,
 				"name": `${data.user.firstName} ${data.user.lastName}`,
 				"employeeID": data.staffId,
                 "Paygrade": data.user.employmentInfo.map((emI)=>emI.rank===null?"Add user rank":emI.rank),

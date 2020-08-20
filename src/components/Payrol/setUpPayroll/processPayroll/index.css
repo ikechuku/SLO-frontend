@@ -95,6 +95,7 @@ font-weight: 600;
       width: 150px;
       height: 45px;
       border-radius: 5px;
+      cursor: pointer;
   }
 
   .processPayrollAction button:first-child{

@@ -31,24 +31,15 @@ export function PayRollModal(props) {
 						<form>
 							<div className="form-group">
 								<label for="recipient-name" className="form-control-label">
-									Departments
+								Applicable To
 								</label>
-								{/* <select
-									className="w-100 pr-0 pl-0 col-md-12 mr-1"
-									// defaultValue={props.postData.businessCountry}
-									// value={props.customSelect1}
-									// onChange={(e) => props.handleChange(e, "departmentId")}
-									// options={props.departmentOptions}
-								
-								>
-									<option value="area">area</option>
-									<option value="area">area</option>
-									</select> */}
 
-<select value={props.payrolldata} name="applicableTo" onChange={props.onChangePayroll}
+<select  name="applicableTo" onChange={(e)=>props.handleChange(e,"applicable")}
 class="form-control" id="">
 											<option>Select</option>
-											<option 	 value="Area">Area</option>
+											<option 	 value="Entire Organization">Entire Organization</option>
+											<option   value="region">Region</option>
+											<option   value="area">Area</option>
 											<option   value="branch">Branch</option>
 										</select>
 
@@ -57,18 +48,7 @@ class="form-control" id="">
 								</span>
 							</div>
 
-							<div className="form-group">
-								<label for="recipient-name" className="form-control-label">
-									Units
-								</label>
-								<select value={props.payrolldata} name="applicableTo"
-								 onChange={props.onChangePayroll}
-class="form-control" id="">
-											<option>Select</option>
-											<option 	 value="Area">unit a</option>
-											<option   value="branch">unit b</option>
-										</select>
-							</div>
+						
 						</form>
 					</div>
 					<div className="modal-footer">
@@ -88,7 +68,7 @@ class="form-control" id="">
 						<button
 							type="button"
 							className="btn btn-primary"
-							// onClick={props.handleSubmit}
+							data-dismiss="modal"
 						>
 							Add
 						</button>
