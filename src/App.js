@@ -57,6 +57,7 @@ import SalaryStructureItems from './components/salaryStructure/salaryStructureIt
 import ProcessPayroll from './components/Payrol/setUpPayroll/processPayroll/processPayroll'
 import Payslip from './components/Payrol/setUpPayroll/processPayroll/payslip'
 import ViewPayroll from './components/Payrol/viewPayroll'
+import PendingPayroll from './components/Payrol/setUpPayroll/processPayroll/processPendingPayroll'
 
 function App() {
 	return (
@@ -135,7 +136,7 @@ function App() {
 				<Route path="/process_payroll/:id" component={ProcessPayroll}/>
 				<Route path="/use_payslip" component={Payslip}/>
 				<Route path="/view_payroll/:id" component={ViewPayroll}/>
-				
+				<Route path="/process_pending_payroll/:id" component={PendingPayroll}/>
 				</Switch>
 			</Router>
 		</Provider>

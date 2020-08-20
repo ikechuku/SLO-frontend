@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactTooltip from "react-tooltip";
 import Table from '../../../../helpers/customTable';
-
+import {Link} from "react-router-dom"
 
 
 export default class branchTable extends Component {
@@ -15,14 +15,7 @@ export default class branchTable extends Component {
 		const body = this.props.processPayrollData.map((data, index) => (
 			
 			{
-                "checkbox":<div class="form-check">
-				<input  
-				style={{cursor:"pointer"}}
-				onClick={(e)=>{this.props.previewPayrollProcess(e,data)}}
-				key={data.staffId} 
-				name='list' 
-				type='checkbox'   type="checkbox" class="form-check-input" />
-              </div>,
+             
 				"name": `${data.title}`,
 				"month": data.month,
                  "year": data.year,
@@ -33,7 +26,9 @@ export default class branchTable extends Component {
                 //  "bankCode":data.bankCode,
                 //  "bankAccount":data.user.accountNumber,
 
-				"action": <a><span className='del' onClick={() => this.props.handleDelete(data.id)}>Delete</span></a>
+				"action": <a><span className='edit' >
+				<Link to={`/process_pending_payroll/${data.id}`}>Process</Link>
+				</span></a>
 			}
 		));
 		return body;
@@ -41,7 +36,7 @@ export default class branchTable extends Component {
 	
 	header = () => {
 		const header = [
-            { title: '', prop: 'checkbox' },
+          
 			{
 				title: ' Title (filterable)',
 				prop: 'name',

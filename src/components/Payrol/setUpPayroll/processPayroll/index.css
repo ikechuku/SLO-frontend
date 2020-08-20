@@ -110,15 +110,69 @@ font-weight: 600;
     border: 1px solid #003766;
  }
 
- .Userpayslip{
+ .flexPayslip{
      display: flex;
-     width: 100%;
-     flex-wrap: wrap;
      justify-content: space-between;
+     padding: 20px;
  }
 
- .payslipHeader{
+ .addRelative{
+    position: relative;
+    bottom: 2px;
+ }
+
+ .stickAmout{
+    position: absolute;
+    bottom: -43px;
+    width: 298px;
+ }
+
+ .userpayslipWrap{
+    width: 300px;
+    height: 336px;
+ border: 0.5px solid rgba(128, 128, 128, 0.555);
+ border-radius: 3px;
+ position: relative;
+ }
+
+ .payslipheader{
      display: flex;
      justify-content: space-between;
      background-color: rgba(245, 183, 60, 0.12);
+     padding: 10px;
+     border-radius: 3px;
+     
+ }
+
+ .Userpayslip{
+     padding: 10px;
+     border-bottom:1px solid rgba(128, 128, 128, 0.555) ;
+ }
+
+ .headerinfo{
+     /* border: 1px solid grey; */
+ }
+
+ .Userpayslip{
+     display: flex;
+     justify-content: space-between;
+     display: grid;
+   grid-template-columns: 1fr 1fr;
+ }
+
+
+
+ .UserpayslipOdd{
+   margin-left: auto;
+ }
+
+ .addPayrollBtn{
+     margin-left: 20px;
+     margin-bottom: 10px;
+     background: #003666be;
+     border-radius: 4px;
+     color: white;
+     border: none;
+     padding: 10px;
+     cursor: pointer;
  }
