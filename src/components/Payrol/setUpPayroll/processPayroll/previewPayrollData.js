@@ -29,10 +29,13 @@ export default class branchTable extends Component {
 				"name": `${data.user.firstName} ${data.user.lastName}`,
 				"employeeID": data.staffId,
                 "Paygrade": data.user.employmentInfo.map((emI)=>emI.rank===null?"Add user rank":emI.rank),
-                "grossPay":data.grossPay,
-                 "addictions":data.addictions,
-                 "reduction":data.reduction,
-                 "netPay":data.netPay,
+                "grossPay":this.sumUp(data.payrollProcessingItem),
+				//  "addictions":data.addictions,
+				"addictions":0,
+				//  "reduction":data.reduction,
+				"reduction":0,
+				//  "netPay":data.payrollProcessingItem.map((netpay)=>_.sum(netpay.amount)),
+				"netPay":this.sumUp(data.payrollProcessingItem),
                  "bankCode":data.bankCode,
                  "bankAccount":data.user.accountNumber,
 
@@ -41,6 +44,17 @@ export default class branchTable extends Component {
 		));
 		return body;
 	}
+
+	sumUp=(value)=>{
+		console.log(">>>>>")
+		let sum = 0;
+		for (let i = 0; i < value.length; i++) {
+			sum = sum + parseInt(value[i].payroll.amount);
+			
+			}
+		// console.log([sum].reduce((a, b) => a + b, 0))
+		return(sum)
+			}
 	
 	header = () => {
 		const header = [

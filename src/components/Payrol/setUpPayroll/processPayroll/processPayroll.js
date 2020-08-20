@@ -97,6 +97,7 @@ export default class processPayroll extends Component {
         }
     }
 
+
     
          
     
@@ -121,7 +122,7 @@ export default class processPayroll extends Component {
         
 
     <div className={`${this.state.toggleTabel ===false? "greaterZindex":"lesserZindex"}`}>
-      <ProcessPayrollTable previewPayrollProcess={this.previewPayrollProcess} payroll={this.state.processPayrollData}/>  
+      <ProcessPayrollTable sumUp={this.sumUp} previewPayrollProcess={this.previewPayrollProcess} payroll={this.state.processPayrollData}/>  
     </div>
 
     
