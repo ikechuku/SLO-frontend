@@ -27,6 +27,7 @@ class Layout extends Component {
             // this.props.user.role === 'staff' ? <StaffSidebar props={this.props}/> :
             <Sidebar props={this.props}/>
           }
+         
           {this.props.children}
         </div>
       </div>

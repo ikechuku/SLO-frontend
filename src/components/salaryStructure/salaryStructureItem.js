@@ -273,7 +273,7 @@ color: "white",
 lineHeight: "1.7",
 fontsize: "15px"}}
 
-class="fa fa-plus" aria-hidden="true"></i> Create Salary Structure Items
+class="fa fa-plus" aria-hidden="true"></i> Add Payroll Item
 </button>
 				</div>
 	<SalaryStructureItemsTable setModalType={this.setModalType}

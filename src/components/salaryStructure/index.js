@@ -88,7 +88,7 @@ console.log(this.state.name)
 	  const SalaryStructure = {name:this.state.name};
 	  if (this.state.name === "") {
 		NotificationManager.error(
-			"Opps Salary Structure Filed Can't Be Empty",
+			"Opps field can't be empty",
 				"Oops!",
 				3000
 			);
@@ -118,9 +118,15 @@ console.log(this.state.name)
 					this.getSalaryStructure()
 		}
   
-	  }catch(error){
+	  }
+	  catch(v){
 		hideLoader();
-		console.log(error);
+		NotificationManager.error(
+			`Opps ${this.state.name} already exist`,
+				"Oops!",
+				3000
+			);
+
 	  }}
 	  }
 clearModal=()=>{
@@ -364,7 +370,7 @@ getSalaryStructure= async()=>{
 						
 
 
-						
+						<br/>
 					</section>
 				</div>
 				<SalaryStructureModal salaryStructure={this.state.name}
