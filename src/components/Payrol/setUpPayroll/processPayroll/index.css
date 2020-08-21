@@ -1,0 +1,317 @@
+.PayrollLocationInfo{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 15px;
+}
+
+#appWrapResponsive{
+    width: 100%;
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+    padding-bottom: 30px;
+
+}
+
+.PayrollLocationInfo h1{
+color: #003766;
+font-size: 20px;
+font-weight: 600;
+}
+
+.PayrollLocationInfo h2{
+    color: #003766;
+    font-size: 18px;
+    font-weight: 400;
+    }
+
+    .PayrollLocationInfo h3{
+        color: #003766;
+        font-size: 16px;
+        font-weight: 600;
+        }
+
+        .processPayrollTable{
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .processPayrollTable table .thead td{
+            background-color:  rgba(245, 183, 60, 0.12) !important;
+         
+        }
+
+        .processPayrollTable .controlRow__root .text-right .col .ButtonGroup__root  {
+           margin-top: 80px !important;
+           margin-bottom: 0;
+        }
+
+       .PayrollTotal{
+         position: absolute;
+         bottom: 45px;
+         right: 20%;
+         padding-bottom: 0;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+       margin-bottom: 20px;
+       }
+       
+       .PayrollTotal h1{
+           font-size: 17px;
+           font-weight: 600;
+           margin-right: 15px;
+       }
+
+       
+.payrollDataP {
+    display: flex;
+    justify-content: space-between;
+}
+
+.payrollDataP div{
+    background-color: rgba(245, 183, 60, 0.12);
+    padding: 10px;
+}
+
+.payrollDataP div span:last-child{
+  margin-right: 20px;
+}
+
+.payrollDataP div span:first-child{
+    margin-right: 10px;
+    font-weight: 600;
+  }
+
+  .processPayrollAction{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 26px;
+  }
+
+  .processPayrollAction button{
+      margin-right: 20px;
+      width: 150px;
+      height: 45px;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+
+  .processPayrollAction button:first-child{
+   background-color: #003766;
+   color: white;
+   border: none;
+}
+
+.processPayrollAction button:last-child{
+    background-color: transparent;
+    color: #003766;
+    border: 1px solid #003766;
+ }
+
+ .flexPayslip{
+     display: flex;
+     justify-content: space-between;
+     padding: 20px;
+ }
+
+ .addRelative{
+    position: relative;
+    bottom: 2px;
+ }
+
+ .stickAmout{
+    position: absolute;
+    bottom: -43px;
+    width: 298px;
+ }
+
+ .userpayslipWrap{
+    width: 300px;
+    height: 336px;
+ border: 0.5px solid rgba(128, 128, 128, 0.555);
+ border-radius: 3px;
+ position: relative;
+ }
+
+ .payslipheader{
+     display: flex;
+     justify-content: space-between;
+     background-color: rgba(245, 183, 60, 0.12);
+     padding: 10px;
+     border-radius: 3px;
+     
+ }
+
+ .Userpayslip{
+     padding: 10px;
+     border-bottom:1px solid rgba(128, 128, 128, 0.555) ;
+ }
+
+ .headerinfo{
+     /* border: 1px solid grey; */
+ }
+
+ .Userpayslip{
+     display: flex;
+     justify-content: space-between;
+     display: grid;
+   grid-template-columns: 1fr 1fr;
+ }
+
+
+
+ .UserpayslipOdd{
+   margin-left: auto;
+ }
+
+ .addPayrollBtn{
+     margin-left: 20px;
+     margin-bottom: 10px;
+     background: #003666be;
+     border-radius: 4px;
+     color: white;
+     border: none;
+     padding: 10px;
+     cursor: pointer;
+ }
+
+ 
+ .removeIborders{
+    border: 0;
+    border-bottom:1px solid #C4C4C4 ;
+    border-radius: 0;
+    width: 460px;
+    position: relative;
+    z-index: 10;
+
+}
+
+.submitComment{
+width: 100px;
+border-radius: 0;
+width: 100px !important;
+font-weight: 600;
+color: #003766;
+cursor: pointer;
+position: relative;
+z-index: 10;
+}
+
+.dojdo{
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+align-items: flex-end;
+}
+
+
+
+
+.processPayrollTableAudit .controlRow__root .text-right .col .ButtonGroup__root  {
+    margin-top: 150px !important;
+    margin-bottom: 0;
+ }
+
+.audit{
+  position: absolute;
+  bottom: 120px !important;
+  right: 20%;
+  padding-bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+margin-bottom: 20px;
+}
+
+.auditCommentBox{
+ position: absolute;
+    bottom: 15px;
+    right: 20%;
+    padding-bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  margin-bottom: 20px;
+}
+
+.auditcommentText{
+    width: 460px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    background: rgba(196, 196, 196, 0.12);
+    padding: 10px;
+    height: 80px;
+    overflow-y:scroll ;
+}
+
+.toggleAuditTABLE{
+    width: 90%;
+    justify-content: flex-end;
+    align-items: flex-end;
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.toggleAuditTABLE button{
+    width: 130px;
+    height: 40px;
+    border: none;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.activeAuditBtn{
+    background: #003766;
+    color: white;
+    border-radius: 5px 0 0 5px;
+}
+
+.UnactiveAuditBtn{
+   
+    color: #003766;
+    border-radius: 0px 5px 5px 0px;
+}
+
+.pendingAdminWrap{
+    width: 70%;
+    
+    margin-left: 10px;
+    padding-left: 10px;
+    border-radius: 5px;
+    
+}
+
+.pendingAdmin{
+    display: flex;
+    height: 40px;
+    align-items: center;
+    background-color: #FAFAFA;
+    border-radius:5px;
+    margin-bottom: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.pendingAdmin div:first-child{
+    padding-right: 10px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.pendingAdmin div:last-child{
+    margin-left: auto;
+    padding-right: 10px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.adminRlink{
+   
+    font-weight: 600;
+    font-size: 16px; 
+}

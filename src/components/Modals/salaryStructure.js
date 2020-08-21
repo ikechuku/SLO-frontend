@@ -1,12 +1,10 @@
 import React from "react";
-import Select from "react-select";
 
-export function PayRollModal(props) {
-	console.log(props)
+export function SalaryStructureModal(props) {
 	return (
 		<div
 			className="modal fade"
-			id="addPayroll"
+			id="SalaryStructure"
 			tabIndex="-1"
 			role="dialog"
 			aria-hidden="true"
@@ -14,15 +12,17 @@ export function PayRollModal(props) {
 			<div className="modal-dialog" role="document">
 				<div className="modal-content">
 					<div className="modal-header">
-						<h5 className="modal-title" id="example-Modal3">
-							Applicable To
+						<h5 className="modal-title" id="example-Modal3">{
+							props.modalMode==="edit"?"Edit Salary Structure":"Create Salary Structure"
+						}
+						
 						</h5>
 						<button
 							type="button"
 							className="close"
 							data-dismiss="modal"
 							aria-label="Close"
-							// onClick={props.closeModal}
+							onClick={props.clearModal}
 						>
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -31,20 +31,17 @@ export function PayRollModal(props) {
 						<form>
 							<div className="form-group">
 								<label for="recipient-name" className="form-control-label">
-								Applicable To
+									Salary Structure
 								</label>
-
-<select  name="applicableTo" onChange={(e)=>props.handleChange(e,"applicable")}
-class="form-control" id="">
-											<option>Select</option>
-											<option 	 value="Entire Organization">Entire Organization</option>
-											<option   value="region">Region</option>
-											<option   value="area">Area</option>
-											<option   value="branch">Branch</option>
-										</select>
-
-										<span className="text-danger">
-									{/* {props.errorMessage2 !== null ? props.errorMessage2 : ""} */}
+								<input
+									type="text"
+									className="form-control"
+									value={props.salaryStructure}
+									name="name"
+									onChange={props.handleChange}
+								/>
+								<span className="text-danger">
+									{props.errorMessage1 !== null ? props.errorMessage1 : ""}
 								</span>
 							</div>
 
@@ -56,7 +53,7 @@ class="form-control" id="">
 							type="button"
 							className="btn btn-danger"
 							data-dismiss="modal"
-							// onClick={props.closeModal}
+							onClick={props.clearModal}
 						>
 							Close
 						</button>
@@ -64,14 +61,30 @@ class="form-control" id="">
               props.modalMode === 'create' ?
                 <button type="button" className="btn btn-primary" onClick={props.handleCreate}>Create</button> :
                 <button type="button" className="btn btn-primary" onClick={props.handleUpdate}>Update</button>
-            } */}
-						<button
+            } */}{props.modalMode=== 'create' ?(
+<button
 							type="button"
 							className="btn btn-primary"
-							data-dismiss="modal"
+							onClick={props.handleSubmit}
 						>
-							Add
+						Create
 						</button>
+			):
+		""
+		}
+
+{props.modalMode=== 'edit' ?(
+<button
+							type="button"
+							className="btn btn-primary"
+							onClick={props.editSalaryStructure}
+						>
+						Edit
+						</button>
+			):
+		""
+		}
+						
 					</div>
 				</div>
 			</div>

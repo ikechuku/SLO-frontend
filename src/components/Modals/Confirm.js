@@ -1,7 +1,7 @@
 import React from "react";
 import Select from "react-select";
 
-export function Confirm(props) {
+export  function Confirm(props) {
 	return (
 		<div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-sm">

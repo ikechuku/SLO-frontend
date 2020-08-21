@@ -1,44 +1,257 @@
 import React, { Component } from "react";
 import "./index.css";
 import { Collapse } from "react-collapse";
-
+import {SalaryStructureModal} from '../Modals/salaryStructure'
+import { NotificationManager } from "react-notifications";
+import axios from "axios";
+import { datepicker } from "bootstrap";
+import {
+	httpPost,
+	httpGet,
+	httpDelete,
+	httpPatch,
+} from "../../actions/data.action";
 import Layout from "../layout/index";
+import { hideLoader, showLoader } from "../../helpers/loader";
+import {Link} from 'react-router-dom'
+import DeletModal from '../Modals/deleteModal'
+import $ from 'jquery';
 export default class index extends Component {
 	constructor(props) {
 		super(props);
 		const { togge1, togge2, togge3 } = this.props;
 
-		this.state = { togge1, togge2, togge3, hideActions: true };
+		this.state = { 
+			toggle: "", 
+			
+			hideActions: false ,
+			name:"",
+			showDrop:false,
+			toggleAction:"",
+		salaryData:[],
+		modalDeleteID:null,
+		modalEditID:null,
+		modalType:"create",
+		ch :false
+		
+	};
 	}
-	toggle = (toggl) => {
-		let toggle = this.state.togge1;
-		let toggle2 = this.state.togge2;
-		let toggle3 = this.state.togge3;
-		if (toggl === "togge1") {
+	toggle = (id) => {
+
+		this.setState({toggle:id,
+			hideActions:false  
+		})
+		if (this.state.toggle === id) {
 			this.setState({
-				togge1: !toggle,
+				showDrop: !this.state.showDrop,
+				
 			});
 		}
 
-		if (toggl === "togge3") {
+		else{
 			this.setState({
-				togge3: !toggle3,
+				showDrop: !this.state.showDrop,
+				
 			});
 		}
-		if (toggl === "togge2") {
-			this.setState({
-				togge2: !toggle2,
-			});
-		}
+
+		
 	};
 
+	resetSmallModal=()=>{
+
+	}
+
 	hideActions = (hideBar) => {
-		if (hideBar === "hideBar1") {
+		this.setState({toggleAction:hideBar})
+		if (this.state.toggleAction === hideBar) {
 			this.setState({
 				hideActions: !this.state.hideActions,
 			});
 		}
+
+		else{
+			this.setState({
+				hideActions: !this.state.hideActions,
+				toggle:false
+			});
+		}
 	};
+
+	handleChange  =  (e) => {
+		e.preventDefault();
+		this.setState({ [e.target.name]: e.target.value });
+console.log(this.state.name)
+	  }
+
+	  handleSubmit= async ()=>{
+	  const SalaryStructure = {name:this.state.name};
+	  if (this.state.name === "") {
+		NotificationManager.error(
+			"Opps field can't be empty",
+				"Oops!",
+				3000
+			);
+
+			
+	  }
+
+	  else{
+				
+	
+	  try{
+		
+		showLoader()
+		const res = await httpPost(`create_salary_structure`,SalaryStructure)
+  
+		if(res.code === 201){
+		this.setState({name:""})
+		$('.modal').modal('hide');
+		$(document.body).removeClass('modal-open');
+		$('.modal-backdrop').remove();
+				  hideLoader();
+				  NotificationManager.success(
+					"A Salary Structure item has successfully been created",
+						"Success!",
+						5000
+					);
+					this.getSalaryStructure()
+		}
+  
+	  }
+	  catch(error){
+		hideLoader();
+		return NotificationManager.error(
+			`Opps ${this.state.name} already exist`,
+				"Oops!",
+				3000
+			);
+
+	  }}
+	  }
+clearModal=()=>{
+	this.setState({
+		name:""
+	})
+}
+componentDidMount(){
+	this.getSalaryStructure()
+	console.log("get..shere")
+	console.log(this.state.salaryData)
+}
+getSalaryStructure= async()=>{
+	try{
+		
+			showLoader()
+			const res = await httpGet(`salary_structure`)
+			if (res.code === 200) {
+				this.setState({salaryData:res.data.salaryStructures})
+			}
+			hideLoader()
+	  
+		console.log(this.state.salaryData)
+			
+	  
+		  }
+		  catch(error){
+			hideLoader();
+			console.log(error);
+		  }}
+		
+		  GetAlertId= async(id)=>{
+			this.setState({
+				modalDeleteID:id,
+				hideActions: !this.state.hideActions
+			})
+		  }
+
+		  handleDelete = async () => {
+			showLoader();
+			try {
+				const data = await httpDelete(`salary_structure/${this.state.modalDeleteID}`);
+				console.log(data);
+				if (data.code === 200) {
+					hideLoader();
+		
+					this.setState({
+						salaryData: this.state.salaryData.filter(
+							(datas) => datas.id !== this.state.modalDeleteID
+						),
+					});
+					hideLoader();
+					// this.getSalaryStructure()
+				}
+			} catch (error) {
+				hideLoader();
+				console.log(error);
+			}
+		};
+
+	getAsalaryStructure = async (id)=>{ 
+		this.setState({
+			hideActions: !this.state.hideActions
+		})
+		try{
+			
+		showLoader()
+		const res = await httpGet(`salary_structure/${id}`)
+		console.log(res)
+		if(res.code === 200){
+			this.setState({name:res.data.salaryStructure.name,
+				modalEditID:res.data.salaryStructure.id,
+				modalType:"edit"
+			})
+					  hideLoader();
+		  }
+		}
+		catch(error){
+		  hideLoader();
+		  console.log(error);
+		}
+		
+	}
+
+	editSalaryStructure= async()=>{
+		const SalaryStructure = {name:this.state.name};
+		if (this.state.name === "") {
+		  NotificationManager.error(
+			  "Opps Salary Structure Filed Can't Be Empty",
+				  "Oops!",
+				  3000
+			  );
+  
+			  
+		}
+  
+		else{
+				  
+	  
+		try{
+		  
+		  showLoader()
+		  const res = await httpPatch(`update_salary_structure/${this.state.modalEditID}`,SalaryStructure)
+	
+		  if(res.code === 200){
+		  this.setState({name:""})
+					hideLoader();
+					NotificationManager.success(
+					  "A Salary Structure item has successfully been Updated",
+						  "Success!",
+						  5000
+					  );
+					  $('.modal').modal('hide');
+					  $(document.body).removeClass('modal-open');
+					  $('.modal-backdrop').remove();
+					  this.getSalaryStructure()
+		  }
+	
+		}catch(error){
+		  hideLoader();
+		  console.log(error);
+		}}
+	}
+	  
+
 	render() {
 		return (
 			<Layout page="salaryStructure">
@@ -56,12 +269,13 @@ export default class index extends Component {
 								</a>
 							</li>
 						</ol>
-						<div class="checkBoxW salaryStructure">
+						<div style={{marginBottom:"-26px"}} class="checkBoxW salaryStructure">
 							<button
 								type="button"
 								className="payrolBtn "
 								data-toggle="modal"
-								data-target="#addPayroll"
+								data-target="#SalaryStructure"
+								onClick={()=>{this.setState({modalType:"create"})}}
 							>
 								<i class="fa fa-plus" aria-hidden="true"></i>
 								Add Salary Structure
@@ -69,156 +283,104 @@ export default class index extends Component {
 						</div>
 						<div className="DropDownWrap56">
 							<div>
-								<div className="dropDownColum ">
+							{	console.log(this.state.salaryData.length)}	
+							{	console.log(this.state.salaryData)}	
+{this.state.salaryData.map((data) => {
+	console.log(this.state.salaryStructure)
+						return (
+							<div
+							
+							>
+							<div className="dropDownColum ">
 									<div className="dropHeader">
 										{" "}
 										<div
-											onClick={(e) => this.toggle("togge1")}
+											onClick={(e) => this.toggle(data.id)}
 											className="dropHead"
 										>
 											<span
 												className={`${
-													this.state.togge1
+													this.state.showDrop === true && this.state.toggle === data.id
 														? "fa fa-chevron-up"
 														: "fa fa-chevron-down"
 												}`}
 											></span>{" "}
-											<h1>Entry Level</h1>
+											<h1 key={data.id}>{data.name}</h1>
 										</div>
 										<div className="verticalDots">
 											<i
-												onClick={(e) => this.hideActions("hideBar1")}
-												class="fa fa-ellipsis-v"
+												onClick={(e) => this.hideActions(`${data.id}`)}
+												className="fa fa-ellipsis-v"
 												aria-hidden="true"
 											></i>
-											{this.state.hideActions === true ? (
-												""
-											) : (
+											{this.state.hideActions === true && 
+											this.state.toggleAction === data.id ? (
 												<div className="actionsSS">
-													<span className="actionEdit">Edit</span>
-													<span className="actiondelet">Delete</span>
+													<span><Link className="actionView" to={`/salary_structure_items/${data.id}`}>View</Link></span>
+													<span type="button"
+								className="payrolBtn "
+								data-toggle="modal"
+								data-target="#SalaryStructure"  className="actionEdit" onClick={(e)=>{
+									this.getAsalaryStructure(data.id)
+								}}>Edit</span>
+													<span type="button" data-toggle="modal"
+													 data-target="#ComfirmModalDelete" onClick={(e)=>{
+														this.GetAlertId(data.id)
+													}} className="actiondelet">Delete</span>
 												</div>
-											)}
+											) : ""}
 										</div>
 									</div>
-									<Collapse
-										className="ReactCollapse--collapse"
-										isOpened={this.state.togge1}
-										hasNestedCollapse
-									>
-										<div className="dropContainer">
-											<div className="flex1C">
-												<span className="SSbasicSalary">Basic Salary</span>
-												<span className="SSbasicSalaryFEE">N1200</span>
+								
+										{console.log(">>>>gets here" , data.salaryStructureItem.length)}
+								{data.salaryStructureItem.length === 0 ? (<div>{this.state.toggle === data.id  && this.state.showDrop === true ? 
+								(<p className="noSalaryStruture">Opps, No Salary Structure Item </p>) : ""}</div>) : (<div>{this.state.toggle === data.id  && this.state.showDrop === true ?
+								 (<div className="">
+											{
+												data.salaryStructureItem.map((data)=>{
+													return(
+														<div className="showpayrolldata">
+																		<div>
+												{data.payrollItem.name}
+													
 											</div>
-											<div className="flex1C">
-												<span className="SSbasicSalary">Overtime</span>
-												<span className="SSbasicSalaryFEE">N1200</span>
+
+											<div>
+												{data.amount}
 											</div>
-										</div>
-										<div className="dropContainer">
-											<div className="flex1C">
-												<span className="SSbasicSalary">Basic Salary</span>
-												<span className="SSbasicSalaryFEE">N1200</span>
-											</div>
-											<div className="flex1C">
-												<span className="SSbasicSalary">Overtime</span>
-												<span className="SSbasicSalaryFEE">N1200</span>
-											</div>
-										</div>
-									</Collapse>
-								</div>
-							</div>
-							<div>
-								<div className="dropDownColum ">
-									<div className="dropHeader">
-										{" "}
-										<div
-											onClick={(e) => this.toggle("togge2")}
-											className="dropHead"
-										>
-											<span
-												className={`${
-													this.state.togge2
-														? "fa fa-chevron-up"
-														: "fa fa-chevron-down"
-												}`}
-											></span>{" "}
-											<h1>Management Level</h1>
-										</div>
-										<div className="verticalDots">
-											<i
-												onClick={(e) => this.hideActions("hideBar1")}
-												class="fa fa-ellipsis-v"
-												aria-hidden="true"
-											></i>
-										</div>
+														</div>
+													)
+												})
+											}
+								
+										</div>) : ""}</div>)}
+										
+										
 									</div>
-									<Collapse
-										className="ReactCollapse--collapse"
-										isOpened={this.state.togge2}
-										hasNestedCollapse
-									>
-										<div className="dropContainer">
-											<div className="flex1C">
-												<span className="SSbasicSalary">Basic Salary</span>
-												<span className="SSbasicSalaryFEE">N1200</span>
-											</div>
-											<div className="flex2C">
-												<span className="SSbasicSalary">Overtime</span>
-												<span className="SSbasicSalaryFEE">N1200</span>
-											</div>
-										</div>
-									</Collapse>
 								</div>
-							</div>
-							<div>
-								<div className="dropDownColum ">
-									<div className="dropHeader">
-										{" "}
-										<div
-											onClick={(e) => this.toggle("togge3")}
-											className="dropHead"
-										>
-											<span
-												className={`${
-													this.state.togge3
-														? "fa fa-chevron-up"
-														: "fa fa-chevron-down"
-												}`}
-											></span>{" "}
-											<h1>Senior Level</h1>
-										</div>
-										<div className="verticalDots">
-											<i
-												onClick={(e) => this.hideActions("hideBar1")}
-												class="fa fa-ellipsis-v"
-												aria-hidden="true"
-											></i>
-										</div>
-									</div>
-									<Collapse
-										className="ReactCollapse--collapse"
-										isOpened={this.state.togge3}
-										hasNestedCollapse
-									>
-										<div className="dropContainer">
-											<div className="flex1C">
-												<span className="SSbasicSalary">Basic Salary</span>
-												<span className="SSbasicSalaryFEE">N1200</span>
-											</div>
-											<div className="flex2C">
-												<span className="SSbasicSalary">Overtime</span>
-												<span className="SSbasicSalaryFEE">N1200</span>
-											</div>
-										</div>
-									</Collapse>
+							
+						
+						);
+					})}
 								</div>
-							</div>
+						
+							
 							{/* DROPDOWN WRAP END */}
 						</div>
+						
+
+
+						<br/>
 					</section>
 				</div>
+				<SalaryStructureModal salaryStructure={this.state.name}
+				 handleChange={this.handleChange} 
+				 handleSubmit={this.handleSubmit}
+				 clearModal={this.clearModal}
+				 modalMode={this.state.modalType}
+				 editSalaryStructure={this.editSalaryStructure}
+				 />
+				 <DeletModal handleDelete={this.handleDelete}/>
 			</Layout>
 		);
 	}

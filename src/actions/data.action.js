@@ -1,5 +1,6 @@
 import axios from "axios";
 import { NotificationManager } from "react-notifications";
+
 import { showLoader, hideLoader } from "../helpers/loader";
 
 export let baseUrl = "https://slo-server.herokuapp.com/api/";

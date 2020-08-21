@@ -13,17 +13,18 @@ import {
 } from "../../actions/data.action";
 import { hideLoader, showLoader } from "../../helpers/loader";
 import DatePicker from "react-datepicker";
-import moment from 'moment'
 
 import "react-datepicker/dist/react-datepicker.css";
 
 import { PayRollModal } from "../Modals/payroll";
+import moment from 'moment'
 
 export default class payrollForm extends Component {
 	constructor(props){
 	super(props)
 	this.handleChange = this.handleChange.bind(this);
- 
+	 console.log(this.props.match.params.id)
+ console.log(this.props)
 	this.state = {
 		startDate: new Date(),
 		name: "",
@@ -38,7 +39,9 @@ export default class payrollForm extends Component {
 		datePickerText:"Select Date"
 	};}
 
-	handleEdit=(id)=>{
+	componentDidMount (){
+		console.log('@@@@')
+		this.getSpecificPayroll()
 		
 	}
 
@@ -56,20 +59,16 @@ let year = moment(date).year();
 		console.log(this.state.effectiveDate)
 	};
 
-	handleChange  =  (e,applicable) => {
+	handleChange  =  (e) => {
 		e.preventDefault();
 		this.setState({ [e.target.name]: e.target.value });
 
-		if (applicable=="applicable") {
-			
-this.setState({applicableTo: this.state.applicableTo.concat(e.target.value)});
+		if (e.target.name === "applicableTo") {
+			let PrevState = this.state.applicableTo.slice(); 
+this.setState({applicableTo: [...PrevState,{ [e.target.name]: e.target.value }]});
 		}
-	
-		
-	console.log(this.state)
-	this.setState({
-		applicableTo:this.state.applicableTo.filter(function(val) {return val !== "area"})
-	})
+	console.log(this.state.applicableTo)
+
 	  }
 
 	  handleSubmit = async (e)=>{
@@ -82,9 +81,9 @@ this.setState({applicableTo: this.state.applicableTo.concat(e.target.value)});
 			itemDescription,
 			applicableTo,
 			effectiveDate} = this.state;
-		  if (name === "" || periodicity === ""  || itemDescription === "" || effectiveDate === "" || positive === null || pensionable === null || taxable === null || occurence === null) {
+		  if (name === "" || periodicity === ""  || itemDescription === "" || effectiveDate === "") {
 			NotificationManager.error(
-			"Opps please fill in all fields",
+			"Opps Please fill In All Field",
 				"Oops!",
 				3000
 			);
@@ -103,7 +102,7 @@ this.setState({applicableTo: this.state.applicableTo.concat(e.target.value)});
 		periodicity: this.state.periodicity,
 		occurence: this.state.occurence,
 		itemDescription: this.state.itemDescription,
-		applicableTo: this.state.applicableTo,
+		applicableTo: ["area",'branch'],
 		effectiveDate: this.state.effectiveDate}
 
 	
@@ -111,14 +110,14 @@ this.setState({applicableTo: this.state.applicableTo.concat(e.target.value)});
 		try{
 		
 			showLoader()
-			const res = await httpPost(`/create_payroll_item`,data)
+			const res = await httpPatch(`update_payroll_items/${this.props.match.params.id}`,data)
 	  
 			if(res.code === 201){
 				this.setState({
 					name: "",
-				taxable: null,
-				pensionable:null ,
-				positive: null,
+				taxable: false,
+				pensionable:false ,
+				positive: false,
 				periodicity: "",
 				occurence: "",
 				itemDescription: "",
@@ -140,6 +139,35 @@ this.setState({applicableTo: this.state.applicableTo.concat(e.target.value)});
 		
 	  }
 
+	  getSpecificPayroll= async  ()=>{
+		try{
+		
+			showLoader()
+			const res = await httpGet(`payroll_item/${this.props.match.params.id}`)
+	     console.log(res)
+			if(res.code === 200){
+				this.setState({
+					name:res.data.payrollItem.name,
+				taxable: res.data.payrollItem.taxable,
+				pensionable:res.data.payrollItem.pensionable ,
+				positive: res.data.payrollItem.positive,
+				periodicity: res.data.payrollItem.periodicity,
+				occurence: res.data.payrollItem.occurence,
+				itemDescription: res.data.payrollItem.itemDescription,
+				applicableTo: ["area"],
+				effectiveDate: res.data.payrollItem.effectiveDate,
+				datePickerText:res.data.payrollItem.effectiveDate
+			})
+					  hideLoader();
+					  console.log(res)
+			}
+	  
+		  }catch(error){
+			hideLoader();
+			console.log(error);
+		  }
+		
+	  }
 	  handleRadio=(e,clickCheck,getData)=>{
 		if (clickCheck === "positive") {
 			this.setState({positive:getData})
@@ -158,8 +186,7 @@ this.setState({applicableTo: this.state.applicableTo.concat(e.target.value)});
 
 		
 	  }
-
-	componentDidMount() {}
+	
 	render() {
 		return (
 			<Layout page="payroll">
@@ -182,13 +209,12 @@ this.setState({applicableTo: this.state.applicableTo.concat(e.target.value)});
 					<div className="wrapperPayroll">
 						<div className="payroll-form">
 							<div className="payroll-header">
-								<h1>Add Payroll Item</h1>
+								<h1>Edit Payroll Item</h1>
 							</div>
 							<form>
 								<div class="inputPayroll">
 									<label for="">Payroll Name</label>
 									<input
-									required={true}
 										type="text"
 										class="form-control"
 										id=""
@@ -197,7 +223,7 @@ this.setState({applicableTo: this.state.applicableTo.concat(e.target.value)});
 										value={this.state.name} onChange={this.handleChange}
 									/>
 								</div>
-                                
+
 								<div className="radioChecks">
                                <div>
 								   <label>Taxable</label>
@@ -223,7 +249,9 @@ this.setState({applicableTo: this.state.applicableTo.concat(e.target.value)});
 								</div>
 
 								<div class="">
-
+								
+									
+								
 									<div className="inputPayroll">
 										<label for="">Periodicity</label>
 										<select name="periodicity" value={this.state.periodicity} 
@@ -244,7 +272,6 @@ this.setState({applicableTo: this.state.applicableTo.concat(e.target.value)});
 											placeholder="Occurance"
 											onChange={this.handleChange}
 											value={this.state.occurence}
-											required={true}
 										/>
 									</div>
 
@@ -258,10 +285,9 @@ this.setState({applicableTo: this.state.applicableTo.concat(e.target.value)});
 											placeholder="Item Description"
 											onChange={this.handleChange}
 											value={this.state.itemDescription}
-											required={true}
 										/>
 									</div>
-	
+
 									<div class="">
 										<div class="inputPayroll-Checkbox">
 											<div class="checkBox1">
@@ -286,7 +312,7 @@ this.setState({applicableTo: this.state.applicableTo.concat(e.target.value)});
 									<div className="inputPayroll">
 										<label for="">Specify Date</label>
 										<div className="dataeP">
-											<DatePicker
+										<DatePicker
 											dateFormat="MM.yyyy"
 											showMonthYearPicker
 											placeholderText={this.state.datePickerText}
@@ -310,7 +336,7 @@ this.setState({applicableTo: this.state.applicableTo.concat(e.target.value)});
 							</form>
 						</div>
 					</div>
-					<PayRollModal handleChange={this.handleChange} payrolldata={this.state.applicableTo}/>
+					<PayRollModal onChangePayroll={this.handleChange} payrolldata={this.state.applicableTo}/>
 				</div>
 			</Layout>
 		);

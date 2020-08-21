@@ -1,12 +1,11 @@
 import React from "react";
 import Select from "react-select";
 
-export function PayRollModal(props) {
-	console.log(props)
+export default function addPayrollItem2(props) {
 	return (
 		<div
 			className="modal fade"
-			id="addPayroll"
+			id="addPayroll2"
 			tabIndex="-1"
 			role="dialog"
 			aria-hidden="true"
@@ -15,7 +14,7 @@ export function PayRollModal(props) {
 				<div className="modal-content">
 					<div className="modal-header">
 						<h5 className="modal-title" id="example-Modal3">
-							Applicable To
+							Add Payroll Item
 						</h5>
 						<button
 							type="button"
@@ -30,25 +29,30 @@ export function PayRollModal(props) {
 					<div className="modal-body">
 						<form>
 							<div className="form-group">
-								<label for="recipient-name" className="form-control-label">
-								Applicable To
+								<label for="" className="form-control-label">
+									Payroll Item
 								</label>
-
-<select  name="applicableTo" onChange={(e)=>props.handleChange(e,"applicable")}
-class="form-control" id="">
-											<option>Select</option>
-											<option 	 value="Entire Organization">Entire Organization</option>
-											<option   value="region">Region</option>
-											<option   value="area">Area</option>
-											<option   value="branch">Branch</option>
-										</select>
-
-										<span className="text-danger">
-									{/* {props.errorMessage2 !== null ? props.errorMessage2 : ""} */}
-								</span>
+								<input
+									type="text"
+									className="form-control"
+									// value={props.role.title}
+									// name="title"
+									// onChange={props.handleChange}
+								/>
 							</div>
 
-						
+							<div className="form-group">
+								<label for="" className="form-control-label">
+									Amount{" "}
+								</label>
+								<input
+									type="number"
+									className="form-control"
+									// value={props.role.title}
+									// name="title"
+									// onChange={props.handleChange}
+								/>
+							</div>
 						</form>
 					</div>
 					<div className="modal-footer">
@@ -68,7 +72,7 @@ class="form-control" id="">
 						<button
 							type="button"
 							className="btn btn-primary"
-							data-dismiss="modal"
+							// onClick={props.handleSubmit}
 						>
 							Add
 						</button>

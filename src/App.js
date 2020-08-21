@@ -51,7 +51,17 @@ import SalaryStructure from "./components/salaryStructure/index";
 import LoanTypes from "./components/Loan/loanType";
 import LoanRequests from "./components/Loan/loanRequests";
 import UserLoan from "./components/Loan/decideLoan";
-// import "bootstrap/dist/css/bootstrap.css";
+import EditPayroll from "./components/Payrol/editPayroll";
+import SalaryStructureItems from './components/salaryStructure/salaryStructureItem'
+
+import ProcessPayroll from './components/Payrol/setUpPayroll/processPayroll/processPayroll'
+import Payslip from './components/Payrol/setUpPayroll/processPayroll/payslip'
+import ViewPayroll from './components/Payrol/viewPayroll'
+import PendingPayroll from './components/Payrol/setUpPayroll/processPayroll/processPendingPayroll'
+import AuditView from './components/Payrol/setUpPayroll/processPayroll/auditViewPayrollIndex'
+import AuditSummary from './components/Payrol/setUpPayroll/processPayroll/auditSummary'
+
+
 
 function App() {
 	return (
@@ -121,10 +131,18 @@ function App() {
 					<Route path="/setup-payroll" component={PayrollSetup} />
 					<Route path="/main-payrolls" component={MainPayrolls} />
 					<Route path="/pay-now" component={PayNow} />
+					<Route path="/edit-payroll/:id" component={EditPayroll} />
 					<Route path="/salary-structure" component={SalaryStructure} />
 					<Route path="/loan" component={LoanTypes} />
 					<Route path="/loan-requests" component={LoanRequests} />
 					<Route path="/user-loan-request" component={UserLoan} />
+				<Route path="/salary_structure_items/:id" component={SalaryStructureItems}/>
+				<Route path="/process_payroll/:id" component={ProcessPayroll}/>
+				<Route path="/use_payslip/:id" component={Payslip}/>
+				<Route path="/view_payroll/:id" component={ViewPayroll}/>
+				<Route path="/process_pending_payroll/:id" component={PendingPayroll}/>
+				<Route path="/audit_view_payroll" component={AuditView}/>
+				<Route path="/audit_summary" component={AuditSummary}/>
 				</Switch>
 			</Router>
 		</Provider>

@@ -3,11 +3,12 @@
 }
 
 .DropDownWrap56 {
-  width: 40vw;
+  width: 50vw;
   height: fit-content;
   background-color: white;
   filter: drop-shadow(1px 1px 2px rgba(128, 128, 128, 0.692));
   border-radius: 5px;
+  margin-top: 40px;
 }
 
 .dropHeader {
@@ -28,9 +29,9 @@
 
 .actionsSS {
   position: absolute;
-  width: 70px;
+  width: 106px;
   color: #666666;
-  height: 62px;
+  height: 95px;
   background-color: white;
   right: 4px;
   border-radius: 5px;
@@ -38,11 +39,31 @@
   z-index: 80;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   cursor: pointer;
+  padding: 10px;
 }
 
+.actiondelet{
+  font-size: 16px;
+  color: red;
+  font-weight: 600;
+  margin-top: 0px;
+}
+.actionEdit{
+  font-size: 16px;
+  color: #666666;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.actionView{
+  font-size: 16px;
+  color: #666666;
+  font-weight: 600;
+  margin: 0px;
+}
 .dropHead {
   display: flex;
 }
@@ -94,4 +115,25 @@
 .salaryStructure button {
   font-weight: 500;
   font-size: 14px;
+}
+
+.showpayrolldata{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 36px;
+}
+
+.noSalaryStruture{
+  padding: 10px;
+  color: rgb(155, 19, 19);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.showpayrolldata div{
+  font-size: 17px;
+ 
 }
