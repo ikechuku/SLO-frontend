@@ -58,6 +58,10 @@ import ProcessPayroll from './components/Payrol/setUpPayroll/processPayroll/proc
 import Payslip from './components/Payrol/setUpPayroll/processPayroll/payslip'
 import ViewPayroll from './components/Payrol/viewPayroll'
 import PendingPayroll from './components/Payrol/setUpPayroll/processPayroll/processPendingPayroll'
+import AuditView from './components/Payrol/setUpPayroll/processPayroll/auditViewPayrollIndex'
+import AuditSummary from './components/Payrol/setUpPayroll/processPayroll/auditSummary'
+
+
 
 function App() {
 	return (
@@ -134,9 +138,11 @@ function App() {
 					<Route path="/user-loan-request" component={UserLoan} />
 				<Route path="/salary_structure_items/:id" component={SalaryStructureItems}/>
 				<Route path="/process_payroll/:id" component={ProcessPayroll}/>
-				<Route path="/use_payslip" component={Payslip}/>
+				<Route path="/use_payslip/:id" component={Payslip}/>
 				<Route path="/view_payroll/:id" component={ViewPayroll}/>
 				<Route path="/process_pending_payroll/:id" component={PendingPayroll}/>
+				<Route path="/audit_view_payroll" component={AuditView}/>
+				<Route path="/audit_summary" component={AuditSummary}/>
 				</Switch>
 			</Router>
 		</Provider>

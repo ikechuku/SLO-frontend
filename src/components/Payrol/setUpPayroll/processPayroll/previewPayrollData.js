@@ -65,10 +65,10 @@ export default class branchTable extends Component {
 				sortable: true,
 				filterable: true
             },
-			{ title: 'employeeID', prop: 'employeeID', sortable: true },
-            { title: 'Paygrade', prop: 'Paygrade', sortable: true },
+			{ title: 'Employee ID', prop: 'employeeID', sortable: true },
+            { title: 'Pay Grade', prop: 'Paygrade', sortable: true },
             { title: 'Gross Pay', prop: 'grossPay', sortable: true },
-            { title: 'Addictions', prop: 'addictions' },
+            { title: 'Addition', prop: 'addictions' },
             { title: 'Reduction', prop: 'reduction'},
             { title: 'NetPay', prop: 'netPay' },
             { title: 'Bank Code', prop: 'bankCode', sortable: true },

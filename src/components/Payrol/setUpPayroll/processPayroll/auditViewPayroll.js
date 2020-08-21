@@ -25,20 +25,15 @@ export default class branchTable extends Component {
 				type='checkbox'   type="checkbox" class="form-check-input" />
               </div>,
 				"name": `${data.user.firstName} ${data.user.lastName}`,
-				"employeeID": data.staffId,
-                "Paygrade": data.user.employmentInfo.map((emI)=>emI.rank===null?"Add user rank":emI.rank),
-                "grossPay":this.sumUp(data.payrollProcessingItem),
+				 "grossPay":this.sumUp(data.payrollProcessingItem),
 				//  "addictions":data.addictions,
-				"addictions":0,
-				//  "reduction":data.reduction,
-				"reduction":0,
-				//  "netPay":data.payrollProcessingItem.map((netpay)=>_.sum(netpay.amount)),
+				
 				"netPay":this.sumUp(data.payrollProcessingItem),
                  "bankCode":data.bankCode,
                  "bankAccount":data.user.accountNumber,
 
 				"action": <a><span className='edit' data-toggle="modal" data-target="#branchModal" 
-				><Link to={`/use_payslip/${data.id}`}>Edit</Link></span><span className='del' onClick={() => this.props.handleDelete(data.id)}>Delete</span></a>
+                ><Link to={`/use_payslip/${data.id}`}>Edit</Link></span></a>
 			}
 		));
 
@@ -66,11 +61,7 @@ export default class branchTable extends Component {
 				sortable: true,
 				filterable: true
             },
-			{ title: 'Employee ID', prop: 'employeeID', sortable: true },
-            { title: 'Pay Grade', prop: 'Paygrade', sortable: true },
             { title: 'Gross Pay', prop: 'grossPay', sortable: true },
-            { title: 'Addition', prop: 'addictions' },
-            { title: 'Reduction', prop: 'reduction'},
             { title: 'NetPay', prop: 'netPay' },
             { title: 'Bank Code', prop: 'bankCode', sortable: true },
             { title: 'Bank Account', prop: 'bankAccount', sortable: true },

@@ -106,9 +106,7 @@ export default class processPayroll extends Component {
         return (
             <div>
                <PendingPayrolls previewPayrollProcess={this.previewPayrollProcess} processPayrollData={this.state.processPayrollData}/>
-               <div className="processPayrollAction">
-        <button >Submit</button> <button onClick={this.changeTable} >{this.state.toggleTabel===false?"Preview":"Select More"}</button>
-  </div>
+              
             </div>
         )
     }

@@ -35,6 +35,25 @@ componentDidMount(){
 	this.getPayrollID()
 	this.getSalaryStructure()
 }
+clearModal=()=>{
+	
+	this.setState({
+		name:"",
+		amount:"",
+		modalType:"create",
+		salaryStructureItemID:null,
+		salaryStructure:null
+	})
+}
+setModalType=(salaryStructureItemId, salaryStructureID )=>{
+		
+	this.setState({
+		modalType:"edit",
+		salaryStructureItemID:salaryStructureItemId,
+		salaryStructure:salaryStructureID
+	})
+	console.log(salaryStructureItemId , "data2>>>>", salaryStructureID)
+}
 
 handleChange  =  (e) => {
 	e.preventDefault();
@@ -102,6 +121,8 @@ console.log(this.state)
 						  "Success!",
 						  5000
 					  );
+					  this.getSalaryStructure()
+					  this.clearModal()
 		  }
 	
 		}catch(error){
@@ -184,24 +205,9 @@ console.log(this.state)
 		}}
 	}
 	  
-	setModalType=(salaryStructureItemId, salaryStructureID )=>{
-		this.setState({
-			modalType:"edit",
-			salaryStructureItemID:salaryStructureItemId,
-			salaryStructure:salaryStructureID
-		})
-		console.log(salaryStructureItemId , "data2>>>>", salaryStructureID)
-	}
 
-	clearModal=()=>{
+
 	
-		this.setState({
-			amount:"",
-			modalType:"create",
-			salaryStructureItemID:"",
-			salaryStructure:""
-		})
-	}
 	getDeleteId=(id)=>{
    this.setState({
 	   deleteId:id
@@ -253,7 +259,7 @@ console.log(this.state)
 						<div className="DropDownWrap56">
 							<div>
                                 </div>
-<div style={{padding:"30px"}}>
+<div style={{padding:"30px",marginBottom:"30px"}}>
 <div style={{marginBottom:"22px"}} class="checkBoxW ">
 						
 
@@ -286,6 +292,7 @@ class="fa fa-plus" aria-hidden="true"></i> Add Payroll Item
                                 </section>
                             
                                 </div>
+							
                                 <SalaryStructureItemModal payrollData={this.state.payrollItems}
 								handleChange={this.handleChange} name={this.state.name}
 								 amount={this.state.amount}

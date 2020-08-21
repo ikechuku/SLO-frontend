@@ -119,9 +119,9 @@ console.log(this.state.name)
 		}
   
 	  }
-	  catch(v){
+	  catch(error){
 		hideLoader();
-		NotificationManager.error(
+		return NotificationManager.error(
 			`Opps ${this.state.name} already exist`,
 				"Oops!",
 				3000

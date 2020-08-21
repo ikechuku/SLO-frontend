@@ -28,14 +28,15 @@ export default class payrollForm extends Component {
 	this.state = {
 		startDate: new Date(),
 		name: "",
-		taxable: false,
-		pensionable:false ,
-		positive: false,
+		taxable: null,
+		pensionable:null ,
+		positive: null,
 		periodicity: "",
-		occurence: "",
+		occurence: null,
 		itemDescription: "",
-		applicableTo: [],
-		effectiveDate: ""
+		applicableTo: ["Entire Organization"],
+		effectiveDate: "",
+		datePickerText:"Select Date"
 	};}
 
 	componentDidMount (){
@@ -45,10 +46,14 @@ export default class payrollForm extends Component {
 	}
 
 	handleDate = (date) => {
+
+let month = 1 + moment(date).month();
+let year = moment(date).year();
 		this.setState({
 			startDate: date,
 			
-				effectiveDate: date
+				effectiveDate: date,
+				datePickerText:`${month + " " + " " + year}`
 			
 		});
 		console.log(this.state.effectiveDate)
@@ -150,7 +155,8 @@ this.setState({applicableTo: [...PrevState,{ [e.target.name]: e.target.value }]}
 				occurence: res.data.payrollItem.occurence,
 				itemDescription: res.data.payrollItem.itemDescription,
 				applicableTo: ["area"],
-				effectiveDate: res.data.payrollItem.effectiveDate
+				effectiveDate: res.data.payrollItem.effectiveDate,
+				datePickerText:res.data.payrollItem.effectiveDate
 			})
 					  hideLoader();
 					  console.log(res)
@@ -162,47 +168,24 @@ this.setState({applicableTo: [...PrevState,{ [e.target.name]: e.target.value }]}
 		  }
 		
 	  }
+	  handleRadio=(e,clickCheck,getData)=>{
+		if (clickCheck === "positive") {
+			this.setState({positive:getData})
+			console.log(this.state.positive)
+		} 
 
-	toggleRadio = (check) => {
-		let taxable = this.state.taxable;
-		let pensionable = this.state.pensionable;
-		let positive = this.state.positive;
-		if (check === "taxable") {
-			this.setState({
-			
-				taxable:!taxable
-			})
+		if (clickCheck === "taxable") {
+			this.setState({taxable:getData})
+			console.log(this.state.taxable)
+		} 
 
-			
-			
-			console.log("i am taxaxble", this.state.taxable)
-		}
+		if (clickCheck === "pensionable") {
+			this.setState({pensionable:getData})
+			console.log(this.state.taxable)
+		} 
 
-
-		if (check === "pensionable") {
-			this.setState({
-				pensionable:!pensionable
-			})
-
-			
-			
-			console.log( " i am pensionable ",this.state.pensionable)
-		}
-
-
-		if (check === "positive") {
-			this.setState({
-				positive:!positive
-			})
-
-			
-			
-			console.log( " i am positive",this.state.positive)
-		}
-		// this.setState({
-		// 	radioButtonCheck1: !toggleRadio,
-		// });
-	};
+		
+	  }
 	
 	render() {
 		return (
@@ -240,85 +223,35 @@ this.setState({applicableTo: [...PrevState,{ [e.target.name]: e.target.value }]}
 										value={this.state.name} onChange={this.handleChange}
 									/>
 								</div>
+
+								<div className="radioChecks">
+                               <div>
+								   <label>Taxable</label>
+								   <input required={true} checked={this.state.taxable===true} onClick={(e)=>this.handleRadio(e,"taxable",true)}  value={true} type="checkbox" name="yes_no"/>Yes 
+								   <input required={true}  checked={this.state.taxable===false} onClick={(e)=>this.handleRadio(e,"taxable",false)} value={false} type="checkbox" name="yes_no"/>No
+							   </div>
+
+							   <div>
+								   <label>Pensionable</label>
+								   <input required={true} checked={this.state.pensionable===true} onClick={(e)=>this.handleRadio(e,"pensionable",true)}  value={true} type="checkbox" name="yes_no"/>Yes 
+								   <input required={true}  checked={this.state.pensionable===false} onClick={(e)=>this.handleRadio(e,"pensionable",false)} value={false} type="checkbox" name="yes_no"/>No
+							   </div>
+								</div>
+
+								<div className="radioChecks">
+                              
+
+							   <div>
+								   <label>Positive</label>
+								   <input required={true} checked={this.state.positive===true} onClick={(e)=>this.handleRadio(e,"positive",true)} value={true} type="checkbox" name="yes_no"/>Yes 
+								   <input required={true} checked={this.state.positive===false} onClick={(e)=>this.handleRadio(e,"positive",false)} value={false} type="checkbox" name="yes_no"/>No
+							   </div>
+								</div>
+
 								<div class="">
-									<div class="inputPayroll-Checkbox">
-										<div class="checkBox1">
-											<span
-												style={{ marginRight: "6px" }}
-												className="radio-button__label"
-											>
-												taxable
-											</span>
-											<label class="radio-button">
-												<input
-													type="radio"
-													className="radio-button__input"
-													value={this.state.taxable}
-													
-												/>
-
-												<span
-													onClick={(e)=>this.toggleRadio("taxable")}
-													className={`radio-button__control	${
-														this.state.taxable === true
-															? " turnOn"
-															: ""
-													}`}
-												></span>
-											</label>
-										</div>
-
-										<div class="checkBoxW">
-											<span
-												style={{ marginRight: "6px" }}
-												className="radio-button__label"
-											>
-												pensionable
-											</span>
-											<label class="radio-button">
-												<input
-													type="radio"
-													className="radio-button__input"
-													
-												/>
-
-												<span
-													onClick={(e)=>this.toggleRadio("pensionable")}
-													className={`radio-button__control	${
-														this.state.pensionable === true
-															? " turnOn"
-															: ""
-													}`}
-												></span>
-											</label>
-										</div>
-									</div>
-									<div class="inputPayroll-Checkbox">
-										<div class="checkBox1 checkbox2">
-											<span
-												style={{ marginRight: "6px" }}
-												className="radio-button__label"
-											>
-												positive
-											</span>
-											<label class="radio-button">
-												<input
-													type="radio"
-													className="radio-button__input"
-													
-												/>
-
-												<span
-												onClick={(e)=>this.toggleRadio("positive")}
-													className={`radio-button__control	${
-														this.state.positive === true
-															? " turnOn"
-															: ""
-													}`}
-												></span>
-											</label>
-										</div>
-									</div>
+								
+									
+								
 									<div className="inputPayroll">
 										<label for="">Periodicity</label>
 										<select name="periodicity" value={this.state.periodicity} 
@@ -379,12 +312,12 @@ this.setState({applicableTo: [...PrevState,{ [e.target.name]: e.target.value }]}
 									<div className="inputPayroll">
 										<label for="">Specify Date</label>
 										<div className="dataeP">
-											<DatePicker
-												selected={this.state.startDate}
+										<DatePicker
+											dateFormat="MM.yyyy"
+											showMonthYearPicker
+											placeholderText={this.state.datePickerText}
 												onChange={this.handleDate}
 												className="payrolDatePicker"
-												value={moment(this.state.effectiveDate).toDate()}
-												
 											/>
 											<div style={{ overflow: "hidden" }}>
 												<i
