@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import $, { data } from "jquery";
 import moment from 'moment'
+import { connect } from 'react-redux';
 import { NotificationManager } from "react-notifications";
 import axios from "axios";
 import {Link} from 'react-router-dom'
@@ -15,20 +16,19 @@ import { hideLoader, showLoader } from "../../../../helpers/loader";
 import "./index.css";
 import Buttons from "react-bootstrap-sweetalert/dist/components/Buttons";
 import payroll from "../../payrollTable";
+import { getUser } from '../../../../actions/auth.action';
 
-export default class payrollsetup extends Component {
+class payrollsetup extends Component {
 	constructor(props){
 		super(props)
 		this.state={
-			pendingAdmin:true,
-			user: 'ED',
 			payroll: []
 		}
 	}
 
-	componentDidMount = () => {
-		const { user } = this.state;
-		if(user === "ED"){
+	componentDidMount = async() => {
+		await this.props.getUser();
+		if(this.props.user.role === "ed"){
 			this.getAwaitingApproval();
 		} else {
 			this.getAwaitingAudit();
@@ -79,10 +79,9 @@ export default class payrollsetup extends Component {
 	
 
 	render() {
-		const { user, pendingAdmin } = this.state;
-		console.log('@@', this.state.areas)
+		const { role } = this.props.user;
 		return (
-			<Layout page="payrollSetup">
+			<Layout page="viewPending">
 				<div className="app-content">
 					<section className="section">
 						<ol className="breadcrumb">
@@ -104,8 +103,8 @@ export default class payrollsetup extends Component {
 
 
           <div className="toggleAuditTABLE">
-            <button onClick={()=>{this.setState({pendingAdmin:false, user: 'audit' })}} className={user === 'audit' ? "activeAuditBtn" : 'UnactiveAuditBtn'}>Awaiting Audit</button>   
-						<button onClick={()=>{this.setState({pendingAdmin:true, user: 'ED'})}} className={user === 'ED' ? "activeAuditBtn" : 'UnactiveAuditBtn'}>Awaiting Approval</button>
+            <button className={role === 'audits' ? "activeAuditBtn" : 'UnactiveAuditBtn'}>Awaiting Audit</button>   
+						<button className={role === 'ed' ? "activeAuditBtn" : 'UnactiveAuditBtn'}>Awaiting Approval</button>
           </div>
 					<section className="paysetUpwraper">
 					<div style={{ marginBottom: "20px" }} className="payroll-headr">
@@ -139,3 +138,8 @@ export default class payrollsetup extends Component {
 		);
 	}
 }
+
+const mapStateToProps = ({ user }) => ({
+	user,
+});
+export default connect(mapStateToProps, { getUser })(payrollsetup);

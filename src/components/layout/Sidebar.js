@@ -99,7 +99,7 @@ export default function Sidebar(props) {
 
 
 
-        <li className={(props.props.page === 'payroll') || (props.props.page === 'salaryStructure') || (props.props.page === 'payrollSetup')  ? "slide is-expanded" : "slide"}>
+        <li className={(props.props.page === 'payroll') || (props.props.page === 'salaryStructure') || (props.props.page === 'payrollSetup') || (props.props.page === 'viewPending')  ? "slide is-expanded" : "slide"}>
           <a className={(props.props.page === 'payroll') || (props.props.page === 'salaryStructure') ? "side-menu__item active" : "side-menu__item"} data-toggle="slide" href="#"><i className="side-menu__icon fa fa-credit-card"></i><span className="side-menu__label">Payroll Settings</span><i className="angle fa fa-angle-right"></i></a>
           <ul className="slide-menu">
             <li className={props.props.page === 'payroll' ? "active" : ""}>
@@ -116,6 +116,12 @@ export default function Sidebar(props) {
             <li className={props.props.page === 'payrollSetup' ? "active" : ""}>
               <Link 
                 className={props.props.page === 'payrollSetup' ? "slide-item active" : "slide-item"} to="/setup-payroll"><span>Process Payroll</span>
+              </Link>
+            </li>
+            <li className={props.props.page === 'viewPending' ? "active" : ""} style={props.props.user.role !== 'ed' && props.props.user.role !== 'audits' ? { display: 'none' } : {}}>
+              {console.log(props.props.user)}
+              <Link 
+                className={props.props.page === 'viewPending' ? "slide-item active" : "slide-item"} to="/audit_summary"><span>View Pending Payroll</span>
               </Link>
             </li>
           

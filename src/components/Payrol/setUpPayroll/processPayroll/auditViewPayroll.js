@@ -13,17 +13,10 @@ export default class branchTable extends Component {
 
 
 	bodyRow = () => {
-		const body = this.props.payroll.map((data, index) => (
-			
+		const viewApprovedUsers = this.props.payroll.filter(item => item.status);
+		const body = viewApprovedUsers.map((data, index) => 
+		(
 			{
-                "checkbox":<div class="form-check">
-				<input  
-				style={{cursor:"pointer"}}
-				onClick={(e)=>{this.props.previewPayrollProcess(e,data)}}
-				key={data.staffId} 
-				name='list' 
-				type='checkbox'   type="checkbox" class="form-check-input" />
-              </div>,
 				"name": `${data.user.firstName} ${data.user.lastName}`,
 				 "grossPay":this.sumUp(data.payrollProcessingItem),
 				//  "addictions":data.addictions,
@@ -54,7 +47,6 @@ export default class branchTable extends Component {
 	
 	header = () => {
 		const header = [
-            { title: '', prop: 'checkbox' },
 			{
 				title: ' Name (filterable)',
 				prop: 'name',

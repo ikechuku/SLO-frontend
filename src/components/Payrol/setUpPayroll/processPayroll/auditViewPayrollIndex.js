@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import $ from "jquery";
+import { connect } from 'react-redux';
 import { NotificationManager } from "react-notifications";
 import axios from "axios";
 
@@ -14,7 +15,9 @@ import { hideLoader, showLoader } from "../../../../helpers/loader";
 import './index.css'
 import ProcessPayrollTable from './auditViewPayroll'
 import PreviewTable from './previewPayrollData'
-export default class processPayroll extends Component {
+import { getUser } from '../../../../actions/auth.action';
+
+class processPayroll extends Component {
     constructor(props){
         super(props)
    this.state={
@@ -23,7 +26,6 @@ export default class processPayroll extends Component {
     processPayroll: {},
     toggleTabel:false,
     usersId:[],
-    user:"ED",
     comment: ''
    }
     }
@@ -50,9 +52,8 @@ export default class processPayroll extends Component {
 
     componentDidMount= async()=>{
         this.getPayrollProcess()
-       
-        console.log(">>>>>getsssss")
-       }
+        await this.props.getUser();
+    }
 
     
     
@@ -128,10 +129,28 @@ export default class processPayroll extends Component {
          
     
     render() {
+        const { role } = this.props.user;
         const { processPayroll } = this.state;
-        const regionName = processPayroll.branch !== undefined ? processPayroll.branch.region.name : '';
-        const areaName = processPayroll.branch !== undefined ? processPayroll.branch.area.name : '';
+        const { branchId, areaId, regionId } = processPayroll;
+        let regionName, areaName, branchName;
+        if(branchId){
+            regionName = processPayroll.branch !== undefined ? processPayroll.branch.region.name : '';
+            areaName = processPayroll.branch !== undefined ? processPayroll.branch.area.name : '';
+            branchName = `${processPayroll.branch.name} branch`;
+        }
+        if(areaId){
+            regionName = processPayroll.area !== undefined ? processPayroll.area.region.name : '';
+            areaName = processPayroll.area !== undefined ? processPayroll.area.name : '';
+            branchName = '';
+        }
+        if(regionId){
+            regionName = processPayroll.region !== undefined ? processPayroll.region.name : '';
+            areaName = '';
+            branchName = '';
+        }
         const month = processPayroll.month !== undefined ? processPayroll.month.toUpperCase() : '';
+        
+
         return (
             <div>
                 <Layout page="payrollSetup">
@@ -144,7 +163,7 @@ export default class processPayroll extends Component {
 	<section className="PayrollLocationInfo">
                   <h1>Payroll for {regionName} region, {areaName}</h1>
                   <h2>Period: {month + ' ' + processPayroll.year} </h2>
-                  <h3>Aba branch</h3>
+                  <h3>{branchName}</h3>
                     </section>
 
     <div className="processPayrollTableAudit">
@@ -184,12 +203,12 @@ export default class processPayroll extends Component {
   <div style={{position:"relative"}}>
      <div className="auditCommentBox">
          {
-             this.state.user==="audit"?(
+             role === "audits"?(
                 <form>
                 <div  class="form-group dojdo">
                   
                   <input type="email" className="form-control removeIborders" id="exampleInputEmail1" 
-                  aria-describedby="emailHelp" placeholder="Comment"
+                  placeholder="Comment"
                     onChange={e => this.setState({ comment: e.target.value })}
                   />
                    <button type="submit" className="btn  submitComment"
@@ -209,9 +228,9 @@ export default class processPayroll extends Component {
      </div>
      </div>
 
-     <div className="processPayrollAction">
-        <button onClick={() => this.handleSubmit('approve')}>Approve</button> 
-        <button onClick={() => this.handleSubmit('reject')} >Disapprove</button>
+     <div className="processPayrollAction" style={role !== 'ed' ? {display: 'none'} : {}}>
+        <button onClick={() => this.handleSubmit('approved')}>Approve</button> 
+        <button onClick={() => this.handleSubmit('rejected')} >Disapprove</button>
   </div>
 
         </div>
@@ -226,3 +245,8 @@ export default class processPayroll extends Component {
         )
     }
 }
+
+const mapStateToProps = ({ user }) => ({
+	user,
+});
+export default connect(mapStateToProps, { getUser })(processPayroll);
