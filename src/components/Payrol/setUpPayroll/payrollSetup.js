@@ -428,7 +428,7 @@ this.setState({regionName:data})
 					<section className="paysetUpwraper">
 					<div style={{ marginBottom: "20px" }} className="payroll-headr">
 							<h1 style={{ fontSize: "23px", marginLeft: "10px" }}>
-								Pendinging Payrolls
+								Pending Payrolls
 							</h1>
 						</div>
 						<PendingPayroll />

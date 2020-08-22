@@ -20,9 +20,11 @@ export default class processPayroll extends Component {
    this.state={
        processPayrollData:[],
     previewPayroll:[],
+    processPayroll: {},
     toggleTabel:false,
     usersId:[],
-    user:"admin"
+    user:"ED",
+    comment: ''
    }
     }
 
@@ -52,17 +54,21 @@ export default class processPayroll extends Component {
         console.log(">>>>>getsssss")
        }
 
-       
+    
+    
 
     
     getPayrollProcess=async()=>{
         try {
             showLoader()
+            const { id } = this.props.match.params
             const res = await httpGet(`processing_payroll_users/${this.props.match.params.id}`)
+            const data = await httpGet(`process_payroll/${id}`)
             if (res.code === 200) {
                 hideLoader()
                 this.setState({
-                    processPayrollData:res.data.processPayrollUsers
+                    processPayrollData:res.data.processPayrollUsers,
+                    processPayroll: data.data.processPayroll
                 })
             }
             console.log(this.state.processPayrollData)
@@ -78,19 +84,38 @@ export default class processPayroll extends Component {
         })
     }
 
-    handleSubmit=async()=>{
+    handleSubmit=async(status)=>{
         let data = {
-            staffIds: this.state.usersId
+            status
         }
-        console.log("data======",data)
         showLoader()
         try {
-            const res = await httpPost(`submit_payroll/${this.props.match.params.id}`,data)
+            const res = await httpPost(`ed_updates_payroll_status/${this.props.match.params.id}`,data)
+            if (res.code===200) {
+
+                hideLoader() 
+                NotificationManager.success('Successfully Submitted', 'Success')
+                this.props.history.push("/audit_summary")
+            }
+           
+        } catch (error) {
+            hideLoader()
+        }
+    }
+
+    submitComment = async () => {
+        let data = {
+            auditorComment: this.state.comment,
+            auditorVetting: null
+        }
+        showLoader()
+        try {
+            const res = await httpPost(`payroll_auditor_comment/${this.props.match.params.id}`,data)
             if (res.code===200) {
 
                 hideLoader() 
                 NotificationManager.success('Successfully Created', 'Success')
-                this.props.history.push("/setup-payroll")
+                this.props.history.push("/audit_summary")
             }
            
         } catch (error) {
@@ -103,7 +128,10 @@ export default class processPayroll extends Component {
          
     
     render() {
-        console.log(this.state.processPayrollData)
+        const { processPayroll } = this.state;
+        const regionName = processPayroll.branch !== undefined ? processPayroll.branch.region.name : '';
+        const areaName = processPayroll.branch !== undefined ? processPayroll.branch.area.name : '';
+        const month = processPayroll.month !== undefined ? processPayroll.month.toUpperCase() : '';
         return (
             <div>
                 <Layout page="payrollSetup">
@@ -114,8 +142,8 @@ export default class processPayroll extends Component {
 
                     <div id="appWrapResponsive">
 	<section className="PayrollLocationInfo">
-                  <h1>Payroll for Northwest region, Lagos</h1>
-                  <h2>Period: June 2020</h2>
+                  <h1>Payroll for {regionName} region, {areaName}</h1>
+                  <h2>Period: {month + ' ' + processPayroll.year} </h2>
                   <h3>Aba branch</h3>
                     </section>
 
@@ -161,17 +189,19 @@ export default class processPayroll extends Component {
                 <div  class="form-group dojdo">
                   
                   <input type="email" className="form-control removeIborders" id="exampleInputEmail1" 
-                  aria-describedby="emailHelp" placeholder="Comment"/>
-                   <button type="submit" className="btn  submitComment">Submit</button>
+                  aria-describedby="emailHelp" placeholder="Comment"
+                    onChange={e => this.setState({ comment: e.target.value })}
+                  />
+                   <button type="submit" className="btn  submitComment"
+                    onClick={this.submitComment}
+                   >Submit</button>
                   </div>
               
                
               </form>
              ):(
                 <div className="auditcommentText">
-                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe, ea? 
-                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe, ea?
-                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe, ea?
+                    {processPayroll.auditorComment}
                 </div>
              )
          }
@@ -179,11 +209,11 @@ export default class processPayroll extends Component {
      </div>
      </div>
 
-      
-  
-  <div className="processPayrollAction">
-        <button onClick={this.handleSubmit}>Submit</button> <button onClick={this.changeTable} >{this.state.toggleTabel===false?"Preview":"Select More"}</button>
+     <div className="processPayrollAction">
+        <button onClick={() => this.handleSubmit('approve')}>Approve</button> 
+        <button onClick={() => this.handleSubmit('reject')} >Disapprove</button>
   </div>
+
         </div>
                   
                     </div>

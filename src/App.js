@@ -141,7 +141,7 @@ function App() {
 				<Route path="/use_payslip/:id" component={Payslip}/>
 				<Route path="/view_payroll/:id" component={ViewPayroll}/>
 				<Route path="/process_pending_payroll/:id" component={PendingPayroll}/>
-				<Route path="/audit_view_payroll" component={AuditView}/>
+				<Route path="/audit_view_payroll/:id" component={AuditView}/>
 				<Route path="/audit_summary" component={AuditSummary}/>
 				</Switch>
 			</Router>
