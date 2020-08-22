@@ -32,13 +32,25 @@ export default function addPayrollItem2(props) {
 								<label for="" className="form-control-label">
 									Payroll Item
 								</label>
-								<input
-									type="text"
-									className="form-control"
-									// value={props.role.title}
-									// name="title"
-									// onChange={props.handleChange}
-								/>
+								<select
+	value={props.name}
+	 name="name"
+	onChange={props.handleChange} 
+	class="form-control" id="exampleFormControlSelect1">
+			<option value="invalidData">Select</option>
+		{props.payrollData.map((data)=>{
+			// console.log(data.id)
+			return(
+			
+		
+			
+				<option value={data.id}>{data.name}</option>
+			
+				
+			)
+		})}
+    
+    </select>
 							</div>
 
 							<div className="form-group">
@@ -48,10 +60,13 @@ export default function addPayrollItem2(props) {
 								<input
 									type="number"
 									className="form-control"
-									// value={props.role.title}
-									// name="title"
-									// onChange={props.handleChange}
+									value={props.amount}
+									name="amount"
+									onChange={props.handleChange}
 								/>
+								<span className="text-danger">
+									{props.errorMessage1 !== null ? props.errorMessage1 : ""}
+								</span>
 							</div>
 						</form>
 					</div>
@@ -72,6 +87,7 @@ export default function addPayrollItem2(props) {
 						<button
 							type="button"
 							className="btn btn-primary"
+							onClick={props.handleSubmit}
 							// onClick={props.handleSubmit}
 						>
 							Add

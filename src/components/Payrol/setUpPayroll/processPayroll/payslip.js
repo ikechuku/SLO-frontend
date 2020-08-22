@@ -4,23 +4,110 @@ import { NotificationManager } from "react-notifications";
 import axios from "axios";
 import PayrollModal from '../../../Modals/addPayrollItem2'
 import Layout from "../../../layout/index";
-// import {
-// 	httpPost,
-// 	httpGet,
-// 	httpDelete,
-// 	httpPatch,
-// } from "../../../actions/data.action";
-// import { hideLoader, showLoader } from "../../../helpers/loader";
+import {
+	httpPost,
+	httpGet,
+	httpDelete,
+	httpPatch,
+} from "../../../../actions/data.action";
+import { hideLoader, showLoader } from "../../../../helpers/loader";
 import './index.css'
 import ProcessPayrollTable from './processPayrollTable'
 export default class processPayroll extends Component {
     constructor(props){
         super(props)
    this.state={
+      payrollItems:[],
+      amount:"",
+      name:"",
    
    }
+   console.log(">>>",this.props)
     }
+
+    componentDidMount(){
+      this.getPayrollID()
     
+   }
+
+   handleChange  =  (e) => {
+      e.preventDefault();
+      this.setState({ [e.target.name]: e.target.value });
+   console.log(this.state)
+     }
+    
+    getPayrollID = async ()=>{
+	
+	
+		try{
+		
+			showLoader()
+			const res = await httpGet(`/payroll_items`)
+	  console.log(res)
+			if(res.code === 200){
+				this.setState({
+					payrollItems:res.data.payrollItems
+				})
+				console.log(this.state.payrollItems)
+				hideLoader();
+	
+				
+			}
+	  
+		  }catch(error){
+			hideLoader();
+			console.log(error);
+		  }
+		
+     }
+     
+   
+	  handleSubmit= async ()=>{
+		const SalaryStructure = {name:this.state.name};
+		if (this.state.amount === "" || this.state.name === "invalidData" || this.state.name === null ) {
+		  NotificationManager.error(
+			  "Opps Insert Data",
+				  "Oops!",
+				  4000
+			  );
+  
+			  
+		}
+  
+		else{
+				  
+	  
+		try{
+		  
+		  showLoader()
+		  let data ={
+			payrollItemId:this.state.name,
+			processPayrollUserId:this.props.match.params.id2,
+			amount: this.state.amount,
+        }
+       
+		 const res = await httpPost(`add_payroll_item_user`,data)
+	   console.log(data)
+		  if(res.code === 200){
+		  this.setState({name:""})
+		  $('.modal').modal('hide');
+          $(document.body).removeClass('modal-open');
+          $('.modal-backdrop').remove();
+					hideLoader();
+					NotificationManager.success(
+					  "A Salary Structure item has successfully been created",
+						  "Success!",
+						  5000
+					  );
+					  this.getSalaryStructure()
+					  this.clearModal()
+		  }
+	
+		}catch(error){
+		  hideLoader();
+		  console.log(error);
+		}}
+		}
     
     render() {
         console.log(this.state.processPayrollData)
@@ -260,7 +347,12 @@ export default class processPayroll extends Component {
 
 
                     </div>
-                    <PayrollModal/>
+                    <PayrollModal
+                    payrollData={this.state.payrollItems}
+                    handleChange={this.handleChange} 
+                    name={this.state.name}
+                    handleSubmit={this.handleSubmit}
+                    />
 				
                     </Layout>
             </div>
