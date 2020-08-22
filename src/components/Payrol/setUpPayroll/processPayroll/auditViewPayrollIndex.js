@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import $ from "jquery";
+import { connect } from 'react-redux';
 import { NotificationManager } from "react-notifications";
 import axios from "axios";
 
@@ -14,15 +15,18 @@ import { hideLoader, showLoader } from "../../../../helpers/loader";
 import './index.css'
 import ProcessPayrollTable from './auditViewPayroll'
 import PreviewTable from './previewPayrollData'
-export default class processPayroll extends Component {
+import { getUser } from '../../../../actions/auth.action';
+
+class processPayroll extends Component {
     constructor(props){
         super(props)
    this.state={
        processPayrollData:[],
     previewPayroll:[],
+    processPayroll: {},
     toggleTabel:false,
     usersId:[],
-    user:"admin"
+    comment: ''
    }
     }
 
@@ -48,21 +52,24 @@ export default class processPayroll extends Component {
 
     componentDidMount= async()=>{
         this.getPayrollProcess()
-       
-        console.log(">>>>>getsssss")
-       }
+        await this.props.getUser();
+    }
 
-       
+    
+    
 
     
     getPayrollProcess=async()=>{
         try {
             showLoader()
+            const { id } = this.props.match.params
             const res = await httpGet(`processing_payroll_users/${this.props.match.params.id}`)
+            const data = await httpGet(`process_payroll/${id}`)
             if (res.code === 200) {
                 hideLoader()
                 this.setState({
-                    processPayrollData:res.data.processPayrollUsers
+                    processPayrollData:res.data.processPayrollUsers,
+                    processPayroll: data.data.processPayroll
                 })
             }
             console.log(this.state.processPayrollData)
@@ -78,19 +85,38 @@ export default class processPayroll extends Component {
         })
     }
 
-    handleSubmit=async()=>{
+    handleSubmit=async(status)=>{
         let data = {
-            staffIds: this.state.usersId
+            status
         }
-        console.log("data======",data)
         showLoader()
         try {
-            const res = await httpPost(`submit_payroll/${this.props.match.params.id}`,data)
+            const res = await httpPost(`ed_updates_payroll_status/${this.props.match.params.id}`,data)
+            if (res.code===200) {
+
+                hideLoader() 
+                NotificationManager.success('Successfully Submitted', 'Success')
+                this.props.history.push("/audit_summary")
+            }
+           
+        } catch (error) {
+            hideLoader()
+        }
+    }
+
+    submitComment = async () => {
+        let data = {
+            auditorComment: this.state.comment,
+            auditorVetting: null
+        }
+        showLoader()
+        try {
+            const res = await httpPost(`payroll_auditor_comment/${this.props.match.params.id}`,data)
             if (res.code===200) {
 
                 hideLoader() 
                 NotificationManager.success('Successfully Created', 'Success')
-                this.props.history.push("/setup-payroll")
+                this.props.history.push("/audit_summary")
             }
            
         } catch (error) {
@@ -103,7 +129,28 @@ export default class processPayroll extends Component {
          
     
     render() {
-        console.log(this.state.processPayrollData)
+        const { role } = this.props.user;
+        const { processPayroll } = this.state;
+        const { branchId, areaId, regionId } = processPayroll;
+        let regionName, areaName, branchName;
+        if(branchId){
+            regionName = processPayroll.branch !== undefined ? processPayroll.branch.region.name : '';
+            areaName = processPayroll.branch !== undefined ? processPayroll.branch.area.name : '';
+            branchName = `${processPayroll.branch.name} branch`;
+        }
+        if(areaId){
+            regionName = processPayroll.area !== undefined ? processPayroll.area.region.name : '';
+            areaName = processPayroll.area !== undefined ? processPayroll.area.name : '';
+            branchName = '';
+        }
+        if(regionId){
+            regionName = processPayroll.region !== undefined ? processPayroll.region.name : '';
+            areaName = '';
+            branchName = '';
+        }
+        const month = processPayroll.month !== undefined ? processPayroll.month.toUpperCase() : '';
+        
+
         return (
             <div>
                 <Layout page="payrollSetup">
@@ -114,9 +161,9 @@ export default class processPayroll extends Component {
 
                     <div id="appWrapResponsive">
 	<section className="PayrollLocationInfo">
-                  <h1>Payroll for Northwest region, Lagos</h1>
-                  <h2>Period: June 2020</h2>
-                  <h3>Aba branch</h3>
+                  <h1>Payroll for {regionName} region, {areaName}</h1>
+                  <h2>Period: {month + ' ' + processPayroll.year} </h2>
+                  <h3>{branchName}</h3>
                     </section>
 
     <div className="processPayrollTableAudit">
@@ -156,22 +203,24 @@ export default class processPayroll extends Component {
   <div style={{position:"relative"}}>
      <div className="auditCommentBox">
          {
-             this.state.user==="audit"?(
+             role === "audits"?(
                 <form>
                 <div  class="form-group dojdo">
                   
                   <input type="email" className="form-control removeIborders" id="exampleInputEmail1" 
-                  aria-describedby="emailHelp" placeholder="Comment"/>
-                   <button type="submit" className="btn  submitComment">Submit</button>
+                  placeholder="Comment"
+                    onChange={e => this.setState({ comment: e.target.value })}
+                  />
+                   <button type="submit" className="btn  submitComment"
+                    onClick={this.submitComment}
+                   >Submit</button>
                   </div>
               
                
               </form>
              ):(
                 <div className="auditcommentText">
-                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe, ea? 
-                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe, ea?
-                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe, ea?
+                    {processPayroll.auditorComment}
                 </div>
              )
          }
@@ -179,11 +228,11 @@ export default class processPayroll extends Component {
      </div>
      </div>
 
-      
-  
-  <div className="processPayrollAction">
-        <button onClick={this.handleSubmit}>Submit</button> <button onClick={this.changeTable} >{this.state.toggleTabel===false?"Preview":"Select More"}</button>
+     <div className="processPayrollAction" style={role !== 'ed' ? {display: 'none'} : {}}>
+        <button onClick={() => this.handleSubmit('approved')}>Approve</button> 
+        <button onClick={() => this.handleSubmit('rejected')} >Disapprove</button>
   </div>
+
         </div>
                   
                     </div>
@@ -196,3 +245,8 @@ export default class processPayroll extends Component {
         )
     }
 }
+
+const mapStateToProps = ({ user }) => ({
+	user,
+});
+export default connect(mapStateToProps, { getUser })(processPayroll);

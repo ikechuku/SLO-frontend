@@ -16,13 +16,15 @@ export default class branchTable extends Component {
 		const body = this.props.payroll.map((data, index) => (
 			
 			{
-                "checkbox":<div class="form-check">
+        "checkbox":<div class="form-check">
 				<input  
-				style={{cursor:"pointer"}}
-				onClick={(e)=>{this.props.previewPayrollProcess(e,data)}}
-				key={data.staffId} 
-				name='list' 
-				type='checkbox'   type="checkbox" class="form-check-input" />
+					style={{cursor:"pointer"}}
+					onClick={(e)=>{this.props.previewPayrollProcess(e,data)}}
+					key={data.staffId} 
+					name='list' 
+					type='checkbox' type="checkbox" class="form-check-input"
+					disabled={data.status ? 'disabled' : ''} 
+				/>
               </div>,
 				"name": `${data.user.firstName} ${data.user.lastName}`,
 				"employeeID": data.staffId,
@@ -37,7 +39,7 @@ export default class branchTable extends Component {
                  "bankCode":data.bankCode,
                  "bankAccount":data.user.accountNumber,
 
-				"action": <a><span className='edit' data-toggle="modal" data-target="#branchModal" 
+				"action": <a style={data.status ? {display: 'none'} : {}}><span className='edit' data-toggle="modal" data-target="#branchModal" 
 				><Link to={`/use_payslip/${data.id}`}>Edit</Link></span><span className='del' onClick={() => this.props.handleDelete(data.id)}>Delete</span></a>
 			}
 		));

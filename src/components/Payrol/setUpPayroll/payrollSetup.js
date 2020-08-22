@@ -37,7 +37,6 @@ export default class payrollsetup extends Component {
 			regionName: ''
 		}
 		this.inputRef = React.createRef();
-		console.log(this.props)
 	}
 
 	
@@ -49,12 +48,10 @@ export default class payrollsetup extends Component {
                 const res = await httpGet(`/all_region`)
                 
                 if (res.code === 200) {
-                    console.log(res)
                     this.setState({
 						regions:res.data.regions
 					})
 				}
-				console.log(this.state.regions)
              hideLoader()
           
           
@@ -73,12 +70,11 @@ export default class payrollsetup extends Component {
 						const res = await httpGet(`/all_area`)
 						
 						if (res.code === 200) {
-							console.log(res)
+							
 							this.setState({
 							areas:res.data.areas
 							})
 						}
-					console.log(res.data.areas)
 					 hideLoader()
 				  
 				  
@@ -98,12 +94,10 @@ export default class payrollsetup extends Component {
 								const res = await httpGet(`/all_branch`)
 								
 								if (res.code === 200) {
-									console.log(res)
 									this.setState({
 										branches:res.data.branches
 									})
 								}
-							console.log(res.data)
 							 hideLoader()
 						  
 						  
@@ -117,16 +111,13 @@ export default class payrollsetup extends Component {
 		
 
 					  getAreaData=()=>{
-						  console.log(">>>>>gets here", this.state.areas)
-						 const areaData = [...this.state.areas].filter(
-							(datas) => 
-							datas.regionId === this.state.regionId
-						)
-						console.log("areaDatass",areaData)
-						this.setState({
-							areaOptions: areaData,
-						});
-						console.log(this.state.regionId, this.state.areas) 
+							const areaData = [...this.state.areas].filter(
+								(datas) => 
+								datas.regionId === this.state.regionId
+							)
+							this.setState({
+								areaOptions: areaData,
+							});
 					  }
 
 					  getBranchData=()=>{
@@ -137,7 +128,6 @@ export default class payrollsetup extends Component {
 						this.setState({
 							branchOptions:branchData
 						});
-					 console.log(">>>>>",this.state.areaId)
 					  }
 
 
@@ -146,33 +136,30 @@ componentDidMount= async()=>{
  this.getRegion()
 this.getArea()
 	this.getBranch()
-this.getTitle()
+// this.getTitle()
 }
 
-handleChange  =  async (e,type) => {
-	e.preventDefault();
-	console.log("event",e)
-    
+	handleChange  =  async (e,type) => {
+		e.preventDefault();
+			
 
-	if (type === "area") {
-		console.log(">>>>>gets herer")
-		this.getAreaData()
-		const selected = [...this.state.areas].filter(item => item.id === e.target.value)[0];
-		const areaName = this.handleRegionAbbr(selected.name);
-		await this.setState({ [e.target.name]: e.target.value }, areaName );
-	} else if (type === "branch") {
-		this.getBranchData()
-		const selected = [...this.state.branches].filter(item => item.id === e.target.value)[0];
-		const branchName = this.handleRegionAbbr(selected.name);
-		await this.setState({ [e.target.name]: e.target.value, branchName });
-	} else if(type === "region"){
-		const selected = [...this.state.regions].filter(item => item.id === e.target.value)[0];
-		const regionName = this.handleRegionAbbr(selected.name);
-		await this.setState({ [e.target.name]: e.target.value, regionName });
-	} else {
-		await this.setState({ [e.target.name]: e.target.value });
-	}
-	// console.log(this.refs[e.target.getAttribute('regionName')].value);
+		if (type === "area") {
+			this.getAreaData()
+			const selected = [...this.state.areas].filter(item => item.id === e.target.value)[0];
+			const areaName = selected.name;
+			await this.setState({ [e.target.name]: e.target.value, areaName });
+		} else if (type === "branch") {
+			this.getBranchData()
+			const selected = [...this.state.branches].filter(item => item.id === e.target.value)[0];
+			const branchName = selected.name;
+			await this.setState({ [e.target.name]: e.target.value, branchName });
+		} else if(type === "region"){
+			const selected = [...this.state.regions].filter(item => item.id === e.target.value)[0];
+			const regionName = this.handleRegionAbbr(selected.name);
+			await this.setState({ [e.target.name]: e.target.value, regionName });
+		} else {
+			await this.setState({ [e.target.name]: e.target.value });
+		}
   }
 
   handleRegionAbbr = (value) => {
@@ -192,84 +179,75 @@ handleChange  =  async (e,type) => {
   }
 
   handleSubmit=async(e)=>{
-	showLoader()
-	console.log(this.state.payrollMonth, this.state.areaId,this.state.branchId,this.state.regionId,)
-	e.preventDefault()
-	if (this.state.payrollMonth === null) {
-		NotificationManager.error('Please select payment month', 'Opps', 5000, () => {
-			// alert('callback');
-			hideLoader()
-			return;
-		  });
-		  
-		
-	}
-
-	if (this.state.regionId ===null) {
-		NotificationManager.error('payroll region is required', 'Opps', 5000, () => {
-			// alert('callback');
-		  });
-		  hideLoader()
-		  return;
-		  
-	  }
-
-
-
-	let data;
-	const { regionId, areaId, branchId, title, payrollMonth, payrollYear, regionName, areaName, branchName } = this.state;
-	if(branchId){
-		data = {
-			month: payrollMonth,
-			branchId:branchId,
-			title: `${regionName}-${areaName}-${branchName}-${payrollMonth}-${payrollYear}`,
-			year: payrollYear   
-		}
-	} else if(areaId){
-		data = {
-			month: payrollMonth,
-			areaId:areaId,
-			title: `${regionName}-${areaName}-${payrollMonth}-${payrollYear}`,
-			year: payrollYear   
-		} 
-	} else{
-		data = {
-			month: payrollMonth,
-			regionId:regionId,
-			title: `${regionName}-${payrollMonth}-${payrollYear}`,
-			year: payrollYear   
-		}
-	}
-	console.log(data)
-	try {
-		const res = await httpPost('process_payroll',data)
 		showLoader()
-		console.log(res.code)
-		if (res.code === 201) {
+		e.preventDefault()
+		if (this.state.payrollMonth === null) {
+			NotificationManager.error('Please select payment month', 'Opps', 5000, () => {
+				// alert('callback');
+				hideLoader()
+				return;
+				});
+				
 			
-			console.log(res.data.process.id)
-			// NotificationManager.error(res.message, 'Opps', 5000, () => {
-			// 	// alert('callback');
-			// });
-			this.props.history.push(`/process_payroll/${res.data.process.id}`)
 		}
-	} catch (error) {
+
+		if (this.state.regionId ===null) {
+			NotificationManager.error('payroll region is required', 'Opps', 5000, () => {
+				// alert('callback');
+				});
+				hideLoader()
+				return;
+				
+			}
+
+
+
+		let data;
+		const { regionId, areaId, branchId, title, payrollMonth, payrollYear, regionName, areaName, branchName } = this.state;
+		if(branchId){
+			data = {
+				month: payrollMonth,
+				branchId:branchId,
+				title: `${regionName}-${areaName}-${branchName}-${payrollMonth}-${payrollYear}`,
+				year: payrollYear   
+			}
+		} else if(areaId){
+			data = {
+				month: payrollMonth,
+				areaId:areaId,
+				title: `${regionName}-${areaName}-${payrollMonth}-${payrollYear}`,
+				year: payrollYear   
+			} 
+		} else{
+			data = {
+				month: payrollMonth,
+				regionId:regionId,
+				title: `${regionName}-${payrollMonth}-${payrollYear}`,
+				year: payrollYear   
+			}
+		}
+		try {
+			const res = await httpPost('process_payroll',data)
+			showLoader()
+			if (res.code === 201) {
+				
+				console.log(res.data.process.id)
+				// NotificationManager.error(res.message, 'Opps', 5000, () => {
+				// 	// alert('callback');
+				// });
+				this.props.history.push(`/process_payroll/${res.data.process.id}`)
+			}
+		} catch (error) {
+			hideLoader()
+		}
 		hideLoader()
-	}
-	hideLoader()
   }
   
   getTitle=(e,data)=>{
 this.setState({regionName:data})
-	console.log(">>>>gets here",this.state.regionName)
 }  
 	render() {
 	
-
-
-
-
-		console.log('@@', this.state.areas)
 		return (
 			<Layout page="payrollSetup">
 				<div className="app-content">
@@ -428,7 +406,7 @@ this.setState({regionName:data})
 					<section className="paysetUpwraper">
 					<div style={{ marginBottom: "20px" }} className="payroll-headr">
 							<h1 style={{ fontSize: "23px", marginLeft: "10px" }}>
-								Pendinging Payrolls
+								Pending Payrolls
 							</h1>
 						</div>
 						<PendingPayroll />
