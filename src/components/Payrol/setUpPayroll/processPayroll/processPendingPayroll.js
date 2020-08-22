@@ -21,7 +21,8 @@ export default class processPayroll extends Component {
        processPayrollData:[],
     previewPayroll:[],
     toggleTabel:false,
-    usersId:[]
+    usersId:[],
+    processPayroll:[]
    }
     }
 
@@ -57,11 +58,14 @@ export default class processPayroll extends Component {
     getPayrollProcess=async()=>{
         try {
             showLoader()
+            const { id } = this.props.match.params
             const res = await httpGet(`processing_payroll_users/${this.props.match.params.id}`)
+            const data = await httpGet(`process_payroll/${id}`)
             if (res.code === 200) {
                 hideLoader()
                 this.setState({
-                    processPayrollData:res.data.processPayrollUsers
+                    processPayrollData:res.data.processPayrollUsers,
+                    processPayroll: data.data.processPayroll
                 })
             }
             console.log(this.state.processPayrollData)
@@ -97,11 +101,34 @@ export default class processPayroll extends Component {
         }
     }
 
-
     
          
     
     render() {
+    
+
+       
+        const { processPayroll } = this.state;
+        const { branchId, areaId, regionId } = processPayroll;
+        let regionName, areaName, branchName;
+        if(branchId){
+            regionName = processPayroll.branch !== undefined ? processPayroll.branch.region.name : '';
+            areaName = processPayroll.branch !== undefined ? processPayroll.branch.area.name : '';
+            branchName = `${processPayroll.branch.name} branch`;
+        }
+        if(areaId){
+            regionName = processPayroll.area !== undefined ? processPayroll.area.region.name : '';
+            areaName = processPayroll.area !== undefined ? processPayroll.area.name : '';
+            branchName = '';
+        }
+        if(regionId){
+            regionName = processPayroll.region !== undefined ? processPayroll.region.name : '';
+            areaName = '';
+            branchName = '';
+        }
+        const month = processPayroll.month !== undefined ? processPayroll.month.toUpperCase() : '';
+        
+
         console.log(this.state.processPayrollData)
         return (
             <div>
@@ -112,11 +139,12 @@ export default class processPayroll extends Component {
 					</section>
 
                     <div id="appWrapResponsive">
-	<section className="PayrollLocationInfo">
-                  <h1>Payroll for Northwest region, Lagos</h1>
-                  <h2>Period: June 2020</h2>
-                  <h3>Aba branch</h3>
+                    <section className="PayrollLocationInfo">
+                  <h1>Payroll for {regionName} region, {areaName}</h1>
+                  <h2>Period: {month + ' ' + processPayroll.year} </h2>
+                  <h3>{branchName}</h3>
                     </section>
+
 
     <div className="processPayrollTable">
         
