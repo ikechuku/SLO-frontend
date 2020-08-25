@@ -29,24 +29,84 @@ export function PayRollModal(props) {
 					</div>
 					<div className="modal-body">
 						<form>
-							<div className="form-group">
-								<label for="recipient-name" className="form-control-label">
-								Applicable To
-								</label>
+						<div className="form-group row">
+                          <label for="inputName" className="col-md-2 pr-0 col-form-label">Departments <span className="impt">*</span></label>
+                          <div className="col-md-4">
+                            <Select
+                              name="departmentId"
+                              placeholder="Select"
+                              value={props.customDepartmentId}
+                              options={props.departmentOptions}
+                              onChange={(e) => props.handleChange(e, 'departmentId')}
+                            />
+                            <span className="text-danger">{props.errorMessage8 !== null ? props.errorMessage8 : ''}</span>
+                          </div>
+                          <label for="inputName" className="col-md-2 col-form-label">Branch <span className="impt">*</span></label>
+                          <div className="col-md-4">
+                          <Select
+                            name="branchId"
+                            placeholder="Select"
+                            value={props.customBranchId}
+                            options={props.branches}
+                            onChange={(e) => props.handleChange(e, 'branchId')}
+                          />
+													<span className="text-danger">{props.errorMessage3 !== null ? props.errorMessage3 : ''}</span>
+												</div>
+											</div>
+                      <div className="form-group row">
+												<label for="inputName" className="col-md-2 col-form-label">Units <span className="impt">*</span></label>
+												<div className="col-md-4">
+                          <Select
+                            name="unitId"
+                            placeholder="Select"
+                            value={props.customUnitId}
+                            options={props.unitOptions}
+                            onChange={(e) => props.handleChange(e, 'unitId')}
+                          />
+													<span className="text-danger">{props.errorMessage5 !== null ? props.errorMessage5 : ''}</span>
+                          
+												</div>
+                        <label for="inputName" className="col-md-2 col-form-label">Region <span className="impt">*</span></label>
+												<div className="col-md-4">
+                          <Select
+                            name="regionId"
+                            placeholder="Select"
+                            value={props.customRegionId}
+                            options={props.regionOptions}
+                            onChange={(e) => props.handleChange(e, 'regionId')}
+                          />
+													<span className="text-danger">{props.errorMessage5 !== null ? props.errorMessage5 : ''}</span>
+                          
+												</div>
+											</div>
+                      <div className="form-group row">
+                        <label for="inputName" className="col-md-2 col-form-label">Job Title <span className="impt">*</span></label>
+                        <div className="col-md-4">
+                          <Select
+                            name="jobTitle"
+                            placeholder="Select"
+                            value={props.customJobTitle}
+                            options={props.getRoles()}
+                            onChange={(e) => props.handleChange(e, 'jobTitle')}
+                          />
+													<span className="text-danger">{props.errorMessage4 !== null ? props.errorMessage4 : ''}</span>
+												</div>
+                        <label for="inputName" className="col-md-2 col-form-label">Area <span className="impt">*</span></label>
+                        <div className="col-md-4">
+                          <Select
+                            name="areaId"
+                            placeholder="Select"
+                            value={props.customAreaId}
+                            options={props.areaOptions}
+                            onChange={(e) => props.handleChange(e, 'areaId')}
+                          />
+													<span className="text-danger">{props.errorMessage4 !== null ? props.errorMessage4 : ''}</span>
+												</div>
+                      </div>
+							
 
-<select  name="applicableTo" onChange={(e)=>props.handleChange(e,"applicable")}
-class="form-control" id="">
-											<option>Select</option>
-											<option 	 value="Entire Organization">Entire Organization</option>
-											<option   value="region">Region</option>
-											<option   value="area">Area</option>
-											<option   value="branch">Branch</option>
-										</select>
+							
 
-										<span className="text-danger">
-									{/* {props.errorMessage2 !== null ? props.errorMessage2 : ""} */}
-								</span>
-							</div>
 
 						
 						</form>
@@ -60,15 +120,12 @@ class="form-control" id="">
 						>
 							Close
 						</button>
-						{/* {
-              props.modalMode === 'create' ?
-                <button type="button" className="btn btn-primary" onClick={props.handleCreate}>Create</button> :
-                <button type="button" className="btn btn-primary" onClick={props.handleUpdate}>Update</button>
-            } */}
+					
 						<button
 							type="button"
 							className="btn btn-primary"
 							data-dismiss="modal"
+							onClick={props.addSelection}
 						>
 							Add
 						</button>

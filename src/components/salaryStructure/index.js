@@ -5,6 +5,7 @@ import {SalaryStructureModal} from '../Modals/salaryStructure'
 import { NotificationManager } from "react-notifications";
 import axios from "axios";
 import { datepicker } from "bootstrap";
+import Goback from '../Payrol/goBack/index'
 import {
 	httpPost,
 	httpGet,
@@ -257,6 +258,7 @@ getSalaryStructure= async()=>{
 			<Layout page="salaryStructure">
 				<div className="app-content">
 					<section className="section">
+					<Goback goback={this.props.history.goBack}/>
 						<ol className="breadcrumb">
 							<li className="breadcrumb-item">
 								<a href="#" className="text-muted">

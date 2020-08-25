@@ -3,7 +3,7 @@ import $ from "jquery";
 import { NotificationManager } from "react-notifications";
 import axios from "axios";
 import { datepicker } from "bootstrap";
-
+import Goback from '../Payrol/goBack/index'
 import Layout from "../layout/index";
 import {
 	httpPost,
@@ -84,6 +84,7 @@ export default class payrollForm extends Component {
 			<Layout page="payroll">
 				<div className="app-content">
 					<section className="section">
+                    <Goback goback={this.props.history.goBack}/>
 						<ol className="breadcrumb">
 							<li className="breadcrumb-item">
 								<a href="#" className="text-muted">

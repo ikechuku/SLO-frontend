@@ -40,7 +40,7 @@ export default class branchTable extends Component {
                  "bankAccount":data.user.accountNumber,
 
 				"action": <a style={data.status ? {display: 'none'} : {}}><span className='edit' data-toggle="modal" data-target="#branchModal" 
-				><Link to={`/use_payslip/${data.id}/${data.payrollProcessingItem.map((data)=>data.processPayrollUserId)}`}>Edit</Link></span><span className='del' onClick={() => this.props.handleDelete(data.id)}>Delete</span></a>
+				><Link to={`/use_payslip/${data.payrollProcessingId}/${data.payrollProcessingItem.map((data)=>data.processPayrollUserId)}/${data.staffId}`}>Edit</Link></span><span className='del' onClick={() => this.props.handleDelete(data.id)}>Delete</span></a>
 			}
 		));
 

@@ -4,6 +4,7 @@ import { NotificationManager } from "react-notifications";
 import axios from "axios";
 import PayrollModal from '../../../Modals/addPayrollItem2'
 import Layout from "../../../layout/index";
+import Goback from '../../goBack/index'
 import {
 	httpPost,
 	httpGet,
@@ -13,6 +14,7 @@ import {
 import { hideLoader, showLoader } from "../../../../helpers/loader";
 import './index.css'
 import ProcessPayrollTable from './processPayrollTable'
+import _ from 'lodash'
 export default class processPayroll extends Component {
     constructor(props){
         super(props)
@@ -20,13 +22,16 @@ export default class processPayroll extends Component {
       payrollItems:[],
       amount:"",
       name:"",
-   
+      processPayrollData:[],
+      payrollOption:[]
    }
    console.log(">>>",this.props)
     }
 
     componentDidMount(){
       this.getPayrollID()
+      this.getPayrollProcess()
+      
     
    }
 
@@ -99,24 +104,81 @@ export default class processPayroll extends Component {
 						  "Success!",
 						  5000
 					  );
-					  this.getSalaryStructure()
-					  this.clearModal()
+					 
 		  }
 	
 		}catch(error){
 		  hideLoader();
 		  console.log(error);
 		}}
-		}
+      }
+      
+     getPayrollProcess=async()=>{
+        try {
+            showLoader()
+            const { id } = this.props.match.params
+            const res = await httpGet(`processing_payroll_users/${this.props.match.params.id}`)
+          
+            if (res.code === 200) {
+                hideLoader()
+                this.setState({
+                    processPayrollData:res.data.processPayrollUsers,
+                  
+                })
+                this.getUserPayrollItem()
+            }
+         
+        } catch (error) {
+            
+        }
+    }
+
+    getUserPayrollItem=()=>{
+      console.log(this.state.processPayrollData,"gets hrere>>>>>")
+       this.state.processPayrollData.filter((data)=>{
+         //  this.setState({payrollOption:data!==this.props.match.params.staffId})
+         if (data.staffId !== this.props.match.params.staffId) {
+            console.log("true>>>>>>>")
+         }
+         else{
+            console.log("false>>>>>>>>")
+            this.setState({payrollOption:data.payrollProcessingItem})
+            console.log(this.state.payrollOption)
+         }
+        
+       })
+
+    }
+
     
+	sumUp=(value)=>{
+		console.log(">>>>>")
+		let sum = 0;
+		for (let i = 0; i < value.length; i++) {
+			sum = sum + parseInt(value[i].amount);
+			
+			}
+		// console.log([sum].reduce((a, b) => a + b, 0))
+		return(sum)
+         }
+         
+         
     render() {
-        console.log(this.state.processPayrollData)
+      //   let sumUpAmount = this.state.payrollOption.map((data)=>{
+      //      let sumUp = parseInt(data.amount)
+      //      _.sum(sumUp)
+      //      console.log(sumUp)
+      //       this.setState({totalPayrollAmount:sumUp})
+      //     return (sumUp)
+        
+      //   })
+      //   console.log(sumUpAmount)
         return (
             <div>
                 <Layout page="payrollSetup">
 				<div className="app-content">
 					<section className="section">
-					
+					<Goback goback={this.props.history.goBack}/>
 					</section>
 
                     <div id="appWrapResponsive">
@@ -147,40 +209,19 @@ export default class processPayroll extends Component {
    </span>
     </div>
 
-   <div className="Userpayslip">
-       <span className="Userpayslipeven">Meal</span>
-       <span className="UserpayslipOdd">20000</span>
+  {
+    this.state.payrollOption.map((data)=>{
+      return( 
+        
+             <div className="Userpayslip">
+       <span className="Userpayslipeven">{data.payroll.name}</span>
+       <span className="UserpayslipOdd">{data.amount}</span>
           </div> 
 
-
-          <div className="Userpayslip">
-       <span className="Userpayslipeven">Transport Allowance</span>
-       <span className="UserpayslipOdd">20000</span>
-          </div> 
-
-
-          <div className="Userpayslip">
-       <span className="Userpayslipeven">Housing Allowance</span>
-       <span className="UserpayslipOdd">20000</span>
-          </div> 
-
-
-          <div className="Userpayslip">
-       <span className="Userpayslipeven">Hospital Allowance</span>
-       <span className="UserpayslipOdd">20000</span>
-          </div> 
-
-
-          <div className="Userpayslip">
-       <span className="Userpayslipeven">Master Allowance</span>
-       <span className="UserpayslipOdd">20000</span>
-          </div> 
-
-
-          <div className="Userpayslip">
-       <span className="Userpayslipeven">Transport Allowance</span>
-       <span className="UserpayslipOdd">20000</span>
-          </div> 
+        )
+     })
+  
+  }
 
 
  
@@ -191,7 +232,9 @@ export default class processPayroll extends Component {
    </span>
 
    <span className="headerinforesult">
-  900,000
+  {this.state.payrollOption.map((data)=>{
+     this.sumUp(data.amount)
+  })}
    </span>
     </div>
 </div>

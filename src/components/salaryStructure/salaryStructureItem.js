@@ -5,6 +5,7 @@ import axios from "axios";
 import { modal } from "bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../layout/index";
+import GoBack from '../Payrol/goBack/index'
 import {
 	httpPost,
 	httpGet,
@@ -243,6 +244,7 @@ console.log(this.state)
             <Layout page="salaryStructure">
                 	<div className="app-content">
 					<section className="section">
+						<GoBack/>
 						<ol className="breadcrumb">
 							<li className="breadcrumb-item">
 								<a href="#" className="text-muted">
