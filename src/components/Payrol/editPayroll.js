@@ -263,13 +263,13 @@ this.setState({applicableTo: [...PrevState,{ [e.target.name]: e.target.value }]}
 									</div>
 
 									<div class="inputPayroll">
-										<label for="">Occurance</label>
+										<label for="">Occurence</label>
 										<input
 										name="occurence"
 											type="number"
 											class="form-control"
 											id=""
-											placeholder="Occurance"
+											placeholder="Occurence"
 											onChange={this.handleChange}
 											value={this.state.occurence}
 										/>
@@ -310,7 +310,7 @@ this.setState({applicableTo: [...PrevState,{ [e.target.name]: e.target.value }]}
 										</div>
 									</div>
 									<div className="inputPayroll">
-										<label for="">Specify Date</label>
+										<label for="">Effective Date</label>
 										<div className="dataeP">
 										<DatePicker
 											dateFormat="MM.yyyy"

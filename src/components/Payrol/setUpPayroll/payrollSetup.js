@@ -5,6 +5,7 @@ import { NotificationManager } from "react-notifications";
 import axios from "axios";
 import {Link} from 'react-router-dom'
 import Layout from "../../layout/index";
+import Goback from '../goBack/index'
 import {
 	httpPost,
 	httpGet,
@@ -252,6 +253,7 @@ this.setState({regionName:data})
 			<Layout page="payrollSetup">
 				<div className="app-content">
 					<section className="section">
+						<Goback goback={this.props.history.goBack}/>
 						<ol className="breadcrumb">
 							<li className="breadcrumb-item">
 								<a href="#" className="text-muted">

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import $ from "jquery";
 import { NotificationManager } from "react-notifications";
 import axios from "axios";
-
+import Goback from '../../goBack/index'
 import Layout from "../../../layout/index";
 import {
 	httpPost,
@@ -134,7 +134,7 @@ export default class processPayroll extends Component {
                 <Layout page="payrollSetup">
 				<div className="app-content">
 					<section className="section">
-					
+					<Goback goback={this.props.history.goBack}/>
 					</section>
 
                     <div id="appWrapResponsive">
