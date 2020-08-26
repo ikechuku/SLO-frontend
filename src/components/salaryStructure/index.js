@@ -17,6 +17,7 @@ import { hideLoader, showLoader } from "../../helpers/loader";
 import {Link} from 'react-router-dom'
 import DeletModal from '../Modals/deleteModal'
 import $ from 'jquery';
+
 export default class index extends Component {
 	constructor(props) {
 		super(props);
@@ -27,6 +28,7 @@ export default class index extends Component {
 			
 			hideActions: false ,
 			name:"",
+			level: null,
 			showDrop:false,
 			toggleAction:"",
 		salaryData:[],
@@ -82,66 +84,67 @@ export default class index extends Component {
 	handleChange  =  (e) => {
 		e.preventDefault();
 		this.setState({ [e.target.name]: e.target.value });
-console.log(this.state.name)
 	  }
 
 	  handleSubmit= async ()=>{
-	  const SalaryStructure = {name:this.state.name};
 	  if (this.state.name === "") {
 		NotificationManager.error(
-			"Opps field can't be empty",
+			"Title field can't be empty",
 				"Oops!",
 				3000
-			);
-
-			
-	  }
-
-	  else{
-				
-	
-	  try{
+			);	
+		}
+		if (!this.state.level) {
+			NotificationManager.error(
+				"Level can't be empty",
+					"Oops!",
+					3000
+				);	
+			}
 		
-		showLoader()
-		const res = await httpPost(`create_salary_structure`,SalaryStructure)
+		const data = {
+			name: this.state.name,
+			level: parseInt(this.state.level)
+		}
+				
+	  try{
+			showLoader()
+			const res = await httpPost(`create_salary_structure`, data)
   
-		if(res.code === 201){
-		this.setState({name:""})
-		$('.modal').modal('hide');
-		$(document.body).removeClass('modal-open');
-		$('.modal-backdrop').remove();
-				  hideLoader();
-				  NotificationManager.success(
-					"A Salary Structure item has successfully been created",
+			if(res.code === 201){
+				this.clearModal();
+				$('.modal').modal('hide');
+				$(document.body).removeClass('modal-open');
+				$('.modal-backdrop').remove();
+					hideLoader();
+					NotificationManager.success(
+					"Created Successfully",
 						"Success!",
 						5000
 					);
 					this.getSalaryStructure()
-		}
-  
-	  }
+				}
+			}
 	  catch(error){
-		hideLoader();
-		return NotificationManager.error(
-			`Opps ${this.state.name} already exist`,
-				"Oops!",
-				3000
-			);
-
-	  }}
+			hideLoader();
+			return NotificationManager.error(
+				`Opps ${this.state.name} already exist`,
+					"Oops!",
+					3000
+				);
 	  }
-clearModal=()=>{
-	this.setState({
-		name:""
-	})
-}
-componentDidMount(){
-	this.getSalaryStructure()
-	console.log("get..shere")
-	console.log(this.state.salaryData)
-}
-getSalaryStructure= async()=>{
-	try{
+	}
+
+	clearModal=()=>{
+		this.setState({ name:"", level: null })
+	}
+
+	componentDidMount(){
+		this.getSalaryStructure()
+		console.log(this.state.salaryData)
+	}
+	getSalaryStructure= async()=>{
+		try{
 		
 			showLoader()
 			const res = await httpGet(`salary_structure`)
@@ -196,7 +199,6 @@ getSalaryStructure= async()=>{
 			
 		showLoader()
 		const res = await httpGet(`salary_structure/${id}`)
-		console.log(res)
 		if(res.code === 200){
 			this.setState({name:res.data.salaryStructure.name,
 				modalEditID:res.data.salaryStructure.id,
@@ -285,8 +287,6 @@ getSalaryStructure= async()=>{
 						</div>
 						<div className="DropDownWrap56">
 							<div>
-							{	console.log(this.state.salaryData.length)}	
-							{	console.log(this.state.salaryData)}	
 {this.state.salaryData.map((data) => {
 	console.log(this.state.salaryStructure)
 						return (
@@ -334,7 +334,6 @@ getSalaryStructure= async()=>{
 										</div>
 									</div>
 								
-										{console.log(">>>>gets here" , data.salaryStructureItem.length)}
 								{data.salaryStructureItem.length === 0 ? (<div>{this.state.toggle === data.id  && this.state.showDrop === true ? 
 								(<p className="noSalaryStruture">Opps, No Salary Structure Item </p>) : ""}</div>) : (<div>{this.state.toggle === data.id  && this.state.showDrop === true ?
 								 (<div className="">
@@ -375,13 +374,15 @@ getSalaryStructure= async()=>{
 						<br/>
 					</section>
 				</div>
-				<SalaryStructureModal salaryStructure={this.state.name}
-				 handleChange={this.handleChange} 
-				 handleSubmit={this.handleSubmit}
-				 clearModal={this.clearModal}
-				 modalMode={this.state.modalType}
-				 editSalaryStructure={this.editSalaryStructure}
-				 />
+				<SalaryStructureModal 
+					salaryStructure={this.state.name}
+					level={this.state.level}
+					handleChange={this.handleChange} 
+					handleSubmit={this.handleSubmit}
+					clearModal={this.clearModal}
+					modalMode={this.state.modalType}
+					editSalaryStructure={this.editSalaryStructure}
+				/>
 				 <DeletModal handleDelete={this.handleDelete}/>
 			</Layout>
 		);

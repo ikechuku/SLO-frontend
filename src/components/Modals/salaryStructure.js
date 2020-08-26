@@ -40,9 +40,28 @@ export function SalaryStructureModal(props) {
 									name="name"
 									onChange={props.handleChange}
 								/>
-								<span className="text-danger">
-									{props.errorMessage1 !== null ? props.errorMessage1 : ""}
-								</span>
+							</div>
+
+							<div className="form-group">
+								<label for="recipient-name" className="form-control-label">
+									Level
+								</label>
+								<select
+									type="text"
+									className="form-control"
+									value={props.level}
+									name="level"
+									required
+									onChange={props.handleChange}
+								>
+									<option value="" disabled selected>Select</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+								</select>
 							</div>
 
 						

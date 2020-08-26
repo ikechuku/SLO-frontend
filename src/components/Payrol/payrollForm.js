@@ -20,6 +20,7 @@ import moment from 'moment'
 import "react-datepicker/dist/react-datepicker.css";
 
 import { PayRollModal } from "../Modals/payroll";
+import branch from "../branch/branch";
 
 export default class payrollForm extends Component {
 	constructor(props){
@@ -35,22 +36,12 @@ export default class payrollForm extends Component {
 		periodicity: "",
 		occurence: null,
 		itemDescription: "",
-		applicableTo: ["Entire Organization"],
+		applicableTo: [],
 		effectiveDate: "",
 		datePickerText:"Select Date",
 		postData: {},
 		multiValue: [],
 		postData: {},
-			  errorMessage1: null,
-			  errorMessage2: null,
-			  errorMessage3: null,
-			  errorMessage4: null,
-			  errorMessage5: null,
-			  errorMessage6: null,
-			  errorMessage7: null,
-		errorMessage8: null,
-		errorMessage9: null,
-		staffCategoryErrorMessage: null,
 		units: [],
 		roles: [],
 		branches: [],
@@ -62,12 +53,8 @@ export default class payrollForm extends Component {
 		areaOptions: [],
 		areas: [],
 		customBranchId: null,
-		customDateOfResumption: undefined,
 		customDepartmentId: null,
-		customEmploymentDate: undefined,
-		customStaffCategory: null,
 		customJobTitle: null,
-		customRank: null,
 		customUnitId: null,
 		customRegionId: null,
 		customAreaId: null,
@@ -92,7 +79,8 @@ export default class payrollForm extends Component {
 	// 	 departmentId: ''}
 	// 	]
 		
-	};}
+		}
+	}
 
 
 	componentDidMount =async()=> {
@@ -111,21 +99,9 @@ export default class payrollForm extends Component {
 		  if(res.code === 200){
 			hideLoader()
 	
-			let branchList = [];
-			[...resData.data.branches].map(data => {
-			  branchList.push({ value: data.id, label: data.name });
-			});
-	
-			// let unitOptions = [];
-			// [...res.data.units].map(data => {
-			//   unitOptions.push({ value: data.name, label: data.department.name + '/' + data.name });
-			// });
-	
-			let departmentList = [];
-					await [...data.data.departmentUnit].map(data => (
-						departmentList.push({ value: data.id, label: data.name })
-					))
-	
+			let branchList = resData.data.branches;
+			let departmentList = data.data.departmentUnit;
+
 			let roleOptions = [];
 			[...data.data.roles].map(data => {
 			  roleOptions.push({ value: data.title, label: data.title });
@@ -151,7 +127,14 @@ export default class payrollForm extends Component {
 		  hideLoader()
 		  console.log(error)
 		}
-	  }
+		}
+		
+		getDepartments = () => {
+			const option = this.state.departmentOptions;
+			return option.map(item => (
+				{ value: item.id, label: item.name }
+			))
+		}
 	
 	  getArea  = async () => {
 		const { areas, postData } = this.state;
@@ -224,7 +207,17 @@ export default class payrollForm extends Component {
 		  }
 		}
 		// this.setState({ roleOptions: optionList });
-	  }
+		}
+		
+		getBranches = () => {
+			const { areaId } = this.state.postData;
+			const { branches } = this.state;
+			const branchesOptions = branches.filter(item => item.areaId === areaId);
+			console.log(branches)
+			return branchesOptions.map(item => (
+				{ value: item.id, label: item.name }
+			))
+		}
 	
 
 	handleDate = (date) => {
@@ -245,57 +238,11 @@ let year = moment(date).year();
 		const { postData } = this.state;
     let details = e !== null ? e.target : '';
     
-		if(nameValue === 'dateOfResumption'){
-      // const newDate = moment(e).format('l');
-      // console.log(e, newDate)
-      postData[nameValue] = e;
-      this.setState({ postData, customDateOfResumption: e });
-      const isValidate = await validateEmpoymentFields(nameValue, this.state.postData.dateOfResumption, this.state.postData.employmentDate);
-      if(!isValidate.error){
-        this.setState({ 
-          errorMessage2: isValidate.errorMessage, 
-        })
-        return;
-      } else {
-        this.setState({ errorMessage2: null })
-      }
-
-    } else if(nameValue === 'employmentDate'){
-      // const newDate = moment(e).format('l');
-      // console.log(e, newDate)
-      postData[nameValue] = e;
-      this.setState({ postData, customEmploymentDate: e });
-      const isValidate = await validateEmpoymentFields(nameValue, this.state.postData.employmentDate);
-      if(!isValidate.error){
-        this.setState({ 
-          errorMessage9: isValidate.errorMessage, 
-        })
-        return;
-      } else {
-        this.setState({ errorMessage9: null })
-      }
-
-    } else if(nameValue === 'staffCategory'){
-      postData[nameValue] = e.value;
-      this.setState({ 
-        postData,
-        customStaffCategory: e,
-        staffCategoryErrorMessage: null
-      });
-
-    } else if(nameValue === 'branchId'){
-      const isValidate = await validateEmpoymentFields('branchId', e.value);
-      if(!isValidate.error){
-        this.setState({ 
-          errorMessage3: isValidate.errorMessage, 
-        })
-        return;
-      }
+		if(nameValue === 'branchId'){
       postData['branchId'] = e.value;
       this.setState({ 
         postData,
         customBranchId: e,
-        errorMessage3: null 
       })
 
     } else if(nameValue === 'departmentId'){
@@ -305,7 +252,6 @@ let year = moment(date).year();
         postData,
         customDepartmentId: e,
         customUnitId: null,
-        errorMessage8: null 
       })
       this.getUnits();
     } else if(nameValue === 'regionId'){
@@ -314,7 +260,7 @@ let year = moment(date).year();
         postData,
         customRegionId: e,
       })
-      console.log(this.getArea())
+			this.getArea()
     } else if(nameValue === 'areaId'){
       postData['areaId'] = e.value;
       this.setState({ 
@@ -322,102 +268,97 @@ let year = moment(date).year();
         customAreaId: e,
       })
     } else if(nameValue === 'jobTitle'){
-      const isValidate = await validateEmpoymentFields('jobTitle', e.value);
-      if(!isValidate.error){
-        this.setState({ 
-          errorMessage4: isValidate.errorMessage, 
-        })
-        return;
-      }
       postData['jobTitle'] = e.value;
       this.setState({ 
         postData,
-        customJobTitle: e,
-        errorMessage4: null 
+        customJobTitle: e
       })
 
     } else if(nameValue === 'unitId'){
-      // const isValidate = await validateEmpoymentFields('unitId', e.value);
-      // if(!isValidate.error){
-      //   this.setState({ 
-      //     errorMessage5: isValidate.errorMessage, 
-      //   })
-      //   return;
-      // }
       postData['unitId'] = e.value;
       this.setState({ 
         postData,
-        customUnitId: e,
-        errorMessage5: null 
+        customUnitId: e
       })
       // this.getRoles();
-    } else if(nameValue === 'rank'){
-      const isValidate = await validateEmpoymentFields(nameValue, e.value);
-      if(!isValidate.error){
-        this.setState({ 
-          errorMessage1: isValidate.errorMessage, 
-        })
-        return;
-      }
-      postData[nameValue] = e.value;
-      if(e.value === 'PA2'){
-        postData['salaryAmount'] = '64,473';
-      } else if(e.value === 'PA1'){
-        postData['salaryAmount'] = '64,473';
-      } else if(e.value === 'SPO'){
-        postData['salaryAmount'] = '82,024';
-      } else if(e.value === 'PO1'){
-        postData['salaryAmount'] = '80,024';
-      } else if(e.value === 'P02'){
-        postData['salaryAmount'] = '80,024';
-      } else if(e.value === 'PM'){
-        postData['salaryAmount'] = '71,400';
-      } else if(e.value === 'DGM'){
-        postData['salaryAmount'] = '200,000';
-      } else if(e.value === 'Director'){
-        postData['salaryAmount'] = '768,000';
-      } else if(e.value === 'Manager'){
-        postData['salaryAmount'] = '200,000';
-      } else if(e.value === 'Senior Manager'){
-        postData['salaryAmount'] = '350,000';
-      }
-      
-      this.setState({ 
-        postData,
-        customRank: e,
-        errorMessage1: null 
-      })
-    } else if(details.name === 'salaryAmount'){
-      const isValidate = await validateEmpoymentFields(e.target.name, e.target.value);
-      if(!isValidate.error){
-        this.setState({ 
-          errorMessage6: isValidate.errorMessage, 
-        })
-        return;
-      }
-      postData[details.name] = details.value;
-      this.setState({ 
-        postData,
-        errorMessage6: null 
-      })
-    } else if(details.name === 'employeeNumber'){
-      const isValidate = await validateEmpoymentFields(e.target.name, e.target.value);
-      if(!isValidate.error){
-        this.setState({ 
-          errorMessage7: isValidate.errorMessage, 
-        })
-        return;
-      } else {
-        postData[details.name] = details.value;
-        this.setState({ 
-          postData,
-          errorMessage7: null 
-        })
-      }
-    } 
-  }
+    } else {
+			this.setState({ 
+				[details.name]: details.value,
+			})
+    }
+	}
+	
+	closeModal =() => {
+		this.setState({
+			customBranchId: null,
+			customDepartmentId: null,
+			customJobTitle: null,
+			customUnitId: null,
+			customRegionId: null,
+			customAreaId: null,
+		})
+	}
 
-	  handleSubmit = async (e)=>{
+	clearPreviousSelected = () => {
+		this.setState({
+			postData: {
+				branchId: '', 
+				departmentId: '', 
+				areaId: '', 
+				regionId: '', 
+				jobTitle: '', 
+				unitId: ''
+			}
+		})
+	}
+
+	addSelection=()=>{
+		let	{  branchId, departmentId, areaId, regionId, jobTitle, unitId} = this.state.postData;
+		let { applicableTo } = this.state;
+		if (departmentId !== '') {
+			if(jobTitle !== '' && jobTitle !== undefined){
+				applicableTo.push({
+					type: 'jobTitle',
+					id: jobTitle
+				})
+			} else if(unitId !== '' && unitId !== undefined){
+				applicableTo.push({
+					type: 'unitId',
+					id: unitId
+				})
+			} else {
+				applicableTo.push({
+					type: 'departmentId',
+					id: departmentId
+				})
+			}
+		}
+		if(regionId !== ''){
+			console.log('b', typeof(branchId))
+			if(branchId !== '' && branchId !== undefined){
+				console.log('b1')
+				applicableTo.push({
+					type: 'branchId',
+					id: branchId
+				})
+			} else if(areaId !== '' && areaId !== undefined){
+				console.log('b2')
+				applicableTo.push({
+					type: 'areaId',
+					id: areaId
+				})
+			} else {
+				console.log('b3')
+				applicableTo.push({
+					type: 'regionId',
+					id: regionId
+				})
+			}
+		}
+		this.setState({ applicableTo })
+	}
+
+	handleSubmit = async (e)=>{
 		e.preventDefault();
 		let {name,taxable,
 			pensionable,
@@ -427,66 +368,57 @@ let year = moment(date).year();
 			itemDescription,
 			applicableTo,
 			effectiveDate} = this.state;
-		  if (name === "" || periodicity === ""  || itemDescription === "" || effectiveDate === "" || positive === null || pensionable === null || taxable === null || occurence === null) {
-			NotificationManager.error(
-			"Opps please fill in all fields",
-				"Oops!",
-				3000
-			);
-		  }
-
-		  else{
-
-		  
+		  // if (name === "" || periodicity === ""  || itemDescription === "" || effectiveDate === "" || positive === null || pensionable === null || taxable === null || occurence === null) {
+			// NotificationManager.error(
+			// "Opps please fill in all fields",
+			// 	"Oops!",
+			// 	3000
+			// );
+		  // }
 	
-		console.log(this.state)
 		let data = {	
-	   name: this.state.name,
-		taxable: this.state.taxable,
-		pensionable:this.state.pensionable ,
-		positive: this.state.positive,
-		periodicity: this.state.periodicity,
-		occurence: this.state.occurence,
-		itemDescription: this.state.itemDescription,
-		applicableTo: this.state.applicableTo,
-		effectiveDate: this.state.effectiveDate
-	
-	
-	}
-
-
-	
-
-		// try{
-		
-		// 	showLoader()
-		// 	const res = await httpPost(`/create_payroll_item`,data)
-	  
-		// 	if(res.code === 201){
-		// 		this.setState({
-		// 			name: "",
-		// 		taxable: null,
-		// 		pensionable:null ,
-		// 		positive: null,
-		// 		periodicity: "",
-		// 		occurence: "",
-		// 		itemDescription: "",
-		// 		applicableTo: [],
-		// 		effectiveDate: ""
-		// 	})
-		// 			  hideLoader();
-		// 			  NotificationManager.success(
-		// 				"A Payroll item has successfully been created",
-		// 					"Success!",
-		// 					5000
-		// 				);
-		// 	}
-	  
-		//   }catch(error){
-		// 	hideLoader();
-		// 	console.log(error);
-		//   }
+			name: this.state.name,
+			taxable: this.state.taxable,
+			pensionable:this.state.pensionable ,
+			positive: this.state.positive,
+			periodicity: this.state.periodicity,
+			occurence: this.state.occurence,
+			itemDescription: this.state.itemDescription,
+			applicableTo: !this.state.applicableTo.length ? [{ type: 'organization'}] : this.state.applicableTo,
+			effectiveDate: this.state.effectiveDate
 		}
+
+		// console.log(this.state.applicableTo)
+
+		try{
+		
+			showLoader()
+			const res = await httpPost(`/create_payroll_item`,data)
+	  
+			if(res.code === 201){
+				this.setState({
+					name: "",
+				taxable: null,
+				pensionable:null ,
+				positive: null,
+				periodicity: "",
+				occurence: "",
+				itemDescription: "",
+				applicableTo: [],
+				effectiveDate: ""
+			})
+					  hideLoader();
+					  NotificationManager.success(
+						"A Payroll item has successfully been created",
+							"Success!",
+							5000
+						);
+			}
+	  
+		  }catch(error){
+			hideLoader();
+			console.log(error);
+		  }
 		
 	  }
 
@@ -509,229 +441,193 @@ let year = moment(date).year();
 		
 	  }
 
-	  addSelection=()=>{
-	let	{  branchId, departmentId, selectBranch,selectedDepartment} = this.state
-	if (branchId === null || departmentId===null) {
-		console.log("emepty")
-	}
-	else{
-		this.setState({
-		selectBranch:selectBranch.concat(branchId),
-		selectedDepartment:selectedDepartment.concat(departmentId)
-		
-	})
-	}
-	
-	console.log(selectBranch,selectedDepartment)
-	  }
 
 
-	  
-  handleCustomSelect = (result, name) => {
-	const { postData } = this.state;
-const value = result !== null ? result.value : null;
-if(name === 'skills'){
+render() {
+	console.log(this.state.departmentOptions)
+	return (
+		<Layout page="payroll">
+			<div className="app-content">
+				<section className="section">
+				<Goback goback={this.props.history.goBack}/>
+					<ol className="breadcrumb">
+						<li className="breadcrumb-item">
+							<a href="#" className="text-muted">
+								Home
+							</a>
+						</li>
+						<li className="breadcrumb-item">
+							<a href="#" className="text-muted">
+								Payroll
+							</a>
+						</li>
+					</ol>
+				</section>
 
-  this.setState(state => {
-	return {
-	  multiValue: result
-	};
-  });
-}
-	postData[name] = value;
-	this.setState({ 
-  postData,
-  errorMessage8: null 
-	});
-}
-
-
-	render() {
-		return (
-			<Layout page="payroll">
-				<div className="app-content">
-					<section className="section">
-					<Goback goback={this.props.history.goBack}/>
-						<ol className="breadcrumb">
-							<li className="breadcrumb-item">
-								<a href="#" className="text-muted">
-									Home
-								</a>
-							</li>
-							<li className="breadcrumb-item">
-								<a href="#" className="text-muted">
-									Payroll
-								</a>
-							</li>
-						</ol>
-					</section>
-
-					<div className="wrapperPayroll">
-						<div className="payroll-form">
-							<div className="payroll-header">
-								<h1>Add Payroll Item</h1>
+				<div className="wrapperPayroll">
+					<div className="payroll-form">
+						<div className="payroll-header">
+							<h1>Add Payroll Item</h1>
+						</div>
+						<form>
+							<div class="inputPayroll">
+								<label for="">Payroll Name</label>
+								<input
+								required={true}
+									type="text"
+									class="form-control"
+									id=""
+									placeholder="item name"
+									name="name"
+									value={this.state.name} onChange={this.handleChange}
+								/>
 							</div>
-							<form>
+															
+							<div className="radioChecks">
+															<div>
+									<label>Taxable</label>
+									<input required={true} checked={this.state.taxable===true} onClick={(e)=>this.handleRadio(e,"taxable",true)}  value={true} type="checkbox" name="yes_no"/>Yes 
+									<input required={true}  checked={this.state.taxable===false} onClick={(e)=>this.handleRadio(e,"taxable",false)} value={false} type="checkbox" name="yes_no"/>No
+								</div>
+
+								<div>
+									<label>Pensionable</label>
+									<input required={true} checked={this.state.pensionable===true} onClick={(e)=>this.handleRadio(e,"pensionable",true)}  value={true} type="checkbox" name="yes_no"/>Yes 
+									<input required={true}  checked={this.state.pensionable===false} onClick={(e)=>this.handleRadio(e,"pensionable",false)} value={false} type="checkbox" name="yes_no"/>No
+								</div>
+							</div>
+
+							<div className="radioChecks">
+														
+
+								<div>
+									<label>Positive</label>
+									<input required={true} checked={this.state.positive===true} onClick={(e)=>this.handleRadio(e,"positive",true)} value={true} type="checkbox" name="yes_no"/>Yes 
+									<input required={true} checked={this.state.positive===false} onClick={(e)=>this.handleRadio(e,"positive",false)} value={false} type="checkbox" name="yes_no"/>No
+								</div>
+							</div>
+
+							<div class="">
+
+								<div className="inputPayroll">
+									<label for="">Periodicity</label>
+									<select name="periodicity" value={this.state.periodicity} 
+									onChange={this.handleChange} class="form-control" id="">
+										<option>Select</option>
+										<option 	 value="monthly">Monthly</option>
+										<option   value="yearly">Yearly</option>
+									</select>
+								</div>
+
 								<div class="inputPayroll">
-									<label for="">Payroll Name</label>
+									<label for="">Occurence
+									</label>
 									<input
-									required={true}
+									name="occurence"
+										type="number"
+										class="form-control"
+										id=""
+										placeholder="Occurence
+										"
+										onChange={this.handleChange}
+										value={this.state.occurence}
+										required={true}
+									/>
+								</div>
+
+								<div class="inputPayroll">
+									<label for="">Item Description</label>
+									<textarea
 										type="text"
 										class="form-control"
 										id=""
-										placeholder="item name"
-										name="name"
-										value={this.state.name} onChange={this.handleChange}
+									name="itemDescription"
+										placeholder="Item Description"
+										onChange={this.handleChange}
+										value={this.state.itemDescription}
+										required={true}
 									/>
-								</div>
-                                
-								<div className="radioChecks">
-                               <div>
-								   <label>Taxable</label>
-								   <input required={true} checked={this.state.taxable===true} onClick={(e)=>this.handleRadio(e,"taxable",true)}  value={true} type="checkbox" name="yes_no"/>Yes 
-								   <input required={true}  checked={this.state.taxable===false} onClick={(e)=>this.handleRadio(e,"taxable",false)} value={false} type="checkbox" name="yes_no"/>No
-							   </div>
-
-							   <div>
-								   <label>Pensionable</label>
-								   <input required={true} checked={this.state.pensionable===true} onClick={(e)=>this.handleRadio(e,"pensionable",true)}  value={true} type="checkbox" name="yes_no"/>Yes 
-								   <input required={true}  checked={this.state.pensionable===false} onClick={(e)=>this.handleRadio(e,"pensionable",false)} value={false} type="checkbox" name="yes_no"/>No
-							   </div>
-								</div>
-
-								<div className="radioChecks">
-                              
-
-							   <div>
-								   <label>Positive</label>
-								   <input required={true} checked={this.state.positive===true} onClick={(e)=>this.handleRadio(e,"positive",true)} value={true} type="checkbox" name="yes_no"/>Yes 
-								   <input required={true} checked={this.state.positive===false} onClick={(e)=>this.handleRadio(e,"positive",false)} value={false} type="checkbox" name="yes_no"/>No
-							   </div>
 								</div>
 
 								<div class="">
-
-									<div className="inputPayroll">
-										<label for="">Periodicity</label>
-										<select name="periodicity" value={this.state.periodicity} 
-										onChange={this.handleChange} class="form-control" id="">
-											<option>Select</option>
-											<option 	 value="monthly">Monthly</option>
-											<option   value="yearly">Yearly</option>
-										</select>
-									</div>
-
-									<div class="inputPayroll">
-										<label for="">Occurence
-										</label>
-										<input
-										name="occurence"
-											type="number"
-											class="form-control"
-											id=""
-											placeholder="Occurence
-											"
-											onChange={this.handleChange}
-											value={this.state.occurence}
-											required={true}
-										/>
-									</div>
-
-									<div class="inputPayroll">
-										<label for="">Item Description</label>
-										<textarea
-											type="text"
-											class="form-control"
-											id=""
-										name="itemDescription"
-											placeholder="Item Description"
-											onChange={this.handleChange}
-											value={this.state.itemDescription}
-											required={true}
-										/>
-									</div>
-	
-									<div class="">
-										<div class="inputPayroll-Checkbox">
-											<div class="checkBox1">
-												<div class="checkBoxW">
-													<span>Applicable to</span>
-												</div>
-											</div>
-
+									<div class="inputPayroll-Checkbox">
+										<div class="checkBox1">
 											<div class="checkBoxW">
-												<button
-													type="button"
-													className="payrolBtn "
-													data-toggle="modal"
-													data-target="#addPayroll"
-													
-												>
-													<i class="fa fa-plus" aria-hidden="true"></i>
-													Add Payroll
-												</button>
+												<span>Applicable to</span>
 											</div>
 										</div>
+
+										<div class="checkBoxW">
+											<button
+												type="button"
+												className="payrolBtn "
+												data-toggle="modal"
+												data-target="#addPayroll"
+												onClick={this.clearPreviousSelected}
+											>
+												<i class="fa fa-plus" aria-hidden="true"></i>
+												Add Payroll
+											</button>
+										</div>
 									</div>
-									<div className="inputPayroll">
-										<label for="">Specify Date</label>
-										<div className="dataeP">
-											<DatePicker
-											dateFormat="MM.yyyy"
-											showMonthYearPicker
-											placeholderText={this.state.datePickerText}
-												onChange={this.handleDate}
-												className="payrolDatePicker"
-											/>
-											<div style={{ overflow: "hidden" }}>
-												<i
-													class="fa fa-calendar cal-fontAwsome"
-													aria-hidden="true"
-												></i>
-											</div>
+									<div className='pl-3 pt-2'>
+										{
+											this.state.applicableTo.length ? this.state.applicableTo.map(item => (
+												<span>{item.type} <i class="fa fa-times" aria-hidden="true"></i></span>
+											)) : <span>Entire Organization</span>
+										}
+									</div>
+								</div>
+								<div className="inputPayroll">
+									<label for="">Specify Date</label>
+									<div className="dataeP">
+										<DatePicker
+										dateFormat="MM.yyyy"
+										showMonthYearPicker
+										placeholderText={this.state.datePickerText}
+											onChange={this.handleDate}
+											className="payrolDatePicker"
+										/>
+										<div style={{ overflow: "hidden" }}>
+											<i
+												class="fa fa-calendar cal-fontAwsome"
+												aria-hidden="true"
+											></i>
 										</div>
 									</div>
 								</div>
-								<div className="buttonWrap">
-									<button onClick={this.handleSubmit} type="submit" class="btn btn-primary">
-										Submit
-									</button>
-								</div>
-							</form>
-						</div>
+							</div>
+							<div className="buttonWrap">
+								<button onClick={this.handleSubmit} type="submit" class="btn btn-primary">
+									Submit
+								</button>
+							</div>
+						</form>
 					</div>
-					<PayRollModal
-					 handleChange={this.handleChange}
-					 departmentOptions={this.state.departmentOptions}
-					 customDepartmentId={this.state.customDepartmentId}
-					 errorMessage1={this.state.errorMessage1}
-					 errorMessage2={this.state.errorMessage2}
-					 errorMessage3={this.state.errorMessage3}
-					 errorMessage4={this.state.errorMessage4}
-					 errorMessage5={this.state.errorMessage5}
-					 errorMessage6={this.state.errorMessage6}
-					 errorMessage7={this.state.errorMessage7}
-			   errorMessage8={this.state.errorMessage8}
-			   errorMessage9={this.state.errorMessage9}
-			   staffCategoryErrorMessage={this.state.staffCategoryErrorMessage}
-			   units={this.state.units}
-			   roles={this.state.roles}
-			   branches={this.state.branches}
-			   unitOptions={this.state.unitOptions}
-		roleOptions={this.state.roleOptions}
-		regionOptions={this.state.regionOptions}
-		areaOptions={this.state.areaOptions}
-		areas={this.state.areas}
-		getRoles={this.getRoles}
-		  getArea={this.getArea} 
-		  getUnits={this.getUnits}
-		   getRoleFromUnit={this.getRoleFromUnit}
-			getRoleFromDept={this.getRoleFromDept}
-			 getRoles={this.getRoles}
-					 addSelection={this.addSelection}
-					 />
 				</div>
-			</Layout>
-		);
+				<PayRollModal
+					handleChange={this.handleChange}
+					units={this.state.units}
+					roles={this.state.roles}
+					branches={this.state.branches}
+					unitOptions={this.state.unitOptions}
+					roleOptions={this.state.roleOptions}
+					regionOptions={this.state.regionOptions}
+					areaOptions={this.state.areaOptions}
+					areas={this.state.areas}
+					getRoles={this.getRoles}
+					getArea={this.getArea} 
+					getUnits={this.getUnits}
+					getRoleFromUnit={this.getRoleFromUnit}
+					getRoleFromDept={this.getRoleFromDept}
+					getRoles={this.getRoles}
+					addSelection={this.addSelection}
+					getDepartments={this.getDepartments}
+					getBranches={this.getBranches}
+					closeModal={this.closeModal}
+				/>
+			</div>
+		</Layout>
+	);
 	}
 }
