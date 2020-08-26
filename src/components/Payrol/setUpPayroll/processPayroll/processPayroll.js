@@ -127,8 +127,6 @@ export default class processPayroll extends Component {
         }
         const month = processPayroll.month !== undefined ? processPayroll.month.toUpperCase() : '';
 
-
-        console.log(this.state.processPayrollData)
         return (
             <div>
                 <Layout page="payrollSetup">
@@ -140,7 +138,7 @@ export default class processPayroll extends Component {
                     <div id="appWrapResponsive">
 	    <section className="PayrollLocationInfo">
                   <h1>Payroll for {regionName} region, {areaName}</h1>
-                  <h2>Period: {month + ' ' + processPayroll.year} </h2>
+                  <h2>Period: {month + ' ' + (processPayroll.year || '')} </h2>
                   <h3>{branchName}</h3>
                     </section>
 

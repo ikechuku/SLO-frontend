@@ -23,12 +23,14 @@ export default class processPayroll extends Component {
       amount:"",
       name:"",
       processPayrollData:[],
-      payrollOption:[]
+      payrollOption:[],
+      processPayroll: []
    }
    console.log(">>>",this.props)
     }
 
     componentDidMount(){
+      showLoader()
       this.getPayrollID()
       this.getPayrollProcess()
       
@@ -46,14 +48,12 @@ export default class processPayroll extends Component {
 	
 		try{
 		
-			showLoader()
 			const res = await httpGet(`/payroll_items`)
 	  console.log(res)
 			if(res.code === 200){
 				this.setState({
 					payrollItems:res.data.payrollItems
 				})
-				console.log(this.state.payrollItems)
 				hideLoader();
 	
 				
@@ -115,21 +115,20 @@ export default class processPayroll extends Component {
       
      getPayrollProcess=async()=>{
         try {
-            showLoader()
             const { id } = this.props.match.params
             const res = await httpGet(`processing_payroll_users/${this.props.match.params.id}`)
-          
+            const data = await httpGet(`process_payroll/${id}`)
             if (res.code === 200) {
                 hideLoader()
                 this.setState({
                     processPayrollData:res.data.processPayrollUsers,
-                  
+                    processPayroll: data.data.processPayroll
                 })
                 this.getUserPayrollItem()
             }
          
         } catch (error) {
-            
+         hideLoader()
         }
     }
 
@@ -164,6 +163,25 @@ export default class processPayroll extends Component {
          
          
     render() {
+      const { processPayroll } = this.state;
+      const { branchId, areaId, regionId } = processPayroll;
+      let regionName, areaName, branchName;
+      if(branchId){
+          regionName = processPayroll.branch !== undefined ? processPayroll.branch.region.name : '';
+          areaName = processPayroll.branch !== undefined ? processPayroll.branch.area.name : '';
+          branchName = `${processPayroll.branch.name} branch`;
+      }
+      if(areaId){
+          regionName = processPayroll.area !== undefined ? processPayroll.area.region.name : '';
+          areaName = processPayroll.area !== undefined ? processPayroll.area.name : '';
+          branchName = '';
+      }
+      if(regionId){
+          regionName = processPayroll.region !== undefined ? processPayroll.region.name : '';
+          areaName = '';
+          branchName = '';
+      }
+      const month = processPayroll.month !== undefined ? processPayroll.month.toUpperCase() : '';
       //   let sumUpAmount = this.state.payrollOption.map((data)=>{
       //      let sumUp = parseInt(data.amount)
       //      _.sum(sumUp)
@@ -183,9 +201,9 @@ export default class processPayroll extends Component {
 
                     <div id="appWrapResponsive">
 	<section className="PayrollLocationInfo">
-                  <h1>Pay slip for the month of march 2019</h1>
-                  <h2>OSARUMWENSE EBOIGB</h2>
-                  <h3>Aba branch</h3>
+                  <h1>Payroll for {regionName} region, {areaName}</h1>
+                  <h2>Period: {month + ' ' + (processPayroll.year || '')} </h2>
+                  <h3>{branchName}</h3>
                 
                     </section>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPayroll2" className="addPayrollBtn">Add Payroll Item</button>
