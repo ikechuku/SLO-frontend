@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactTooltip from "react-tooltip";
 import Table from '../../../../helpers/customTable';
+import NumberFormat from 'react-number-format';
 import {Link} from 'react-router-dom'
 import _ from 'lodash'
 
