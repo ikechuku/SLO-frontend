@@ -115,7 +115,7 @@ class processPayroll extends Component {
             if (res.code===200) {
 
                 hideLoader() 
-                NotificationManager.success('Successfully Created', 'Success')
+                NotificationManager.success('Successfully Submitted', 'Success')
                 this.props.history.push("/audit_summary")
             }
            

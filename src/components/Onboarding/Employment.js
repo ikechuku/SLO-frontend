@@ -31,6 +31,7 @@ class Employment extends Component {
       errorMessage8: null,
       errorMessage9: null,
       staffCategoryErrorMessage: null,
+      rankLevelErrorMessage: null,
       units: [],
       roles: [],
       branches: [],
@@ -41,6 +42,7 @@ class Employment extends Component {
       regionOptions: [],
       areaOptions: [],
       areas: [],
+      ranks: [],
       customBranchId: null,
       customDateOfResumption: undefined,
       customDepartmentId: null,
@@ -48,6 +50,7 @@ class Employment extends Component {
       customStaffCategory: null,
       customJobTitle: null,
       customRank: null,
+      customRankLevel: null,
       customUnitId: null,
       customRegionId: null,
       customAreaId: null,
@@ -174,46 +177,34 @@ class Employment extends Component {
         return;
       }
       postData[nameValue] = e.value;
-      if(e.value === 'PA2'){
-        postData['salaryAmount'] = '64,473';
-      } else if(e.value === 'PA1'){
-        postData['salaryAmount'] = '64,473';
-      } else if(e.value === 'SPO'){
-        postData['salaryAmount'] = '82,024';
-      } else if(e.value === 'PO1'){
-        postData['salaryAmount'] = '80,024';
-      } else if(e.value === 'P02'){
-        postData['salaryAmount'] = '80,024';
-      } else if(e.value === 'PM'){
-        postData['salaryAmount'] = '71,400';
-      } else if(e.value === 'DGM'){
-        postData['salaryAmount'] = '200,000';
-      } else if(e.value === 'Director'){
-        postData['salaryAmount'] = '768,000';
-      } else if(e.value === 'Manager'){
-        postData['salaryAmount'] = '200,000';
-      } else if(e.value === 'Senior Manager'){
-        postData['salaryAmount'] = '350,000';
-      }
+      this.getSalary()
       
       this.setState({ 
         postData,
         customRank: e,
         errorMessage1: null 
       })
-    } else if(details.name === 'salaryAmount'){
-      const isValidate = await validateEmpoymentFields(e.target.name, e.target.value);
-      if(!isValidate.error){
-        this.setState({ 
-          errorMessage6: isValidate.errorMessage, 
-        })
-        return;
-      }
-      postData[details.name] = details.value;
+    } else if(nameValue === 'rankLevel'){
+      postData[nameValue] = parseInt(e.value);
       this.setState({ 
         postData,
-        errorMessage6: null 
+        customRankLevel: e,
+        levelErrorMessage: null 
       })
+      this.getNewSalary()
+    // } else if(details.name === 'salaryAmount'){
+    //   const isValidate = await validateEmpoymentFields(e.target.name, e.target.value);
+    //   if(!isValidate.error){
+    //     this.setState({ 
+    //       errorMessage6: isValidate.errorMessage, 
+    //     })
+    //     return;
+    //   }
+    //   postData[details.name] = details.value;
+    //   this.setState({ 
+    //     postData,
+    //     errorMessage6: null 
+    //   })
     } else if(details.name === 'employeeNumber'){
       const isValidate = await validateEmpoymentFields(e.target.name, e.target.value);
       if(!isValidate.error){
@@ -229,6 +220,67 @@ class Employment extends Component {
         })
       }
     } 
+  }
+
+  getSalary = () => {
+    const { rank } = this.state.postData;
+    const { ranks, postData } = this.state;
+    const foundRank = [...ranks].filter(item => item.id === rank)[0];
+    const payrolls = foundRank.salaryStructureItem;
+
+    let salaryAmount = 0;
+    const rankArr = Object.values(this.state.postData);
+    payrolls.map(item=>{
+      if(checkType(JSON.parse(item.payrollItem.applicableTo), rankArr)){
+        salaryAmount = salaryAmount + parseInt(item.amount)
+      }
+    })
+    
+    function checkType(obj, check){
+      for (let i = 0; i< obj.length; i++){
+        const isIt = check.find(item => item === obj[i]['id']);
+        if(obj[i]['type'] == 'organization'){
+          return true
+        } else if(isIt){
+          return true
+        }
+      }
+      return false
+    }
+
+    postData['salaryAmount'] = salaryAmount;
+    this.setState({ postData });
+  }
+
+  getNewSalary = () => {
+    const { salaryAmount, rankLevel } = this.state.postData;
+    const { postData } = this.state;
+    if(salaryAmount === undefined || salaryAmount === '' || salaryAmount === null){
+      NotificationManager.manager('Error, Rank cannot be empty', 'Warning', 3000);
+      return;
+    }
+    let newSalaryAmount;
+    if(rankLevel === 1){
+      newSalaryAmount = salaryAmount;
+    } else if(rankLevel === 2){
+      const value = (1.5 / 100) * salaryAmount;
+      newSalaryAmount = value + salaryAmount
+    } else if(rankLevel === 3){
+      const value = (3 / 100) * salaryAmount;
+      newSalaryAmount = value + salaryAmount;
+    } else if(rankLevel === 4){
+      const value = (4.5 / 100) * salaryAmount;
+      newSalaryAmount = value + salaryAmount;
+    } else if(rankLevel === 5){
+      const value = (6 / 100) * salaryAmount;
+      newSalaryAmount = value + salaryAmount;
+    } else if(rankLevel === 6){
+      const value = (7.5 / 100) * salaryAmount;
+      newSalaryAmount = value + salaryAmount
+    }
+    //console.log('salary', newSalaryAmount, rankLevel)
+    postData['salaryAmountAfterRank'] = newSalaryAmount;
+    this.setState({postData})
   }
   
 
@@ -260,29 +312,32 @@ class Employment extends Component {
       unitId,
       dateOfResumption,
       employmentDate,
-      salaryAmount,
+      salaryAmountAfterRank,
       branchId,
       employeeNumber,
       jobTitle,
       departmentId,
       regionId,
       areaId,
-      staffCategory
+      staffCategory,
+      rankLevel
     } = this.state.postData;
 
     const data = {
       rank,
+      salaryStructureId: rank,
       unitId,
       dateOfResumption,
       employmentDate,
-      salaryAmount,
+      salaryAmount: salaryAmountAfterRank,
       branchId,
       employeeNumber,
       jobTitle,
       departmentId,
       regionId,
       areaId,
-      staffCategory
+      staffCategory,
+      rankLevel
     }
 
     console.log(data);
@@ -332,6 +387,8 @@ class Employment extends Component {
         })
       } 
     }
+
+
 		
     try{
 			const { id } = this.props.match.params;
@@ -417,6 +474,7 @@ class Employment extends Component {
       const resData = await httpGet('all_branch');
       const regionData = await httpGet('all_region');
       const areaData = await httpGet('all_area');
+      const rankData = await httpGet('salary_structure')
 
       if(res.code === 200){
         hideLoader()
@@ -446,6 +504,8 @@ class Employment extends Component {
           regionList.push({ value: data.id, label: data.name });
         });
 
+        console.log(rankData.data.salaryStructures)
+
         this.setState({ 
           // units: unitOptions, 
           roles: data.data.roles,
@@ -453,7 +513,8 @@ class Employment extends Component {
           departmentOptions: departmentList,
           departments: data.data.departmentUnit, 
           regionOptions: regionList,
-          areas: areaData.data.areas
+          areas: areaData.data.areas,
+          ranks: rankData.data.salaryStructures
         });
       }
 
@@ -461,6 +522,16 @@ class Employment extends Component {
       hideLoader()
       console.log(error)
     }
+  }
+
+  getRanks = () => {
+    console.log('gets here')
+    const { ranks} = this.state;
+    console.log(ranks)
+    //return null
+    return [...ranks].map(item => (
+      { value: item.id, label: item.name }
+    ))
   }
 
   getArea = async () => {
@@ -560,9 +631,11 @@ class Employment extends Component {
           regionId,
           region,
           areaId,
-          area
+          area,
+          rankLevel
         } = res.data.employmentInfo;
         const customRank = { value: rank, label: rank };
+        const customRankLevel = { value: rankLevel, label: rankLevel };
         const customUnitId = unit === null ? null : { value: unitId, label: unit.name };
         const customEmploymentDate = moment(employmentDate).toDate();
         const customDateOfResumption = moment(dateOfResumption).toDate();
@@ -584,6 +657,7 @@ class Employment extends Component {
           customAreaId,
           customRegionId,
           customStaffCategory,
+          customRankLevel,
           pageMode: 'edit' 
         });
       }
@@ -650,64 +724,29 @@ class Employment extends Component {
 									<div className="card-body">
 
                     <form className="form-horizontal" >
-											<div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">Rank <span className="impt">*</span></label>
-												<div className="col-md-4">
-                          <Select
-                            name="rank"
-                            placeholder="Select"
-                            value={this.state.customRank}
-                            options={[
-                              { value: "PA1", label: "PA 1" },
-                              { value: "PA2", label: "PA 2" },
-                              { value: "PO1", label: "PO 1" },
-                              { value: "PO2", label: "PO 2" },
-                              { value: "SPO", label: "SPO" },
-                              { value: "Manager", label: "Manager" },
-                              { value: "Senior Manager", label: "Senior Manager" },
-                              { value: "Director", label: "Director" },
-                              { value: "PM", label: "PM" },
-                              { value: "DGM", label: "DGM" },
-                            ]}
-                            onChange={(e) => this.handleChange(e, 'rank')}
-                          />
-													<span className="text-danger">{this.state.errorMessage1 !== null ? this.state.errorMessage1 : ''}</span>
-												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Salary Amount <span className="impt">*</span></label>
-                        <div className="col-md-4">
-													<input type="text" 
-														className="form-control"
-														name="salaryAmount"
-                            onChange={this.handleChange}
-                            value={this.state.postData.salaryAmount}
-                            readOnly
-													/>
-													<span className="text-danger">{this.state.errorMessage6 !== null ? this.state.errorMessage6 : ''}</span>
-												</div>
-											</div>
                       <div className="form-group row">
-                          <label for="inputName" className="col-md-2 pr-0 col-form-label">Departments <span className="impt">*</span></label>
-                          <div className="col-md-4">
-                            <Select
-                              name="departmentId"
-                              placeholder="Select"
-                              value={this.state.customDepartmentId}
-                              options={this.state.departmentOptions}
-                              onChange={(e) => this.handleChange(e, 'departmentId')}
-                            />
-                            <span className="text-danger">{this.state.errorMessage8 !== null ? this.state.errorMessage8 : ''}</span>
-                          </div>
-                          <label for="inputName" className="col-md-2 col-form-label">Branch <span className="impt">*</span></label>
-                          <div className="col-md-4">
+                        <label for="inputName" className="col-md-2 pr-0 col-form-label">Departments <span className="impt">*</span></label>
+                        <div className="col-md-4">
                           <Select
-                            name="branchId"
+                            name="departmentId"
                             placeholder="Select"
-                            value={this.state.customBranchId}
-                            options={this.state.branches}
-                            onChange={(e) => this.handleChange(e, 'branchId')}
+                            value={this.state.customDepartmentId}
+                            options={this.state.departmentOptions}
+                            onChange={(e) => this.handleChange(e, 'departmentId')}
                           />
-													<span className="text-danger">{this.state.errorMessage3 !== null ? this.state.errorMessage3 : ''}</span>
-												</div>
+                          <span className="text-danger">{this.state.errorMessage8 !== null ? this.state.errorMessage8 : ''}</span>
+                        </div>
+                        <label for="inputName" className="col-md-2 col-form-label">Region <span className="impt">*</span></label>
+                        <div className="col-md-4">
+                          <Select
+                            name="regionId"
+                            placeholder="Select"
+                            value={this.state.customRegionId}
+                            options={this.state.regionOptions}
+                            onChange={(e) => this.handleChange(e, 'regionId')}
+                          />
+                          <span className="text-danger">{this.state.errorMessage5 !== null ? this.state.errorMessage5 : ''}</span>
+                        </div>
 											</div>
                       <div className="form-group row">
 												<label for="inputName" className="col-md-2 col-form-label">Units <span className="impt">*</span></label>
@@ -720,19 +759,17 @@ class Employment extends Component {
                             onChange={(e) => this.handleChange(e, 'unitId')}
                           />
 													<span className="text-danger">{this.state.errorMessage5 !== null ? this.state.errorMessage5 : ''}</span>
-                          
 												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Region <span className="impt">*</span></label>
-												<div className="col-md-4">
-                          <Select
-                            name="regionId"
-                            placeholder="Select"
-                            value={this.state.customRegionId}
-                            options={this.state.regionOptions}
-                            onChange={(e) => this.handleChange(e, 'regionId')}
-                          />
-													<span className="text-danger">{this.state.errorMessage5 !== null ? this.state.errorMessage5 : ''}</span>
-                          
+                        <label for="inputName" className="col-md-2 col-form-label">Branch <span className="impt">*</span></label>
+                          <div className="col-md-4">
+                            <Select
+                              name="branchId"
+                              placeholder="Select"
+                              value={this.state.customBranchId}
+                              options={this.state.branches}
+                              onChange={(e) => this.handleChange(e, 'branchId')}
+                            />
+                            <span className="text-danger">{this.state.errorMessage3 !== null ? this.state.errorMessage3 : ''}</span>
 												</div>
 											</div>
                       <div className="form-group row">
@@ -757,6 +794,86 @@ class Employment extends Component {
                             onChange={(e) => this.handleChange(e, 'areaId')}
                           />
 													<span className="text-danger">{this.state.errorMessage4 !== null ? this.state.errorMessage4 : ''}</span>
+												</div>
+                      </div>
+                      <div className="form-group row">
+												<label for="inputName" className="col-md-2 col-form-label">Rank <span className="impt">*</span></label>
+												<div className="col-md-4">
+                          <Select
+                            name="rank"
+                            placeholder="Select"
+                            value={this.state.customRank}
+                            options={this.getRanks()}
+                            onChange={(e) => this.handleChange(e, 'rank')}
+                          />
+													<span className="text-danger">{this.state.errorMessage1 !== null ? this.state.errorMessage1 : ''}</span>
+												</div>
+                        <label for="inputName" className="col-md-2 col-form-label">Rank Level <span className="impt">*</span></label>
+												<div className="col-md-4">
+                          <Select
+                            className="pt-0 pb-0 pr-0 pl-0 border-0"
+                            value={this.state.customRanklevel}
+                            onChange={e => this.handleChange(e, 'rankLevel')}
+                            options={[
+                              { value: '1', label: '1'},
+                              { value: '2', label: '2'},
+                              { value: '3', label: '3'},
+                              { value: '4', label: '4'},
+                              { value: '5', label: '5'},
+                              { value: '6', label: '6'}
+                            ]}
+                            name="rankLevel"
+                            placeholder="Select"
+                          />
+                          <span className="text-danger">{this.state.levelErrorMessage !== null ? this.state.levelErrorMessage : ''}</span>
+												</div>
+                      </div>
+                      <div className="form-group row">
+                      <label for="inputName" className="col-md-2 col-form-label">Salary Amount <span className="impt">*</span></label>
+                        <div className="col-md-4">
+													<input type="text" 
+														className="form-control"
+														name="salaryAmount"
+                            onChange={this.handleChange}
+                            value={
+                              this.state.postData.salaryAmountAfterRank ? this.state.postData.salaryAmountAfterRank : this.state.postData.salaryAmount
+                            }
+                            readOnly
+													/>
+													<span className="text-danger">{this.state.errorMessage6 !== null ? this.state.errorMessage6 : ''}</span>
+												</div>
+                      <label for="inputName" className="col-md-2 col-form-label">Staff Category <span className="impt">*</span></label>
+												<div className="col-md-4">
+                          <Select
+                            className="pt-0 pb-0 pr-0 pl-0 border-0"
+                            value={this.state.customStaffCategory}
+                            onChange={e => this.handleChange(e, 'staffCategory')}
+                            options={[
+                              { value: 'Full time', label: 'Full time'},
+                              { value: 'Contact', label: 'Contact'},
+                              { value: 'Casual', label: 'Casual'},
+                              { value: 'Consultant', label: 'Consultant'},
+                              { value: 'Part time', label: 'Part time'},
+                              { value: 'Probation', label: 'Probation'},
+                              { value: 'FreeLancers', label: 'FreeLancers'}
+                            ]}
+                            name="staffCategory"
+                            placeholder="Select"
+                          />
+                          <span className="text-danger">{this.state.staffCategoryErrorMessage !== null ? this.state.staffCategoryErrorMessage : ''}</span>
+												</div>
+                      </div>
+                      <div className="form-group row" style={{display: 'none'}}>
+                        <label for="inputName" className="col-md-2 col-form-label">Employee Number <span className="impt">*</span></label>
+                        <div className="col-md-4">
+													<input type="text" 
+														className="form-control"
+														name="employeeNumber"
+														placeholder="ex 0341 (four digits)"
+														value={this.state.postData.employeeNumber}
+														onChange={this.handleChange}
+													/>
+													<span className="text-danger">{this.state.errorMessage7 !== null ? this.state.errorMessage7 : ''}</span>
 												</div>
                       </div>
                       <div className="form-group row">
@@ -793,41 +910,7 @@ class Employment extends Component {
 													<span className="text-danger">{this.state.errorMessage2 !== null ? this.state.errorMessage2 : ''}</span>
 												</div>
 											</div>
-                      <div className="form-group row">
-                      <label for="inputName" className="col-md-2 col-form-label">Staff Category <span className="impt">*</span></label>
-												<div className="col-md-4">
-                          <Select
-                            className="pt-0 pb-0 pr-0 pl-0 border-0"
-                            value={this.state.customStaffCategory}
-                            onChange={e => this.handleChange(e, 'staffCategory')}
-                            options={[
-                              { value: 'Full time', label: 'Full time'},
-                              { value: 'Contact', label: 'Contact'},
-                              { value: 'Casual', label: 'Casual'},
-                              { value: 'Consultant', label: 'Consultant'},
-                              { value: 'Part time', label: 'Part time'},
-                              { value: 'Probation', label: 'Probation'},
-                              { value: 'FreeLancers', label: 'FreeLancers'}
-                            ]}
-                            name="staffCategory"
-                            placeholder="Select"
-                          />
-                          <span className="text-danger">{this.state.staffCategoryErrorMessage !== null ? this.state.staffCategoryErrorMessage : ''}</span>
-												</div>
-                      </div>
-                      <div className="form-group row" style={{display: 'none'}}>
-                        <label for="inputName" className="col-md-2 col-form-label">Employee Number <span className="impt">*</span></label>
-                        <div className="col-md-4">
-													<input type="text" 
-														className="form-control"
-														name="employeeNumber"
-														placeholder="ex 0341 (four digits)"
-														value={this.state.postData.employeeNumber}
-														onChange={this.handleChange}
-													/>
-													<span className="text-danger">{this.state.errorMessage7 !== null ? this.state.errorMessage7 : ''}</span>
-												</div>
-                      </div>
+                      
                       
 
 
