@@ -399,7 +399,6 @@ this.setState({regionName:data})
 								</div>
 							</form>
 						</div>
-						<PayHistory />
 						
 						
 						
