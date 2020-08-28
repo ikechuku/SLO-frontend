@@ -30,13 +30,14 @@ export default class payrollsetup extends Component {
 			branchOptions:[],
 			branches:[],
 			payrollMonth:null,
-			payrollYear:new Date().getFullYear(),
+			payrollYear: '',
 			title:"",
 			regionName:"",
 			payrollId:null,
 			branchName: '',
 			areaName: '',
-			regionName: ''
+			regionName: '',
+			yearList: []
 		}
 		this.inputRef = React.createRef();
 	}
@@ -134,12 +135,13 @@ export default class payrollsetup extends Component {
 
 
 
-componentDidMount= async()=>{
- this.getRegion()
-this.getArea()
-	this.getBranch()
-// this.getTitle()
-}
+		componentDidMount= async()=>{
+			this.getRegion()
+			this.getArea()
+			this.getBranch()
+			this.getYearOptions()
+			// this.getTitle()
+		}
 
 	handleChange  =  async (e,type) => {
 		e.preventDefault();
@@ -150,6 +152,7 @@ this.getArea()
 			const selected = [...this.state.areas].filter(item => item.id === e.target.value)[0];
 			const areaName = selected.name;
 			await this.setState({ [e.target.name]: e.target.value, areaName });
+			this.getBranchData();
 		} else if (type === "branch") {
 			this.getBranchData()
 			const selected = [...this.state.branches].filter(item => item.id === e.target.value)[0];
@@ -159,6 +162,7 @@ this.getArea()
 			const selected = [...this.state.regions].filter(item => item.id === e.target.value)[0];
 			const regionName = this.handleRegionAbbr(selected.name);
 			await this.setState({ [e.target.name]: e.target.value, regionName });
+			this.getAreaData();
 		} else {
 			await this.setState({ [e.target.name]: e.target.value });
 		}
@@ -245,9 +249,18 @@ this.getArea()
 		hideLoader()
   }
   
-  getTitle=(e,data)=>{
-this.setState({regionName:data})
-}  
+		getTitle=(e,data)=>{
+			this.setState({regionName:data})
+		}
+		
+		getYearOptions = () => {
+			const yearList = []
+			for(let i = 2000; i <= 2050; i++){
+				yearList.push(i)
+			}
+			this.setState({yearList})
+		}
+
 	render() {
 	
 		return (
@@ -281,7 +294,7 @@ this.setState({regionName:data})
 										<label for="">Month for payment</label>
 										<select name="payrollMonth" onChange={this.handleChange}
 										 name="payrollMonth" class="form-control" id="">
-											<option value={null}>Select Months</option>
+											<option value='' disabled selected>Select Months</option>
 											<option value="january">January</option>
 											<option value="february">February</option>
 											<option value="match">Match</option>
@@ -298,13 +311,15 @@ this.setState({regionName:data})
 									</div>
 
 									<div class="inputPayroll-setup-wrap">
-										<DatePicker
-											dateFormat="yyyy"
-											scrollableYearDropdown
-											placeholderText={this.state.datePickerText}
-												onChange={this.handleDate}
-												className="payrolDatePicker"
-											/>
+										<label for="">Year for payment</label>
+										<select name="payrollYear" className="form-control" onChange={this.handleChange}>
+											{
+												this.state.yearList.map(item => (
+													<option value={item}>{item}</option>
+												))
+											}
+											
+										</select>
 									</div>
 									
 								</div>
@@ -357,23 +372,17 @@ this.setState({regionName:data})
 										<label for="">Area</label>
 										<select
 										disabled={this.state.regionId===null}
-	 name="areaId"
-	 onChange={(e)=>this.handleChange(e,"area")} 
-	 onClick={this.getAreaData}
-	class="form-control" id="exampleFormControlSelect1">
-			<option value={null}>Select</option>
-		{this.state.areaOptions.map((data)=>{
-			return(
-			
-		
-			
-				<option  value={data.id}>{data.name}</option>
-			
-				
-			)
-		})}
-    
-    </select>
+										name="areaId"
+										onChange={(e)=>this.handleChange(e,"area")} 
+										class="form-control" id="exampleFormControlSelect1">
+												<option value={null}>Select</option>
+											{this.state.areaOptions.map((data)=>{
+												return (
+													<option  value={data.id}>{data.name}</option>
+												)
+											})}
+											
+											</select>
 									</div>
 
 									<div class="inputPayroll-setup-wrap">
@@ -382,8 +391,7 @@ this.setState({regionName:data})
 										<select
 										 name="branchId"
 										disabled={this.state.areaId===null}
-										 onChange={(e)=>this.handleChange(e,"branch")} 
-										 onClick={this.getBranchData}
+										 onChange={(e)=>this.handleChange(e,"branch")}
 										class="form-control" id="">
 											<option value={null}>Select Branch</option>
 											{this.state.branchOptions.map((data)=>{

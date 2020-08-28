@@ -101,7 +101,7 @@ class Login extends Component {
               <input
                 className="logInInput9"
                 type="text"
-                placeholder="Enter Email"
+                placeholder="Enter Staff ID"
                 name="username"
                 onChange={this.handleChange}
                 required
