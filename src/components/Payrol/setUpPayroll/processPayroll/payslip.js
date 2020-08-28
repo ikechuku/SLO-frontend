@@ -154,16 +154,29 @@ export default class processPayroll extends Component {
 		console.log(">>>>>")
 		let sum = 0;
 		for (let i = 0; i < value.length; i++) {
-			sum = sum + parseInt(value[i].amount);
-			
-			}
+         sum = sum + parseInt(value[i].amount);
+         
+         }
 		// console.log([sum].reduce((a, b) => a + b, 0))
 		return(sum)
+   }
+
+   sumUpReduction=(value)=>{
+		let sum = 0;
+		for (let i = 0; i < value.length; i++) {
+         if(!value.payroll.positive){
+            sum = sum + parseInt(value[i].amount);
          }
+         }
+		// console.log([sum].reduce((a, b) => a + b, 0))
+		return(sum)
+   }
          
          
     render() {
-      const { processPayroll } = this.state;
+      const { processPayroll, payrollOption } = this.state;
+      const payroll = payrollOption.filter(item => item.payroll.positive)
+      const negativePayroll = payrollOption.filter(item => !item.payroll.positive)
       const { branchId, areaId, regionId } = processPayroll;
       let regionName, areaName, branchName;
       if(branchId){
@@ -225,10 +238,11 @@ export default class processPayroll extends Component {
    <span className="headerinforesult">
    Amount
    </span>
+   {console.log(this.state.payrollOption)}
     </div>
 
   {
-    this.state.payrollOption.map((data)=>{
+    [...payroll].map((data)=>{
       return( 
         
              <div className="Userpayslip">
@@ -250,9 +264,7 @@ export default class processPayroll extends Component {
    </span>
 
    <span className="headerinforesult">
-  {this.state.payrollOption.map((data)=>{
-     this.sumUp(data.amount)
-  })}
+      {this.sumUp(payroll)}
    </span>
     </div>
 </div>
@@ -275,40 +287,12 @@ export default class processPayroll extends Component {
    </span>
     </div>
 
-   <div className="Userpayslip">
+   {/* <div className="Userpayslip">
        <span className="Userpayslipeven">Meal</span>
-       <span className="UserpayslipOdd">20000</span>
-          </div> 
+         <span className="UserpayslipOdd">20000</span>
+      </div>  */}
 
 
-          <div className="Userpayslip">
-       <span className="Userpayslipeven">Transport Allowance</span>
-       <span className="UserpayslipOdd">20000</span>
-          </div> 
-
-
-          <div className="Userpayslip">
-       <span className="Userpayslipeven">Housing Allowance</span>
-       <span className="UserpayslipOdd">20000</span>
-          </div> 
-
-
-          <div className="Userpayslip">
-       <span className="Userpayslipeven">Hospital Allowance</span>
-       <span className="UserpayslipOdd">20000</span>
-          </div> 
-
-
-          <div className="Userpayslip">
-       <span className="Userpayslipeven">Master Allowance</span>
-       <span className="UserpayslipOdd">20000</span>
-          </div> 
-
-
-          <div className="Userpayslip">
-       <span className="Userpayslipeven">Transport Allowance</span>
-       <span className="UserpayslipOdd">20000</span>
-          </div> 
 
 <div className="addRelative">
      <div className="payslipheader stickAmout">
@@ -317,7 +301,7 @@ export default class processPayroll extends Component {
    </span>
 
    <span className="headerinforesult">
-  900,000
+  0
    </span>
     </div>
 </div>
@@ -342,40 +326,14 @@ export default class processPayroll extends Component {
    </span>
     </div>
 
-   <div className="Userpayslip">
-       <span className="Userpayslipeven">Meal</span>
-       <span className="UserpayslipOdd">20000</span>
+   {
+      negativePayroll.map(item => (
+         <div className="Userpayslip">
+            <span className="Userpayslipeven">{item.payroll.name}</span>
+            <span className="UserpayslipOdd">{item.amount}</span>
           </div> 
-
-
-          <div className="Userpayslip">
-       <span className="Userpayslipeven">Transport Allowance</span>
-       <span className="UserpayslipOdd">20000</span>
-          </div> 
-
-
-          <div className="Userpayslip">
-       <span className="Userpayslipeven">Housing Allowance</span>
-       <span className="UserpayslipOdd">20000</span>
-          </div> 
-
-
-          <div className="Userpayslip">
-       <span className="Userpayslipeven">Hospital Allowance</span>
-       <span className="UserpayslipOdd">20000</span>
-          </div> 
-
-
-          <div className="Userpayslip">
-       <span className="Userpayslipeven">Master Allowance</span>
-       <span className="UserpayslipOdd">20000</span>
-          </div> 
-
-
-          <div className="Userpayslip">
-       <span className="Userpayslipeven">Transport Allowance</span>
-       <span className="UserpayslipOdd">20000</span>
-          </div> 
+      ))  
+   }
 
 
  
@@ -386,7 +344,7 @@ export default class processPayroll extends Component {
    </span>
 
    <span className="headerinforesult">
-  900,000
+      {this.sumUpReduction(negativePayroll)}
    </span>
     </div>
 </div>
