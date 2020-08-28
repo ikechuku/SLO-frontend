@@ -3,6 +3,7 @@ import $, { data } from "jquery";
 import moment from 'moment'
 import { NotificationManager } from "react-notifications";
 import axios from "axios";
+import DatePicker from "react-datepicker";
 import {Link} from 'react-router-dom'
 import Layout from "../../layout/index";
 import Goback from '../goBack/index'
@@ -296,8 +297,18 @@ this.setState({regionName:data})
 										</select>
 									</div>
 
+									<div class="inputPayroll-setup-wrap">
+										<DatePicker
+											dateFormat="yyyy"
+											scrollableYearDropdown
+											placeholderText={this.state.datePickerText}
+												onChange={this.handleDate}
+												className="payrolDatePicker"
+											/>
+									</div>
 									
 								</div>
+
 								<div class="inputPayroll-setup">
 								
 
