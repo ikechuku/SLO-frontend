@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import $ from "jquery";
+import $, { data } from "jquery";
 import { NotificationManager } from "react-notifications";
 import axios from "axios";
 
@@ -19,10 +19,10 @@ export default class processPayroll extends Component {
         super(props)
    this.state={
        processPayrollData:[],
-    previewPayroll:[],
-    toggleTabel:false,
-    usersId:[],
-    processPayroll:[]
+        previewPayroll:[],
+        toggleTabel:false,
+        usersId:[],
+        processPayroll:[]
    }
     }
 
@@ -31,25 +31,32 @@ export default class processPayroll extends Component {
         if (e.target.checked){
           //append to array
           this.setState({
-            previewPayroll: this.state.previewPayroll.concat(value),
+            // previewPayroll: this.state.previewPayroll.concat(value),
             usersId: this.state.usersId.concat(value.staffId)
           })
          
         } else {
           //remove from array
           this.setState({
-            previewPayroll : this.state.previewPayroll.filter(function(val) {return val!==value})
+            usersId : [...this.state.usersId].filter(function(val) {return val!==value.staffId})
           })
        }
        console.log(this.state.previewPayroll)
     }
     
+    maxDelete = () => {
+        const { usersId } = this.state;
+        if(usersId.length){
+            this.setState({ 
+                processPayrollData: [...this.state.processPayrollData].filter( ( el ) => !usersId.includes( el.staffId ) ),
+                usersId: []
+            })
+        }
+    }
   
 
     componentDidMount= async()=>{
         this.getPayrollProcess()
-       
-        console.log(">>>>>getsssss")
        }
 
        
@@ -82,17 +89,18 @@ export default class processPayroll extends Component {
     }
 
     handleSubmit=async()=>{
+        const staffIds = this.state.processPayrollData.map(item => item.staffId);
         let data = {
-            staffIds: this.state.usersId
+            staffIds
         }
-        console.log("data======",data)
+        
         showLoader()
         try {
             const res = await httpPost(`submit_payroll/${this.props.match.params.id}`,data)
             if (res.code===200) {
 
                 hideLoader() 
-                NotificationManager.success('Successfully Created', 'Success')
+                NotificationManager.success('Successfully Submitted', 'Success')
                 this.props.history.push("/setup-payroll")
             }
            
@@ -141,7 +149,7 @@ export default class processPayroll extends Component {
                     <div id="appWrapResponsive">
                     <section className="PayrollLocationInfo">
                   <h1>Payroll for {regionName} region, {areaName}</h1>
-                  <h2>Period: {month + ' ' + processPayroll.year} </h2>
+                  <h2>Period: {month + ' ' + (processPayroll.year || '')} </h2>
                   <h3>{branchName}</h3>
                     </section>
 
@@ -154,34 +162,18 @@ export default class processPayroll extends Component {
     </div>
 
     
-    <div className={`${this.state.toggleTabel ===true? "greaterZindex":"lesserZindex"}`}>
+    {/* <div className={`${this.state.toggleTabel ===true? "greaterZindex":"lesserZindex"}`}>
     <PreviewTable payroll={this.state.previewPayroll}/>
-      </div>
+      </div> */}
 
                 
          
-  <div style={{position:"relative"}}>
-<div className="PayrollTotal">
-      <h1>Total Gross</h1>
 
-      <div className="payrollDataP">
- <div>
-          <span>Gross Pay</span> <span>300,00</span>
-      </div>
-
-      <div>
-          <span>Deduction</span> <span>300,00</span>
-      </div>
-
-      <div>
-          <span>Net Pay</span> <span>300,00</span>
-      </div>
-      </div>
-     
-  </div>
-  </div>
   <div className="processPayrollAction">
-        <button onClick={this.handleSubmit}>Submit</button> <button onClick={this.changeTable} >{this.state.toggleTabel===false?"Preview":"Select More"}</button>
+        <button onClick={this.handleSubmit}>Submit</button> 
+        <button onClick={() => this.props.history.goBack()}>Save & Continue</button> 
+        {/* <button onClick={this.changeTable} >{this.state.toggleTabel===false?"Preview":"Select More"}</button> */}
+        <button style={!this.state.usersId.length ? {display: 'none'} : {}} onClick={this.maxDelete}>Delete</button> 
   </div>
         </div>
                   

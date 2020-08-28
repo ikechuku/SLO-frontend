@@ -414,12 +414,13 @@ let year = moment(date).year();
 				applicableTo: [],
 				effectiveDate: ""
 			})
-					  hideLoader();
-					  NotificationManager.success(
-						"A Payroll item has successfully been created",
-							"Success!",
-							5000
-						);
+				hideLoader();
+				NotificationManager.success(
+				"A Payroll item has successfully been created",
+					"Success!",
+					5000
+				);
+				this.props.history.push('/payroll')
 			}
 	  
 		  }catch(error){
@@ -481,7 +482,6 @@ let year = moment(date).year();
 
 
 render() {
-	console.log(this.state.departmentOptions)
 	return (
 		<Layout page="payroll">
 			<div className="app-content">
@@ -603,7 +603,7 @@ render() {
 												onClick={this.clearPreviousSelected}
 											>
 												<i class="fa fa-plus" aria-hidden="true"></i>
-												Add Payroll
+												Add
 											</button>
 										</div>
 									</div>
@@ -619,7 +619,7 @@ render() {
 									</div>
 								</div>
 								<div className="inputPayroll">
-									<label for="">Specify Date</label>
+									<label for="">Effective Date</label>
 									<div className="dataeP">
 										<DatePicker
 										dateFormat="MM.yyyy"

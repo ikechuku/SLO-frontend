@@ -149,6 +149,60 @@ export default class processPayroll extends Component {
 
     }
 
+    getReduction = (payroll, type) => {
+      let BHT = 0;
+      payroll.map(item => {
+        if(item.payroll.name === 'Basic Pay' || item.payroll.name === 'Transportation Allowance' || item.payroll.name === 'Housing Allowance' || item.payroll.name === 'Kidnapping'){
+          BHT = BHT + parseInt(item.amount)
+        }
+      })
+    
+      let grossPay = 0;
+      payroll.map(item => (
+        grossPay = grossPay + parseInt(item.amount)
+      ))
+    
+      const annualGross = grossPay * 12;
+      const CR = ((20/100) * annualGross) + 200000;
+      // const PR = (8/100) * BHT;
+      const PR = 13520;
+      const TR = CR + PR;
+      const taxableIncome = annualGross - TR;
+    
+      if(type === 'netpay'){
+        return grossPay - this.getTax(taxableIncome)
+      } else {
+        return this.getTax(taxableIncome)
+      }	
+    }
+    
+    getTax = (taxableIncome) => {
+      let newValue = taxableIncome;
+      let sumArr = [];
+      let checkList = [
+        {x: 300000, y: 0.07}, 
+        {x: 300000, y: 0.11}, 
+        {x: 500000, y: 0.15}, 
+        {x: 500000, y: 0.19}, 
+        {x: 1600000, y: 0.21}, 
+        {x: 3200000, y: 0.24}, 
+      ];
+      for(let i = 0; i < checkList.length; i++){
+        if(newValue > checkList[i].x){
+          sumArr.push(checkList[i].y * checkList[i].x)
+          newValue = newValue - checkList[i].x
+        } else if(newValue < checkList[i].x){
+          sumArr.push(checkList[i].y * newValue)
+          break;
+        }
+      }
+      console.log(sumArr)
+      const annualTax = sumArr.reduce((a, b) => a + b, 0)
+      const monthlyTax = annualTax / 12;
+      return (monthlyTax).toFixed(2)
+    }
+  
+
     
 	sumUp=(value)=>{
 		console.log(">>>>>")
@@ -161,11 +215,24 @@ export default class processPayroll extends Component {
 		return(sum)
    }
 
+   		getTotalReduction = (payroll) => {
+			let totalList = [];
+			payroll.map((data, index) => {
+				const total = this.getReduction(data.payrollProcessingItem)
+				totalList.push(parseInt(total))
+			})
+			// console.log(totalList)
+			const total = [...totalList].reduce((a, b) => a + b, 0)
+			return total || 0
+		}
+
    sumUpReduction=(value)=>{
 		let sum = 0;
 		for (let i = 0; i < value.length; i++) {
          if(!value.payroll.positive){
             sum = sum + parseInt(value[i].amount);
+         } else {
+
          }
          }
 		// console.log([sum].reduce((a, b) => a + b, 0))
