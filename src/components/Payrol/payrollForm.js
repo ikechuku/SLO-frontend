@@ -45,6 +45,8 @@ export default class payrollForm extends Component {
 		units: [],
 		roles: [],
 		branches: [],
+		regionList: [],
+		unitList: [],
 		departmentOptions: [],
 		departments: [],
 		unitOptions: [],
@@ -113,13 +115,15 @@ export default class payrollForm extends Component {
 			});
 	
 			this.setState({ 
-			  // units: unitOptions, 
+				// units: unitOptions,
+				unitList: res.data.units,
+				regionList: regionData.data.regions,
+				areas: areaData.data.areas,
 			  roles: data.data.roles,
-			  branches: branchList,
-			  departmentOptions: departmentList,
+				branches: branchList,
+				departmentOptions: departmentList,
+				regionOptions: regionList,
 			  departments: data.data.departmentUnit, 
-			  regionOptions: regionList,
-			  areas: areaData.data.areas
 			});
 		  }
 	
@@ -296,6 +300,7 @@ let year = moment(date).year();
 			customUnitId: null,
 			customRegionId: null,
 			customAreaId: null,
+
 		})
 	}
 
@@ -310,6 +315,7 @@ let year = moment(date).year();
 				unitId: ''
 			}
 		})
+		this.closeModal()
 	}
 
 	addSelection=()=>{
@@ -355,7 +361,8 @@ let year = moment(date).year();
 				})
 			}
 		}
-		this.setState({ applicableTo })
+		this.setState({ applicableTo,  })
+		this.clearPreviousSelected()
 	}
 
 	handleSubmit = async (e)=>{
@@ -439,7 +446,37 @@ let year = moment(date).year();
 		} 
 
 		
-	  }
+		}
+		
+		getApplicableTo = () => {
+			const { regionList, areas, branches, departmentOptions, unitList, roles } = this.state;
+			console.log(this.state.applicableTo, roles)
+			return this.state.applicableTo.length ? this.state.applicableTo.map((item, index )=> {
+				if(item.type === 'regionId'){
+					const find = [...regionList].filter(data => data.id === item.id)[0]
+					return (<span key={index}>{find.name} <i class="fa fa-times pl-2 add-cursor" aria-hidden="true" onClick={() => this.removeApplicableTo(item.id)}></i> <br/></span>)	
+				} else if(item.type === 'areaId'){
+					const find = [...areas].filter(data => data.id === item.id)[0]
+					return (<span key={index}>{find.name} <i class="fa fa-times pl-2 add-cursor" aria-hidden="true" onClick={() => this.removeApplicableTo(item.id)}></i> <br/></span>)	
+				} else if(item.type === 'branchId'){
+					const find = [...branches].filter(data => data.id === item.id)[0]
+					return (<span key={index}>{find.name} <i class="fa fa-times pl-2 add-cursor" aria-hidden="true" onClick={() => this.removeApplicableTo(item.id)}></i> <br/></span>)	
+				} else if(item.type === 'departmentId'){
+					const find = [...departmentOptions].filter(data => data.id === item.id)[0]
+					return (<span key={index}>{find.name} <i class="fa fa-times pl-2 add-cursor" aria-hidden="true" onClick={() => this.removeApplicableTo(item.id)}></i> <br/></span>)	
+				} else if(item.type === 'unitId'){
+					const find = [...unitList].filter(data => data.id === item.id)[0]
+					return (<span key={index}>{find.name} <i class="fa fa-times pl-2 add-cursor" aria-hidden="true" onClick={() => this.removeApplicableTo(item.id)}></i> <br/></span>)	
+				} else if(item.type === 'jobTitle'){
+					const find = [...roles].filter(data => data.id === item.id)[0]
+					return (<span key={index}>{find.title} <i class="fa fa-times pl-2 add-cursor" aria-hidden="true" onClick={() => this.removeApplicableTo(item.id)}></i> <br/></span>)	
+				}
+			}) : <span>Entire Organization</span>
+		}
+
+		removeApplicableTo = (id) => {
+			this.setState({applicableTo: [...this.state.applicableTo].filter(item => item.id !== id) })
+		}
 
 
 
@@ -572,10 +609,13 @@ render() {
 									</div>
 									<div className='pl-3 pt-2'>
 										{
+											this.getApplicableTo()
+										}
+										{/* {
 											this.state.applicableTo.length ? this.state.applicableTo.map(item => (
 												<span>{item.type} <i class="fa fa-times" aria-hidden="true"></i></span>
 											)) : <span>Entire Organization</span>
-										}
+										} */}
 									</div>
 								</div>
 								<div className="inputPayroll">
@@ -624,6 +664,12 @@ render() {
 					addSelection={this.addSelection}
 					getDepartments={this.getDepartments}
 					getBranches={this.getBranches}
+					customBranchId={this.state.customBranchId}
+					customDepartmentId={this.state.customDepartmentId}
+					customJobTitle={this.state.customJobTitle}
+					customUnitId={this.state.customUnitId}
+					customRegionId={this.state.customRegionId}
+					customAreaId={this.state.customAreaId}
 					closeModal={this.closeModal}
 				/>
 			</div>
