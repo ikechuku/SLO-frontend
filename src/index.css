@@ -115,10 +115,11 @@ input::placeholder {
 	position: absolute;
 	/* left: 147px; */
 	top: 2px;
+	z-index: 500000
 }
 
 .mv-max-delete .form-inline {
-	justify-content: center !important;
+	justify-content: flex-end !important;
 }
 
 
