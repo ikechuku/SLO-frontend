@@ -68,11 +68,22 @@ export const httpDelete = async (url, postBody) => {
 	} catch (error) {
 		hideLoader();
 		// return error
-		NotificationManager.error(
-			error.response.data.message || "Something went wrong. Please retry.",
-			"Oops!",
-			3000
-		);
+		if(error.response.data.message === "Validation Error"){
+			for (let i of error) {
+				NotificationManager.error(
+					i,
+					"Oops!",
+					3000
+				);
+				
+			}
+		} else {
+			NotificationManager.error(
+				error.response.data.message || "Something went wrong. Please retry.",
+				"Oops!",
+				3000
+			);
+		}
 		return error
 	}
 };

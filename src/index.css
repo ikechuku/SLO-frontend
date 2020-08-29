@@ -111,6 +111,18 @@ input::placeholder {
 	color: red !important;
 }
 
+.max-delete-btn {
+	position: absolute;
+	/* left: 147px; */
+	top: 2px;
+}
+
+.mv-max-delete .form-inline {
+	justify-content: center !important;
+}
+
+
+
 .font-bold {
 	font-weight: 600 !important;
 }
@@ -166,5 +178,21 @@ button.focus, button:focus {
 @media (min-width: 992px) {
 	.modal-lg {
 		max-width: 850px !important;
+	}
+}
+
+
+@media (max-width: 426px) {
+	.max-delete-btn {
+		top: 25px !important;
+	}
+}
+
+@media (max-width: 321px) {
+	.max-delete-btn {
+		/* left: 105px !important; */
+	}
+	.mv-max-delete .form-inline {
+		justify-content: flex-end !important;
 	}
 }

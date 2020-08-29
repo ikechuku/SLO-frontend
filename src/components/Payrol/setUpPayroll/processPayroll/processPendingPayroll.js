@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import $, { data } from "jquery";
 import { NotificationManager } from "react-notifications";
 import axios from "axios";
+import { Confirm } from '../../../Modals/Confirm';
 
 import Layout from "../../../layout/index";
 import {
@@ -109,6 +110,25 @@ export default class processPayroll extends Component {
         }
     }
 
+    cancelProcess = async() => {
+        const { id } = this.props.match.params
+        try{
+            const res = await httpDelete(`cancel_payroll_process/${id}`)
+            if (res.code===200) {
+
+                hideLoader()
+                NotificationManager.success('Successfully Cancelled', 'Success') 
+                $(".modal").modal("hide");
+                $(document.body).removeClass("modal-open");
+                $(".modal-backdrop").remove();
+                this.props.history.push("/setup-payroll")
+            }
+            
+        }catch(error){
+            hideLoader()
+        }
+    }
+
     
          
     
@@ -139,7 +159,6 @@ export default class processPayroll extends Component {
 
         console.log(this.state.processPayrollData)
         return (
-            <div>
                 <Layout page="payrollSetup">
 				<div className="app-content">
 					<section className="section">
@@ -154,10 +173,11 @@ export default class processPayroll extends Component {
                     </section>
 
 
-    <div className="processPayrollTable">
+    <div className={!this.state.usersId.length ? "processPayrollTable" : "mv-max-delete processPayrollTable"}>
         
 
     <div className={`${this.state.toggleTabel ===false? "greaterZindex":"lesserZindex"}`}>
+        <button className="btn btn-md bg-danger max-delete-btn mb-2" style={!this.state.usersId.length ? {display: 'none'} : {color: 'red'}} onClick={this.maxDelete}>Delete</button> 
       <ProcessPayrollTable sumUp={this.sumUp} previewPayrollProcess={this.previewPayrollProcess} payroll={this.state.processPayrollData}/>  
     </div>
 
@@ -173,7 +193,10 @@ export default class processPayroll extends Component {
         <button onClick={this.handleSubmit}>Submit</button> 
         <button onClick={() => this.props.history.goBack()}>Save & Continue</button> 
         {/* <button onClick={this.changeTable} >{this.state.toggleTabel===false?"Preview":"Select More"}</button> */}
-        <button style={!this.state.usersId.length ? {display: 'none'} : {}} onClick={this.maxDelete}>Delete</button> 
+        <button data-toggle="modal"
+			data-target="#confirm"
+			onClick={() => this.setState({ currentId: data.id } )}
+        >Cancel</button> 
   </div>
         </div>
                   
@@ -181,9 +204,11 @@ export default class processPayroll extends Component {
 
 
                     </div>
-				
-                    </Layout>
-            </div>
+                <Confirm 
+                    handleAction={this.cancelProcess}
+                    modalAction={'delete'}
+                />
+            </Layout>
         )
     }
 }
