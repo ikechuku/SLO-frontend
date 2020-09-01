@@ -22,13 +22,14 @@ export default class salaryStructureItem extends Component {
 		super(props)
 		this.state={
 			payrollItems:[],
-			name:null,
+			name: '',
 			amount:null,
 			salaryData:[],
 			modalType:"create",
 			salaryStructureItemID:null,
 			salaryStructure:null,
 			deleteId:null,
+			salaryStructureName: ''
 		}
 		console.log(this.props.match.params.id)
 	}
@@ -47,11 +48,16 @@ clearModal=()=>{
 	})
 }
 setModalType=(salaryStructureItemId, salaryStructureID )=>{
+	const { salaryData } = this.state;
+	const find = salaryData.filter(item => item.id === salaryStructureItemId)[0];
+	console.log(find.payrollItem.name)
 		
 	this.setState({
 		modalType:"edit",
 		salaryStructureItemID:salaryStructureItemId,
-		salaryStructure:salaryStructureID
+		salaryStructure:salaryStructureID,
+		name: find.payrollItem.name,
+		amount: find.amount
 	})
 	console.log(salaryStructureItemId , "data2>>>>", salaryStructureID)
 }
@@ -136,10 +142,13 @@ console.log(this.state)
 			try{
 				 
 					showLoader()
-					// const res = await httpGet(`salary_structure/8d3f5b8a-1164-4caa-8c62-3ff62d85d0e7`)
+					const resData = await httpGet(`salary_structure/${this.props.match.params.id}`)
 					const res = await httpGet(`all_salary_structure_items/${this.props.match.params.id}`)
 					if (res.code === 200) {
-						this.setState({salaryData:res.data.salaryStructureItems})
+						this.setState({
+							salaryData:res.data.salaryStructureItems,
+							salaryStructureName: resData.data.salaryStructure.name
+						})
 					}
 					hideLoader()
 			  
@@ -244,7 +253,7 @@ console.log(this.state)
             <Layout page="salaryStructure">
                 	<div className="app-content">
 					<section className="section">
-						<GoBack/>
+						<GoBack goback={() => this.props.history.goBack()} />
 						<ol className="breadcrumb">
 							<li className="breadcrumb-item">
 								<a href="#" className="text-muted">
@@ -259,10 +268,14 @@ console.log(this.state)
 						</ol>
 						
 						<div className="DropDownWrap56">
-							<div>
-                                </div>
-<div style={{padding:"30px",marginBottom:"30px"}}>
-<div style={{marginBottom:"22px"}} class="checkBoxW ">
+							<div style={{
+								textAlign: 'center',
+								padding: '10px'
+							}}>
+								{this.state.salaryStructureName}
+              </div>
+					<div style={{padding:"30px",marginBottom:"30px"}}>
+					<div style={{marginBottom:"22px"}} class="checkBoxW ">
 						
 
                             
@@ -283,7 +296,7 @@ fontsize: "15px"}}
 
 class="fa fa-plus" aria-hidden="true"></i> Add Payroll Item
 </button>
-				</div>
+				</div> 
 	<SalaryStructureItemsTable setModalType={this.setModalType}
 	salaryStructureItems={this.state.salaryData}
 	getDeleteId={this.getDeleteId}

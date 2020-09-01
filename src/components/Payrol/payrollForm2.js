@@ -24,65 +24,42 @@ import branch from "../branch/branch";
 
 export default class payrollForm extends Component {
 	constructor(props){
-	super(props)
-	this.handleChange = this.handleChange.bind(this);
- 
-	this.state = {
-		startDate: new Date(),
-		name: "",
-		taxable: null,
-		pensionable:null ,
-		positive: null,
-		periodicity: "",
-		occurence: null,
-		itemDescription: "",
-		applicableTo: [],
-		effectiveDate: "",
-		datePickerText:"Select Date",
-		postData: {},
-		multiValue: [],
-		postData: {},
-		units: [],
-		roles: [],
-		branches: [],
-		regionList: [],
-		unitList: [],
-		departmentOptions: [],
-		departments: [],
-		unitOptions: [],
-		roleOptions: [],
-		regionOptions: [],
-		areaOptions: [],
-		areas: [],
-		customBranchId: null,
-		customDepartmentId: null,
-		customJobTitle: null,
-		customUnitId: null,
-		customRegionId: null,
-		customAreaId: null,
-	// 	userSelection:[
-	// 		{
-	// 			branchId:this.state.,
-	// 			jobTitle:""
-	// 		},
-	// 	{ 
-	//      regionId:"", 
-	// 	jobTitle: ''
-	// },
-	// 	{ 
-	// 		areaId:"",
-	// 		jobTitle: ''
-	// },
-	// 	{
-	// 		 branchId:""
-			
-	// 		},
-	// 	{ branchId:"",
-	// 	 departmentId: ''}
-	// 	]
-		
-		}
-	}
+    super(props)
+    this.handleChange = this.handleChange.bind(this);
+  
+    this.state = {
+      startDate: new Date(),
+      name: "",
+      taxable: false,
+      pensionable:false ,
+      positive: false,
+      periodicity: "",
+      occurence: null,
+      itemDescription: "",
+      applicableTo: [],
+      effectiveDate: "",
+      datePickerText:"Select Date",
+      postData: {},
+      multiValue: [],
+      postData: {},
+      regionOptions: [],
+      areaOptions: [],
+      branchOptions: [],
+      departmentOptions: [],
+      unitOptions: [],
+      roleOptions: [],
+      value: '',
+      units: [],
+      roles: [],
+      departments: [],
+      regions: [],
+      areas: [],
+      branches: [],
+      customValue: null,
+      valueOptions: [],
+      type: ''
+    }
+  }
 
 
 	componentDidMount =async()=> {
@@ -99,32 +76,52 @@ export default class payrollForm extends Component {
 		  const areaData = await httpGet('all_area');
 	
 		  if(res.code === 200){
-			hideLoader()
-	
-			let branchList = resData.data.branches;
-			let departmentList = data.data.departmentUnit;
+        hideLoader()
 
-			let roleOptions = [];
-			[...data.data.roles].map(data => {
-			  roleOptions.push({ value: data.title, label: data.title });
-			});
-	
-			let regionList = [];
-			[...regionData.data.regions].map(data => {
-			  regionList.push({ value: data.id, label: data.name });
-			});
-	
-			this.setState({ 
-				// units: unitOptions,
-				unitList: res.data.units,
-				regionList: regionData.data.regions,
-				areas: areaData.data.areas,
-			  roles: data.data.roles,
-				branches: branchList,
-				departmentOptions: departmentList,
-				regionOptions: regionList,
-			  departments: data.data.departmentUnit, 
-			});
+        let roleOptions = [];
+        [...data.data.roles].map(data => {
+          roleOptions.push({ value: data.id, label: data.title });
+        });
+    
+        let regionOptions = [];
+        [...regionData.data.regions].map(data => {
+          regionOptions.push({ value: data.id, label: data.name });
+        });
+        
+        let departmentOptions = [];
+        [...data.data.departmentUnit].map(data => {
+          departmentOptions.push({ value: data.id, label: data.name });
+        });
+
+        let branchOptions = [];
+        [...resData.data.branches].map(data => {
+          branchOptions.push({ value: data.id, label: data.name });
+        });
+
+        let unitOptions = [];
+        [...res.data.units].map(data => {
+          unitOptions.push({ value: data.id, label: data.name });
+        });
+
+        let areaOptions = [];
+        [...areaData.data.areas].map(data => {
+          areaOptions.push({ value: data.id, label: data.name });
+        });
+    
+        this.setState({
+          regionOptions,
+          areaOptions,
+          branchOptions,
+          departmentOptions,
+          unitOptions,
+          roleOptions,
+          roles: data.data.roles,
+          units: res.data.units,
+          branches: resData.data.branches,
+          departments: data.data.departmentUnit,
+          areas: areaData.data.areas,
+          regions: regionData.data.regions
+        });
 		  }
 	
 		}catch(error){
@@ -133,95 +130,6 @@ export default class payrollForm extends Component {
 		}
 		}
 		
-		getDepartments = () => {
-			const option = this.state.departmentOptions;
-			return option.map(item => (
-				{ value: item.id, label: item.name }
-			))
-		}
-	
-	  getArea  = async () => {
-		const { areas, postData } = this.state;
-		console.log('>>>',areas, postData.regionId)
-		if(postData.regionId === undefined){
-		  const areaOptions = [];
-		  this.setState({ areaOptions })
-		}
-			let newpostData = [];
-			newpostData = [...areas].filter(item => item.regionId === postData.regionId);
-			let optionList = [];
-			await newpostData.map(data => (
-			  optionList.push({ value: data.id, label: data.name })
-			));
-			console.log(optionList, newpostData)
-		this.setState({ areaOptions: optionList })
-	  }
-	
-	  getUnits  = async () => {
-			const { departments, postData } = this.state;
-			let newpostData = [];
-			newpostData = [...departments].filter(item => item.id === postData.departmentId)[0];
-			let optionList = [];
-			await newpostData.units.map(data => (
-			  optionList.push({ value: data.id, label: data.name })
-			));
-			console.log(optionList)
-		this.setState({ unitOptions: optionList })
-	  }
-	
-	  getRoleFromUnit  = () => {
-		const { postData, roles } = this.state;
-		let newRoles = [];
-		console.log(postData.unitId)
-		if(postData.unitId === null || postData.unitId === undefined){
-		  return null
-		}
-		newRoles = [...roles].filter(item => item.unitId === postData.unitId);
-		return newRoles;
-	  }
-	
-	  getRoleFromDept = () => {
-		const { postData, roles } = this.state;
-		let newRoles = [];
-		if(postData.departmentId === null || postData.departmentId === undefined || postData.departmentId === ''){
-		  return null
-		}
-		newRoles = [...roles].filter(item => item.departmentId === postData.departmentId);
-		return newRoles;
-	  }
-	  
-	  getRoles = () => {
-		const newRolesFromUnits = this.getRoleFromUnit();
-		const newRolesFromDept = this.getRoleFromDept();
-		console.log('units', newRolesFromUnits)
-		console.log('depts', newRolesFromDept)
-		const newValues = (newRolesFromUnits === null || !newRolesFromUnits.length) ? newRolesFromDept : newRolesFromUnits;
-	
-		if(typeof(newValues) === object){
-		  return { value: newValues.id, label: newValues.title };
-		} else if(newValues === null){
-		  return [];
-		} else {
-		  if(newValues.length) {
-			return newValues.map(data => (
-			{ value: data.id, label: data.title }
-		  )) 
-		  } else {
-			return [];
-		  }
-		}
-		// this.setState({ roleOptions: optionList });
-		}
-		
-		getBranches = () => {
-			const { areaId } = this.state.postData;
-			const { branches } = this.state;
-			const branchesOptions = branches.filter(item => item.areaId === areaId);
-			console.log(branches)
-			return branchesOptions.map(item => (
-				{ value: item.id, label: item.name }
-			))
-		}
 	
 
 	handleDate = (date) => {
@@ -245,52 +153,79 @@ export default class payrollForm extends Component {
 	};
 
 	handleChange = async (e, nameValue) => {
-		const { postData } = this.state;
+    const { 
+      postData, applicableTo, type,
+      regionOptions, areaOptions, branchOptions,
+      departmentOptions, unitOptions, roleOptions,
+      valueOptions 
+    } = this.state;
     let details = e !== null ? e.target : '';
-    
-		if(nameValue === 'branchId'){
-      postData['branchId'] = e.value;
-      this.setState({ 
-        postData,
-        customBranchId: e,
-      })
-
-    } else if(nameValue === 'departmentId'){
-      postData['departmentId'] = e.value;
-      postData['unitId'] = '';
-      this.setState({ 
-        postData,
-        customDepartmentId: e,
-        customUnitId: null,
-      })
-      this.getUnits();
-    } else if(nameValue === 'regionId'){
-      postData['regionId'] = e.value;
-      this.setState({ 
-        postData,
-        customRegionId: e,
-      })
-			this.getArea()
-    } else if(nameValue === 'areaId'){
-      postData['areaId'] = e.value;
-      this.setState({ 
-        postData,
-        customAreaId: e,
-      })
-    } else if(nameValue === 'jobTitle'){
-      postData['jobTitle'] = e.value;
-      this.setState({ 
-        postData,
-        customJobTitle: e
-      })
-
-    } else if(nameValue === 'unitId'){
-      postData['unitId'] = e.value;
-      this.setState({ 
-        postData,
-        customUnitId: e
-      })
-      // this.getRoles();
+		console.log(nameValue)
+		if(nameValue === 'applicableTo'){
+      if(e.value === 'branchId'){
+        this.setState({ valueOptions: branchOptions })
+			} else if(e.value === 'departmentId'){
+        this.setState({ valueOptions: departmentOptions })
+			} else if(e.value === 'regionId'){
+        this.setState({ valueOptions: regionOptions })
+			} else if(e.value === 'areaId'){
+        this.setState({ valueOptions: areaOptions })
+			} else if(e.value === 'jobTitle'){
+        this.setState({ valueOptions: roleOptions })
+			} else if(e.value === 'unitId'){
+        this.setState({ valueOptions: unitOptions })
+      }
+      this.setState({ type: e.value })
+		} else if(nameValue === 'value'){
+      if(type === 'regionId'){
+        this.setState({ 
+          value: {
+            type: 'regionId',
+            id: e.value
+          },
+          customValue: e,
+        })  
+      } else if(type === 'areaId'){
+        this.setState({ 
+          value: {
+            type: 'areaId',
+            id: e.value
+          },
+          customValue: e,
+        }) 
+      } else if(type === 'branchId'){
+        this.setState({ 
+          value: {
+            type: 'branchId',
+            id: e.value
+          },
+          customValue: e,
+        }) 
+      } else if(type === 'departmentId'){
+        this.setState({ 
+          value: {
+            type: 'departmentId',
+            id: e.value
+          },
+          customValue: e,
+        }) 
+      } else if(type === 'unitId'){
+        this.setState({ 
+          value: {
+            type: 'unitId',
+            id: e.value
+          },
+          customValue: e,
+        }) 
+      } else if(type === 'jobTitle'){
+        this.setState({ 
+          value: {
+            type: 'jobTitle',
+            id: e.value
+          },
+          customValue: e,
+        }) 
+      } 
     } else {
 			this.setState({ 
 				[details.name]: details.value,
@@ -325,49 +260,51 @@ export default class payrollForm extends Component {
 	}
 
 	addSelection=()=>{
-		let	{  branchId, departmentId, areaId, regionId, jobTitle, unitId} = this.state.postData;
-		let { applicableTo } = this.state;
-		if (departmentId !== '') {
-			if(jobTitle !== '' && jobTitle !== undefined){
-				applicableTo.push({
-					type: 'jobTitle',
-					id: jobTitle
-				})
-			} else if(unitId !== '' && unitId !== undefined){
-				applicableTo.push({
-					type: 'unitId',
-					id: unitId
-				})
-			} else {
-				applicableTo.push({
-					type: 'departmentId',
-					id: departmentId
-				})
-			}
-		}
-		if(regionId !== ''){
-			console.log('b', typeof(branchId))
-			if(branchId !== '' && branchId !== undefined){
-				console.log('b1')
-				applicableTo.push({
-					type: 'branchId',
-					id: branchId
-				})
-			} else if(areaId !== '' && areaId !== undefined){
-				console.log('b2')
-				applicableTo.push({
-					type: 'areaId',
-					id: areaId
-				})
-			} else {
-				console.log('b3')
-				applicableTo.push({
-					type: 'regionId',
-					id: regionId
-				})
-			}
-		}
-		this.setState({ applicableTo,  })
+    // let	{  branchId, departmentId, areaId, regionId, jobTitle, unitId} = this.state.postData;
+    let { value, applicableTo } = this.state;
+		// if (departmentId !== '') {
+		// 	if(jobTitle !== '' && jobTitle !== undefined){
+		// 		applicableTo.push({
+		// 			type: 'jobTitle',
+		// 			id: jobTitle
+		// 		})
+		// 	} else if(unitId !== '' && unitId !== undefined){
+		// 		applicableTo.push({
+		// 			type: 'unitId',
+		// 			id: unitId
+		// 		})
+		// 	} else {
+		// 		applicableTo.push({
+		// 			type: 'departmentId',
+		// 			id: departmentId
+		// 		})
+		// 	}
+		// }
+		// if(regionId !== ''){
+		// 	console.log('b', typeof(branchId))
+		// 	if(branchId !== '' && branchId !== undefined){
+		// 		console.log('b1')
+		// 		applicableTo.push({
+		// 			type: 'branchId',
+		// 			id: branchId
+		// 		})
+		// 	} else if(areaId !== '' && areaId !== undefined){
+		// 		console.log('b2')
+		// 		applicableTo.push({
+		// 			type: 'areaId',
+		// 			id: areaId
+		// 		})
+		// 	} else {
+		// 		console.log('b3')
+		// 		applicableTo.push({
+		// 			type: 'regionId',
+		// 			id: regionId
+		// 		})
+		// 	}
+    // }
+    applicableTo.push(value)
+    console.log(value, applicableTo)
+		this.setState({ applicableTo })
 		this.clearPreviousSelected()
 	}
 
@@ -387,7 +324,7 @@ export default class payrollForm extends Component {
 			// 	"Oops!",
 			// 	3000
 			// );
-		  // }
+      // }
 	
 		let data = {	
 			name: this.state.name,
@@ -456,11 +393,11 @@ export default class payrollForm extends Component {
 		}
 		
 		getApplicableTo = () => {
-			const { regionList, areas, branches, departmentOptions, unitList, roles } = this.state;
+			const { regions, areas, branches, departments, units, roles } = this.state;
 			console.log(this.state.applicableTo, roles)
 			return this.state.applicableTo.length ? this.state.applicableTo.map((item, index )=> {
 				if(item.type === 'regionId'){
-					const find = [...regionList].filter(data => data.id === item.id)[0]
+					const find = [...regions].filter(data => data.id === item.id)[0]
 					return (<span key={index}>{find.name} <i class="fa fa-times pl-2 add-cursor" aria-hidden="true" onClick={() => this.removeApplicableTo(item.id)}></i> <br/></span>)	
 				} else if(item.type === 'areaId'){
 					const find = [...areas].filter(data => data.id === item.id)[0]
@@ -469,10 +406,10 @@ export default class payrollForm extends Component {
 					const find = [...branches].filter(data => data.id === item.id)[0]
 					return (<span key={index}>{find.name} <i class="fa fa-times pl-2 add-cursor" aria-hidden="true" onClick={() => this.removeApplicableTo(item.id)}></i> <br/></span>)	
 				} else if(item.type === 'departmentId'){
-					const find = [...departmentOptions].filter(data => data.id === item.id)[0]
+					const find = [...departments].filter(data => data.id === item.id)[0]
 					return (<span key={index}>{find.name} <i class="fa fa-times pl-2 add-cursor" aria-hidden="true" onClick={() => this.removeApplicableTo(item.id)}></i> <br/></span>)	
 				} else if(item.type === 'unitId'){
-					const find = [...unitList].filter(data => data.id === item.id)[0]
+					const find = [...units].filter(data => data.id === item.id)[0]
 					return (<span key={index}>{find.name} <i class="fa fa-times pl-2 add-cursor" aria-hidden="true" onClick={() => this.removeApplicableTo(item.id)}></i> <br/></span>)	
 				} else if(item.type === 'jobTitle'){
 					const find = [...roles].filter(data => data.id === item.id)[0]
@@ -529,14 +466,14 @@ render() {
 							<div className="radioChecks">
 															<div>
 									<label>Taxable</label>
-									<input required={true} checked={this.state.taxable===true} onClick={(e)=>this.handleRadio(e,"taxable",true)}  value={true} type="checkbox" name="yes_no"/>Yes 
-									<input required={true}  checked={this.state.taxable===false} onClick={(e)=>this.handleRadio(e,"taxable",false)} value={false} type="checkbox" name="yes_no"/>No
+									<input checked={this.state.taxable===true} onClick={(e)=>this.handleRadio(e,"taxable",true)} value={true} type="checkbox" name="yes_no"/>Yes 
+									<input checked={this.state.taxable===false} onClick={(e)=>this.handleRadio(e,"taxable",false)} value={false} type="checkbox" name="yes_no"/>No
 								</div>
 
 								<div>
 									<label>Pensionable</label>
-									<input required={true} checked={this.state.pensionable===true} onClick={(e)=>this.handleRadio(e,"pensionable",true)}  value={true} type="checkbox" name="yes_no"/>Yes 
-									<input required={true}  checked={this.state.pensionable===false} onClick={(e)=>this.handleRadio(e,"pensionable",false)} value={false} type="checkbox" name="yes_no"/>No
+									<input checked={this.state.pensionable===true} onClick={(e)=>this.handleRadio(e,"pensionable",true)}  value={true} type="checkbox" name="yes_no"/>Yes 
+									<input checked={this.state.pensionable===false} onClick={(e)=>this.handleRadio(e,"pensionable",false)} value={false} type="checkbox" name="yes_no"/>No
 								</div>
 							</div>
 
@@ -545,8 +482,8 @@ render() {
 
 								<div>
 									<label>Positive</label>
-									<input required={true} checked={this.state.positive===true} onClick={(e)=>this.handleRadio(e,"positive",true)} value={true} type="checkbox" name="yes_no"/>Yes 
-									<input required={true} checked={this.state.positive===false} onClick={(e)=>this.handleRadio(e,"positive",false)} value={false} type="checkbox" name="yes_no"/>No
+									<input checked={this.state.positive===true} onClick={(e)=>this.handleRadio(e,"positive",true)} value={true} type="checkbox" name="yes_no"/>Yes 
+									<input checked={this.state.positive===false} onClick={(e)=>this.handleRadio(e,"positive",false)} value={false} type="checkbox" name="yes_no"/>No
 								</div>
 							</div>
 
@@ -555,7 +492,7 @@ render() {
 								<div className="inputPayroll">
 									<label for="">Periodicity</label>
 									<select name="periodicity" value={this.state.periodicity} 
-									onChange={this.handleChange} class="form-control" id="">
+									onChange={this.handleChange} class="form-control" id="" required={true}>
 										<option>Select</option>
 										<option 	 value="monthly">Monthly</option>
 										<option   value="yearly">Yearly</option>
@@ -593,7 +530,10 @@ render() {
 								</div>
 
 								<div class="">
-									<div class="inputPayroll-Checkbox">
+									<div class="inputPayroll-Checkbox" style={this.state.applicableTo.length ? {
+                    paddingBottom: '4px',
+                    borderBottom: '1px solid #003766'
+                  } : {}}>
 										<div class="checkBox1">
 											<div class="checkBoxW">
 												<span>Applicable to</span>
@@ -628,7 +568,8 @@ render() {
 									<label for="">Effective Date</label>
 									<div className="dataeP">
 										<DatePicker
-										dateFormat="MMMM.yyyy"
+                    dateFormat="MMMM.yyyy"
+                    required={true}
 										showMonthYearPicker
 										placeholderText={this.state.datePickerText}
 											onChange={this.handleDate}
@@ -644,7 +585,7 @@ render() {
 								</div>
 							</div>
 							<div className="buttonWrap">
-								<button onClick={this.handleSubmit} type="submit" class="btn btn-primary">
+								<button onSubmit={this.handleSubmit} type="submit" class="btn btn-primary">
 									Submit
 								</button>
 							</div>
@@ -652,30 +593,10 @@ render() {
 					</div>
 				</div>
 				<PayRollModal
-					handleChange={this.handleChange}
-					units={this.state.units}
-					roles={this.state.roles}
-					branches={this.state.branches}
-					unitOptions={this.state.unitOptions}
-					roleOptions={this.state.roleOptions}
-					regionOptions={this.state.regionOptions}
-					areaOptions={this.state.areaOptions}
-					areas={this.state.areas}
-					getRoles={this.getRoles}
-					getArea={this.getArea} 
-					getUnits={this.getUnits}
-					getRoleFromUnit={this.getRoleFromUnit}
-					getRoleFromDept={this.getRoleFromDept}
-					getRoles={this.getRoles}
-					addSelection={this.addSelection}
-					getDepartments={this.getDepartments}
-					getBranches={this.getBranches}
-					customBranchId={this.state.customBranchId}
-					customDepartmentId={this.state.customDepartmentId}
-					customJobTitle={this.state.customJobTitle}
-					customUnitId={this.state.customUnitId}
-					customRegionId={this.state.customRegionId}
-					customAreaId={this.state.customAreaId}
+          handleChange={this.handleChange}
+          valueOptions={this.state.valueOptions}
+          customValue={this.state.customValue}
+          addSelection={this.addSelection}
 					closeModal={this.closeModal}
 				/>
 			</div>

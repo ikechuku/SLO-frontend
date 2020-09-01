@@ -335,7 +335,7 @@ export default class index extends Component {
 									</div>
 								
 								{data.salaryStructureItem.length === 0 ? (<div>{this.state.toggle === data.id  && this.state.showDrop === true ? 
-								(<p className="noSalaryStruture">Opps, No Salary Structure Item </p>) : ""}</div>) : (<div>{this.state.toggle === data.id  && this.state.showDrop === true ?
+								(<p className="noSalaryStruture">Click to add a payroll item </p>) : ""}</div>) : (<div>{this.state.toggle === data.id  && this.state.showDrop === true ?
 								 (<div className="">
 											{
 												data.salaryStructureItem.map((data)=>{
