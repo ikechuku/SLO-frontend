@@ -43,7 +43,7 @@ import ProtectedRoute from "./helpers/ProtectedRoute";
 // NEW CHANGES
 import UserInfo from "./components/personalinfo/info";
 import PayRoll from "./components/Payrol/payroll";
-import PayrollForm from "./components/Payrol/payrollForm";
+import PayrollForm from "./components/Payrol/payrollForm2";
 import PayrollSetup from "./components/Payrol/setUpPayroll/payrollSetup";
 import MainPayrolls from "./components/Payrol/payrolls/payroll";
 import PayNow from "./components/Payrol/payrollPay/pay";

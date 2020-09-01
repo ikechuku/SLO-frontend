@@ -30,29 +30,40 @@ export function PayRollModal(props) {
 					<div className="modal-body">
 						<form>
 						<div className="form-group row">
-							<label for="inputName" className="col-md-2 pr-0 col-form-label">Departments </label>
+							<label for="inputName" className="col-md-2 pr-0 col-form-label">Type </label>
 							<div className="col-md-4">
 								<Select
-									name="departmentId"
+									name="applicableTo"
 									placeholder="Select"
 									value={props.customDepartmentId}
-									options={props.getDepartments()}
-									onChange={(e) => props.handleChange(e, 'departmentId')}
+									// options={props.getDepartments()}
+									options={
+										[
+											{ value: 'departmentId', label: 'Department' },
+											{ value: 'unitId', label: 'Unit' },
+											{ value: 'jobTitle', label: 'Job Title' },
+											{ value: 'regionId', label: 'Region' },
+											{ value: 'areaId', label: 'Area' },
+											{ value: 'branchId', label: 'Branch' }
+										]
+									}
+									onChange={(e) => props.handleChange(e, 'applicableTo')}
 								/>
 							</div>
-							<label for="inputName" className="col-md-2 col-form-label">Region </label>
+							<label for="inputName" className="col-md-2 col-form-label">Value </label>
 							<div className="col-md-4">
+								{console.log(props.valueOptions)}
 								<Select
-									name="regionId"
+									name="value"
 									placeholder="Select"
-									value={props.customRegionId}
-									options={props.regionOptions}
-									onChange={(e) => props.handleChange(e, 'regionId')}
+									value={props.customValue}
+									options={props.valueOptions}
+									onChange={(e) => props.handleChange(e, 'value')}
 								/>
 								
 						</div>
 					</div>
-					<div className="form-group row">
+					{/* <div className="form-group row">
 						<label for="inputName" className="col-md-2 col-form-label">Units </label>
 						<div className="col-md-4">
 							<Select
@@ -95,7 +106,7 @@ export function PayRollModal(props) {
 								onChange={(e) => props.handleChange(e, 'branchId')}
 							/>
 						</div>
-					</div>
+					</div> */}
 							
 
 							

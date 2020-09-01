@@ -14,8 +14,8 @@ export function SalaryStructureItemModal(props) {
 					<div className="modal-header">
 						<h5 className="modal-title" id="example-Modal3">
 						{
-							props.modalType === "create" ? "Create" : "Edit"
-						} Salary Structure
+							props.modalType === "create" ? "Add" : "Edit"
+						} Payroll Item
 						</h5>
 						<button
 							type="button"
@@ -33,12 +33,13 @@ export function SalaryStructureItemModal(props) {
 
                             <div class="form-group">
     <label for="exampleFormControlSelect1">Select</label>
+		{console.log('name', props.name)}
 	<select
-	value={props.name}
-	 name="name"
-	onChange={props.handleChange} 
-	class="form-control" id="exampleFormControlSelect1">
-			<option value="invalidData">Select</option>
+		value={props.name}
+	 	name="name"
+		onChange={props.handleChange} 
+		class="form-control" id="exampleFormControlSelect1">
+			<option value="" selected disabled>Select</option>
 		{props.payrollData.map((data)=>{
 			// console.log(data.id)
 			return(
