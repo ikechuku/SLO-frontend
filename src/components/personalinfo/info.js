@@ -83,7 +83,7 @@ export default class info extends Component {
       const { id } = this.props.match.params;
 
       const data = {
-        status: value
+        status: 'rejected'
       }
 
       const res = await httpPatch(`auth/staff_application_status/${id}`, data);
@@ -94,17 +94,20 @@ export default class info extends Component {
 					<SweetAlert 
 						success 
 						title="Application Status" 
-						onConfirm={() => this.hideAlert()}
+						onConfirm={() => {
+							this.hideAlert()
+						}}
 					>
-						Approved
+						Rejected
 					</SweetAlert>
 				);
 		
 				this.setState({
 					alert: getAlert()
 				});
-        this.getDetails();
-      }
+				// this.getDetails();
+				
+			}
     }catch(error){
       hideLoader();
       console.log(error)
@@ -181,7 +184,7 @@ export default class info extends Component {
 						<div className="infoGrid2">
 							<div className="userDetails">
 								<span>Full Name</span>
-								<span> {user.firstName + ' ' + (user.middleName || null) + ' ' + user.lastName}</span>
+								<span> {user.firstName + ' ' + (user.middleName || '') + ' ' + user.lastName}</span>
 							</div>
 
 							<div className="userDetails">
@@ -298,11 +301,11 @@ export default class info extends Component {
 								type="submit"
 								className="btn btn-info mr-5"
 								onClick={e => this.handleStatus(e, 'rejected')}
-								disabled={this.state.user.onBoarding !== 4 ? true : ''}
+								disabled={this.state.user.onBoarding !== 3 ? true : ''}
 							><span className="fa fa-ban"></span> DECLINE</button>
 						<button type="submit" className="btn btn-primary" 
-						disabled={this.state.user.onBoarding !== 4 ? true : ''}
-						onClick={e => this.handleStatus(e, 'approved')}><span className="fa fa-check-square-o"></span> APPROVE</button>
+						disabled={this.state.user.onBoarding !== 3 ? true : ''}
+						onClick={e => this.props.history.push(`/create_staff/four/${this.props.match.params.id}`)}><span className="fa fa-check-square-o"></span> APPROVE</button>
 					</div>
 
 

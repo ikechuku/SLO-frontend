@@ -168,7 +168,7 @@ export class PreviousEmploymentModal extends Component {
                     </div>
 
                     <div className="form-group row">
-                      <label for="inputName" className="col-md-5 pr-0 col-form-label">Do you object to us seeking any reference from any of your past employer <span className="impt">*</span></label>
+                      <label for="inputName" className="col-md-5 pr-0 col-form-label">Do you object to us seeking any reference from any of your previous employer <span className="impt">*</span></label>
                       <div className="col-md-7 pt-2">
                         <label>
                           <input type="radio" 

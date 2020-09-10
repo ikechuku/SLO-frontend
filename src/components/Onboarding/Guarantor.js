@@ -14,6 +14,7 @@ import {slga, getLga} from '../../helpers/states';
 import GuarantorTable from './GuarantorTable';
 import {GuarantorModal} from '../Modals/Guarantor';
 import {getDialCode} from '../../helpers/dailCodes';
+import { Confirm } from '../Modals/Confirm';
 
 class Guarantor extends Component {
     constructor(props) {
@@ -98,7 +99,9 @@ class Guarantor extends Component {
             customBusinessLga: null,
             bvnErrorMessage: null,
             taken_occupation: [],
-            alert: null
+            alert: null,
+            selectedId: null,
+            selectedIndex: null,
         }
     }
 
@@ -463,49 +466,18 @@ class Guarantor extends Component {
             employeeKnownMonth,
             criminalHistory,
             details,
-            documentId
+            documentId,
         } = this.state.postData;
+        const {             
+            errorMessage4,
+            errorMessage5,
+            errorMessage6 } = this.state;
 
         console.log(this.state.postData)
 
-        // if (firstName === '' || firstName === undefined ||
-        //     lastName === '' || lastName === undefined ||
-        //     mobilePhone === '' || mobilePhone === undefined ||
-        //     mobilePhoneCode === '' || mobilePhoneCode === undefined ||
-        //     residentialAddress === '' || residentialAddress === undefined ||
-        //     residentialCountry === '' || residentialCountry === undefined ||
-        //     residentialState === '' || residentialState === undefined ||
-        //     residentialLga === '' || residentialLga === undefined ||
-        //     residentialCity === '' || residentialCity === undefined ||
-        //     permanentAddress === '' || permanentAddress === undefined ||
-        //     permanentCountry === '' || permanentCountry === undefined ||
-        //     permanentState === '' || permanentState === undefined ||
-        //     permanentLga === '' || permanentLga === undefined ||
-        //     permanentCity === '' || permanentCity === undefined ||
-        //     businessAddress === '' || businessAddress === undefined ||
-        //     businessCountry === '' || businessCountry === undefined ||
-        //     businessState === '' || businessState === undefined ||
-        //     businessLga === '' || businessLga === undefined ||
-        //     businessCity === '' || businessCity === undefined ||
-        //     nationality === '' || nationality === undefined ||
-        //     state === '' || state === undefined ||
-        //     lga === '' || lga === undefined ||
-        //     occupation === '' || occupation === undefined ||
-        //     relationship === '' || relationship === undefined ||
-        //     maritalStatus === '' || maritalStatus === undefined ||
-        //     employeeKnownYear === '' || employeeKnownYear === undefined ||
-        //     employeeKnownMonth === '' || employeeKnownMonth === undefined ||
-        //     criminalHistory === '' || criminalHistory === undefined) {
-        //     return NotificationManager.warning('All fields are required');
-        // }
-
-        // if (criminalHistory !== '' || criminalHistory !== undefined) {
-        //     if (criminalHistory) {
-        //         if (details === '' || details === undefined) {
-        //             return NotificationManager.warning('All fields are required');
-        //         }
-        //     }
-        // }
+        if(errorMessage4 !== null || errorMessage5 !== null || errorMessage6 !== null){
+            return NotificationManager.warning('Complete all required fields');
+        }
         
         if(!documentId.length){
           return NotificationManager.warning('Upload documents are required');
@@ -685,30 +657,30 @@ class Guarantor extends Component {
     }
 
     removeMore = (value, id) => {
-        if (this.state.pageMode === 'create') {
-            // this.setState({
-            //     moreData: this.state.moreData.filter((interest, index) => index !== parseInt(value))
-            // });
-          this.handleDelete(id, value)
-        } else {
-            this.handleDelete(id, value)
-        }
+        this.setState({selectedId: id, selectedIndex: value })
     }
 
-    handleDelete = async (id, indexValue) => {
-        try {
-            const res = await httpDelete(`auth/delete_guarantor/${id}`);
-            if (res.code === 200) {
-                this.setState({
-                    moreData: this.state.moreData.filter((interest, index) => index !== parseInt(indexValue))
-                })
-            }
+    handleDelete = async () => {
+        const { selectedId, selectedIndex } = this.state;
+        if (this.state.pageMode === 'create') {
             this.setState({
-              moreData: this.state.moreData.filter((interest, index) => index !== parseInt(indexValue))
-          })
-        } catch (error) {
-            console.log(error)
+                moreData: this.state.moreData.filter((interest, index) => index !== parseInt(selectedIndex))
+            })
+        } else {
+            try {
+                const res = await httpDelete(`auth/delete_guarantor/${selectedId}`);
+                if (res.code === 200) {
+                    this.setState({
+                        moreData: this.state.moreData.filter((interest, index) => index !== parseInt(selectedIndex))
+                    })
+                }
+            } catch (error) {
+                console.log(error)
+            }
         }
+        $('.modal').modal('hide');
+        $(document.body).removeClass('modal-open');
+        $('.modal-backdrop').remove();
     }
 
     closeModal = () => {
@@ -830,7 +802,7 @@ class Guarantor extends Component {
             } else {
                 showLoader();
                 const res = await httpPost(`auth/onboarding_three/${id}`, this.state.moreData);
-                if (res.code === 200) {
+                if (res.code === 201) {
                     hideLoader();
                     const getAlert = () => (
                       <SweetAlert 
@@ -1102,6 +1074,10 @@ class Guarantor extends Component {
           closeModal={this.closeModal}
           bvnErrorMessage={this.state.bvnErrorMessage}
           deleteDoc={this.deleteDoc}
+        />
+        <Confirm
+            modalAction="delete"
+            handleAction={this.handleDelete}
         />
       </Layout>
     )

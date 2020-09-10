@@ -122,21 +122,28 @@ class Employment extends Component {
         postData,
         customDepartmentId: e,
         customUnitId: null,
+        customJobTitle: null,
         errorMessage8: null 
       })
       this.getUnits();
     } else if(nameValue === 'regionId'){
       postData['regionId'] = e.value;
+      postData['areaId'] = undefined;
+      postData['branchId'] = undefined;
       this.setState({ 
         postData,
         customRegionId: e,
+        customAreaId: null,
+        customBranchId: null
       })
-      console.log(this.getArea())
+      this.getArea()
     } else if(nameValue === 'areaId'){
       postData['areaId'] = e.value;
+      postData['branchId'] = undefined;
       this.setState({ 
         postData,
         customAreaId: e,
+        customBranchId: null
       })
     } else if(nameValue === 'jobTitle'){
       const isValidate = await validateEmpoymentFields('jobTitle', e.value);
@@ -165,6 +172,7 @@ class Employment extends Component {
       this.setState({ 
         postData,
         customUnitId: e,
+        customJobTitle: null,
         errorMessage5: null 
       })
       // this.getRoles();
@@ -323,6 +331,15 @@ class Employment extends Component {
       rankLevel
     } = this.state.postData;
 
+    let officeType;
+    if(regionId && areaId && branchId){
+      officeType = 'branch'
+    } else if(regionId && areaId && !branchId){
+      officeType = 'area'
+    } else {
+      officeType = 'region'
+    }
+
     const data = {
       rank,
       salaryStructureId: rank,
@@ -337,7 +354,8 @@ class Employment extends Component {
       regionId,
       areaId,
       staffCategory,
-      rankLevel
+      rankLevel,
+      officeType
     }
 
     console.log(data);
@@ -418,13 +436,14 @@ class Employment extends Component {
           if(res.code === 201){
             hideLoader();
             NotificationManager.success('Successfully updated user information')
-            // return this.props.history.push(`/create_staff/five/${res.data.id}`)
+            return this.props.history.push(`/staff_list`)
           }
         } else {
           const res = await httpPost(`auth/onboarding_four/${id}`, data);
           if(res.code === 201){
             hideLoader();
             NotificationManager.success('Successfully updated user information')
+            return this.props.history.push(`/staff_list`)
           }
         }
       } else {
@@ -479,11 +498,6 @@ class Employment extends Component {
       if(res.code === 200){
         hideLoader()
 
-        let branchList = [];
-        [...resData.data.branches].map(data => {
-          branchList.push({ value: data.id, label: data.name });
-        });
-
         // let unitOptions = [];
         // [...res.data.units].map(data => {
         //   unitOptions.push({ value: data.name, label: data.department.name + '/' + data.name });
@@ -492,19 +506,22 @@ class Employment extends Component {
         let departmentList = [];
 				await [...data.data.departmentUnit].map(data => (
 					departmentList.push({ value: data.id, label: data.name })
-				))
+        ))
 
         let roleOptions = [];
         [...data.data.roles].map(data => {
           roleOptions.push({ value: data.title, label: data.title });
         });
 
+        let branchList = [];
+        [...resData.data.branches].map(data => {
+          branchList.push({ value: data.id, label: data.name });
+        });
+
         let regionList = [];
         [...regionData.data.regions].map(data => {
           regionList.push({ value: data.id, label: data.name });
         });
-
-        console.log(rankData.data.salaryStructures)
 
         this.setState({ 
           // units: unitOptions, 
@@ -514,7 +531,7 @@ class Employment extends Component {
           departments: data.data.departmentUnit, 
           regionOptions: regionList,
           areas: areaData.data.areas,
-          ranks: rankData.data.salaryStructures
+          ranks: rankData.data !== undefined ? rankData.data.salaryStructures : []
         });
       }
 
@@ -632,10 +649,12 @@ class Employment extends Component {
           region,
           areaId,
           area,
-          rankLevel
+          rankLevel,
+          salaryStucture,
+          salaryStructureId
         } = res.data.employmentInfo;
-        const customRank = { value: rank, label: rank };
-        const customRankLevel = { value: rankLevel, label: rankLevel };
+        const customRank = salaryStucture !== undefined ? { value: rank, label: salaryStucture.name } : null;
+        const customRankLevel = { value: `${rankLevel}`, label: `${rankLevel}` };
         const customUnitId = unit === null ? null : { value: unitId, label: unit.name };
         const customEmploymentDate = moment(employmentDate).toDate();
         const customDateOfResumption = moment(dateOfResumption).toDate();
@@ -674,7 +693,7 @@ class Employment extends Component {
     const { id } = this.props.match.params;
     this.getFieldDetails();
     await this.getUserDetails(id);
-    this.setState({ userId: id});
+    // this.setState({ userId: id});
   }
   
 	
@@ -689,6 +708,7 @@ class Employment extends Component {
   // }
 	
   render() {
+    console.log('>>>', this.state.areaOptions)
     const CustomInput = ({ value, onClick }) => (
       <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')" onKeyPress={e => e.preventDefault()}
         value={this.state.customDateOfResumption === undefined ? undefined : moment(this.state.customDateOfResumption).format(date_format)} onClick={onClick}
@@ -725,7 +745,7 @@ class Employment extends Component {
 
                     <form className="form-horizontal" >
                       <div className="form-group row">
-                        <label for="inputName" className="col-md-2 pr-0 col-form-label">Departments <span className="impt">*</span></label>
+                        <label for="inputName" className="col-md-2 pr-0 col-form-label">Department <span className="impt">*</span></label>
                         <div className="col-md-4">
                           <Select
                             name="departmentId"
@@ -749,7 +769,7 @@ class Employment extends Component {
                         </div>
 											</div>
                       <div className="form-group row">
-												<label for="inputName" className="col-md-2 col-form-label">Units <span className="impt">*</span></label>
+												<label for="inputName" className="col-md-2 col-form-label">Unit <span className="impt">*</span></label>
 												<div className="col-md-4">
                           <Select
                             name="unitId"
@@ -760,16 +780,16 @@ class Employment extends Component {
                           />
 													<span className="text-danger">{this.state.errorMessage5 !== null ? this.state.errorMessage5 : ''}</span>
 												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Branch <span className="impt">*</span></label>
-                          <div className="col-md-4">
-                            <Select
-                              name="branchId"
-                              placeholder="Select"
-                              value={this.state.customBranchId}
-                              options={this.state.branches}
-                              onChange={(e) => this.handleChange(e, 'branchId')}
-                            />
-                            <span className="text-danger">{this.state.errorMessage3 !== null ? this.state.errorMessage3 : ''}</span>
+                        <label for="inputName" className="col-md-2 col-form-label">Area <span className="impt">*</span></label>
+                        <div className="col-md-4">
+                          <Select
+                            name="areaId"
+                            placeholder="Select"
+                            value={this.state.customAreaId}
+                            options={this.state.areaOptions}
+                            onChange={(e) => this.handleChange(e, 'areaId')}
+                          />
+													<span className="text-danger">{this.state.errorMessage4 !== null ? this.state.errorMessage4 : ''}</span>
 												</div>
 											</div>
                       <div className="form-group row">
@@ -784,16 +804,16 @@ class Employment extends Component {
                           />
 													<span className="text-danger">{this.state.errorMessage4 !== null ? this.state.errorMessage4 : ''}</span>
 												</div>
-                        <label for="inputName" className="col-md-2 col-form-label">Area <span className="impt">*</span></label>
-                        <div className="col-md-4">
-                          <Select
-                            name="areaId"
-                            placeholder="Select"
-                            value={this.state.customAreaId}
-                            options={this.state.areaOptions}
-                            onChange={(e) => this.handleChange(e, 'areaId')}
-                          />
-													<span className="text-danger">{this.state.errorMessage4 !== null ? this.state.errorMessage4 : ''}</span>
+                        <label for="inputName" className="col-md-2 col-form-label">Branch <span className="impt">*</span></label>
+                          <div className="col-md-4">
+                            <Select
+                              name="branchId"
+                              placeholder="Select"
+                              value={this.state.customBranchId}
+                              options={this.state.branches}
+                              onChange={(e) => this.handleChange(e, 'branchId')}
+                            />
+                            <span className="text-danger">{this.state.errorMessage3 !== null ? this.state.errorMessage3 : ''}</span>
 												</div>
                       </div>
                       <div className="form-group row">
@@ -810,6 +830,7 @@ class Employment extends Component {
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Rank Level <span className="impt">*</span></label>
 												<div className="col-md-4">
+                          {console.log("tired", this.state.customRanklevel, this.state.customRank)}
                           <Select
                             className="pt-0 pb-0 pr-0 pl-0 border-0"
                             value={this.state.customRanklevel}

@@ -1,0 +1,156 @@
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
+import Moment from 'react-moment';
+import Layout from '../layout';
+import { httpGet } from '../../actions/data.action';
+import { hideLoader } from '../../helpers/loader';
+import Table from '../../helpers/customTable';
+import './style.css'
+
+class PendingList extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      users: [],
+    }
+  }
+  
+  componentDidMount = async () => {
+    await this.getAllStaffs();
+	}
+
+  getAllStaffs = async () => {
+    try{
+      const res = await httpGet('auth/all_pending_rejected_staffs');
+      if(res.code === 200){
+        hideLoader()
+        this.setState({ 
+          users: res.data.users
+        });
+      }
+    } catch (error){
+      hideLoader()
+      console.log(error)
+    }
+  }
+
+  navigateToEdit = (e, id, onBoarding) => {
+    console.log(id, onBoarding)
+    if(parseInt(onBoarding) === 4){
+      return this.props.history.push({
+        pathname: `/create_staff/five/${id}`,
+        direction: 'completeOnboarding'
+      })
+    } else if(parseInt(onBoarding) === 3){
+      return this.props.history.push({
+        pathname: `/create_staff/four/${id}`,
+        direction: 'completeOnboarding'
+      })
+    }else if(parseInt(onBoarding) === 2){
+      return this.props.history.push({
+        pathname: `/create_staff/three/${id}`,
+        direction: 'completeOnboarding'
+      })
+    }else if(parseInt(onBoarding) === 1){
+      return this.props.history.push({
+        pathname: `/create_staff/two/${id}`,
+        direction: 'completeOnboarding'
+      })
+    } else {
+      return this.props.history.push({
+        pathname: '/create_staff/one',
+        direction: 'editUserOnboarding'
+      })
+    }
+    // return this.props.history.push({
+    //   pathname: `${this.props.location.backurl}`,
+    //   savedState: this.props.location.savedState,
+    //   direction: 'backward'
+    // })
+  }
+
+  // <span className="ml-3 cursor-pointer" onClick={e => this.navigateToEdit(e, data.id, data.onBoarding)}>Edit</span>
+
+  bodyRow = () => {
+    const body = this.state.users.map((data, index) => {
+      const role = data.employmentInfo.length ? data.employmentInfo[0].role : ''
+      return {
+        "sn": `${index + 1}`,
+        "fullname": <span>{data.lastName} {data.firstName}</span>,
+        "position": role ? role.title : '' || '',
+        "startdate": <Moment format='MMM DD, YYYY'>{data.createdAt}</Moment>,
+        "status": data.applicationStatus || '',
+        // "employmentInfo": <Link to={`/create_staff/four/${data.id}`} className="add-more ml-3">Edit</Link>,
+        "action": <a>
+          <Link to={`/view_details/${data.id}`} className="add-more">View Details</Link>
+          </a>
+      }
+    });
+    return body;
+  }
+
+  header = () => {
+    const header = [
+      { title: 'S/N', prop: 'sn' },
+      {
+        title: 'Full Name (filterable)',
+        prop: 'fullname',
+        sortable: true,
+        filterable: true
+      },
+      { title: 'Position', prop: 'position', sortable: true },
+      { title: 'Start Date', prop: 'startdate', sortable: true },
+      { title: 'Status', prop: 'status', sortable: true },
+      // { title: 'Employment Info', prop: 'employmentInfo', sortable: true },
+      { title: ' ', prop: 'action' },
+    ];
+    return header;
+  }
+
+  render() {
+    return (
+      <Layout>
+        <div className="app-content">
+          <section className="section">
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item"><a href="#" className="text-muted">Home</a></li>
+              <li className="breadcrumb-item"><a href="#" className="text-muted">Staff</a></li>
+              <li className="breadcrumb-item active text-" aria-current="page">Pending List</li>
+            </ol>
+
+
+            <div className="row">
+							<div className="col-lg-12">
+								<div className="card">
+									<div className="header-card">
+                    <div className="row">
+                      <h4 className="col-md-6">Staff Pending List</h4>
+                      <div className="col-md-6 btn-group">
+                          <button type="button" className="btn btn-primary  ml-auto">Pending</button>
+                          <button type="button" className="btn btn-primary">Rejected</button>
+                      </div>
+                    </div>
+									</div>
+									<div className="card-body">
+										<div className="table-responsive">
+                       <Table 
+                        body={this.bodyRow}
+                        head={this.header}
+                        rowsPerPage={10}
+                        rowsPerPageOption={[10, 15, 20, 25]}
+                      />
+									</div>
+									</div>
+								</div>
+							</div>
+						</div>
+          </section>
+        </div>
+        
+      </Layout>
+    )
+  }
+}
+
+export default PendingList;

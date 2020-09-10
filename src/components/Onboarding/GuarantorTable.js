@@ -22,8 +22,13 @@ export default function GuarantorTable(props) {
               <td>{data.relationship}</td>
               <td>{data.employeeKnownDate}</td>
               <td>
-                <span className="add-more p-3" data-toggle="modal" data-target="#guarantorModal" onClick={() => props.handleEdit(index, data.id)}>Edit</span>
-                <span className="add-more" onClick={() => props.removeMore(index,data.id)}>Delete</span>
+                {/* <span className="add-more p-3" data-toggle="modal" data-target="#guarantorModal" onClick={() => props.handleEdit(index, data.id)}>Edit</span> */}
+                <span className="add-more" 
+                    data-toggle="modal"
+                    data-target="#confirm"
+                  // onClick={() => props.removeMore(index,data.id)}
+                  onClick={() => props.removeMore(index, data.id)}
+                >Delete</span>
               </td>
             </tr>
           )) : ''

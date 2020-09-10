@@ -6,6 +6,7 @@ import UnitTable from './unitTable';
 import {httpPost, httpGet, httpDelete, httpPatch } from '../../actions/data.action';
 import { hideLoader, showLoader } from '../../helpers/loader';
 import UnitModal from '../Modals/Unit';
+import { Confirm } from '../Modals/Confirm';
 // import  './departmentTable.css'
 
 export default class unit extends Component {
@@ -19,6 +20,7 @@ export default class unit extends Component {
 			customSelect1: null,
 			errorMessage1: null,
 			errorMessage2: null,
+			selectedId: null,
 			departmentOptions: [],
 
 		}
@@ -75,11 +77,12 @@ export default class unit extends Component {
 		}
 	}
 
-	handleDelete = async(id) => {
+	handleDelete = async() => {
 		showLoader();
-		const res = await httpDelete(`unit/delete/${id}`);
+		const res = await httpDelete(`unit/delete/${this.state.selectedId}`);
 		if(res.code === 200){
 			this.getUnits();
+			this.setState({selectedId: null})
 			hideLoader();
 		}
 	}
@@ -187,7 +190,7 @@ export default class unit extends Component {
 											units={this.state.units}
 											handleEdit={this.handleEdit}
 											modalMode={modalMode}
-											handleDelete={this.handleDelete}
+											setSelectedId={(id) => this.setState({selectedId: id })}
 										/>
 
 									</div>
@@ -208,6 +211,10 @@ export default class unit extends Component {
 					errorMessage1={errorMessage1}
 					errorMessage2={errorMessage2}
 				/>			
+				<Confirm
+					modalAction="delete"
+					handleAction={this.handleDelete}
+				/>
 			</Layout>				
 		)
 	}

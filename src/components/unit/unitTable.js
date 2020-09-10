@@ -11,7 +11,10 @@ export default class unitTable extends Component {
 			{
 				"unitName": data.name,
 				"departments": data.department.name,
-				"action": <a><span className='edit' data-toggle="modal" data-target="#unitModal" onClick={() => this.props.handleEdit(data.id)}>Edit</span><span className='del' onClick={() => this.props.handleDelete(data.id)}>Delete</span></a>
+				"action": (<a><span className='edit' data-toggle="modal" data-target="#unitModal" onClick={() => this.props.handleEdit(data.id)}>Edit</span>
+				<span className='del' data-toggle="modal"
+				data-target="#confirm" onClick={() => this.props.setSelectedId(data.id)}>Delete</span>
+				</a>)
 			}
 		));
 		return body;

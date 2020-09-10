@@ -15,10 +15,9 @@ export default class branchTable extends Component {
 		const body = this.props.branches.map((data, index) => (
 			{
 				"branchName": data.name,
+				// "officeId": data.region,
 				"address": data.address,
-				"region": data.region.name,
-				"area": data.area.name,
-				"action": <a><span className='edit' data-toggle="modal" data-target="#branchModal" onClick={() => this.props.handleEdit(data.id, 'branch')}>Edit</span></a>
+        "action": <a><span className='edit' data-toggle="modal" data-target="#branchModal" onClick={() => this.props.handleEdit(data.id, 'region')}>Edit</span></a>
 			}
 		));
 		return body;
@@ -27,14 +26,13 @@ export default class branchTable extends Component {
 	header = () => {
 		const header = [
 			{
-				title: 'Branch Name (filterable)',
+				title: 'Region Name (filterable)',
 				prop: 'branchName',
 				sortable: true,
 				filterable: true
 			},
+			// { title: 'Office Id', prop: 'officeId', sortable: true },
 			{ title: 'Address', prop: 'address', sortable: true },
-			{ title: 'Region', prop: 'region', sortable: true },
-			{ title: 'Area', prop: 'area', sortable: true },
 			{ title: 'Actions', prop: 'action' },
 		];
 		return header;
@@ -42,7 +40,7 @@ export default class branchTable extends Component {
 
 	render() {
 		return (
-			<div className="table-responsive" style={{overflow: 'hidden'}}>
+			<div className="table-responsive" style={{overflow: 'hidden', marginBottom: '20px'}}>
 				<Table 
           body={this.bodyRow}
 					head={this.header}

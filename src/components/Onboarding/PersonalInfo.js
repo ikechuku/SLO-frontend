@@ -990,7 +990,11 @@ class PersonalInfo extends Component {
 								<div className="card">
 									<div className="card-header custom-header">
                     <div className="row col-12">
-										  <h4 className="col col-md-6">Personal Information</h4>
+                      <div className="col col-md-6">
+                        <h4 className="">Personal Information</h4>
+                        <span style={{color: 'red'}}
+                        >Fill in the following information and submit</span>
+                      </div>
                       <div className="col col-md-6 text-right">
                       <button className="cursor-pointer btn btn-primary" onClick={() => this.props.history.push(`/create_staff/two/${this.props.match.params.id}`)}>
                          <i className="fa fa-arrow-right" aria-hidden="true"></i></button>

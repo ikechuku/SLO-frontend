@@ -6,7 +6,7 @@ const BranchModal = (props) => {
     <div className="modal-dialog" role="document">
       <div className="modal-content">
         <div className="modal-header">
-          <h5 className="modal-title" id="example-Modal3">CREATE NEW BRANCH</h5>
+          <h5 className="modal-title" id="example-Modal3">{props.modalMode === 'create' ? 'CREATE' : 'EDIT'} NEW OFFICE</h5>
           <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={props.closeModal}>
             <span aria-hidden="true">&times;</span>
           </button>
@@ -14,10 +14,10 @@ const BranchModal = (props) => {
         <div className="modal-body">
           <form>
             <div className="form-group">
-              <label for="recipient-name" className="form-control-label">Branch Name</label>
+              <label for="recipient-name" className="form-control-label">Office Name</label>
               <input  
                 onChange={props.handleChange}
-                value={props.branch.name}
+                value={props.name}
                 name="name" 
                 type="text" 
                 className="form-control" 
@@ -26,42 +26,68 @@ const BranchModal = (props) => {
             </div> 
 
             <div className="form-group">
-              <label for="recipient-name" className="form-control-label">Address</label>
+              <label for="recipient-names" classs="form-control-label">Address</label>
               <input 
                 onChange={props.handleChange}
-                value={props.branch.address}
+                value={props.address}
                 name="address" 
                 type="text" 
                 className="form-control" 
-                id="recipient-name"
+                id="recipient-names"
               />
             </div>
 
+          <div className="form-group">
+            <label for="recipient-name" className="form-control-label">Region</label>
+              <select 
+                value={props.regionId}
+                name="regionId"
+                onChange={props.handleChange}    
+                className="form-control sel" 
+                id="exampleFormControlSelect1"
+                disabled={props.modalMode === 'edit' ? true : false}
+              >      
+                <option value="" selected disabled>Select Region</option>
+                {
+                  props.regions.length ? props.regions.map(item => (
+                    <option value={item.id} >{item.name}</option>
+                  )) : ''
+                }
+              </select>
+          </div>
 
-              <label for="recipient-name" className="form-control-label">Region</label>
-                <select 
-                  value={props.branch.region}
-                  name="region"
-                  onChange={props.handleChange}    
-                  className="form-control sel" 
-                  id="exampleFormControlSelect1"
-                >      
-                  <option value="">Select Region</option>
-                  <option value="North Central">North Central</option>
-                  <option value="North East">North East</option>
-                  <option value="North West">North West</option>
-                  <option value="South East">South East</option>
-                  <option value="South West">South West</option>
-                  <option value="South South">South South</option>
-                </select>
+          <div className="form-group">
+            <label for="recipient-name" className="form-control-label">Area</label>
+              <select 
+                value={props.areaId}
+                name="areaId"
+                onChange={props.handleChange}    
+                className="form-control sel" 
+                id="exampleFormControlSelect1"
+                disabled={props.modalMode === 'edit' ? true : false}
+              >      
+                <option value="" selected disabled>Select Area</option>
+                {
+                  props.areas.length ? props.areas.map(item => (
+                    <option value={item.id} >{item.name}</option>
+                  )) : ''
+                }
+              </select>
+          </div>
 
           </form>
         </div>
         <div className="modal-footer">
           <button type="button" className="btn btn-danger" data-dismiss="modal" onClick={props.closeModal}>Close</button>
-          <button type="button" className="btn btn-primary" onClick={props.handleSubmit}>
-            {props.modalMode === 'create' ? 'Create' : 'Update'}
-          </button>
+          {
+            props.modalMode === 'create' ?
+            <button type="button" className="btn btn-primary" onClick={props.handleSubmit}>
+              CREATE
+            </button> :
+            <button type="button" className="btn btn-primary" onClick={props.handleEditSubmit}>
+              UPDATE
+            </button>
+          }
         </div>
       </div>
     </div>

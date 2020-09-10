@@ -137,7 +137,8 @@ export default class CreateStaff extends Component {
       this.clearState();
       hideLoader();
     }catch(error){
-      console.log(error)
+			console.log(error)
+			this.clearState();
     }
 	}
 
@@ -149,7 +150,8 @@ export default class CreateStaff extends Component {
 			modalMode: 'create',
 			currentEditId: null,
 			errorMessage1: null,
-			mobilePhoneCodeError: null
+			mobilePhoneCodeError: null,
+			customMobile: null
 		})
 	}
 

@@ -180,6 +180,8 @@ export class QualificationModal extends Component {
                             name="highestEducation" 
                             className="minimal mr-2"
                             value="Yes"
+                            //value={this.props.qualification.highestEducation}
+                            checked={this.props.qualification.highestEducation === 'Yes'}
                             onChange={this.props.handleQualification}
                             // checked={this.state.data.gender === 'Male' ? true : ''}
                           />
@@ -190,6 +192,7 @@ export class QualificationModal extends Component {
                             name="highestEducation" 
                             className="minimal mr-2"
                             value="No"
+                            checked={this.props.qualification.highestEducation === 'No'}
                             onChange={this.props.handleQualification}
                             // checked={this.state.data.gender === 'Female' ? true : ''}
                           />

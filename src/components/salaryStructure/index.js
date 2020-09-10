@@ -41,10 +41,11 @@ export default class index extends Component {
 	}
 	toggle = (id) => {
 
+		console.log('toggle', id)
 		this.setState({toggle:id,
 			hideActions:false  
 		})
-		if (this.state.toggle === id) {
+		if (parseInt(this.state.toggle) === id) {
 			this.setState({
 				showDrop: !this.state.showDrop,
 				
@@ -297,12 +298,12 @@ export default class index extends Component {
 									<div className="dropHeader">
 										{" "}
 										<div
-											onClick={(e) => this.toggle(data.id)}
+											onClick={() => this.toggle(data.id)}
 											className="dropHead"
 										>
 											<span
 												className={`${
-													this.state.showDrop === true && this.state.toggle === data.id
+													this.state.showDrop === true && parseInt(this.state.toggle) === data.id
 														? "fa fa-chevron-up"
 														: "fa fa-chevron-down"
 												}`}
@@ -316,7 +317,7 @@ export default class index extends Component {
 												aria-hidden="true"
 											></i>
 											{this.state.hideActions === true && 
-											this.state.toggleAction === data.id ? (
+											parseInt(this.state.toggleAction) === data.id ? (
 												<div className="actionsSS">
 													<span><Link className="actionView" to={`/salary_structure_items/${data.id}`}>View</Link></span>
 													<span type="button"

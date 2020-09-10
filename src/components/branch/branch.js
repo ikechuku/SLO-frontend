@@ -21,6 +21,8 @@ export default class branch extends Component {
 		this.state = {
 			branch: {},
 			branches: [],
+			regions: [],
+			areas: [],
 			modalMode: "create",
 			currentEditId: null,
 			errorMessage1: null,
@@ -40,12 +42,13 @@ export default class branch extends Component {
 
 	componentDidMount() {
 		this.getBranch();
+		this.getData();
 	}
 
 	getBranch = async () => {
 		try {
-			const res = await httpGet("all_branch");
 			showLoader();
+			const res = await httpGet("all_branch");
 			if (res.code === 200) {
 				this.setState({ branches: res.data.branches });
 				hideLoader();
@@ -55,6 +58,23 @@ export default class branch extends Component {
 			console.log(error);
 		}
 	};
+
+	getData = async () => {
+		try{
+			const res = await httpGet("all_region");
+			const areaData = await httpGet("all_area");
+			if (res.code === 200) {
+				this.setState({ 
+					regions: res.data.regions,
+					areas: areaData.data.areas 
+				});
+			}
+
+		}catch(error){
+			hideLoader()
+			console.log(error)
+		}
+	}
 
 	handleEdit = async (id) => {
 		const res = await httpGet(`branch/${id}`);

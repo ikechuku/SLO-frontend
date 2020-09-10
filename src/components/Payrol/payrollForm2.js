@@ -449,7 +449,7 @@ render() {
 						<div className="payroll-header">
 							<h1>Add Payroll Item</h1>
 						</div>
-						<form>
+						<form onSubmit={this.handleSubmit}>
 							<div class="inputPayroll">
 								<label for="">Payroll Name</label>
 								<input
@@ -569,7 +569,8 @@ render() {
 									<div className="dataeP">
 										<DatePicker
                     dateFormat="MMMM.yyyy"
-                    required={true}
+										required={true}
+										value={this.state.datePickerText}
 										showMonthYearPicker
 										placeholderText={this.state.datePickerText}
 											onChange={this.handleDate}
