@@ -270,7 +270,7 @@ export default class index extends Component {
 							</li>
 							<li className="breadcrumb-item">
 								<a href="#" className="text-muted">
-									Pay Now
+									Salary Structure
 								</a>
 							</li>
 						</ol>

@@ -111,7 +111,7 @@ class Guarantor extends Component {
 
         if (details.name === 'employeeKnownMonth') {
             if (postData.employeeKnownYear === '' || postData.employeeKnownYear === null) {
-                postData['employeeKnownDate'] = `${details.value} months`;
+                postData['employeeKnownDate'] = `${details.value}`;
                 postData['employeeKnownMonth'] = details.value;
                 this.setState({postData, errorMessage6: null})
             } else {
@@ -1031,7 +1031,7 @@ class Guarantor extends Component {
 
             </section>
         </div>
-      <GuarantorModal
+      <GuarantorModal 
           mainCustomState={this.state}
           handleChange={this.handleChange}
           addMore={this.addMore}

@@ -141,7 +141,7 @@ export default function Index() {
               </a>
             </li>
             <li className="breadcrumb-item active text-" aria-current="page">
-              Performance
+              Labels
             </li>
           </ol>
           <div className="section-body">

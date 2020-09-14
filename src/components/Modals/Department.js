@@ -99,13 +99,13 @@ export function DepartmentModal(props) {
 								Update
 							</button>
 						)}
-						<button
+						{/* <button
 							type="button"
 							className="btn btn-primary"
 							onClick={props.handleSubmit}
 						>
 							{props.modalMode === "create" ? "Create" : "Update"}
-						</button>
+						</button> */}
 					</div>
 				</div>
 			</div>

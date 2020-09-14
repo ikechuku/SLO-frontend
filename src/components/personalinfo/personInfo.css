@@ -216,6 +216,11 @@
 	cursor: pointer;
 }
 
+.gurantor-names .active {
+	background: #003766 !important;
+	color: #fff !important
+}
+
 .personalInfoGurantor {
 	display: grid;
 	grid-template-columns: 120px 380px 380px;

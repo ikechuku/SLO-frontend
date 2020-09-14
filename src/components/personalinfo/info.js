@@ -295,7 +295,7 @@ export default class info extends Component {
 
 					<Garantor guarantorInfo={guarantorInfo} />
 
-					<div className="row mt-3 text-right">					
+					<div className="row mt-3 text-right" style={this.state.user.onBoarding !== 3 ? {display: 'none'} : {}}>					
 						<div className="col-md-12">
 							<button 
 								type="submit"

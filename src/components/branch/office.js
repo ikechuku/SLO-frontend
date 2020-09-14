@@ -290,11 +290,11 @@ export default class branch extends Component {
 							</li>
 							<li className="breadcrumb-item">
 								<a href="#" className="text-muted">
-									Performance
+									Office
 								</a>
 							</li>
 							<li className="breadcrumb-item active text-" aria-current="page">
-								Performance
+								Office List
 							</li>
 						</ol>
 						<div className="section-body">

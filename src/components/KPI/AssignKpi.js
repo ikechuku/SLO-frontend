@@ -79,7 +79,7 @@ export default class AssignKpi extends Component {
                   </a>
                 </li>
                 <li className="breadcrumb-item active text-" aria-current="page">
-                  KPI
+                  Assign KPI
                 </li>
               </ol>
               <div className="section-body animation">

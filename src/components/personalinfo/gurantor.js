@@ -73,7 +73,10 @@ export default class gurantor extends Component {
 				<section className="gurantor-names mb-3">
 					{
 						guarantorInfo.length ? guarantorInfo.map((info, index) => (
-						<span onClick={e => this.getGuarantorInfo(e, info.id, index)} key={index}>{info.firstName + ' ' + info.lastName}</span>
+						<span 
+							className={this.state.info.id === info.id ? 'active' : ''}
+							onClick={e => this.getGuarantorInfo(e, info.id, index)} 
+							key={index}>{info.firstName + ' ' + info.lastName}</span>
 						)) : ''
 					}
 				</section>

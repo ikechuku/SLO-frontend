@@ -269,22 +269,22 @@ class Employment extends Component {
     }
     let newSalaryAmount;
     if(rankLevel === 1){
-      newSalaryAmount = salaryAmount;
+      newSalaryAmount = parseInt(salaryAmount);
     } else if(rankLevel === 2){
-      const value = (1.5 / 100) * salaryAmount;
-      newSalaryAmount = value + salaryAmount
+      const value = (1.5 / 100) * parseInt(salaryAmount);
+      newSalaryAmount = value + parseInt(salaryAmount)
     } else if(rankLevel === 3){
-      const value = (3 / 100) * salaryAmount;
-      newSalaryAmount = value + salaryAmount;
+      const value = (3 / 100) * parseInt(salaryAmount);
+      newSalaryAmount = value + parseInt(salaryAmount);
     } else if(rankLevel === 4){
-      const value = (4.5 / 100) * salaryAmount;
-      newSalaryAmount = value + salaryAmount;
+      const value = (4.5 / 100) * parseInt(salaryAmount);
+      newSalaryAmount = value + parseInt(salaryAmount);
     } else if(rankLevel === 5){
-      const value = (6 / 100) * salaryAmount;
-      newSalaryAmount = value + salaryAmount;
+      const value = (6 / 100) * parseInt(salaryAmount);
+      newSalaryAmount = value + parseInt(salaryAmount);
     } else if(rankLevel === 6){
-      const value = (7.5 / 100) * salaryAmount;
-      newSalaryAmount = value + salaryAmount
+      const value = (7.5 / 100) * parseInt(salaryAmount);
+      newSalaryAmount = value + parseInt(salaryAmount)
     }
     //console.log('salary', newSalaryAmount, rankLevel)
     postData['salaryAmountAfterRank'] = newSalaryAmount;
@@ -358,10 +358,8 @@ class Employment extends Component {
       officeType
     }
 
-    console.log(data);
 
 		const isValidate = await validateEmploymentInfoForm(this.state.postData);
-    console.log('gets hers', isValidate)
     if(!isValidate.error){
       if(isValidate.type === 'rank'){
         this.setState({ 
@@ -542,9 +540,7 @@ class Employment extends Component {
   }
 
   getRanks = () => {
-    console.log('gets here')
     const { ranks} = this.state;
-    console.log(ranks)
     //return null
     return [...ranks].map(item => (
       { value: item.id, label: item.name }
@@ -553,7 +549,6 @@ class Employment extends Component {
 
   getArea = async () => {
     const { areas, postData } = this.state;
-    console.log('>>>',areas, postData.regionId)
     if(postData.regionId === undefined){
       const areaOptions = [];
       this.setState({ areaOptions })
@@ -564,7 +559,6 @@ class Employment extends Component {
 		await newpostData.map(data => (
 		  optionList.push({ value: data.id, label: data.name })
 		));
-		console.log(optionList, newpostData)
     this.setState({ areaOptions: optionList })
   }
 
@@ -576,14 +570,12 @@ class Employment extends Component {
 		await newpostData.units.map(data => (
 		  optionList.push({ value: data.id, label: data.name })
 		));
-		console.log(optionList)
     this.setState({ unitOptions: optionList })
   }
 
   getRoleFromUnit = () => {
     const { postData, roles } = this.state;
     let newRoles = [];
-    console.log(postData.unitId)
     if(postData.unitId === null || postData.unitId === undefined){
       return null
     }
@@ -604,8 +596,6 @@ class Employment extends Component {
   getRoles = () => {
     const newRolesFromUnits = this.getRoleFromUnit();
     const newRolesFromDept = this.getRoleFromDept();
-    console.log('units', newRolesFromUnits)
-    console.log('depts', newRolesFromDept)
     const newValues = (newRolesFromUnits === null || !newRolesFromUnits.length) ? newRolesFromDept : newRolesFromUnits;
 
     if(typeof(newValues) === object){
@@ -628,7 +618,6 @@ class Employment extends Component {
   getUserDetails = async (id) => {
     try{
       const res = await httpGet(`auth/get_onboarding_four/${id}`);
-      console.log(res.data.employmentInfo)
       if(res.code === 200){
         const {
           rank,
@@ -708,7 +697,6 @@ class Employment extends Component {
   // }
 	
   render() {
-    console.log('>>>', this.state.areaOptions)
     const CustomInput = ({ value, onClick }) => (
       <input readonly className="form-control" placeholder="Click to select a date" type="text" onfocus="(this.type='date')" onKeyPress={e => e.preventDefault()}
         value={this.state.customDateOfResumption === undefined ? undefined : moment(this.state.customDateOfResumption).format(date_format)} onClick={onClick}
@@ -830,7 +818,6 @@ class Employment extends Component {
 												</div>
                         <label for="inputName" className="col-md-2 col-form-label">Rank Level <span className="impt">*</span></label>
 												<div className="col-md-4">
-                          {console.log("tired", this.state.customRanklevel, this.state.customRank)}
                           <Select
                             className="pt-0 pb-0 pr-0 pl-0 border-0"
                             value={this.state.customRanklevel}
