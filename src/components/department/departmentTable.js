@@ -20,7 +20,7 @@ const DepartmentTable = (props) => {
 									<td>{data.name}</td>
 									<td>
 										<span className='edit' data-toggle="modal" data-target="#departmentModal" onClick={() => props.getSingleDepartment(data.id)}>Edit</span>
-										<span className='del' onClick={() => props.handleDelete(data.id)}>Delete</span>
+										{/* <span className='del' onClick={() => props.handleDelete(data.id)}>Delete</span> */}
 									</td>
 								</tr>
 							)) : ''

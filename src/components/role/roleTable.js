@@ -27,12 +27,12 @@ class RoleTable extends Component {
 					>
 						Edit
 					</span>
-					<span className="del" 
+					{/* <span className="del" 
 						data-toggle="modal"
 						data-target="#confirm"
 						onClick={() => this.props.setSelectedId(data.id)}>
 						Delete
-					</span>
+					</span> */}
 				</a>
 			),
 		}));
