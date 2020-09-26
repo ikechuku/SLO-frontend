@@ -60,7 +60,8 @@ export default class ViewDetails extends Component {
 
       if(res.code === 200){
         hideLoader();
-        this.getDetails();
+        // this.getDetails();
+        this.props.history.push(`/create_staff/four/${id}`)
       }
     }catch(error){
       hideLoader();

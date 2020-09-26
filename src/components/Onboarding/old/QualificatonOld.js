@@ -407,7 +407,7 @@ class Qualification extends Component {
                       <div className="row">
                       <div className="col col-md-10">
                       <div className="form-group row">
-                        <label for="inputName" className="col-md-7 pr-0 col-form-label">Do you object to us seeking any reference from any of your past employer</label>
+                        <label for="inputName" className="col-md-7 pr-0 col-form-label">Do you object to us seeking any reference from any of your previous employer</label>
 												<div className="col-md-4 pt-2">
                           <label>
                             <input type="radio" 

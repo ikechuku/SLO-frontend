@@ -15,9 +15,10 @@ export default class branchTable extends Component {
 		const body = this.props.branches.map((data, index) => (
 			{
 				"branchName": data.name,
-				"region": data.region,
 				"address": data.address,
-				"action": <a><span className='edit' data-toggle="modal" data-target="#branchModal" onClick={() => this.props.handleEdit(data.id)}>Edit</span><span className='del' onClick={() => this.props.handleDelete(data.id)}>Delete</span></a>
+				"region": data.region.name,
+				"area": data.area.name,
+				"action": <a><span className='edit' data-toggle="modal" data-target="#branchModal" onClick={() => this.props.handleEdit(data.id, 'branch')}>Edit</span></a>
 			}
 		));
 		return body;
@@ -31,8 +32,9 @@ export default class branchTable extends Component {
 				sortable: true,
 				filterable: true
 			},
-			{ title: 'Region', prop: 'region', sortable: true },
 			{ title: 'Address', prop: 'address', sortable: true },
+			{ title: 'Region', prop: 'region', sortable: true },
+			{ title: 'Area', prop: 'area', sortable: true },
 			{ title: 'Actions', prop: 'action' },
 		];
 		return header;

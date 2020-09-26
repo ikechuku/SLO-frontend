@@ -11,6 +11,7 @@ import {
 } from "../../actions/data.action";
 import { hideLoader, showLoader } from "../../helpers/loader";
 import { RoleModal } from "../Modals/Role";
+import { Confirm } from "../Modals/Confirm";
 // import  './departmentTable.css'
 
 export default class Role extends Component {
@@ -28,6 +29,7 @@ export default class Role extends Component {
 			customSelect2: null,
 			errorMessage1: null,
 			errorMessage2: null,
+			selectedId: null
 		};
 	}
 
@@ -74,7 +76,12 @@ export default class Role extends Component {
 		const { role } = this.state;
 		if (name === "departmentId") {
 			role[name] = e.value;
-			await this.setState({ role, customSelect1: e, errorMessage2: null });
+			await this.setState({ 
+				role, 
+				customSelect1: e,
+				customSelect2: null, 
+				errorMessage2: null 
+			});
 			this.getUnits();
 		} else if (name === "unitId") {
 			role[name] = e.value;
@@ -128,11 +135,12 @@ export default class Role extends Component {
 		}
 	};
 
-	handleDelete = async (id) => {
+	handleDelete = async () => {
 		showLoader();
-		const res = await httpDelete(`role/delete/${id}`);
+		const res = await httpDelete(`role/delete/${this.state.selectedId}`);
 		if (res.code === 200) {
 			this.getRoles();
+			this.setState({selectedId: null})
 			hideLoader();
 		}
 	};
@@ -212,7 +220,7 @@ export default class Role extends Component {
 			customSelect1,
 			customSelect2,
 			errorMessage1,
-			errorMessage2,
+			errorMessage2
 		} = this.state;
 		return (
 			<Layout page="roles">
@@ -226,7 +234,7 @@ export default class Role extends Component {
 							</li>
 							<li className="breadcrumb-item">
 								<a href="#" className="text-muted">
-									Performance
+									Department / Unit
 								</a>
 							</li>
 							<li className="breadcrumb-item active text-" aria-current="page">
@@ -258,7 +266,7 @@ export default class Role extends Component {
 												roles={roles}
 												modalMode={modalMode}
 												handleEdit={this.handleEdit}
-												handleDelete={this.handleDelete}
+												setSelectedId={(id) => this.setState({selectedId: id })}
 											/>
 										</div>
 									</div>
@@ -280,6 +288,10 @@ export default class Role extends Component {
 					modalMode={modalMode}
 					errorMessage1={errorMessage1}
 					errorMessage2={errorMessage2}
+				/>
+				<Confirm
+					modalAction="delete"
+					handleAction={this.handleDelete}
 				/>
 			</Layout>
 		);

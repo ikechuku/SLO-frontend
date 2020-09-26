@@ -6,11 +6,17 @@ class RoleTable extends Component {
 		super(props);
 	}
 
+	getValue =  (data) => {
+		const firstDept = data.unit !== null ? data.unit.department.name : '' ;
+		const unitName = data.unitId !== null ? data.unit.name : '';
+
+		return data.unitId === null ? data.department.name : (firstDept + '/' + unitName);
+	}
+
 	bodyRow = () => {
 		const body = this.props.roles.map((data, index) => ({
 			jobTitle: data.title,
-			departmentUnit:
-				data.unitId === null ? data.department.name : data.unit.name,
+			departmentUnit: this.getValue(data),
 			action: (
 				<a>
 					<span
@@ -21,9 +27,12 @@ class RoleTable extends Component {
 					>
 						Edit
 					</span>
-					<span className="del" onClick={() => this.props.handleDelete(data.id)}>
+					{/* <span className="del" 
+						data-toggle="modal"
+						data-target="#confirm"
+						onClick={() => this.props.setSelectedId(data.id)}>
 						Delete
-					</span>
+					</span> */}
 				</a>
 			),
 		}));

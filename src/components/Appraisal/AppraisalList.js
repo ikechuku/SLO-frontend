@@ -26,7 +26,7 @@ export default class AppraisalList extends Component {
                 </a>
               </li>
               <li className="breadcrumb-item active text-" aria-current="page">
-                Performance
+                Appraisal
               </li>
             </ol>
             <div className="section-body">

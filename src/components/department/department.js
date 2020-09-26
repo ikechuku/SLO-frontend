@@ -115,8 +115,8 @@ export default class department extends Component {
 					<section className="section">
 						<ol className="breadcrumb">
 							<li className="breadcrumb-item"><a href="#" className="text-muted">Home</a></li>
-							<li className="breadcrumb-item"><a href="#" className="text-muted">Performance</a></li>
-							<li className="breadcrumb-item active text-" aria-current="page">Branch</li>
+							<li className="breadcrumb-item"><a href="#" className="text-muted">Department</a></li>
+							<li className="breadcrumb-item active text-" aria-current="page">List</li>
 						</ol>
 						<div className="section-body">
 							<div className="row">

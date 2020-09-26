@@ -106,10 +106,33 @@ class Qualification extends Component {
       qualification[details.name] = details.value;
       qualificationErrors[details.name] = ''
       this.setState({ qualification, qualificationErrors });
-    } else {
+    } else if(details.name === 'highestEducation') {
+      if(details.value === 'Yes'){
+        if(this.state.moreQualification.length){
+          let test;
+          this.state.moreQualification.map(item => {
+              if (item.highestEducation === 'Yes') {
+                  if (window.confirm("Do you want to switch highest education?")) {
+                    item.highestEducation = 'No';
+                    test = 'Yes'
+                  } else {
+                    test = 'No'
+                  }
+              } else {
+                test = 'Yes'
+              }
+          })
+          qualification[details.name] = test;
+          this.setState({ qualification });
+        } else {
+          qualification[details.name] = details.value;
+          this.setState({ qualification });
+        }
+      }
+      } else {
       qualification[details.name] = details.value;
       this.setState({ qualification });
-    } 
+    }
   }
 
   handleCertificationChange = async (e, nameValue) => {
@@ -193,7 +216,7 @@ class Qualification extends Component {
     } = this.state.qualification;
 
     if((new Date(endDate) > new Date(Date.now())) && highestEducation === 'Yes'){
-      return NotificationManager.warning('Only completed qualification can be set as highest education')
+      return NotificationManager.warning('Only completed qualification can be set as highest qualification')
     }
 
     const { qualificationErrors } = this.state;
@@ -269,7 +292,8 @@ class Qualification extends Component {
         qualification: '',
         course: '',
         startDate: '',
-        endDate: ''
+        endDate: '',
+        highestEducation: ''
       },
       modalMode: 'create',
       editIndex: null,
@@ -696,17 +720,12 @@ class Qualification extends Component {
   handleEdit = async (indexValue, name) => {
     // const { qualification, certification, previousEmployment } = this.state;
     if(name === 'qualification'){
-      // const qualificationObj = [...this.state.moreInstitution].filter((data,index) => index === parseInt(indexValue))[0];
-      // qualification['name'] = qualificationObj.name;
-      // qualification['course'] = qualificationObj.course;
-      // qualification['qualification'] = qualificationObj.qualification;
-      // qualification['startDate'] = qualificationObj.startDate;
-      // qualification['endDate'] = qualificationObj.endDate;
       await this.setState({ qualification: [...this.state.moreQualification].filter((data,index) => index === parseInt(indexValue))[0],
         editIndex: indexValue, modalMode: 'edit' });
       const date1 = moment(this.state.qualification.startDate).toDate();
       const date2 = moment(this.state.qualification.endDate).toDate();
       this.setState({ date1, date2 });
+
     } else if(name === 'certification'){
       await this.setState({ certification: [...this.state.moreCertification].filter((data,index) => index === parseInt(indexValue))[0],
         editIndex: indexValue, modalMode: 'edit' });
@@ -714,6 +733,7 @@ class Qualification extends Component {
       const date3 = moment(this.state.certification.startDate).toDate();
       const date4 = moment(this.state.certification.endDate).toDate();
       this.setState({ customSelectDefault1: customSelectValue, date3, date4 });
+      
     } else {
       await this.setState({
         previousEmployment: [...this.state.morePrevious].filter((data,index) => index === parseInt(indexValue))[0],
@@ -1025,13 +1045,13 @@ class Qualification extends Component {
 
         if(!isHeighest.includes(1)){
           hideLoader()
-          NotificationManager.warning("Fill in at least one highest education")
+          NotificationManager.warning("Fill in at least one highest qualification")
           return;
         }
 
         if(isHeighest.length > 1){
           hideLoader();
-          NotificationManager.warning("Maximum of one highest education is allowed")
+          NotificationManager.warning("Maximum of one highest qualification is allowed")
           return;
         }
 
@@ -1127,13 +1147,13 @@ class Qualification extends Component {
 
         if(!isHeighest.includes(1)){
           hideLoader()
-          NotificationManager.warning("Fill in at least one highest education")
+          NotificationManager.warning("Fill in at least one highest qualification")
           return;
         }
 
         if(isHeighest.length > 1){
           hideLoader();
-          NotificationManager.warning("Maximum of one highest education is allowed")
+          NotificationManager.warning("Maximum of one highest qualification is allowed")
           return;
         }
 

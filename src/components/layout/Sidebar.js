@@ -37,7 +37,7 @@ export default function Sidebar(props) {
             <li className={props.props.page === 'branch' ? "active" : ""}>
               <Link 
                 className={props.props.page === 'branch' ? "slide-item active" : "slide-item"} to="/branches">
-                <span>Branches</span>
+                <span>Offices</span>
               </Link>
             </li>
             <li className={props.props.page === 'departments' ? "active" : ""}>
@@ -82,11 +82,8 @@ export default function Sidebar(props) {
               </a>
 							<ul className="second-slide-menu">
                 <li className="active"><Link to="/create_staff" className="slide-item active">Create Staff</Link></li>
-								<li><Link className="slide-item">Personal Information</Link></li>
-								<li><Link className="slide-item">Qualification and Experience</Link></li>
-                <li><Link className="slide-item">Employment Information</Link></li>
-                <li><Link className="slide-item">Guarantor Information</Link></li>
-                {/* <li><Link className="slide-item">Upload</Link></li> */}
+								{/* <li><Link className="slide-item">Personal Information</Link></li> */}
+                <li><Link to="/pending_list" className="slide-item">Pending List</Link></li>
                 <li><Link to="/staff_list" className="slide-item">Staff List</Link></li>
 							</ul>
 						</li>

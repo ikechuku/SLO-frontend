@@ -129,7 +129,7 @@ export default class ViewAppraisal extends Component {
                 </a>
               </li>
               <li className="breadcrumb-item active text-" aria-current="page">
-                Performance
+                View Appraisal
               </li>
             </ol>
             <div className="section-body">

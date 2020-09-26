@@ -262,7 +262,7 @@ console.log(this.state)
 							</li>
 							<li className="breadcrumb-item">
 								<a href="#" className="text-muted">
-									Pay Now
+									Salary Structure
 								</a>
 							</li>
 						</ol>

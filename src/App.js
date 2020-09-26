@@ -12,7 +12,8 @@ import Upload from "./components/Onboarding/Upload";
 import PendingApplication from "./components/Onboarding/Pending";
 import StaffList from "./components/Onboarding/StaffList";
 import ViewDetails from "./components/Onboarding/ViewDetails";
-import Branch from "./components/branch/branch";
+// import Branch from "./components/branch/branch";
+import Office from "./components/branch/office";
 import Department from "./components/department/department";
 import Unit from "./components/unit/unit";
 import Role from "./components/role";
@@ -60,6 +61,7 @@ import ViewPayroll from './components/Payrol/viewPayroll'
 import PendingPayroll from './components/Payrol/setUpPayroll/processPayroll/processPendingPayroll'
 import AuditView from './components/Payrol/setUpPayroll/processPayroll/auditViewPayrollIndex'
 import AuditSummary from './components/Payrol/setUpPayroll/processPayroll/auditSummary'
+import PendingList from "./components/Onboarding/PendingList";
 
 
 
@@ -101,8 +103,9 @@ function App() {
 					{/* <Route path="/create_staff/five/:id" component={Upload} /> */}
 					{/* <Route path="/create_staff/six" component={PendingApplication} /> */}
 					<ProtectedRoute path="/staff_list" component={StaffList} />
+					<ProtectedRoute path="/pending_list" component={PendingList} />
 					<ProtectedRoute path="/user_info/:id" component={ViewDetails} />
-					<ProtectedRoute path="/branches" component={Branch} />
+					<ProtectedRoute path="/branches" component={Office} />
 					<ProtectedRoute path="/departments" component={Department} />
 					<ProtectedRoute path="/units" component={Unit} />
 					<ProtectedRoute path="/roles" component={Role} />
