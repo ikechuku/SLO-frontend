@@ -62,9 +62,10 @@ import PendingPayroll from './components/Payrol/setUpPayroll/processPayroll/proc
 import AuditView from './components/Payrol/setUpPayroll/processPayroll/auditViewPayrollIndex'
 import AuditSummary from './components/Payrol/setUpPayroll/processPayroll/auditSummary'
 import PendingList from "./components/Onboarding/PendingList";
-
-
-
+import UserRole from './components/userRole/index'
+import UsersLeave from './components/usersLeave/leave'
+import Category from './components/Category/categories'
+import SubCategory from './components/Category/subCategory'
 function App() {
 	return (
 		<Provider store={store}>
@@ -146,6 +147,11 @@ function App() {
 					<Route path="/process_pending_payroll/:id" component={PendingPayroll}/>
 					<Route path="/audit_view_payroll/:id" component={AuditView}/>
 					<Route path="/audit_summary" component={AuditSummary}/>
+					<Route path="/user_role" component={UserRole}/>
+					<Route path="/user_leave" component={UsersLeave}/>
+					<Route path="/category" component={Category}/>
+					<Route path="/sub_category/:id" component={SubCategory}/>
+					
 				</Switch>
 			</Router>
 		</Provider>
