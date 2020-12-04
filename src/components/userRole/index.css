@@ -1,0 +1,18 @@
+.usersPrivilages-Checkbox{
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  }
+
+  .usersPrivilages-Checkbox div{
+    display: flex;
+    flex-wrap: nowrap;
+
+    }
+
+    .usersPrivilages-Checkbox div input{
+      margin-left: 6px;
+      margin-right: 9px;
+      margin-top: 6px;
+      cursor: pointer;
+      }

@@ -50,6 +50,9 @@ export default function Sidebar(props) {
               <span>Units</span>
               </Link>
             </li>
+
+   
+
             <li className={props.props.page === 'roles' ? "active" : ""}>
               <Link className={props.props.page === 'roles' ? "slide-item active" : "slide-item"} to="/roles">
                 <span>Roles</span>
@@ -152,6 +155,14 @@ export default function Sidebar(props) {
               </Link>
             </li>
           </ul>
+        </li>
+
+        <li>
+        <Link  className="side-menu__item" to="/user_role"><i className="side-menu__icon fa fa-user"></i><span className="side-menu__label">Users Role</span></Link>
+        </li>
+
+        <li>
+        <Link  className="side-menu__item" to="/user_leave"><i className="side-menu__icon fa fa-user"></i><span className="side-menu__label">Users Leave</span></Link>
         </li>
         
         <li>
