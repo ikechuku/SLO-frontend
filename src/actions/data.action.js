@@ -3,8 +3,8 @@ import { NotificationManager } from "react-notifications";
 
 import { showLoader, hideLoader } from "../helpers/loader";
 
-// export let baseUrl = "https://slo-server.herokuapp.com/api/";
-export let baseUrl = process.env.REACT_APP_BASE_URL;
+export let baseUrl = "https://slo-server.herokuapp.com/api/";
+// export let baseUrl = process.env.REACT_APP_BASE_URL;
 
 if (process.env.REACT_APP_NODE_ENV === "development") {
 	baseUrl = 'http://127.0.0.1:8080/api/'
