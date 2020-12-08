@@ -1,19 +1,9 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react';
+import Axios from 'axios';
 import {Link} from 'react-router-dom'
 import {setPoll} from '../../helpers/storePollData'
+
 export default function AddcreatePoll(props) {
-const [aboutPoll,SetaboutPoll ] = useState({
-    title:"",
-    description:"",
-    who:""
-})
-    const handleChange=(e)=>{
-       
-        SetaboutPoll({...aboutPoll, [e.target.name]: e.target.value });
-       console.log(aboutPoll)
-       
-  
-      }
 
   return (
     <div>
@@ -31,44 +21,28 @@ const [aboutPoll,SetaboutPoll ] = useState({
         <div className="form-group">
               <label  className="form-control-label">Title</label>
               <input  
-                onChange={handleChange}
-                value={aboutPoll.title}
+                onChange={props.handleChange}
+                value={props.aboutPoll.title}
                 name="title" 
                 type="text" 
                 className="form-control" 
                
               />
             </div> 
-
-            <div className="form-group">
-              <label  className="form-control-label">Select  who you want to recieve this Poll*</label>
-          <select className="form-control"
-               onChange={handleChange}
-                value={aboutPoll.who}
-                name="who"  id="">
-            <option value="">Select</option>
-               <option value="agric_tech">Agric Tech</option>
-            <option value="real_estate">Real Estate </option>
-            <option value="fixed_income">Fixed Income</option>
-            <option value="others">Others</option>
-          </select> 
-          </div>
-
-
+            
           <div className="form-group">
               <label  className="form-control-label">Description (Optional)</label>
               <textarea  
-                onChange={handleChange}
-                value={aboutPoll.description}
+                onChange={props.handleChange}
+                value={props.aboutPoll.description}
                 name="description"
                 type="text" 
-                className="form-control" 
-               
+                className="form-control"  
               />
             </div> 
 
         </form>
-        <button onClick={setPoll(JSON.stringify(aboutPoll))}>Next</button>
+        <button onClick={props.handleSubmit}>Next</button>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
