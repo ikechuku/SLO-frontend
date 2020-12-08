@@ -142,21 +142,10 @@ export default function CreatePoll(props) {
                                             </div>
 
                                             <div className="create-poll-preview">
-                                            <div className="poll-tags">
-                                                                {
-                                                                    savePollData.ques?.map((data,index)=>{
-                                                                        
-                                                                            console.log(data)
-                                                                            return (
-                                                                                <div className="poll-save">
-                                                                                        {data}
-                                                                                   
-                                                                        
-                                                                        </div>
-                                                                        )
-                                                                    })
-                                                                }
-                                                                </div>
+                                            {/* <div className="poll-tags">
+                                            
+                                                           
+                                                                </div> */}
 
                                             </div>
                                             
