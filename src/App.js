@@ -154,7 +154,7 @@ function App() {
 					<Route path="/category" component={Category}/>
 					<Route path="/sub_category/:id" component={SubCategory}/>
 					<Route path="/poll" component={Poll}/>
-					<Route path="/create_poll" component={CreatePoll}/>
+					<Route path="/create_poll/:id" component={CreatePoll}/>
 					
 					
 				</Switch>

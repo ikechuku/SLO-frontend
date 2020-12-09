@@ -1,13 +1,47 @@
 import React,{useState,useEffect} from 'react'
 import Layout from "../layout/index";
-import CreatePollModal from '../Modals/createPoll'
 import {getPoll} from '../../helpers/storePollData'
 import './index.css'
 export default function CreatePoll(props) {
-    // useEffect(() => {
-    //     setretrivePollHeaders(JSON.parse(getPoll))
+    useEffect(() => {
+        console.log(">>>>",props.match.params.id);
        
-    // }, [])
+    }, [])
+
+    // // const handleSubmit = async (event) => {
+    // //     event.preventDefault();
+    
+    // //     const poll = {
+    // //       name: aboutPoll.title,
+    // //       category: 'general',
+    // //       description: aboutPoll.description,
+    // //       startDate: "2020-12-25",
+    // //       endDate: "2020-12-31"
+    // //     }
+    
+    // //     try{          
+    // //       const res = await httpPost('create_opinion_poll', poll);
+    // //       if(res.status === 'Success'){
+    // //         console.log(res);
+    // //         NotificationManager.success(
+    // //           "Opinion Poll Created Successfully!.",
+    // //           "Yepp!",
+    // //           3000
+    // //         );
+            
+    // //         props.history.push(`/create_poll/${res.opinionPoll.id}`)
+    // //       }
+    // //     }catch(error){
+    // //       NotificationManager.error(
+    // //         "Something went wrong. Please retry.",
+    // //         "Oops!",
+    // //         3000
+    // //       );
+    // //     }
+      
+    
+    // }
+
     const [retrivePollHeaders, setretrivePollHeaders] = useState([])
     const [PollOptions, setPollOptions] = useState([])
     const [savePollData, setsavePollData] = useState([])
@@ -161,7 +195,6 @@ export default function CreatePoll(props) {
  </section>
  </div>
         </Layout>
-        <CreatePollModal push={props.history.push} />
         </div>
     )
 }

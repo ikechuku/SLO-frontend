@@ -31,6 +31,10 @@ export default function Sidebar(props) {
           <Link className={props.props.page === 'dashboard' ? "side-menu__item active" : "side-menu__item"}  to="/"><i className="side-menu__icon fa fa-desktop"></i><span className="side-menu__label">Dashboard</span></Link>
         </li>
 
+        <li className={props.props.page === 'poll' ? "active" : ""}>
+          <Link className={props.props.page === 'poll' ? "side-menu__item active" : "side-menu__item"}  to="/poll"><i className="side-menu__icon fa fa-desktop"></i><span className="side-menu__label">Opinion Poll</span></Link>
+        </li>
+
         <li className={(props.props.page === 'branch') || (props.props.page === 'departments') || (props.props.page === 'units') || (props.props.page === 'roles') || (props.props.page === 'responsibility') || (props.props.page === 'kpi') || (props.props.page === 'staff') ? "slide is-expanded" : "slide"}>
           <a className={(props.props.page === 'branch') || (props.props.page === 'departments') || (props.props.page === 'units') || (props.props.page === 'roles') || (props.props.page === 'responsibility') || (props.props.page === 'kpi') || (props.props.page === 'staff') ? "side-menu__item active" : "side-menu__item"}  data-toggle="slide" href="#"><i className="side-menu__icon fa fa-tasks"></i><span className="side-menu__label">Company MGT</span><i className="angle fa fa-angle-right"></i></a>
           <ul className="slide-menu">

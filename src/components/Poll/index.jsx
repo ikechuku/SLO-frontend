@@ -1,40 +1,70 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import Layout from "../layout/index";
-import CreatePoll from '../Modals/createPoll'
+import CreatePoll from '../Modals/createPoll';
+import {
+	httpPost,
+	httpGet,
+	httpDelete,
+	httpPatch,
+} from "../../actions/data.action";
+import { NotificationManager } from "react-notifications";
+import $ from 'jquery'
+
 export default function Index(props) {
+    
     const [Features, setFeatures] = useState([])
     const [FeaturesInput, setFeaturesInput] = useState("")
-    
-  const handleFeatures=(type,deleteData)=>{
-    if (type === "add") {
-      if (FeaturesInput === "" || FeaturesInput === null || FeaturesInput === undefined) {
-        return
+
+    const [aboutPoll,SetaboutPoll ] = useState({
+      title:"",
+      description:""
+  })
+
+  const handleChange=(e)=>{
+       
+    SetaboutPoll({...aboutPoll, [e.target.name]: e.target.value});
+  }
+
+  const CloseModal = () => {
+    window.$(".modal").modal("hide");
+    window.$(document.body).removeClass("modal-open");
+    window.$(".modal-backdrop").remove();
+  
+  }
+
+    const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const poll = {
+      name: aboutPoll.title,
+      category: 'general',
+      description: aboutPoll.description,
+      startDate: "2020-12-25",
+      endDate: "2020-12-31"
+    }
+
+    try{
+      const res = await httpPost('create_opinion_poll', poll);
+      if(res.status === 'Success'){
+      CloseModal();
+        console.log(res);
+        NotificationManager.success(
+          "Opinion Poll Created Successfully!.",
+          "Yepp!",
+          3000
+        );
+        
+        props.history.push(`/create_poll/${res.opinionPoll.id}`)
       }
-       if (Features.find(data=>data === FeaturesInput)) {
-      alert(`${FeaturesInput} already added`)
-      return
+    }catch(error){
+      NotificationManager.error(
+        "Something went wrong. Please retry.",
+        "Oops!",
+        3000
+      );
     }
-    setFeatures([...Features,FeaturesInput])
-    setFeaturesInput("")
-    }
-    else{
-      let deletData = Features[deleteData]
-      let filterData = Features.filter(data=>{
-       return data !== deletData
-      })
-      console.log(filterData)
-      setFeatures(filterData)
-    }
-   
-  }
+}
 
-  const editOptions=(e,index)=>{
-    const newFeatures = [...Features];
-    newFeatures[index] = e.target.value;
-    setFeatures(newFeatures)
-    console.log(Features)
-
-  }
 
     return (
       <div>
@@ -82,7 +112,10 @@ export default function Index(props) {
  </section>
  </div>
         </Layout>
-        <CreatePoll push={props.history.push} />
+        <CreatePoll aboutPoll={aboutPoll} 
+          handleChange={handleChange} 
+          handleSubmit={handleSubmit} 
+          push={props.history.push} />
         </div>
     )
 }
